@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import app_store from '../assets/images/App_Store_Badge.eps';
-import google_play from '../assets/images/google-play-badge.eps';
+import { Link, Redirect } from 'react-router-dom';
+import app_store from '../assets/images/App_Store_Badge.svg';
+import google_play from '../assets/images/google-play-badge.svg';
 import img_promo from '../assets/images/pub_example.png';
+// import img_promo from '../assets/images/pub_example.png';
 
 class Login extends Component {
 
@@ -14,7 +16,8 @@ class Login extends Component {
                 password: ''
             },
             submitted: false,
-            newAccount: false
+            newAccount: false,
+            isAuthenticated: false
         };
 
         this.loginAccount = this.loginAccount.bind(this);
@@ -49,6 +52,9 @@ class Login extends Component {
         if (this.state.account.username && this.state.account.password ) {
             console.log("LOGIN" + JSON.stringify(this.account, null, 2));
             //return true;
+            this.setState({
+                isAuthenticated: true
+            })
         } else {
             return;
         }
@@ -66,48 +72,64 @@ class Login extends Component {
 
         const { username, password, submitted, newAccount } = this.state;
 
+        if (this.state.isAuthenticated) {
+            return (
+                <Redirect to="/home" />
+            )
+        }
+
         return (
-            <div>
-                <h1>On aime, on partage!</h1>
-                <p className="text-secondary">Gerer vos commerces avec weeclik</p>
-                <form onSubmit={this.loginAccount}>
-                    <div className="form-group">
-                        <input
-                            value={username}
-                            onChange={this.handleChangeUser.bind(this)}
+            <div className="container">
+                <div className="row">
+                    <div className="col-12 col-md" style={{ backgroundColor : '#FFF' }}>
+                        <div>
+                            <h1>On aime, on partage!</h1>
+                            <p className="text-secondary">Gerer vos commerces avec weeclik</p>
+                            <form onSubmit={this.loginAccount}>
+                                <div className="form-group">
+                                    <input
+                                        value={username}
+                                        onChange={this.handleChangeUser.bind(this)}
 
-                            type="email"
-                            className="form-control border-0 bg-light"
-                            id="exampleInputEmail1"
-                            placeholder="Adresse e-mail"
-                            style={{ width : '300px' }}/>
-                    </div>
-                    <div className="form-group">
-                        <input
-                            value={password}
-                            onChange={this.handleChangePass.bind(this)}
+                                        type="email"
+                                        className="form-control border-0 bg-light"
+                                        id="exampleInputEmail1"
+                                        placeholder="Adresse e-mail"
+                                        style={{ width : '300px' }}/>
+                                </div>
+                                <div className="form-group">
+                                    <input
+                                        value={password}
+                                        onChange={this.handleChangePass.bind(this)}
 
-                            type="password"
-                            className="form-control border-0 bg-light"
-                            id="exampleInputPassword1"
-                            placeholder="Mot de passe"
-                            style={{ width : '300px' }}/>
+                                        type="password"
+                                        className="form-control border-0 bg-light"
+                                        id="exampleInputPassword1"
+                                        placeholder="Mot de passe"
+                                        style={{ width : '300px' }}/>
+                                </div>
+                                <div className="form-group">
+                                    <button type="submit" className="btn btn-primary rounded mr-2">Se connecter</button>
+                                    <Link className="btn btn-outline-primary rounded" to="/register" role="button">Rejoindre weeclik</Link>
+                                </div>
+                                        
+                                <div className="form-group">
+                                    <Link className="nav-link" to="/forgotpassword">Mot de passe oublié?</Link>
+                                </div>
+                            </form>
+                            <a className="navbar-brand" href="#">
+                                <img src={app_store} alt="logo" />
+                            </a>
+                            <a className="navbar-brand" href="https://play.google.com/store/apps/details?id=cantum.weeclik&hl=fr">
+                                <img src={google_play} alt="logo" />
+                            </a>
+                        </div>
                     </div>
-                    <div className="form-group">
-                        <button type="submit" className="btn btn-primary rounded mr-2">Se connecter</button>
-                        <a className="btn btn-outline-primary rounded" href="#" role="button">Rejoindre weeclik</a>
+            
+                    <div className="col-12 col-md" style={{ backgroundColor : '#FFF' }}>
+                        <img src={img_promo} className="rounded mx-auto d-block" alt="..." style={{ width : '600px'}}/>
                     </div>
-                            
-                    <div className="form-group">
-                        <a href="#">Mot de passe oublié?</a>
-                    </div>
-                </form>
-                <a className="navbar-brand" href="#">
-                    <img src={app_store} alt="logo" />
-                </a>
-                <a className="navbar-brand" href="https://play.google.com/store/apps/details?id=cantum.weeclik&hl=fr">
-                    <img src={google_play} alt="logo" />
-                </a>
+                </div>
             </div>
         )
     }
