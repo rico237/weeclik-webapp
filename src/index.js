@@ -4,19 +4,22 @@ import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import './css/index.css';
 
 import App from './components/App';
+import Parse from 'parse';
 import Notfound from './components/Notfound';
 import Register from './components/Register';
 
 import * as serviceWorker from './serviceWorker';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
+Parse.serverURL = 'https://parseapi.back4app.com/';
+Parse.initialize("JVQZMCuNYvnecPWvWFDTZa8A", "YOUR-JS-KEY");
+
 const routing = (
     <Router>
-        <div>
-            <Route exact path="/" component={App}/>
-            <Route path="/register" component={Register}/>
-            <Route component={Notfound}/>
-        </div>
+        {/* <Route exact path="/" component={App}/>
+        <Route path="/register" component={Register}/>
+        <Route component={Notfound}/> */}
+        <App/>
     </Router>
 );
 
