@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import profileImg from '../../assets/images/users.svg';
 
 class Login extends Component {
 
@@ -34,7 +34,7 @@ class Login extends Component {
     render() {
 
         const fakeImg = {
-            height: "200",
+            height: "100",
             background: "#aaa"
         }
 
@@ -43,8 +43,7 @@ class Login extends Component {
                 <div>
                     <h2>About Me</h2>
                     <h5>Photo of me:</h5>
-                    <img src="fakeImg" className="rounded" alt="Fake Image"/>
-                    <p>Some text about me in culpa qui officia deserunt mollit anim...</p>
+                    <img src={profileImg} className="rounded" style={{fakeImg}} alt="Default profile"/>
                     <h3>Coordonnées</h3>
                     <p>Lorem ipsum dolor sit ame.</p>
 
@@ -62,11 +61,11 @@ class Login extends Component {
                                 <label htmlFor="addrInput">Address</label>
                                 <input type="text" id="addrInput" className="form-control" placeholder="1234 Main St"/>
                             </div>
-                            <button type="submit" className="btn btn-primary">Submit</button>
+                            <button type="submit" className="btn btn-primary btn-sm">Valider les modifications</button>
                         </fieldset>
                     </form>
                     <hr className="d-sm-none"></hr>
-                    <button className="btn btn-primary btn-sm" onClick={this.handleClick}>Modifier le profile</button>
+                    <button className="btn btn-primary btn-sm invisible" onClick={this.handleClick}>Modifier le profile</button>
                 </div>
             )
         }
@@ -75,8 +74,7 @@ class Login extends Component {
             <div>
                 <h2>About Me</h2>
                 <h5>Photo of me:</h5>
-                <img src="fakeImg" className="rounded" alt="Fake Image"/>
-                <p>Some text about me in culpa qui officia deserunt mollit anim...</p>
+                <img src={profileImg} className="rounded" style={{fakeImg}} alt="Default profile"/>
                 <h3>Coordonnées</h3>
                 <p>Lorem ipsum dolor sit ame.</p>
 
@@ -94,7 +92,7 @@ class Login extends Component {
                             <label htmlFor="addrInput">Address</label>
                             <input type="text" id="addrInput" className="form-control" placeholder="1234 Main St"/>
                         </div>
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                        {/* <button type="submit" className="btn btn-primary invisible">Submit</button> */}
                     </fieldset>
                 </form>
                 <hr className="d-sm-none"></hr>
