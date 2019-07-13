@@ -3,8 +3,8 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './css/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import $ from 'jquery';
-import Popper from 'popper.js';
+// import $ from 'jquery';
+// import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 
@@ -16,7 +16,7 @@ import Parse from 'parse';
 import * as serviceWorker from './serviceWorker';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-Parse.serverURL = 'https://parseapi.back4app.com/';
+Parse.serverURL = 'https://weeclik-server-dev.herokuapp.com/parse';
 Parse.initialize("JVQZMCuNYvnecPWvWFDTZa8A", "59ZByNyXEUhKiwytEkf3ryAJFVkbgOnn");
 
 const routing = (

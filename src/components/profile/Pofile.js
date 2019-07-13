@@ -34,7 +34,7 @@ class Login extends Component {
     render() {
 
         const fakeImg = {
-            height: "100",
+            height: "100vh",
             background: "#aaa"
         }
 
@@ -71,7 +71,7 @@ class Login extends Component {
         }
 
         return (
-            <div>
+            <div style={{ marginBottom: 20 }}>
                 <h2>About Me</h2>
                 <h5>Photo of me:</h5>
                 <img src={profileImg} className="rounded" style={{fakeImg}} alt="Default profile"/>
@@ -96,7 +96,7 @@ class Login extends Component {
                     </fieldset>
                 </form>
                 <hr className="d-sm-none"></hr>
-                <button className="btn btn-primary btn-sm" onClick={this.handleClick}>Modifier le profile</button>
+                <button className="btn btn-primary btn-sm" onClick={this.handleClick}>Modifier votre profile ?</button>
             </div>
         )
     }
