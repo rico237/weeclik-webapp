@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import app_store from '../assets/images/App_Store_Badge.svg';
-import google_play from '../assets/images/google-play-badge.svg';
+import LoadApp from './external_link/LoadApp';
 import img_promo from '../assets/images/pub_example.png';
 
 class Register extends Component {
@@ -67,12 +66,7 @@ class Register extends Component {
                                     <Link className="nav-link" to="/">Déjà Membre Weeclik?</Link>
                                 </div>
                             </form>
-                            <a className="navbar-brand" href="https://play.google.com/store/apps/details?id=cantum.weeclik&hl=fr">
-                                <img src={app_store} alt="logoApple" />
-                            </a>
-                            <a className="navbar-brand" href="https://play.google.com/store/apps/details?id=cantum.weeclik&hl=fr">
-                                <img src={google_play} alt="logoAndroid" />
-                            </a>
+                            <LoadApp/>
                         </div>
                     </div>
             
