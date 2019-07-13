@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Parse from 'parse';
 import { Link, Redirect } from 'react-router-dom';
 import Logo from '../../assets/images/logo.svg';
 import Footer from '../home/Footer';
@@ -44,26 +45,26 @@ class RestorPass extends Component {
             submitted: false
         };
 
+        this.handleChange = this.handleChange.bind(this);
         this.loginAccount = this.loginAccount.bind(this);
     }
 
-    handleChangeUser(event) {
+    handleChange(event) {
         const username = event.target.value;
-        this.setState(prevState => ({
-            account: {
-                ...prevState.account,
-                username
-            }
-        }));
+        this.setState({username: username});
     }
 
     loginAccount(event) {
-        console.log("LOGIN");
         event.preventDefault();
         this.setState({ submitted: true });
-        console.log(this.state.account.username);
-        if (this.state.account.username && this.state.account.password ) {
-            console.log("LOGIN" + JSON.stringify(this.account, null, 2));
+        console.log(this.state.username);
+        if (this.state.username) {
+            const user = new Parse.User.requestPasswordReset(this.state.username);
+            user.then(() => {
+                console.log("SEND new Password" + this.state.username);
+            }).catch(() => {
+                alert("BAD : " + this.state.username);
+            })
             //return true;
             this.setState({
                 isAuthenticated: true
@@ -81,7 +82,7 @@ class RestorPass extends Component {
 
         if (this.state.isAuthenticated) {
             return (
-                <Redirect to="/home" />
+                <Redirect to="/" />
             )
         }
 
@@ -98,7 +99,7 @@ class RestorPass extends Component {
                         <div className="form-group">
                             <input
                                 value={username}
-                                onChange={this.handleChangeUser.bind(this)}
+                                onChange={this.handleChange.bind(this)}
 
                                 type="email"
                                 className="form-control"
@@ -106,7 +107,7 @@ class RestorPass extends Component {
                                 placeholder="Adresse e-mail"/>
                         </div>
                         <div className="form-group">
-                            <button type="submit" className="btn btn-primary rounded mr-2">Se connecter</button>
+                            <button type="submit" className="btn btn-primary rounded mr-2">Envoyer</button>
                             <Link className="btn btn-outline-primary rounded" to="/" role="button">Retourner</Link>
                         </div>
                     </form>

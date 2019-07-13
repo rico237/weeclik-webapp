@@ -100,8 +100,8 @@ class Login extends Component {
                             isAuthenticated: true
                         })
                     }
-                }, (error) => {
-                    alert("BAD : " + error);
+                }).catch((error) => {
+                    alert("Error: " + error.code + " " + error.message);
                 });
             } catch (error) {
                 console.log("LOGIN" + error);
