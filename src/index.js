@@ -17,7 +17,7 @@ import * as serviceWorker from './serviceWorker';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 Parse.serverURL = 'https://weeclik-server-dev.herokuapp.com/parse';
-Parse.initialize("JVQZMCuNYvnecPWvWFDTZa8A", "59ZByNyXEUhKiwytEkf3ryAJFVkbgOnn");
+Parse.initialize("JVQZMCuNYvnecPWvWFDTZa8A");
 
 const routing = (
     <Router>
