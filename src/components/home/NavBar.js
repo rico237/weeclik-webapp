@@ -1,9 +1,11 @@
 import React from 'react';
+import Parse from 'parse';
 import { Link, Redirect } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, Grid, Avatar, Container } from '@material-ui/core';
 import profileImg from '../../assets/images/users.svg';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import { withStyles } from '@material-ui/core/styles';
+
 
 const stylesNavBar = theme => ({
     rootNav: {
@@ -37,6 +39,7 @@ class NavBar extends React.Component {
     }
 
     isLogOut = () => {
+        Parse.User.logOut();
         this.setState({
             logout: true
         })

@@ -124,9 +124,11 @@ class Login extends Component {
 
         const { classes } = this.props;
 
-        const { username, password, submitted, newAccount } = this.state;
+        const { username, password/*, submitted, newAccount*/ } = this.state;
 
-        if (this.state.isAuthenticated) {
+        var currentUser = Parse.User.current();
+
+        if (this.state.isAuthenticated || currentUser) {
             return (
                 <Redirect to="/home" />
             )

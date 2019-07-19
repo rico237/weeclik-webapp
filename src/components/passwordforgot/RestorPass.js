@@ -78,7 +78,7 @@ class RestorPass extends Component {
 
         const { classes } = this.props;
 
-        const { username, submitted } = this.state;
+        const { username/*, submitted*/ } = this.state;
 
         if (this.state.isAuthenticated) {
             return (

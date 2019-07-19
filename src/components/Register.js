@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Footer from './home/Footer';
 import Parse from 'parse';
 import LoadApp from './external_link/LoadApp';
@@ -73,26 +73,31 @@ class Register extends Component {
         console.log("SIGNING UP");
         event.preventDefault();
         this.setState({ submitted: true });
-        console.log(this.state.account.username);
         if (this.state.account.username && this.state.account.email && this.state.account.password && this.state.account.password1) {
-            if (this.state.account.password === this.state.account.password1) {
-                console.log("LOGIN" + JSON.stringify(this.account, null, 2));
-                
+            if (this.state.account.password === this.state.account.password1) {                
                 var user = new Parse.User();
-                user.set("name", "azerty11");
-                // user.set("isPro", true);
-                user.set("username", "azertyu111iop@azerty.uiop");
-                user.set("password", "azerty");
-                user.set("email", "azertyu111iop@azerty.uiop");
+                user.set("name", this.state.account.username);
+                user.set("isPro", true);
+                user.set("username", this.state.account.email);
+                user.set("password", this.state.account.password);
+                user.set("email", this.state.account.email);
                 try {
-                    user.signUp();
+                    // if (Parse.Error.INVALID_SESSION_TOKEN) {
+                    //     user.logOut();
+                    // }
+                    user.signUp()
+                        .then(() => {
+                            if (user) {
+                                this.setState({
+                                    isAuthenticated: true
+                                })
+                            }
+                        }).catch((error) => {
+                            alert("Error: " + error.code + " " + error.message);
+                        });
                 } catch (error) {
                     alert("Error: " + error.code + " " + error.message);
                 }
-                //return true;
-                this.setState({
-                    isAuthenticated: true
-                })
             }
         } else {
             return;
@@ -102,6 +107,12 @@ class Register extends Component {
     render() {
         console.log(this.props);
         const { username, email, password, password1 } = this.state;
+
+        if (this.state.isAuthenticated) {
+            return (
+                <Redirect to="/home" />
+            )
+        }
 
         return (
             <div>

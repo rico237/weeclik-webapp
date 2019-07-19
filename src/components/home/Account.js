@@ -1,21 +1,29 @@
 import React, { Component } from 'react';
-import { } from 'react-router-dom';
+import Parse from 'parse';
+import { Redirect } from 'react-router-dom';
 import NavBar from './NavBar';
 import Commerce from './Commerce';
 import Footer from './Footer';
 import Profile from '../profile/Pofile'
-import { Paper, Grid, Container } from '@material-ui/core';
 
 class Account extends Component {
 
     constructor(props) {
         super(props);
 
-        this.state = {}
+        this.state = {
+            currentUser: Parse.User.current(),
+        };
     }
 
     render() {
-        
+
+        if (!this.state.currentUser) {
+            return (
+                <Redirect to="/" />
+            )
+        }
+
         return (
             <div>
                 <NavBar/>
@@ -58,6 +66,8 @@ class Account extends Component {
                 <Footer/>
             </div>
         );
+        
+        
     }
 
 }
