@@ -11,6 +11,11 @@ const stylesNavBar = theme => ({
     rootNav: {
         flexGrow: 1,
     },
+    bulletPrincipal: {
+        display: 'inline-block',
+        margin: '0 2px',
+        transform: 'scale(0.8)',
+    },
     menuButton: {
         marginRight: theme.spacing(2),
     },
@@ -34,6 +39,7 @@ class NavBar extends React.Component {
         super(props);
 
         this.state = {
+            currentUser: Parse.User.current(),
             logout: false
         }
     }
@@ -54,6 +60,8 @@ class NavBar extends React.Component {
     render() {
         const { classes } = this.props;
 
+        const bull = <span className={classes.bulletPrincipal}>•</span>;
+
 
         return (
             // <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
@@ -61,13 +69,13 @@ class NavBar extends React.Component {
             // </nav>
             <div className={classes.rootNav}>
                 {this.renderRedirect()}
-                <AppBar position="static" style={{ backgroundColor: "white" }}>
+                <AppBar position="static" elevation={0} style={{ backgroundColor: "white" }}>
                     <Container fixed>
                         <Toolbar>
                             <Grid edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
                                 <Avatar alt="user img" src={profileImg} className={classes.avatar} />
                             </Grid>
-                            <Typography variant="h6" className={classes.title}><Link style={{ color: '#000', textDecoration: 'none' }} to="/home">Weeclick Partenaire</Link></Typography>
+                            <Typography variant="h6" className={classes.title}><Link style={{ color: '#000', textDecoration: 'none' }} to="/home">{this.state.currentUser.get("name")} {bull} Weeclick Partenaire</Link></Typography>
                             <Button onClick={this.isLogOut}><PowerSettingsNewIcon className={classes.icon}/>Log-out</Button>
                         </Toolbar>
                     </Container>

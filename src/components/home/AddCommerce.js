@@ -41,6 +41,7 @@ const styles = theme => ({
         marginTop: theme.spacing(5),
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
+        marginBottom: theme.spacing(5),
     },
     textTitle: {
         marginTop: theme.spacing(5),
@@ -116,36 +117,36 @@ class AddCommerce extends Component {
         }
         if (s.nomCommerce !== "" && s.currencyCategory !== "" && addr !== "" && s.tel !== "") {
 
-            console.log(s.currentUser.getEmail);
-            console.log(s.currentUser.id);
+        //     console.log(s.currentUser.getEmail);
+        //     console.log(s.currentUser.id);
 
-            this.handleIsCreate();
+        //     this.handleIsCreate();
 
-            // debugger;
+            debugger;
 
-            // var newCommerce = new Parse.Object.extend("Commerce");
-            // newCommerce.save({
-            //     "nomCommerce": s.nomCommerce,
-            //     "position": "(0,0)",
-            //     "siteWeb": s.siteWeb,
-            //     "statutCommerce": 0,
-            //     "adresse": addr,
-            //     "nombrePartages": 0,
-            //     "owner": Parse.User.createWithoutData(s.currentUser.id),
-            //     "typeCommerce": s.currencyCategory,
-            //     "mail": s.currentUser.email,
-            //     "tel": s.tel,
-            //     "description": s.description
-            // })
-            // .then((newCommerce) => {
-            //     console.log(`Le commerce ${newCommerce.id} a été créer`);
-            //     debugger;
-            // }, (error) => {
-            //     console.log(`Failed to create new object, with error code: ' + ${error.message}`);
-            //     debugger;
-            // })
+            const newCommerce = new Parse.Object.extend("Commerce")();
+            newCommerce.save({
+                "nomCommerce": s.nomCommerce,
+                "position": "(0,0)",
+                "siteWeb": s.siteWeb,
+                "statutCommerce": 0,
+                "adresse": addr,
+                "nombrePartages": 0,
+                "owner": Parse.User.createWithoutData(s.currentUser.id),
+                "typeCommerce": s.currencyCategory,
+                "mail": s.currentUser.email,
+                "tel": s.tel,
+                "description": s.description
+            })
+            .then((newCommerce) => {
+                console.log(`Le commerce ${newCommerce.id} a été créer`);
+                debugger;
+            }, (error) => {
+                console.log(`Failed to create new object, with error code: ' + ${error.message}`);
+                debugger;
+            })
         }
-        debugger;
+        // debugger;
         //alert("OK" + s.currentUser.getEmail + " " + Parse.User.createWithoutData(s.currentUser.id)+ " " + addr+ " " + s.siteWeb+ " " +s.tel+ " " + s.promotions+ " " + s.description+ " " + s.statutCommerce);
     }
 
@@ -177,7 +178,7 @@ class AddCommerce extends Component {
                             <h3 className={classes.textTitle} >Creer un nouveau commerce</h3>
                             <form className={classes.container} autoComplete="on" onSubmit={this.createNewCommerce}>
                                 <TextField
-                                    required
+                                    // required
                                     className={classes.textField}
                                     fullWidth
                                     onChange={this.handleChange}
@@ -188,14 +189,13 @@ class AddCommerce extends Component {
                                     variant="outlined"
                                 />
                                 {/* Catégorie du commerce */}
-                                {/* <InputLabel className={classes.label} required>Catégorie</InputLabel> */}
                                 <TextField
                                     select
                                     fullWidth
                                     variant="outlined"
                                     value={this.state.currencyCategory}
                                     onChange={this.handleChangeSelect}
-                                    required
+                                    // required
                                     className={classes.textField2}
                                     label="Catégorie"
                                 >   
@@ -224,7 +224,7 @@ class AddCommerce extends Component {
                                 
                                 {/* Informations du commerce */}
                                 <TextField
-                                    required
+                                    // required
                                     className={classes.textField}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
@@ -235,7 +235,7 @@ class AddCommerce extends Component {
                                     variant="outlined"
                                 />
                                 <TextField
-                                    required
+                                    // required
                                     className={classes.textField3}
                                     onChange={this.handleChange.bind(this)}
                                     name="ville"
@@ -245,7 +245,7 @@ class AddCommerce extends Component {
                                     variant="outlined"
                                 />
                                 <TextField
-                                    required
+                                    // required
                                     className={classes.textField4}
                                     onChange={this.handleChange.bind(this)}
                                     name="bp"
@@ -255,7 +255,7 @@ class AddCommerce extends Component {
                                     variant="outlined"
                                 />
                                 <TextField
-                                    required
+                                    // required
                                     className={classes.textField}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
@@ -266,7 +266,7 @@ class AddCommerce extends Component {
                                     variant="outlined"
                                 />
                                 <TextField
-                                    required
+                                    // required
                                     className={classes.textField}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
@@ -278,7 +278,7 @@ class AddCommerce extends Component {
                                 />
                                 {/* Description de votre commerce */}
                                 <TextField
-                                    required
+                                    // required
                                     className={classes.textField}
                                     multiline
                                     fullWidth

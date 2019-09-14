@@ -23,6 +23,7 @@ class Profile extends Component {
             canModify: false,
             addCommerce: false,
             isModify: false,
+            nbCommerce: 0,
             user: {
                 name: '',
                 username: '',
@@ -98,6 +99,14 @@ class Profile extends Component {
         event.preventDefault();
     }
 
+    getNbCommerce() {
+        var Commerce = Parse.Object.extend("Commerce");
+        var query = new Parse.Query(Commerce);
+        query.equalTo("owner", Parse.User.createWithoutData("EruF4h35eI"));//this.state.currentUser.id
+        console.log(query.count);
+
+    }
+
     componentDidMount() {
         var currentUser = Parse.User.current();
         if (currentUser) {
@@ -108,7 +117,7 @@ class Profile extends Component {
                 var username = fetchedUser.getUsername();
                 var email = fetchedUser.getEmail();
                 var objectId = fetchedUser.id;
-                if (PICTURE === "") {
+                if (!PICTURE) {
                     PICTURE = profileImg
                 }
                 console.log(objectId);
@@ -186,6 +195,9 @@ class Profile extends Component {
             <div style={{ marginBottom: 20 }}>
                 <img src={this.state.user.picture} className="rounded" style={{ width: 200 }} alt="Default profile"/>
                 <h2>{this.state.user.name}</h2>
+
+                {/* <p>{this.getNbCommerce()}</p> */}
+
                 <h3>Coordonnées</h3>
                 <p>Lorem ipsum dolor sit ame.</p>
 
