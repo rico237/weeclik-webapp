@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import profileImg from '../../assets/images/users.svg';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -132,10 +132,10 @@ class Profile extends Component {
 
         const { classes } = this.props;
 
-        const fakeImg = {
-            height: "100vh",
-            background: "#aaa"
-        }
+        // const fakeImg = {
+        //     height: "100vh",
+        //     background: "#aaa"
+        // }
 
         if (this.state.addCommerce) {
             return (

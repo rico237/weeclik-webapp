@@ -4,9 +4,8 @@ import { Redirect } from 'react-router-dom';
 import NavBar from './NavBar';
 import Commerce from './Commerce';
 import Footer from './Footer';
-import Geocode from 'react-geocode';
 
-import { Container, CssBaseline, TextField, Button, MenuItem, InputLabel } from '@material-ui/core';
+import { Container, CssBaseline, TextField, Button, MenuItem } from '@material-ui/core';
 
 import { withStyles } from '@material-ui/core/styles';
 
@@ -16,6 +15,21 @@ const styles = theme => ({
         flexWrap: 'wrap',
     },
     textField: {
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+    },
+    textField2: {
+        marginTop: theme.spacing(1),
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+    },
+    textField3: {
+        minWidth: '53.5%',
+        marginLeft: theme.spacing(1),
+        marginRight: theme.spacing(1),
+    },
+    textField4: {
+        minWidth: '40%',
         marginLeft: theme.spacing(1),
         marginRight: theme.spacing(1),
     },
@@ -51,13 +65,15 @@ class AddCommerce extends Component {
 
         this.state = {
             currentUser: Parse.User.current(),
-            NewCommerce: Parse.Object.extend("Commerce"),
+
+            isCreate: false,
             
             nomCommerce: '',
             adresse: '',
+            ville: '',
+            bp: '',
             siteWeb: '',
             tel: '',
-            promotions: '',
             description: '',
             statutCommerce: '',
             nombrePartages: 0,
@@ -71,6 +87,8 @@ class AddCommerce extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.createNewCommerce = this.createNewCommerce.bind(this);
+        
+        // this.handleIsCreate = this.handleIsCreate.bind(this);
     }
 
     handleChange(event) {
@@ -81,34 +99,54 @@ class AddCommerce extends Component {
         this.setState({currencyCategory: event.target.value});
     }
 
+
+    handleIsCreate() {
+        this.setState(state => ({
+            isCreate: !state.isCreate
+        }));
+    }
+
+
+
     createNewCommerce() {
         const s = this.state;
-        if (s.nomCommerce !== "" && s.currencyCategory !== "" && s.adresse !== "" && s.tel !== "") {
-
-            alert("OK", s.nomCommerce, s.currencyCategory, s.adresse, s.siteWeb, s.tel, s.promotions, s.description, s.statutCommerce);
-
-            // const newCommerce = this.state.NewCommerce;
-            // newCommerce.set("nomCommerce", s.nomCommerce);
-            // newCommerce.set("typeCommerce", s.currencyCategory);    // currencyCategory
-            // newCommerce.set("adresse", s.adresse);
-            // newCommerce.set("siteWeb", s.siteWeb);
-            // newCommerce.set("tel", s.tel);
-            // newCommerce.set("promotions", s.promotions);
-            // newCommerce.set("description", s.description);
-            // newCommerce.set("statutCommerce", s.statutCommerce);
-            // newCommerce.set("nombrePartages", s.nombrePartages);
-            // newCommerce.set("owner", s.currentUser.id);
-            // newCommerce.set("position", s.position);
-            // newCommerce.set("mail", s.currentUser.getEmail);
-            // newCommerce.save()
-            //     .then((newCommerce) => {
-            //         console.log(`Le commerce ${newCommerce.id} a été créer`);
-            //         alert("OK");
-            //     }, (error) => {
-            //         console.log(`Failed to create new object, with error code: ' + ${error.message}`);
-            //         alert("BAD");
-            //     })
+        var addr = "";
+        if (s.adresse !== "" && s.ville !== "" && s.bp !== "") {
+            addr = s.adresse + ", " + s.ville + " " + s.bp;
         }
+        if (s.nomCommerce !== "" && s.currencyCategory !== "" && addr !== "" && s.tel !== "") {
+
+            console.log(s.currentUser.getEmail);
+            console.log(s.currentUser.id);
+
+            this.handleIsCreate();
+
+            // debugger;
+
+            // var newCommerce = new Parse.Object.extend("Commerce");
+            // newCommerce.save({
+            //     "nomCommerce": s.nomCommerce,
+            //     "position": "(0,0)",
+            //     "siteWeb": s.siteWeb,
+            //     "statutCommerce": 0,
+            //     "adresse": addr,
+            //     "nombrePartages": 0,
+            //     "owner": Parse.User.createWithoutData(s.currentUser.id),
+            //     "typeCommerce": s.currencyCategory,
+            //     "mail": s.currentUser.email,
+            //     "tel": s.tel,
+            //     "description": s.description
+            // })
+            // .then((newCommerce) => {
+            //     console.log(`Le commerce ${newCommerce.id} a été créer`);
+            //     debugger;
+            // }, (error) => {
+            //     console.log(`Failed to create new object, with error code: ' + ${error.message}`);
+            //     debugger;
+            // })
+        }
+        debugger;
+        //alert("OK" + s.currentUser.getEmail + " " + Parse.User.createWithoutData(s.currentUser.id)+ " " + addr+ " " + s.siteWeb+ " " +s.tel+ " " + s.promotions+ " " + s.description+ " " + s.statutCommerce);
     }
 
 
@@ -123,6 +161,12 @@ class AddCommerce extends Component {
             )
         }
 
+        if (this.state.isCreate) {
+            return (
+                <Redirect to="/aboutcommerce" />
+            )
+        }
+
         return (
             <div>
                 <NavBar/>
@@ -131,7 +175,7 @@ class AddCommerce extends Component {
                     <Container maxWidth="sm">
                         <div style={{ width: 500 }}>
                             <h3 className={classes.textTitle} >Creer un nouveau commerce</h3>
-                            <form className={classes.container} autoComplete="off" onSubmit={this.createNewCommerce}>
+                            <form className={classes.container} autoComplete="on" onSubmit={this.createNewCommerce}>
                                 <TextField
                                     required
                                     className={classes.textField}
@@ -152,7 +196,7 @@ class AddCommerce extends Component {
                                     value={this.state.currencyCategory}
                                     onChange={this.handleChangeSelect}
                                     required
-                                    className={classes.textField}
+                                    className={classes.textField2}
                                     label="Catégorie"
                                 >   
                                     <MenuItem value=""><em>None</em></MenuItem>
@@ -192,10 +236,9 @@ class AddCommerce extends Component {
                                 />
                                 <TextField
                                     required
-                                    className={classes.textField}
-                                    fullWidth
+                                    className={classes.textField3}
                                     onChange={this.handleChange.bind(this)}
-                                    name="nomCommerce"
+                                    name="ville"
                                     id="outlined-name"
                                     label="Ville"
                                     margin="dense"
@@ -203,10 +246,9 @@ class AddCommerce extends Component {
                                 />
                                 <TextField
                                     required
-                                    className={classes.textField}
-                                    fullWidth
+                                    className={classes.textField4}
                                     onChange={this.handleChange.bind(this)}
-                                    value={this.state.adresse}
+                                    name="bp"
                                     id="outlined-name"
                                     label="Code postal"
                                     margin="dense"
@@ -255,18 +297,6 @@ class AddCommerce extends Component {
             owner: '',
             position: '',
             mail: '', */}
-                                <TextField
-                                    className={classes.textField}
-                                    onChange={this.handleChange}
-                                    name="promotions"
-                                    multiline
-                                    fullWidth
-                                    rows="4"
-                                    id="outlined-name"
-                                    label="Promotion"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
                                 <Button type="submit" className={classes.buttonSubmit} variant="contained" color="primary">Creer le commerce</Button>
                             </form>
                         </div>

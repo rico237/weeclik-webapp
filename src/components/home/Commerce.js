@@ -1,7 +1,7 @@
 import React from 'react';
 import { } from 'react-router-dom';
 import fakeImg from '../../assets/images/pub_example.png';
-import { Paper, Typography, Card, CardMedia, CardContent, CardActions, Button } from '@material-ui/core';
+import { Typography, Card, CardMedia, CardContent, CardActions, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
