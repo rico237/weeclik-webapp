@@ -69,7 +69,7 @@ class NavBar extends React.Component {
             // </nav>
             <div className={classes.rootNav}>
                 {this.renderRedirect()}
-                <AppBar position="static" elevation={0} style={{ backgroundColor: "white" }}>
+                <AppBar position="static" elevation={1} style={{ backgroundColor: "white" }}>
                     <Container fixed>
                         <Toolbar>
                             <Grid edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
