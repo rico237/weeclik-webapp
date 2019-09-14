@@ -64,7 +64,7 @@ class NavBar extends React.Component {
                 <AppBar position="static" style={{ backgroundColor: "white" }}>
                     <Container fixed>
                         <Toolbar>
-                            <Grid alignItems="center" edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
+                            <Grid edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
                                 <Avatar alt="user img" src={profileImg} className={classes.avatar} />
                             </Grid>
                             <Typography variant="h6" className={classes.title}><Link style={{ color: '#000', textDecoration: 'none' }} to="/home">Weeclick Partenaire</Link></Typography>

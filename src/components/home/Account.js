@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import NavBar from './NavBar';
 import Commerce from './Commerce';
 import Footer from './Footer';
-import Profile from '../profile/Pofile'
+import Profile from '../profile/Profile'
 
 class Account extends Component {
 
@@ -13,7 +13,13 @@ class Account extends Component {
 
         this.state = {
             currentUser: Parse.User.current(),
+            commerceList: []
         };
+    }
+
+    getAllCommerces() {
+        console.log("-- GETTING ALL COMMERCES --");
+        
     }
 
     render() {
@@ -27,34 +33,11 @@ class Account extends Component {
         return (
             <div>
                 <NavBar/>
-                {/* <div>
-                    <Container>
-                        <Paper>
-                            <Grid container spacing={2}>
-                                <Grid item xs zeroMinWidth>
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                </Grid>
-                                <Grid item>
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                yfyuviyv hiyu hlbug uigiugi giuguigugui
-                                </Grid>
-                            </Grid>
-                        </Paper>
-                    </Container>
-                </div> */}
                 <div className="container" style={{marginTop: "30px"}}>
                     <div className="row">
                         <div className="col-sm-4">
                             <Profile/>
+                            {/* <p>{this.state.currentUser}</p> */}
                         </div>
                         <div className="col-sm-8">
                             <Commerce/>

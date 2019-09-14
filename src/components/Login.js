@@ -101,7 +101,8 @@ class Login extends Component {
                         })
                     }
                 }).catch((error) => {
-                    alert("Error: " + error.code + " " + error.message);
+                    // alertPopup();
+                    alert("Error: " + error.code + "\n" + error.message);
                 });
             } catch (error) {
                 console.log("LOGIN" + error);
@@ -135,6 +136,7 @@ class Login extends Component {
         }
 
         return (
+            
             <Grid container component="main" className={classes.root}>
                 <CssBaseline/>
                 <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
