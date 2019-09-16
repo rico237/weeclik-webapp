@@ -88,7 +88,7 @@ class AddCommerce extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.createNewCommerce = this.createNewCommerce.bind(this);
-        
+
         // this.handleIsCreate = this.handleIsCreate.bind(this);
     }
 
@@ -107,14 +107,17 @@ class AddCommerce extends Component {
         }));
     }
 
+    createNewCommerce(event) {
+        event.preventDefault();
 
-
-    createNewCommerce() {
         const s = this.state;
-        var addr = "";
+        let addr = "";
         if (s.adresse !== "" && s.ville !== "" && s.bp !== "") {
             addr = s.adresse + ", " + s.ville + " " + s.bp;
+        } else if (s.adresse !== "") {
+            addr = s.adresse
         }
+
         if (s.nomCommerce !== "" && s.currencyCategory !== "" && addr !== "" && s.tel !== "") {
 
         //     console.log(s.currentUser.getEmail);
@@ -124,10 +127,13 @@ class AddCommerce extends Component {
 
             debugger;
 
-            const newCommerce = new Parse.Object.extend("Commerce")();
+            const ParseCommerce = Parse.Object.extend("Commerce");
+            const newCommerce   = new ParseCommerce();
+            const point         = new Parse.GeoPoint({latitude: 0.0, longitude: 0.0})
+
             newCommerce.save({
                 "nomCommerce": s.nomCommerce,
-                "position": "(0,0)",
+                "position": point,
                 "siteWeb": s.siteWeb,
                 "statutCommerce": 0,
                 "adresse": addr,
@@ -145,6 +151,8 @@ class AddCommerce extends Component {
                 console.log(`Failed to create new object, with error code: ' + ${error.message}`);
                 debugger;
             })
+        } else {
+            console.log(s)
         }
         // debugger;
         //alert("OK" + s.currentUser.getEmail + " " + Parse.User.createWithoutData(s.currentUser.id)+ " " + addr+ " " + s.siteWeb+ " " +s.tel+ " " + s.promotions+ " " + s.description+ " " + s.statutCommerce);
@@ -199,9 +207,8 @@ class AddCommerce extends Component {
                                     className={classes.textField2}
                                     label="Catégorie"
                                 >   
-                                    <MenuItem value=""><em>None</em></MenuItem>
+                                    <MenuItem value=""><em>Aucune</em></MenuItem>
                                     <MenuItem value="Alimentaire">Alimentaire</MenuItem>
-                                    <MenuItem value="Humanitaire">Humanitaire</MenuItem>
                                     <MenuItem value="Artisanat">Artisanat</MenuItem>
                                     <MenuItem value="Bâtiment">Bâtiment</MenuItem>
                                     <MenuItem value="Bien-être">Bien-être</MenuItem>
@@ -209,8 +216,10 @@ class AddCommerce extends Component {
                                     <MenuItem value="Dépannage">Dépannage</MenuItem>
                                     <MenuItem value="Evènement">Evènement</MenuItem>
                                     <MenuItem value="E-commerce">E-commerce</MenuItem>
+                                    <MenuItem value="Fabricant">Fabricant</MenuItem>
                                     <MenuItem value="Garagiste">Garagiste</MenuItem>
                                     <MenuItem value="Hôtellerie">Hôtellerie</MenuItem>
+                                    <MenuItem value="Humanitaire">Humanitaire</MenuItem>
                                     <MenuItem value="Immobilier">Immobilier</MenuItem>
                                     <MenuItem value="Informatique">Informatique</MenuItem>
                                     <MenuItem value="Nautisme">Nautisme</MenuItem>
