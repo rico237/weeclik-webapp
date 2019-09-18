@@ -83,6 +83,8 @@ class AddCommerce extends Component {
             mail: '',
 
             currencyCategory: '',
+
+            id: '',
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -101,8 +103,9 @@ class AddCommerce extends Component {
     }
 
 
-    handleIsCreate() {
+    handleIsCreate(_id) {
         this.setState(state => ({
+            id: _id,
             isCreate: !state.isCreate
         }));
     }
@@ -125,8 +128,6 @@ class AddCommerce extends Component {
 
         //     this.handleIsCreate();
 
-            debugger;
-
             const ParseCommerce = Parse.Object.extend("Commerce");
             const newCommerce   = new ParseCommerce();
             const point         = new Parse.GeoPoint({latitude: 0.0, longitude: 0.0})
@@ -140,16 +141,15 @@ class AddCommerce extends Component {
                 "nombrePartages": 0,
                 "owner": Parse.User.createWithoutData(s.currentUser.id),
                 "typeCommerce": s.currencyCategory,
-                "mail": s.currentUser.email,
+                "mail": this.state.currentUser.email,
                 "tel": s.tel,
                 "description": s.description
             })
             .then((newCommerce) => {
                 console.log(`Le commerce ${newCommerce.id} a été créer`);
-                debugger;
+                this.handleIsCreate(newCommerce.id);
             }, (error) => {
                 console.log(`Failed to create new object, with error code: ' + ${error.message}`);
-                debugger;
             })
         } else {
             console.log(s)
@@ -172,7 +172,10 @@ class AddCommerce extends Component {
 
         if (this.state.isCreate) {
             return (
-                <Redirect to="/aboutcommerce" />
+                <Redirect to={{
+                    pathname: '/aboutcommerce',
+                    state: { id: this.state.id }
+                }} />
             )
         }
 

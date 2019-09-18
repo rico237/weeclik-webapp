@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Parse from 'parse';
 import { } from 'react-router-dom';
 import NavBar from './NavBar';
 import Commerce from './Commerce';
@@ -99,8 +100,85 @@ class AboutCommerce extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {}
+        this.state = {
+            currentUser: Parse.User.current(),
+
+            commerceID: this.props.location.state.id,
+
+            commerce: {
+                name: '',
+                status: '',
+                nbPartage: 0,
+
+                currencyCategory: '',
+
+                adresse: '',
+                ville: '',
+                bp: '',
+                tel: '',
+                siteWeb: '',
+
+                description: '',
+
+                promotion: '',
+            },
+
+        }
     }
+
+    getCommerceInfo() {
+        console.log("id = " + this.state.commerceID);
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const queryCommerce   = new Parse.Query(ParseCommerce);
+
+        queryCommerce.get(this.state.commerceID)
+            .then((object) => {
+                object.fetch().then((fetchedCommerce) => {
+                    var _name = fetchedCommerce.get('nomCommerce');
+                    var _statusCommerce = fetchedCommerce.get('statutCommerce');
+                    var _nbPartage = fetchedCommerce.get('nombrePartages');
+                    var _typeCommerce = fetchedCommerce.get('typeCommerce');
+                    var _addr = fetchedCommerce.get('adresse');
+                    var _tel = fetchedCommerce.get('tel');
+                    var _siteWeb = fetchedCommerce.get('siteWeb');
+                    var _description = fetchedCommerce.get('description');
+                    var _promotions = fetchedCommerce.get('promotions');
+                    // var username = fetchedCommerce.getUsername();
+                    // var email = fetchedCommerce.getEmail();
+                    // var objectId = fetchedCommerce.id;
+                    
+                    this.setState(prevState => ({
+                        commerce: {                 // object that we want to update
+                            ...prevState.commerce,  // keep all other key-value pairs
+                            nbPartage: _nbPartage,       // update the value of specific key
+                            status: _statusCommerce,
+                            name: _name,
+                            currencyCategory: _typeCommerce,
+                            adresse: _addr,
+                            tel: _tel,
+                            siteWeb: _siteWeb,
+                            description: _description,
+                            promotion: _promotions
+
+
+                        }
+                    }));
+                });
+                console.log("Successfully retrieved " + object + " scores.");
+                console.log(JSON.stringify(object, null, 2));
+                console.log("++======++++"+this.state.name);
+            })
+            .catch((error) => {
+
+            });
+    }
+
+
+    componentDidMount() {
+        this.getCommerceInfo();
+    }
+
+
 
     render() {
 
@@ -117,7 +195,7 @@ class AboutCommerce extends Component {
                         <Card className={classes.card}>
                             <CardContent>
                                 <Typography variant="h4" component="h2">
-                                    {"Nom du commerce"}
+                                    {this.state.commerce.name}
                                 </Typography>
                                 <Typography className={classes.title} color="textSecondary" gutterBottom>Statut</Typography>
                                 <Typography variant="h5" component="h2" style={{ color: "#F00" }}>
@@ -129,7 +207,7 @@ class AboutCommerce extends Component {
                                 <Typography className={classes.title} color="textSecondary" gutterBottom>Nombre de partage</Typography>
                                 <Typography variant="h5" component="h2">
                                     <ShareRoundedIcon/> {" "}
-                                    {"130 "}
+                                    {this.state.commerce.nbPartage}
                                     {bull}
                                     {" Partages"}
                                 </Typography>
@@ -147,7 +225,7 @@ class AboutCommerce extends Component {
                             <TextField
                                 select
                                 variant="filled"
-                                value={this.state.currencyCategory}
+                                value={this.state.commerce.currencyCategory}
                                 onChange={this.handleChangeSelect}
                                 // required
                                 className={classes.textField2}
@@ -185,6 +263,7 @@ class AboutCommerce extends Component {
                         <form className={classes.container} autoComplete="on" onSubmit={this.createNewCommerce}>
                             <TextField
                                 required
+                                value={this.state.commerce.adresse}
                                 className={classes.textField1}
                                 name="adresse"
                                 id="outlined-name"
@@ -193,7 +272,7 @@ class AboutCommerce extends Component {
                                 variant="filled"
                             />
                             <TextField
-                                required
+                                // required
                                 className={classes.textField2}
                                 name="ville"
                                 id="outlined-name"
@@ -202,7 +281,7 @@ class AboutCommerce extends Component {
                                 variant="filled"
                             />
                             <TextField
-                                required
+                                // required
                                 className={classes.textField3}
                                 name="bp"
                                 id="outlined-name"
@@ -212,6 +291,7 @@ class AboutCommerce extends Component {
                             />
                             <TextField
                                 required
+                                value={this.state.commerce.tel}
                                 className={classes.textField4}
                                 name="tel"
                                 id="outlined-name"
@@ -221,6 +301,7 @@ class AboutCommerce extends Component {
                             />
                             <TextField
                                 required
+                                value={this.state.commerce.siteWeb}
                                 className={classes.textField5}
                                 name="siteWeb"
                                 id="outlined-name"
@@ -239,6 +320,7 @@ class AboutCommerce extends Component {
                         <form className={classes.container} autoComplete="on" onSubmit={this.createNewCommerce}>
                             <TextField
                                 required
+                                value={this.state.commerce.description}
                                 className={classes.textField}
                                 multiline
                                 fullWidth
@@ -259,6 +341,7 @@ class AboutCommerce extends Component {
                         <form className={classes.container} autoComplete="on" onSubmit={this.createNewCommerce}>
                             <TextField
                                 required
+                                value={this.state.commerce.promotion}
                                 className={classes.textField}
                                 multiline
                                 fullWidth

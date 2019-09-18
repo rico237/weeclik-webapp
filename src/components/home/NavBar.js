@@ -57,6 +57,10 @@ class NavBar extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.renderRedirect();
+    }
+
     render() {
         const { classes } = this.props;
 
