@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
 import NavBar from './NavBar';
-import Commerce from './Commerce';
 import Footer from './Footer';
 
 import { Container, CssBaseline, TextField, Button, MenuItem } from '@material-ui/core';
@@ -90,8 +89,6 @@ class AddCommerce extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleChangeSelect = this.handleChangeSelect.bind(this);
         this.createNewCommerce = this.createNewCommerce.bind(this);
-
-        // this.handleIsCreate = this.handleIsCreate.bind(this);
     }
 
     handleChange(event) {
@@ -122,12 +119,6 @@ class AddCommerce extends Component {
         }
 
         if (s.nomCommerce !== "" && s.currencyCategory !== "" && addr !== "" && s.tel !== "") {
-
-        //     console.log(s.currentUser.getEmail);
-        //     console.log(s.currentUser.id);
-
-        //     this.handleIsCreate();
-
             const ParseCommerce = Parse.Object.extend("Commerce");
             const newCommerce   = new ParseCommerce();
             const point         = new Parse.GeoPoint({latitude: 0.0, longitude: 0.0})
@@ -154,8 +145,6 @@ class AddCommerce extends Component {
         } else {
             console.log(s)
         }
-        // debugger;
-        //alert("OK" + s.currentUser.getEmail + " " + Parse.User.createWithoutData(s.currentUser.id)+ " " + addr+ " " + s.siteWeb+ " " +s.tel+ " " + s.promotions+ " " + s.description+ " " + s.statutCommerce);
     }
 
 

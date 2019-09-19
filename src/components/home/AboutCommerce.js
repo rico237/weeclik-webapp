@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Parse from 'parse';
 import { } from 'react-router-dom';
 import NavBar from './NavBar';
-import Commerce from './Commerce';
+// import Commerce from './Commerce';
 import Footer from './Footer';
 
 import profileImg from '../../assets/images/users.svg';

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import ImageUploader from 'react-images-upload';
+// import ImageUploader from 'react-images-upload';
 import profileImg from '../../assets/images/users.svg';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
