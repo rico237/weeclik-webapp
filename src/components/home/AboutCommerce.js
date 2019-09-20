@@ -14,6 +14,10 @@ import ShareRoundedIcon from '@material-ui/icons/ShareRounded';
 import { withStyles } from '@material-ui/core/styles';
 
 
+import IMG1 from '../../assets/images/img1.png';
+import IMG2 from '../../assets/images/img2.png';
+import IMG3 from '../../assets/images/img3.png';
+
 
 
 
@@ -124,6 +128,59 @@ class AboutCommerce extends Component {
             },
 
         }
+
+        this.onUploadPicture = this.onUploadPicture.bind(this);
+    }
+
+    /**
+     * Met a jour les photos des commerces
+     * @param {*} event 
+     */
+    onUploadPicture(event) {
+        var currentUser = Parse.User.current();
+
+        console.log(event.target.files[0]);
+        console.log(event.target.files[1]);
+        console.log(event.target.files[2]);
+        console.log(event.target.files.length);
+        
+        var taille = 0;
+
+        if (event.target.files.length <= 3) {
+            taille = event.target.files.length;
+            for (var i = 0; i < taille; i++) {
+                var file = Parse.File(event.target.files[i].name, event.target.files[i]);
+                if (this.state.currentUser) {
+                    file.save().then(() => {
+                        console.log("[image saving]");  // TODO save list Pointer Image in photoSlider
+                    }, (error) => {
+                        console.error(error);
+                    });
+                }
+            }
+        } else {
+            
+        }
+
+        var file = new Parse.File("image", event.target.files[0]);
+        if (currentUser) {
+            file.save().then(function() {
+                currentUser.set('profilePictureURL', file.url());
+                currentUser.save()
+                    .then((user) => {
+                        console.log(user);
+                    }, (error) => {
+                        console.error(error);
+                    });
+                // console.log("----------------<<<<<<<<<<<<<"+file.name+">>>>>>>>>>----------------");
+                // console.log(file.url());// TODO sauvegarder dans la table USER
+            }, (error) => {
+                console.error(error);
+            });
+        } else {
+            
+        }
+        
     }
 
     getCommerceInfo() {
@@ -357,11 +414,13 @@ class AboutCommerce extends Component {
 
                         <div className={classes.sousMenu}>
                             <Typography variant="h6" gutterBottom>{"Photos du commerce"}</Typography>
+                            <p>3 Photos maximum</p>
+                            <input type="file" onChange={this.onUploadPicture} multiple/>
                         </div>
 
                         <GridList cellHeight={250} cols={3}>
                             <GridListTile>
-                                <img src={profileImg} alt="Titre" />
+                                <img src={IMG1} alt="Titre" />
                                 <GridListTileBar
                                     title="Titre A"
                                     subtitle={<span>at : "Date de creation"</span>}
@@ -373,7 +432,7 @@ class AboutCommerce extends Component {
                                 />
                             </GridListTile>
                             <GridListTile>
-                                <img src={profileImg} alt="Titre" />
+                                <img src={IMG2} alt="Titre" />
                                 <GridListTileBar
                                     title="Titre A"
                                     subtitle={<span>at : "Date de creation"</span>}
@@ -385,7 +444,7 @@ class AboutCommerce extends Component {
                                 />
                             </GridListTile>
                             <GridListTile>
-                                <img src={profileImg} alt="Titre" />
+                                <img src={IMG3} alt="Titre" />
                                 <GridListTileBar
                                     title="Titre A"
                                     subtitle={<span>at : "Date de creation"</span>}

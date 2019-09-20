@@ -4,6 +4,9 @@ import { Typography, Card, CardMedia, CardContent, CardActions, Button } from '@
 import { makeStyles } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 // import ShareIcon from '@material-ui/icons/Share';
+import IMG1 from '../../assets/images/img1.png';
+import IMG2 from '../../assets/images/img2.png';
+import IMG3 from '../../assets/images/img3.png';
 
 import { Carousel } from 'react-bootstrap'
 
@@ -55,8 +58,8 @@ function Commerce(props) {
                         <Carousel.Item>
                             <img
                                 className="d-block w-100"
-                                style={{ height: 200, backgroundColor: "#F00" }}
-                                // src={fakeImg}
+                                style={{ height: 200, backgroundColor: "#F00", objectFit: "cover" }}
+                                src={IMG1}
                                 alt="First slide"
                             />
                             <Carousel.Caption>
@@ -67,8 +70,8 @@ function Commerce(props) {
                         <Carousel.Item>
                             <img
                                 className="d-block w-100"
-                                style={{ height: 200, backgroundColor: "#0F0" }}
-                                // src={fakeImg}
+                                style={{ height: 200, backgroundColor: "#0F0", objectFit: "cover" }}
+                                src={IMG2}
                                 alt="Second slide"
                             />
                             <Carousel.Caption>
@@ -79,8 +82,8 @@ function Commerce(props) {
                         <Carousel.Item>
                             <img
                                 className="d-block w-100"
-                                style={{ height: 200, backgroundColor: "#00F" }}
-                                // src={fakeImg}
+                                style={{ height: 200, backgroundColor: "#00F", objectFit: "cover" }}
+                                src={IMG3}
                                 alt="Third slide"
                             />
                             <Carousel.Caption>
