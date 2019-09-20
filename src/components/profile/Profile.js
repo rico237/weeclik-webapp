@@ -37,7 +37,7 @@ class Profile extends Component {
                 name: '',
                 username: '',
                 email: '',
-                picture: 'https://fr.wikipedia.org/wiki/Image#/media/Fichier:Image_created_with_a_mobile_phone.png'
+                picture: 'https://weeclik-server-dev.herokuapp.com/parse/files/JVQZMCuNYvnecPWvWFDTZa8A/dc21467414b2346642648e97e589c888_image.png'
             }
         };
 
@@ -51,15 +51,34 @@ class Profile extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
+
+    /**
+     * Met a jour la photo de profile
+     * @param {*} event 
+     */
     onChange(event) {
+        var currentUser = Parse.User.current();
+
         console.log(event.target.files[0]);
         var file = new Parse.File("image", event.target.files[0]);
-        file.save().then(function() {
-            console.log("----------------<<<<<<<<<<<<<"+file.name+">>>>>>>>>>----------------");
-            console.log(file.url());// TODO sauvegarder dans la table USER
-        }, function(error) {
-            console.log("///////////\\\\\\\\\\");
-        });
+        if (currentUser) {
+            file.save().then(function() {
+                currentUser.set('profilePictureURL', file.url());
+                currentUser.save()
+                    .then((user) => {
+                        console.log(user);
+                    }, (error) => {
+                        console.error(error);
+                    });
+                // console.log("----------------<<<<<<<<<<<<<"+file.name+">>>>>>>>>>----------------");
+                // console.log(file.url());// TODO sauvegarder dans la table USER
+            }, (error) => {
+                console.error(error);
+            });
+        } else {
+            
+        }
+        
     }
 
     handleClick() {
