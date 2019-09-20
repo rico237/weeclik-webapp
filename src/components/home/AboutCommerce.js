@@ -5,7 +5,7 @@ import NavBar from './NavBar';
 // import Commerce from './Commerce';
 import Footer from './Footer';
 
-import profileImg from '../../assets/images/users.svg';
+// import profileImg from '../../assets/images/users.svg';
 
 import { Container, CssBaseline, TextField, Button, MenuItem, Typography, GridList, GridListTile, GridListTileBar, IconButton, Card, CardContent, CardActions } from '@material-ui/core';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
@@ -137,7 +137,7 @@ class AboutCommerce extends Component {
      * @param {*} event 
      */
     onUploadPicture(event) {
-        var currentUser = Parse.User.current();
+        // var currentUser = Parse.User.current();
 
         console.log(event.target.files[0]);
         console.log(event.target.files[1]);
@@ -162,24 +162,24 @@ class AboutCommerce extends Component {
             
         }
 
-        var file = new Parse.File("image", event.target.files[0]);
-        if (currentUser) {
-            file.save().then(function() {
-                currentUser.set('profilePictureURL', file.url());
-                currentUser.save()
-                    .then((user) => {
-                        console.log(user);
-                    }, (error) => {
-                        console.error(error);
-                    });
-                // console.log("----------------<<<<<<<<<<<<<"+file.name+">>>>>>>>>>----------------");
-                // console.log(file.url());// TODO sauvegarder dans la table USER
-            }, (error) => {
-                console.error(error);
-            });
-        } else {
+        // var file = new Parse.File("image", event.target.files[0]);
+        // if (currentUser) {
+        //     file.save().then(function() {
+        //         currentUser.set('profilePictureURL', file.url());
+        //         currentUser.save()
+        //             .then((user) => {
+        //                 console.log(user);
+        //             }, (error) => {
+        //                 console.error(error);
+        //             });
+        //         // console.log("----------------<<<<<<<<<<<<<"+file.name+">>>>>>>>>>----------------");
+        //         // console.log(file.url());// TODO sauvegarder dans la table USER
+        //     }, (error) => {
+        //         console.error(error);
+        //     });
+        // } else {
             
-        }
+        // }
         
     }
 

@@ -53,7 +53,7 @@ function Commerce(props) {
                     // image={fakeImg}
                     title="Image par defaut du commerce"
                 >
-                    <Carousel showArrows={true}
+                    <Carousel /* showArrows={true} */
                     className={classes.media}>
                         <Carousel.Item>
                             <img
