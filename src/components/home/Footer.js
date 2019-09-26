@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { } from 'react-router-dom';
-import { Box, Typography, Link, CssBaseline, Container } from '@material-ui/core';
+import { Typography, Link, Container } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 

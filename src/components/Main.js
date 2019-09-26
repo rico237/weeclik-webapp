@@ -3,6 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 import Login from './Login';
 import Home from './home/Account';
 import Register from './Register';
+import AddCommerce from './home/AddCommerce';
+import AboutCommerce from './home/AboutCommerce';
 import ForgotPassword from './passwordforgot/RestorPass'
 // import Notfound from './Login';
 
@@ -13,6 +15,8 @@ function Main() {
             <Switch>
                 <Route exact path='/' component={Login}/>
                 <Route path='/home' component={Home}/>
+                <Route path='/addcommerce' component={AddCommerce}/>
+                <Route path='/aboutcommerce' component={AboutCommerce}/>
                 <Route path='/register' component={Register}/>
                 <Route path='/forgotpassword' component={ForgotPassword}/>
             </Switch>
