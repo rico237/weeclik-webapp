@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
+// import ImageUploader from 'react-images-upload';
 import profileImg from '../../assets/images/users.svg';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
@@ -11,6 +12,12 @@ const styles = theme => ({
     },
     button: {
         margin: theme.spacing(4, 0),
+    },
+    buttonUpload: {
+        margin: theme.spacing(1),
+    },
+    input: {
+        display: 'none',
     },
 });
 
@@ -24,11 +31,13 @@ class Profile extends Component {
             addCommerce: false,
             isModify: false,
             nbCommerce: 0,
+            uploading: false,
+            images: [],
             user: {
                 name: '',
                 username: '',
                 email: '',
-                picture: 'https://fr.wikipedia.org/wiki/Image#/media/Fichier:Image_created_with_a_mobile_phone.png'
+                picture: 'https://weeclik-server-dev.herokuapp.com/parse/files/JVQZMCuNYvnecPWvWFDTZa8A/dc21467414b2346642648e97e589c888_image.png'
             }
         };
 
@@ -38,7 +47,38 @@ class Profile extends Component {
         this.handleClick2 = this.handleClick2.bind(this);
         this.handleModifyProfile = this.handleModifyProfile.bind(this);
         this.changeMyInfo = this.changeMyInfo.bind(this);
+        
+        this.onChange = this.onChange.bind(this);
+    }
 
+
+    /**
+     * Met a jour la photo de profile
+     * @param {*} event 
+     */
+    onChange(event) {
+        var currentUser = Parse.User.current();
+
+        console.log(event.target.files[0]);
+        var file = new Parse.File("image", event.target.files[0]);
+        if (currentUser) {
+            file.save().then(function() {
+                currentUser.set('profilePictureURL', file.url());
+                currentUser.save()
+                    .then((user) => {
+                        console.log(user);
+                    }, (error) => {
+                        console.error(error);
+                    });
+                // console.log("----------------<<<<<<<<<<<<<"+file.name+">>>>>>>>>>----------------");
+                // console.log(file.url());// TODO sauvegarder dans la table USER
+            }, (error) => {
+                console.error(error);
+            });
+        } else {
+            
+        }
+        
     }
 
     handleClick() {
@@ -107,6 +147,10 @@ class Profile extends Component {
 
     }
 
+    onFileLoad(event, file) {
+        console.log(event.target.result, file.name);
+    }
+
     componentDidMount() {
         var currentUser = Parse.User.current();
         if (currentUser) {
@@ -156,6 +200,16 @@ class Profile extends Component {
             return (
                 <div>
                     <img src={this.state.user.picture} className="rounded" style={{ width: 200 }} alt="Default profile"/>
+                    <input type="file" onChange={this.onChange} />
+
+                    {/* <ImageUploader
+                        withIcon={false}
+                        buttonText="Choisir une image"
+                        onChange={this.onChange}
+                        imgExtension={['.jpg', '.png']}
+                        maxFileSize={5242880}
+                    /> */}
+
                     <h2>{this.state.user.name}</h2>
                     <h3>Coordonnées</h3>
                     <p>Lorem ipsum dolor sit ame.</p>
