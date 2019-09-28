@@ -7,6 +7,9 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 // import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
+import './css/w3.css';
+import './css/w3_styles.css';
+
 
 import App from './components/App';
 import Parse from 'parse';
