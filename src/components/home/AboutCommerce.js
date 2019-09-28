@@ -130,6 +130,17 @@ class AboutCommerce extends Component {
         }
 
         this.onUploadPicture = this.onUploadPicture.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
+    }
+
+    handleChangeSelect(event) {
+        event.preventDefault();
+        this.setState(prevState => ({
+            commerce: {
+                ...prevState.commerce,
+                currencyCategory: event.target.value
+            }
+        }));
     }
 
     /**

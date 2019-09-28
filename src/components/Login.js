@@ -137,57 +137,63 @@ class Login extends Component {
 
         return (
             
-            <Grid container component="main" className={classes.root}>
-                <CssBaseline/>
-                <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                    <div className={classes.paper}>
-                        <div className={classes.avatar}>
-                            <img src={Logo} className="rounded mx-auto d-block" alt="..." style={{ width : '150px' }}/>
+            <div>
+                <Grid container component="main" className={classes.root}>
+                    <CssBaseline/>
+                    <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+                        <div className={classes.paper}>
+                            <div className={classes.avatar}>
+                                <img src={Logo} className="rounded mx-auto d-block" alt="..." style={{ width : '150px' }}/>
+                            </div>
+                            <Typography component="h1" variant="h5">On aime, on partage!</Typography>
+                            <p className="text-secondary">Gerer vos commerces avec weeclik</p>
+                            <form className={classes.form} onSubmit={this.loginAccount}>
+                                <div className="form-group">
+                                    <input
+                                        value={username}
+                                        onChange={this.handleChangeUser.bind(this)}
+
+                                        type="email"
+                                        className="form-control border-0 bg-light"
+                                        id="exampleInputEmail1"
+                                        placeholder="Adresse e-mail"/>
+                                </div>
+                                <div className="form-group">
+                                    <input
+                                        value={password}
+                                        onChange={this.handleChangePass.bind(this)}
+
+                                        type="password"
+                                        className="form-control border-0 bg-light"
+                                        id="exampleInputPassword1"
+                                        placeholder="Mot de passe"/>
+                                </div>
+                                <div className="form-group">
+                                    <button type="submit" className="btn btn-primary rounded mr-2">Se connecter</button>
+                                    <Link className="btn btn-outline-primary rounded" to="/register" role="button">Rejoindre weeclik</Link>
+                                </div>
+                                                    
+                                <div className="form-group">
+                                    <Link className="nav-link" to="/forgotpassword">Mot de passe oublié?</Link>
+                                </div>
+                            </form>
+                            <LoadApp/>
                         </div>
-                        <Typography component="h1" variant="h5">On aime, on partage!</Typography>
-                        <p className="text-secondary">Gerer vos commerces avec weeclik</p>
-                        <form className={classes.form} onSubmit={this.loginAccount}>
-                            <div className="form-group">
-                                <input
-                                    value={username}
-                                    onChange={this.handleChangeUser.bind(this)}
 
-                                    type="email"
-                                    className="form-control border-0 bg-light"
-                                    id="exampleInputEmail1"
-                                    placeholder="Adresse e-mail"/>
-                            </div>
-                            <div className="form-group">
-                                <input
-                                    value={password}
-                                    onChange={this.handleChangePass.bind(this)}
-
-                                    type="password"
-                                    className="form-control border-0 bg-light"
-                                    id="exampleInputPassword1"
-                                    placeholder="Mot de passe"/>
-                            </div>
-                            <div className="form-group">
-                                <button type="submit" className="btn btn-primary rounded mr-2">Se connecter</button>
-                                <Link className="btn btn-outline-primary rounded" to="/register" role="button">Rejoindre weeclik</Link>
-                            </div>
-                                                
-                            <div className="form-group">
-                                <Link className="nav-link" to="/forgotpassword">Mot de passe oublié?</Link>
-                            </div>
-                        </form>
-                        <LoadApp/>
-                    </div>
+                    </Grid>
+                    {/* Zone Image */}
+                    <Grid item xs={false} sm={4} md={7} className={classes.image}/>
+                    {/* <Container fixed>
+                        <Typography component="div" style={{ backgroundColor: '#CFE8FC', height: '100vh' }}>
+                            
+                        </Typography>
+                    </Container> */}
+                    <Footer/>
                 </Grid>
-                {/* Zone Image */}
-                <Grid item xs={false} sm={4} md={7} className={classes.image}/>
-                {/* <Container fixed>
-                    <Typography component="div" style={{ backgroundColor: '#CFE8FC', height: '100vh' }}>
-                        
-                    </Typography>
-                </Container> */}
-                <Footer/>
-            </Grid>
+
+
+                
+            </div>
             
         )
     }
