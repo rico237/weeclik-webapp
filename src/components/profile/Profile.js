@@ -211,8 +211,8 @@ class Profile extends Component {
                     /> */}
 
                     <h2>{this.state.user.name}</h2>
-                    <h3>Coordonnées</h3>
-                    <p>Lorem ipsum dolor sit ame.</p>
+                    {/* <h3>Coordonnées</h3>
+                    <p>Lorem ipsum dolor sit ame.</p> */}
 
                     <form onSubmit={this.changeMyInfo}>
                         <fieldset>
@@ -249,13 +249,14 @@ class Profile extends Component {
             <div style={{ marginBottom: 20 }}>
                 <img src={this.state.user.picture} className="rounded" style={{ width: 200 }} alt="Default profile"/>
                 <h2>{this.state.user.name}</h2>
+                <p>{this.state.user.email}</p>
 
                 {/* <p>{this.getNbCommerce()}</p> */}
 
-                <h3>Coordonnées</h3>
-                <p>Lorem ipsum dolor sit ame.</p>
+                {/* <h3>Coordonnées</h3>
+                <p>Lorem ipsum dolor sit ame.</p> */}
 
-                <form>
+                {/* <form>
                     <fieldset disabled>
                         <div className="form-group">
                             <label htmlFor="nameInput">Name</label>
@@ -266,10 +267,10 @@ class Profile extends Component {
                             <input type="email" id="emailInput" className="form-control" placeholder={this.state.user.email}/>
                         </div>
                     </fieldset>
-                </form>
+                </form> */}
                 <hr className="d-sm-none"></hr>
                 <button className="btn btn-primary btn-sm" onClick={this.handleClick}>Modifier votre profile ?</button>
-                <hr className="d-sm-none"></hr>
+                <hr className="d-sm-none"/>
                 <div>
                     <Button variant="contained" className={classes.button} onClick={this.handleClick2}>Creer un Nouveau commerce</Button>
                 </div>

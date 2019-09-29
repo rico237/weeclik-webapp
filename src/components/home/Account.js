@@ -3,7 +3,7 @@ import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
 import NavBar from './NavBar';
 import Commerce from './Commerce';
-import Footer from './Footer';
+import Footer from '../Footer';
 import Profile from '../profile/Profile'
 
 class Account extends Component {
@@ -127,7 +127,9 @@ class Account extends Component {
                         </div>
                     </div>
                 </div>
+                <div style={{ width: '100%', marginTop: '100px', bottom: 0 }}>
                 <Footer/>
+                </div>
             </div>
         );
         

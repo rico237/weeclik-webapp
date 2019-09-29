@@ -80,7 +80,7 @@ class NavBar extends React.Component {
                                 <Avatar alt="user img" src={profileImg} className={classes.avatar} />
                             </Grid>
                             <Typography variant="h6" className={classes.title}><Link style={{ color: '#000', textDecoration: 'none' }} to="/home">{this.state.currentUser.get("name")} {bull} Weeclick Partenaire</Link></Typography>
-                            <Button onClick={this.isLogOut}><PowerSettingsNewIcon className={classes.icon}/>Log-out</Button>
+                            <Button onClick={this.isLogOut}>Log-out<PowerSettingsNewIcon className={classes.icon}/></Button>
                         </Toolbar>
                     </Container>
                 </AppBar>

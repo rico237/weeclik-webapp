@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Parse from 'parse';
 import { Link, Redirect } from 'react-router-dom';
 import Logo from '../../assets/images/logo.svg';
-import Footer from '../home/Footer';
+import Footer from '../Footer';
 import { Container, CssBaseline, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
