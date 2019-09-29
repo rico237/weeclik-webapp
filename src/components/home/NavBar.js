@@ -48,7 +48,7 @@ class NavBar extends React.Component {
         Parse.User.logOut();
         this.setState({
             logout: true
-        })
+        });
     }
 
     renderRedirect = () => {
@@ -65,6 +65,7 @@ class NavBar extends React.Component {
         const { classes } = this.props;
 
         const bull = <span className={classes.bulletPrincipal}>•</span>;
+
 
 
         return (
