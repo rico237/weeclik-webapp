@@ -65,8 +65,6 @@ class NavBar extends React.Component {
         const { classes } = this.props;
         const bull = <span className={classes.bulletPrincipal}>•</span>;
 
-
-
         return (
             // <nav className="navbar navbar-expand-sm bg-dark navbar-dark">
             //     <Link className="navbar-brand" to="/home">Weeclick Partenaire</Link>
