@@ -42,12 +42,14 @@ class Footer extends Component {
 
         return (
             <footer className={classes.footer} style={{ backgroundColor: greyColor, color: whiteColor }}>
-                <Container component="main" className={classes.main} maxWidth="sm">
+                <Container component="main" className={classes.main}>
                     <div className="">
                         <Grid container spacing={3}>
                             <Grid item xs={12} sm={4}>
                                 <Typography variant="h5" component="h3">Weeclik</Typography>
-                                <LoadApp/>
+                                <div style={{ marginLeft: "-15px" }}>
+                                    <LoadApp/>
+                                </div>
                             </Grid>
                             <Grid item xs={12} sm={4}>
                                 A propos de nous
@@ -57,7 +59,7 @@ class Footer extends Component {
                             </Grid>
                         </Grid>
                     </div>          
-                    <Typography variant="body2" align="center">
+                    <Typography variant="body2" align="center" style={{ marginTop: "50px" }}>
                         {'Copyrigth © '}
                         <Link color="inherit" href="http://localhost:3000/">Weeclik</Link>
                         {' 2019.'}

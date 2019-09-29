@@ -127,7 +127,9 @@ class Account extends Component {
                         </div>
                     </div>
                 </div>
+                <div style={{ width: '100%', marginTop: '100px', bottom: 0 }}>
                 <Footer/>
+                </div>
             </div>
         );
         
