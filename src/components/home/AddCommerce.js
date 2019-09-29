@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
 import NavBar from './NavBar';
-import Footer from './Footer';
+import Footer from '../Footer';
 
 import { Container, CssBaseline, TextField, Button, MenuItem } from '@material-ui/core';
 

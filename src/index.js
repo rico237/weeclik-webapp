@@ -8,7 +8,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import './css/w3.css';
-import './css/w3_styles.css';
+// import './css/w3_styles.css';
 
 
 import App from './components/App';

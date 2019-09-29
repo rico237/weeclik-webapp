@@ -5,10 +5,13 @@ import LoadApp from './external_link/LoadApp';
 import img_promo from '../assets/images/pub_example.png';
 import img_promo2 from '../assets/images/img1.png';
 import Logo from '../assets/images/logo.svg';
-import Footer from './home/Footer';
+import Footer from './Footer';
 import { Grid, CssBaseline, Typography, Paper, Button, AppBar, Toolbar, Avatar } from '@material-ui/core';
-import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+// import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import { withStyles } from '@material-ui/core/styles';
+import grey from '@material-ui/core/colors/grey';
+
+// import YouTube from 'react-youtube';
 
 const styles = theme => ({
     root: {
@@ -17,17 +20,8 @@ const styles = theme => ({
     image: {
         background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
         border: 0,
-        // borderRadius: 3,
-        // boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
         color: 'white',
-        // height: 48,
-        // padding: '0 30px',
-        
         backgroundImage: `url(${img_promo})`,
-        // backgroundColor: "#000",
-        // backgroundRepeat: 'no-repeat',
-        // backgroundSize: 'cover',
-        // backgroundPosition: 'center',
     },
     paper: {
         margin: theme.spacing(8, 4),
@@ -37,7 +31,6 @@ const styles = theme => ({
     },
     avatar: {
         margin: theme.spacing(1),
-        // backgroundColor: theme.palette.secondary.main,
     },
     form: {
         // width: '100%',
@@ -49,6 +42,9 @@ const styles = theme => ({
     root2: {
         flexGrow: 1,
     },
+    button: {
+        margin: theme.spacing(2),
+    },
     menuButton: {
         marginRight: theme.spacing(2),
     },
@@ -59,10 +55,16 @@ const styles = theme => ({
 });
 
 
+const greyColor = grey[500];
+const whiteColor = grey[50];
+
+
 class Login extends Component {
 
     constructor(props) {
         super(props);
+        // Crée une référence pour stocker l’élément DOM div de Connexion
+        this.refConnexion = React.createRef(); // Create a ref object
 
         this.state = {
             account: {
@@ -76,6 +78,16 @@ class Login extends Component {
 
         this.loginAccount = this.loginAccount.bind(this);
         this.createAccount = this.createAccount.bind(this);
+    }
+
+    gotoRefConnexion = () => {
+        if (this.refConnexion.current) {
+            this.refConnexion.current.scrollIntoView(true);
+            // this.refConnexion.current.scrollIntoView({
+            //     behavior: "smooth",
+            //     block: "nearest"
+            // })
+        }
     }
 
     handleChangeUser(event) {
@@ -139,6 +151,14 @@ class Login extends Component {
 
         const { username, password/*, submitted, newAccount*/ } = this.state;
 
+        // const opts = {
+        //     height: '390',
+        //     width: '640',
+        //     playerVars: { // https://developers.google.com/youtube/player_parameters
+        //         autoplay: 1
+        //     }
+        // }
+
         var currentUser = Parse.User.current();
 
         if (this.state.isAuthenticated || currentUser) {
@@ -146,6 +166,8 @@ class Login extends Component {
                 <Redirect to="/home" />
             )
         }
+
+        
 
         return (
             
@@ -158,40 +180,28 @@ class Login extends Component {
                                 <Avatar alt="user img" src={Logo} className={classes.avatar} />
                             </Grid>
                             <Typography variant="h4" className={classes.title}>Weeclik</Typography>
-                            <Button onClick={this.isLogOut}>Se connecter</Button>
+                            <Button onClick={this.gotoRefConnexion}>Connexion</Button>
+                            <Link className="btn btn-outline-primary rounded" style={{ marginLeft: '10px' }} to="/register" role="button">Inscription</Link>
                         </Toolbar>
                     </AppBar>
                 </div>
 
-
-                {/* Header with full-height image */}
-                <header className="w3-display-container w3-grayscale-min" id="home" style={{
-                    backgroundPosition: 'center',
-                    backgroundSize: 'cover',
+                <div style={{
                     backgroundImage: `url(${img_promo2})`,
-                    minHeight: '100%'
-                }}>
-                    <div className="w3-display-left w3-text-white" style={{ padding:'48px' }}>
-                        <span className="w3-jumbo w3-hide-small">Start something that matters</span><br/>
-                        <span className="w3-xxlarge w3-hide-large w3-hide-medium">Start something that matters</span><br/>
-                        <span className="w3-large">Stop wasting valuable time with projects that just isn't you.</span>
-                        <p><a href="#about" className="w3-button w3-white w3-padding-large w3-large w3-margin-top w3-opacity w3-hover-opacity-off">Learn more and start today</a></p>
-                    </div> 
-                    <div className="w3-display-bottomleft w3-text-grey w3-large" style= {{ padding: '24px 48px' }}>
-                        <i className="fa fa-facebook-official w3-hover-opacity"></i>
-                        <i className="fa fa-instagram w3-hover-opacity"></i>
-                        <i className="fa fa-snapchat w3-hover-opacity"></i>
-                        <i className="fa fa-pinterest-p w3-hover-opacity"></i>
-                        <i className="fa fa-twitter w3-hover-opacity"></i>
-                        <i className="fa fa-linkedin w3-hover-opacity"></i>
+                    backgroundRepeat: 'noRepeat',
+                    backgroundSize: 'cover',
+                    minHeight: '100%',
+                    paddingTop: '80px',
+                    paddingBottom: '47%'
+                    }}>
+                    {/* <img src={img_promo2} /> */}
+                    <div style={{ margin: '70px', color: whiteColor/*padding: '500px'*/ }}>
+                        <Typography component="h1" variant="h1">Weeclik</Typography>
+                        <Typography component="h1" variant="h3">On aime et on partage</Typography>
                     </div>
-                </header>
+                </div>
 
-
-
-
-
-                <div fixed>
+                <div ref={this.refConnexion}>
 
                     <Grid container component="main" className={classes.root}>
                         <CssBaseline/>
@@ -241,7 +251,6 @@ class Login extends Component {
                         
                     </Grid>
 
-                    <Footer/>
                 </div>
 
 
@@ -284,6 +293,16 @@ class Login extends Component {
                         </div>
                         <div className="w3-col m6">
                             <img className="w3-image w3-round-large" src={ img_promo2 } alt="Buildings" style={{ width: "700", height: "394" }}/>
+                            {/* <YouTube
+                                videoId="HEPL30xM25U"
+                                opts={opts}
+                                onReady={this._onReady}/> */}
+                            {/* <CardMedia
+                                width="560"
+                                height="315"
+                                component="video"
+                                image="https://youtu.be/HEPL30xM25U?start=45"
+                            /> */}
                         </div>
                     </div>
                 </div>
@@ -341,45 +360,32 @@ class Login extends Component {
   </div>
 </div>
 
+                <div className="">
+                    <Grid container spacing={3}
+                        style={{
+                            textAlign: 'center',
+                            backgroundColor: greyColor,
+                            color: whiteColor,
+                            paddingLeft: '25px',
+                            paddingRight: '25px',
+                            paddingTop: '50px',
+                            paddingBottom: '55px' }}>
+                        <Grid item xs={3}>
+                            <Typography variant="h4" component="h3">14+</Typography>Partners
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography variant="h4" component="h3">55+</Typography>Projects Done
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography variant="h4" component="h3">89+</Typography>Happy Clients
+                        </Grid>
+                        <Grid item xs={3}>
+                            <Typography variant="h4" component="h3">150+</Typography>Meetings
+                        </Grid>
+                    </Grid>
+                </div>
 
-
-{/* Promo Section "Statistics" */}
-<div className="w3-container w3-row w3-center w3-dark-grey w3-padding-64">
-  <div className="w3-quarter">
-    <span className="w3-xxlarge">14+</span>
-    <br/>Partners
-  </div>
-  <div className="w3-quarter">
-    <span className="w3-xxlarge">55+</span>
-    <br/>Projects Done
-  </div>
-  <div className="w3-quarter">
-    <span className="w3-xxlarge">89+</span>
-    <br/>Happy Clients
-  </div>
-  <div className="w3-quarter">
-    <span className="w3-xxlarge">150+</span>
-    <br/>Meetings
-  </div>
-</div>
-
-
-
-
-
-
-                <footer className="w3-center w3-black w3-padding-64">
-                    <a href="#home" className="w3-button w3-light-grey"><i className="fa fa-arrow-up w3-margin-right"></i>To the top</a>
-                    <div className="w3-xlarge w3-section">
-                        <i className="fa fa-facebook-official w3-hover-opacity"></i>
-                        <i className="fa fa-instagram w3-hover-opacity"></i>
-                        <i className="fa fa-snapchat w3-hover-opacity"></i>
-                        <i className="fa fa-pinterest-p w3-hover-opacity"></i>
-                        <i className="fa fa-twitter w3-hover-opacity"></i>
-                        <i className="fa fa-linkedin w3-hover-opacity"></i>
-                    </div>
-                    <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" className="w3-hover-text-green">w3.css</a></p>
-                </footer>
+                <Footer/>
     
             </Fragment>
             

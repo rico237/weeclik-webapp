@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import Footer from './home/Footer';
+import Footer from './Footer';
 import Parse from 'parse';
 import LoadApp from './external_link/LoadApp';
 import img_promo from '../assets/images/pub_example.png';
