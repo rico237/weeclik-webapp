@@ -3,7 +3,7 @@ import Parse from 'parse';
 import { } from 'react-router-dom';
 import NavBar from './NavBar';
 // import Commerce from './Commerce';
-import Footer from './Footer';
+import Footer from '../Footer';
 
 // import profileImg from '../../assets/images/users.svg';
 
@@ -130,6 +130,17 @@ class AboutCommerce extends Component {
         }
 
         this.onUploadPicture = this.onUploadPicture.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
+    }
+
+    handleChangeSelect(event) {
+        event.preventDefault();
+        this.setState(prevState => ({
+            commerce: {
+                ...prevState.commerce,
+                currencyCategory: event.target.value
+            }
+        }));
     }
 
     /**
