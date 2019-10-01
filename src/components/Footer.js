@@ -51,17 +51,16 @@ class Footer extends Component {
                                     <LoadApp/>
                                 </div>
                             </Grid>
-                            <Grid item xs={12} sm={4}>
-                                A propos de nous
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                Produits
+                            <Grid item xs={12} sm={8}>
+                                <Typography variant="h5" component="h3">À propos de Weeclik</Typography>
+                                <p>Chez Weeclik, nous sommes pionniers dans le partage de confiance.
+                        	<br/>Avec notre app, adoptez vous aussi le réflexe de partage avec vos commerçants !</p>
                             </Grid>
                         </Grid>
                     </div>          
                     <Typography variant="body2" align="center" style={{ marginTop: "50px" }}>
                         {'Copyrigth © '}
-                        <Link color="inherit" href="http://localhost:3000/">Weeclik</Link>
+                        <Link color="inherit" href="#">Weeclik</Link>
                         {' 2019.'}
                     </Typography>
                     

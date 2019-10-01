@@ -3,8 +3,15 @@ import Parse from 'parse';
 import { Link, Redirect } from 'react-router-dom';
 import LoadApp from './external_link/LoadApp';
 import img_promo from '../assets/images/pub_example.png';
-import img_promo2 from '../assets/images/img1.png';
-import Logo from '../assets/images/logo.svg';
+import img_promo2 from '../assets/images/img1.jpeg';
+
+import Michel from '../assets/images/michel.jpg';
+import Aziz from '../assets/images/aziz.jpg';
+import Mohamed from '../assets/images/mohamed.jpg';
+import Herrick from '../assets/images/herrick.jpg';
+import Grace from '../assets/images/grace.jpg';
+
+import Logo from '../assets/images/logo_weeclik.png';
 import Footer from './Footer';
 import { Grid, CssBaseline, Typography, Paper, Button, AppBar, Toolbar, Avatar } from '@material-ui/core';
 // import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
@@ -197,7 +204,7 @@ class Login extends Component {
                     {/* <img src={img_promo2} /> */}
                     <div style={{ margin: '70px', color: whiteColor/*padding: '500px'*/ }}>
                         <Typography component="h1" variant="h1">Weeclik</Typography>
-                        <Typography component="h1" variant="h3">On aime et on partage</Typography>
+                        <Typography component="h1" variant="h3">On aime, on partage</Typography>
                     </div>
                 </div>
 
@@ -208,7 +215,7 @@ class Login extends Component {
                         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={0} square>
                             <div className={classes.paper}>
                                 <div className={classes.avatar}>
-                                    <img src={Logo} className="rounded mx-auto d-block" alt="..." style={{ width : '150px' }}/>
+                                    <img src={Logo} className="rounded mx-auto d-block" alt="Logo de l'application weeclik" style={{ width : '150px' }}/>
                                 </div>
                                 <Typography component="h1" variant="h5">On aime, on partage!</Typography>
                                 <p className="text-secondary">Gerer vos commerces avec weeclik</p>
@@ -255,7 +262,7 @@ class Login extends Component {
 
 
                 {/* About Section */}
-                <div className="w3-container" style={{ padding:'128px 16px'}} id="about">
+                {/* <div className="w3-container" style={{ padding:'128px 16px'}} id="about">
                     <h3 className="w3-center">ABOUT THE COMPANY</h3>
                     <p className="w3-center w3-large">Key features of our company</p>
                     <div className="w3-row-padding w3-center" style={{ marginTop:'64px'}}>
@@ -280,11 +287,11 @@ class Login extends Component {
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>
                         </div>
                     </div>
-                </div>
+                </div> */}
 
 
                 {/* AMBASSADEUR WEECLIK */}
-                <div className="w3-container w3-light-grey" style={{ padding: '128px 16px' }}>
+                {/* <div className="w3-container w3-light-grey" style={{ padding: '128px 16px' }}>
                     <div className="w3-row-padding">
                         <div className="w3-col m6">
                             <h3>Devenir Ambassadeur</h3>
@@ -302,88 +309,69 @@ class Login extends Component {
                                 height="315"
                                 component="video"
                                 image="https://youtu.be/HEPL30xM25U?start=45"
-                            /> */}
+                            /> *//*}
                         </div>
                     </div>
-                </div>
+                </div> */}
 
 
                 {/* Team Section */}
 <div className="w3-container" style={{ padding:'128px 16px' }} id="team">
-  <h3 className="w3-center">THE TEAM</h3>
-  <p className="w3-center w3-large">The ones who runs this company</p>
+  <h3 className="w3-center">Qui sommes nous ?</h3>
+
+
   <div className="w3-row-padding w3-grayscale" style={{marginTop:'64px'}}>
-    <div className="w3-col l3 m6 w3-margin-bottom">
+    <div className="w3-col l2 m6 w3-margin-bottom" style={{marginLeft:'8%'}}>
       <div className="w3-card">
-        <img src="/w3images/team2.jpg" alt="Aziz" style={{width:'100%'}}/>
+        <img src={Aziz} alt="Aziz" style={{width:'100%'}}/>
         <div className="w3-container">
           <h3>Aziz</h3>
-          <p className="w3-opacity">CEO et Founder</p>
-          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-          <p><button className="w3-button w3-light-grey w3-block"><i className="fa fa-envelope"></i> Contact</button></p>
+          <p className="w3-opacity">CEO et Fondateur</p>
+          <p></p>
+          {/* <p><button className="w3-button w3-light-grey w3-block"><i className="fa fa-envelope"></i> Contact</button></p> */}
         </div>
       </div>
     </div>
-    <div className="w3-col l3 m6 w3-margin-bottom">
+    <div className="w3-col l2 m6 w3-margin-bottom">
       <div className="w3-card">
-        <img src="/w3images/team1.jpg" alt="Michel" style={{width:'100%'}}/>
+        <img src={Michel} alt="Michel" style={{width:'100%'}}/>
         <div className="w3-container">
           <h3>Michel</h3>
-          <p className="w3-opacity">Art Director</p>
-          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-          <p><button className="w3-button w3-light-grey w3-block"><i className="fa fa-envelope"></i> Contact</button></p>
+          <p className="w3-opacity">Directeur des operations</p>
         </div>
       </div>
     </div>
-    <div className="w3-col l3 m6 w3-margin-bottom">
+    <div className="w3-col l2 m6 w3-margin-bottom">
       <div className="w3-card">
-        <img src="/w3images/team3.jpg" alt="Mike" style={{width:'100%'}}/>
+        <img src={Herrick} alt="Mike" style={{width:'100%'}}/>
         <div className="w3-container">
-          <h3>Mike Ross</h3>
-          <p className="w3-opacity">Web Designer</p>
-          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-          <p><button className="w3-button w3-light-grey w3-block"><i className="fa fa-envelope"></i> Contact</button></p>
+          <h3>Herrick</h3>
+          <p className="w3-opacity">CTO et Développeur lead iOS</p>
         </div>
       </div>
     </div>
-    <div className="w3-col l3 m6 w3-margin-bottom">
+    <div className="w3-col l2 m6 w3-margin-bottom">
       <div className="w3-card">
-        <img src="/w3images/team4.jpg" alt="Dan" style={{width:'100%'}}/>
+        <img src={Mohamed} alt="Dan" style={{width:'100%'}}/>
         <div className="w3-container">
-          <h3>Dan Star</h3>
-          <p className="w3-opacity">Designer</p>
-          <p>Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.</p>
-          <p><button className="w3-button w3-light-grey w3-block"><i className="fa fa-envelope"></i> Contact</button></p>
+          <h3>Mohamed</h3>
+          <p className="w3-opacity">Expert Android</p>
+        </div>
+      </div>
+    </div>
+    <div className="w3-col l2 m6 w3-margin-bottom">
+      <div className="w3-card">
+        <img src={Grace} alt="Dan" style={{width:'100%'}}/>
+        <div className="w3-container">
+          <h3>Grâce</h3>
+          <p className="w3-opacity">Expert ReactJS</p>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-                <div className="">
-                    <Grid container spacing={3}
-                        style={{
-                            textAlign: 'center',
-                            backgroundColor: greyColor,
-                            color: whiteColor,
-                            paddingLeft: '25px',
-                            paddingRight: '25px',
-                            paddingTop: '50px',
-                            paddingBottom: '55px' }}>
-                        <Grid item xs={3}>
-                            <Typography variant="h4" component="h3">14+</Typography>Partners
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Typography variant="h4" component="h3">55+</Typography>Projects Done
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Typography variant="h4" component="h3">89+</Typography>Happy Clients
-                        </Grid>
-                        <Grid item xs={3}>
-                            <Typography variant="h4" component="h3">150+</Typography>Meetings
-                        </Grid>
-                    </Grid>
-                </div>
+                
 
                 <Footer/>
     
