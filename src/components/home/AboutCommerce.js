@@ -17,6 +17,7 @@ import { withStyles } from '@material-ui/core/styles';
 import IMG1 from '../../assets/images/img1.png';
 import IMG2 from '../../assets/images/img2.png';
 import IMG3 from '../../assets/images/img3.png';
+import { stat } from 'fs';
 
 
 
@@ -130,7 +131,79 @@ class AboutCommerce extends Component {
         }
 
         this.onUploadPicture = this.onUploadPicture.bind(this);
-        this.handleChangeSelect = this.handleChangeSelect.bind(this);
+        // this.handleChangeAddress = this.handleChangeAddress.bind(this);
+        // this.handleChangeCity = this.handleChangeCity.bind(this);
+        // this.handleChangeBP = this.handleChangeBP.bind(this);
+        // this.handleChangePhone = this.handleChangePhone.bind(this);
+        // this.handleChangeWeb = this.handleChangeWeb.bind(this);
+
+        this.handleUpdateInfo = this.handleUpdateInfo.bind(this);
+        this.handleUpdateCategory = this.handleUpdateCategory.bind(this);
+        this.handleUpdatePromotion = this.handleUpdatePromotion.bind(this);
+        this.handleUpdateDescription = this.handleUpdateDescription.bind(this);
+    }
+
+    handleChangeAddress(value) {
+        this.setState(prevState => ({
+            commerce: {
+                ...prevState.commerce,
+                adresse: value
+            }
+        }));
+    }
+
+    handleChangeCity(value) {
+        this.setState(prevState => ({
+            commerce: {
+                ...prevState.commerce,
+                ville: value
+            }
+        }));
+    }
+
+    handleChangeBP(value) {
+        this.setState(prevState => ({
+            commerce: {
+                ...prevState.commerce,
+                bp: value
+            }
+        }));
+    }
+
+    handleChangePhone(value) {
+        this.setState(prevState => ({
+            commerce: {
+                ...prevState.commerce,
+                tel: value
+            }
+        }));
+    }
+
+    handleChangeWeb(value) {
+        this.setState(prevState => ({
+            commerce: {
+                ...prevState.commerce,
+                siteWeb: value
+            }
+        }));
+    }
+
+    handleChangeDescription(value) {
+        this.setState(prevState => ({
+            commerce: {
+                ...prevState.commerce,
+                description: value
+            }
+        }));
+    }
+
+    handleChangePromotion(value) {
+        this.setState(prevState => ({
+            commerce: {
+                ...prevState.commerce,
+                promotion: value
+            }
+        }));
     }
 
     handleChangeSelect(event) {
@@ -141,6 +214,52 @@ class AboutCommerce extends Component {
                 currencyCategory: event.target.value
             }
         }));
+    }
+
+    handleUpdateCategory(event) {
+        event.preventDefault();
+        const state = this.state;
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = state.commerceID;
+        instanceCommerce.set("typeCommerce", state.commerce.currencyCategory);
+        instanceCommerce.save();
+    }
+
+    handleUpdateInfo(event) {
+        event.preventDefault();
+        const state = this.state;
+        let addr = "";
+        if (state.commerce.adresse !== "" && state.commerce.ville !== "" && state.commerce.bp !== "") {
+            addr = state.commerce.adresse + ", " + state.commerce.ville + " " + state.commerce.bp;
+        } else if (state.commerce.adresse !== "") {
+            addr = state.commerce.adresse
+        }
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = state.commerceID;
+        instanceCommerce.set("addr", addr);
+        instanceCommerce.save();
+    }
+
+    handleUpdateDescription(event) {
+        event.preventDefault();
+        const state = this.state;
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = state.commerceID;
+        instanceCommerce.set("description", state.commerce.description);
+        instanceCommerce.save();
+    }
+
+    handleUpdatePromotion(event) {
+        event.preventDefault();
+        const state = this.state;
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = state.commerceID;
+        instanceCommerce.set("promotions", state.commerce.promotion);
+        instanceCommerce.save();
     }
 
     /**
@@ -289,7 +408,7 @@ class AboutCommerce extends Component {
                             <Typography variant="h6" gutterBottom>{"Catégorie du commerce"}</Typography>
                         </div>
 
-                        <form className={classes.container} autoComplete="on" onSubmit={this.createNewCommerce}>
+                        <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdateCategory}>
                             <TextField
                                 select
                                 variant="filled"
@@ -328,10 +447,11 @@ class AboutCommerce extends Component {
                             <Typography variant="h6" gutterBottom>{"Informations du commerce"}</Typography>
                         </div>
 
-                        <form className={classes.container} autoComplete="on" onSubmit={this.createNewCommerce}>
+                        <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdateInfo}>
                             <TextField
                                 required
                                 value={this.state.commerce.adresse}
+                                onChange={e => this.handleChangeAddress(e.target.value)}
                                 className={classes.textField1}
                                 name="adresse"
                                 id="outlined-name"
@@ -342,6 +462,7 @@ class AboutCommerce extends Component {
                             <TextField
                                 // required
                                 className={classes.textField2}
+                                onChange={e => this.handleChangeCity(e.target.value)}
                                 name="ville"
                                 id="outlined-name"
                                 label="Ville"
@@ -351,6 +472,7 @@ class AboutCommerce extends Component {
                             <TextField
                                 // required
                                 className={classes.textField3}
+                                onChange={e => this.handleChangeBP(e.target.value)}
                                 name="bp"
                                 id="outlined-name"
                                 label="Code postal"
@@ -360,6 +482,7 @@ class AboutCommerce extends Component {
                             <TextField
                                 required
                                 value={this.state.commerce.tel}
+                                onChange={e => this.handleChangePhone(e.target.value)}
                                 className={classes.textField4}
                                 name="tel"
                                 id="outlined-name"
@@ -370,6 +493,7 @@ class AboutCommerce extends Component {
                             <TextField
                                 required
                                 value={this.state.commerce.siteWeb}
+                                onChange={e => this.handleChangeWeb(e.target.value)}
                                 className={classes.textField5}
                                 name="siteWeb"
                                 id="outlined-name"
@@ -385,10 +509,11 @@ class AboutCommerce extends Component {
                             <Typography variant="h6" gutterBottom>{"Description de votre commerce"}</Typography>
                         </div>
 
-                        <form className={classes.container} autoComplete="on" onSubmit={this.createNewCommerce}>
+                        <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdateDescription}>
                             <TextField
                                 required
                                 value={this.state.commerce.description}
+                                onChange={e => this.handleChangeDescription(e.target.value)}
                                 className={classes.textField}
                                 multiline
                                 fullWidth
@@ -406,15 +531,16 @@ class AboutCommerce extends Component {
                             <Typography variant="h6" gutterBottom>{"Promotion"}</Typography>
                         </div>
 
-                        <form className={classes.container} autoComplete="on" onSubmit={this.createNewCommerce}>
+                        <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdatePromotion}>
                             <TextField
                                 required
                                 value={this.state.commerce.promotion}
+                                onChange={e => this.handleChangePromotion(e.target.value)}
                                 className={classes.textField}
                                 multiline
                                 fullWidth
                                 rows="4"
-                                name="description"
+                                name="promotions"
                                 id="outlined-name"
                                 label="Promotion"
                                 margin="dense"
