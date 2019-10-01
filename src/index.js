@@ -19,8 +19,8 @@ import Parse from 'parse';
 import * as serviceWorker from './serviceWorker';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-Parse.serverURL = 'https://weeclik-server-dev.herokuapp.com/parse';
-Parse.initialize("JVQZMCuNYvnecPWvWFDTZa8A");
+Parse.serverURL = process.env.REACT_APP_SERVER_URL;
+Parse.initialize(process.env.REACT_APP_APP_ID);
 
 const routing = (
     <Router>
