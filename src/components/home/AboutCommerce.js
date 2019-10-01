@@ -2,25 +2,14 @@ import React, { Component } from 'react';
 import Parse from 'parse';
 import { } from 'react-router-dom';
 import NavBar from './NavBar';
-// import Commerce from './Commerce';
 import Footer from '../Footer';
-
-// import profileImg from '../../assets/images/users.svg';
-
 import { Container, CssBaseline, TextField, Button, MenuItem, Typography, GridList, GridListTile, GridListTileBar, IconButton, Card, CardContent, CardActions } from '@material-ui/core';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ShareRoundedIcon from '@material-ui/icons/ShareRounded';
-
 import { withStyles } from '@material-ui/core/styles';
-
-
 import IMG1 from '../../assets/images/img1.png';
 import IMG2 from '../../assets/images/img2.png';
 import IMG3 from '../../assets/images/img3.png';
-import { stat } from 'fs';
-
-
-
 
 const styles = theme => ({
     container: {
@@ -81,7 +70,6 @@ const styles = theme => ({
         margin: theme.spacing(1),
     },
     formControl: {
-        // minWidth: '97%',
         margin: theme.spacing(1),
     },
     menu: {
@@ -92,7 +80,6 @@ const styles = theme => ({
         backgroundColor: theme.palette.background.paper,
         marginTop: theme.spacing(2),
         marginBottom: theme.spacing(2),
-        // padding: theme.spacing(1),
         paddingTop: theme.spacing(3),
         paddingLeft: theme.spacing(1),
         paddingRight: theme.spacing(1),
@@ -131,11 +118,7 @@ class AboutCommerce extends Component {
         }
 
         this.onUploadPicture = this.onUploadPicture.bind(this);
-        // this.handleChangeAddress = this.handleChangeAddress.bind(this);
-        // this.handleChangeCity = this.handleChangeCity.bind(this);
-        // this.handleChangeBP = this.handleChangeBP.bind(this);
-        // this.handleChangePhone = this.handleChangePhone.bind(this);
-        // this.handleChangeWeb = this.handleChangeWeb.bind(this);
+        this.handleChangeSelect = this.handleChangeSelect.bind(this);
 
         this.handleUpdateInfo = this.handleUpdateInfo.bind(this);
         this.handleUpdateCategory = this.handleUpdateCategory.bind(this);
