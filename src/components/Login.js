@@ -3,7 +3,7 @@ import Parse from 'parse';
 import { Link, Redirect } from 'react-router-dom';
 import LoadApp from './external_link/LoadApp';
 import img_promo from '../assets/images/pub_example.png';
-import img_promo2 from '../assets/images/img1.jpeg';
+import img_promo2 from '../assets/images/pont-manhattan_1368-6226.jpg';
 
 import Michel from '../assets/images/michel.jpg';
 import Aziz from '../assets/images/aziz.jpg';
@@ -58,11 +58,14 @@ const styles = theme => ({
     title: {
         flexGrow: 1,
         color: '#000',
+        fontWeight: '600',
+        // fontFamily: 'Rubik, Lato, sans-serif'
+        // textShadow: '2px 4px 10px black'
     },
 });
 
 
-const greyColor = grey[500];
+// const greyColor = grey[500];
 const whiteColor = grey[50];
 
 
@@ -195,16 +198,29 @@ class Login extends Component {
 
                 <div style={{
                     backgroundImage: `url(${img_promo2})`,
+                    backgroundPosition: 'center',
                     backgroundRepeat: 'noRepeat',
                     backgroundSize: 'cover',
-                    minHeight: '100%',
-                    paddingTop: '80px',
-                    paddingBottom: '47%'
+                    // minHeight: '100%',
+                    height: '100vh',
+                    
                     }}>
-                    {/* <img src={img_promo2} /> */}
-                    <div style={{ margin: '70px', color: whiteColor/*padding: '500px'*/ }}>
-                        <Typography component="h1" variant="h1">Weeclik</Typography>
-                        <Typography component="h1" variant="h3">On aime, on partage</Typography>
+                    <div style={{
+                        height: '100%',
+                        width: '100%',
+                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                        color: 'white',
+                        paddingTop: '80px',
+                        paddingBottom: '47%'
+                    }}>
+                        {/* <img src={img_promo2} /> */}
+                        <div style={{ margin: '70px', color: whiteColor/*padding: '500px'*/, textAlign: 'center' }}>
+                            <Typography component="h1" variant="h1" className="mainHeader" style={{
+                                fontWeight: '700',
+                                paddingBottom: '20px'
+                            }}>Weeclik</Typography>
+                            <Typography component="h1" variant="h3">On aime, on partage</Typography>
+                        </div>
                     </div>
                 </div>
 
