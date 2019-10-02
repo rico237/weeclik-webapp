@@ -10,6 +10,7 @@ import { withStyles } from '@material-ui/core/styles';
 import IMG1 from '../../assets/images/img1.png';
 import IMG2 from '../../assets/images/img2.png';
 import IMG3 from '../../assets/images/img3.png';
+import imageCompression from 'browser-image-compression';
 
 const styles = theme => ({
     container: {
@@ -245,6 +246,27 @@ class AboutCommerce extends Component {
         instanceCommerce.save();
     }
 
+    hashCode = function(s) {
+        return s.split("").reduce(function(a, b) {a=((a << 5) - a) + b.charCodeAt(0);return a&a},0);
+    }
+
+
+    uploadToServer(img) {
+        // console.log("-------->>>>>><<<<<---"+this.state.commerceID);
+        
+        var file = new Parse.File(img.name, img);
+        var Commerce_Photos = new Parse.Object("Commerce_Photos");
+        if (this.state.currentUser) {
+            file.save().then(() => {
+                Commerce_Photos.set("photo", file);
+                Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceID));
+                Commerce_Photos.save();
+            }, function(error) {
+                console.error(error);
+            });
+        }
+    }
+
     /**
      * Met a jour les photos des commerces
      * @param {*} event 
@@ -252,52 +274,45 @@ class AboutCommerce extends Component {
     onUploadPicture(event) {
         // var currentUser = Parse.User.current();
 
-        console.log(event.target.files[0]);
-        console.log(event.target.files[1]);
-        console.log(event.target.files[2]);
-        console.log(event.target.files.length);
+        // console.log(event.target.files[0]);
+        // console.log(event.target.files[1]);
+        // console.log(event.target.files[2]);
+        // console.log(event.target.files.length);
         
         var taille = 0;
 
         if (event.target.files.length <= 3) {
             taille = event.target.files.length;
             for (var i = 0; i < taille; i++) {
-                var file = Parse.File(event.target.files[i].name, event.target.files[i]);
-                if (this.state.currentUser) {
-                    file.save().then(() => {
-                        console.log("[image saving]");  // TODO save list Pointer Image in photoSlider
-                    }, (error) => {
-                        console.error(error);
-                    });
+                var img = event.target.files[i];
+                // console.log('OriginalFile instanceof Blob', img instanceof Blob);
+                // console.log('OriginalFile size ' + (img.size / 1024 / 1024) + " MB");
+
+                var options = {
+                    maxSizeMB: 0.5,
+                    maxWidthOrHeight: 1920,
+                    useWebWorker: true
                 }
+
+                imageCompression(img, options)
+                    .then((compressedFile) => {
+                        // console.log('CompressFile instanceof Blob', compressedFile instanceof Blob);
+                        // console.log('CompressFile size ' + (compressedFile.size / 1024 / 1024) + " MB");
+                        return this.uploadToServer(compressedFile);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                // console.log(event.target.files[i].name);
+                // console.log(event.target.files[i].size);
             }
         } else {
-            
+            alert("Attention seulement vous pouvez ajouter que 3 images maximum");
         }
-
-        // var file = new Parse.File("image", event.target.files[0]);
-        // if (currentUser) {
-        //     file.save().then(function() {
-        //         currentUser.set('profilePictureURL', file.url());
-        //         currentUser.save()
-        //             .then((user) => {
-        //                 console.log(user);
-        //             }, (error) => {
-        //                 console.error(error);
-        //             });
-        //         // console.log("----------------<<<<<<<<<<<<<"+file.name+">>>>>>>>>>----------------");
-        //         // console.log(file.url());// TODO sauvegarder dans la table USER
-        //     }, (error) => {
-        //         console.error(error);
-        //     });
-        // } else {
-            
-        // }
-        
     }
 
     getCommerceInfo() {
-        console.log("id = " + this.state.commerceID);
+        // console.log("id = " + this.state.commerceID);
         const ParseCommerce = Parse.Object.extend("Commerce");
         const queryCommerce   = new Parse.Query(ParseCommerce);
 
@@ -334,9 +349,9 @@ class AboutCommerce extends Component {
                         }
                     }));
                 });
-                console.log("Successfully retrieved " + object + " scores.");
-                console.log(JSON.stringify(object, null, 2));
-                console.log("++======++++"+this.state.name);
+                // console.log("Successfully retrieved " + object + " scores.");
+                // console.log(JSON.stringify(object, null, 2));
+                // console.log("++======++++"+this.state.name);
             })
             .catch((error) => {
 
