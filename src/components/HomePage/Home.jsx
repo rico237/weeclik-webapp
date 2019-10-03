@@ -18,7 +18,7 @@ import NavigationBar from '../home/NavBar';
 import Footer from '../Footer';
 
 
-class HomePage extends Component {
+class Home extends Component {
     
     render() {
 
@@ -216,4 +216,4 @@ class HomePage extends Component {
         }
     }
     
-    export default HomePage;
+    export default Home;
