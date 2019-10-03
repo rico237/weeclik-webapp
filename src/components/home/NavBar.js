@@ -69,7 +69,7 @@ class NavBar extends React.Component {
 
     renderRedirectProfile = () => {
         this.handleClose();
-        // console.log("--))))----");
+        console.log("--))))----");
     }
 
     renderRedirect = () => {
@@ -116,10 +116,14 @@ class NavBar extends React.Component {
                     onClose={this.handleClose}
                 >
                     <MenuItem className={classes.popup} onClick={this.renderRedirectProfile}>
-                        <ListItemIcon>
-                            <AccountCircleOutlined className={classes.icon}/>
-                        </ListItemIcon>
-                        <Typography variant="inherit"><Link style={{ color: 'black', textDecoration: 'none' }} to="/profile">Profile</Link></Typography>
+                        <Link style={{ color: 'black', textDecoration: 'none' }} to="/profile">
+                            <ListItemIcon>
+                                <AccountCircleOutlined className={classes.icon}/>
+                            </ListItemIcon>
+                            <Typography variant="inherit">
+                                Profile
+                            </Typography>
+                        </Link>
                     </MenuItem>
                     <MenuItem onClick={this.handleClose}>
                         <ListItemIcon>
