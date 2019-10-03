@@ -6,6 +6,7 @@ import Register from './Register';
 import AddCommerce from './home/AddCommerce';
 import AboutCommerce from './home/AboutCommerce';
 import ForgotPassword from './passwordforgot/RestorPass'
+import HomePage from './HomePage/HomePage';
 // import Notfound from './Login';
 
 
@@ -13,12 +14,13 @@ function Main() {
     return (
         <div>
             <Switch>
-                <Route exact path='/' component={Login}/>
+                <Route exact path='/' component={HomePage}/>
                 <Route path='/home' component={Home}/>
                 <Route path='/addcommerce' component={AddCommerce}/>
                 <Route path='/aboutcommerce' component={AboutCommerce}/>
                 <Route path='/register' component={Register}/>
                 <Route path='/forgotpassword' component={ForgotPassword}/>
+                <Route path='/login' component={Login}></Route>
             </Switch>
         </div>
     )
