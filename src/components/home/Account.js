@@ -28,8 +28,11 @@ class Account extends Component {
 
     getAllCommerces() {
         const ParseCommerce = Parse.Object.extend("Commerce");
-        const queryCommerce   = new Parse.Query(ParseCommerce);
-        queryCommerce.equalTo( "owner", this.state.currentUser);
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
+        const queryCommerce = new Parse.Query(ParseCommerce);
+        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
+        
+        queryCommerce.equalTo("owner", this.state.currentUser);
         queryCommerce.find()
             .then(response => {
                 let newCommerce = [];
@@ -59,6 +62,9 @@ class Account extends Component {
                             break;
                     }
 
+                    // queryCommercePhoto.equalTo("commerce", el.id);// TODO : pointer vers commerce
+                    // queryCommercePhoto.find()
+                    //     .then(response => {})
 
                     newCommerce.push({
                         "id": el.id,
