@@ -120,7 +120,7 @@ class Register extends Component {
                     <div className="row">
                         <div className="col-12 col-md" style={{ backgroundColor : '#FFF' }}>
                             <div>
-                                <h1>On aime, on partage!</h1>
+                                <h1 style={{color: '#000'}}>On aime, on partage!</h1>
                                 <p className="text-secondary">Gerer vos commerces avec weeclik</p>
                                 <form onSubmit={this.signingUpWithAccount}>
                                     <div className="form-group">
@@ -185,7 +185,6 @@ class Register extends Component {
                         </div>
                     </div>
                 </div>
-                <Footer/>
             </div>
         )
     }

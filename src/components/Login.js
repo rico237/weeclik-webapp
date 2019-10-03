@@ -183,47 +183,6 @@ class Login extends Component {
             
             <Fragment>
 
-                <div className={classes.root2}>
-                    <AppBar position="fixed" elevation={1} style={{ backgroundColor: "white" }}>
-                        <Toolbar>
-                            <Grid edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
-                                <Avatar alt="user img" src={Logo} className={classes.avatar} />
-                            </Grid>
-                            <Typography variant="h4" className={classes.title}>Weeclik</Typography>
-                            <Button onClick={this.gotoRefConnexion}>Connexion</Button>
-                            <Link className="btn btn-outline-primary rounded" style={{ marginLeft: '10px' }} to="/register" role="button">Inscription</Link>
-                        </Toolbar>
-                    </AppBar>
-                </div>
-
-                <div style={{
-                    backgroundImage: `url(${img_promo2})`,
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'noRepeat',
-                    backgroundSize: 'cover',
-                    // minHeight: '100%',
-                    height: '100vh',
-                    
-                    }}>
-                    <div style={{
-                        height: '100%',
-                        width: '100%',
-                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                        color: 'white',
-                        paddingTop: '80px',
-                        paddingBottom: '47%'
-                    }}>
-                        {/* <img src={img_promo2} /> */}
-                        <div style={{ margin: '70px', color: whiteColor/*padding: '500px'*/, textAlign: 'center' }}>
-                            <Typography component="h1" variant="h1" className="mainHeader" style={{
-                                fontWeight: '700',
-                                paddingBottom: '20px'
-                            }}>Weeclik</Typography>
-                            <Typography component="h1" variant="h3">On aime, on partage</Typography>
-                        </div>
-                    </div>
-                </div>
-
                 <div ref={this.refConnexion}>
 
                     <Grid container component="main" className={classes.root}>
@@ -233,7 +192,7 @@ class Login extends Component {
                                 <div className={classes.avatar}>
                                     <img src={Logo} className="rounded mx-auto d-block" alt="Logo de l'application weeclik" style={{ width : '150px' }}/>
                                 </div>
-                                <Typography component="h1" variant="h5">On aime, on partage!</Typography>
+                                <Typography component="h1" variant="h5" style={{color:'#000000'}}>On aime, on partage!</Typography>
                                 <p className="text-secondary">Gerer vos commerces avec weeclik</p>
                                 <form className={classes.form} onSubmit={this.loginAccount}>
                                     <div className="form-group">
@@ -258,7 +217,7 @@ class Login extends Component {
                                     </div>
                                     <div className="form-group">
                                         <button type="submit" className="btn btn-primary rounded mr-2">Se connecter</button>
-                                        <Link className="btn btn-outline-primary rounded" to="/register" role="button">Rejoindre weeclik</Link>
+                                        <Link className="btn btn-outline-primary rounded" to="/register" style={{textDecoration:'none'}} role="button">Rejoindre weeclik</Link>
                                     </div>
                                                         
                                     <div className="form-group">
@@ -329,67 +288,6 @@ class Login extends Component {
                         </div>
                     </div>
                 </div> */}
-
-
-                {/* Team Section */}
-<div className="w3-container" style={{ padding:'128px 16px' }} id="team">
-  <h3 className="w3-center">Qui sommes nous ?</h3>
-
-
-  <div className="w3-row-padding w3-grayscale" style={{marginTop:'64px'}}>
-    <div className="w3-col l2 m6 w3-margin-bottom" style={{marginLeft:'8%'}}>
-      <div className="w3-card">
-        <img src={Aziz} alt="Aziz" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Aziz</h3>
-          <p className="w3-opacity">CEO et Fondateur</p>
-          <p></p>
-          {/* <p><button className="w3-button w3-light-grey w3-block"><i className="fa fa-envelope"></i> Contact</button></p> */}
-        </div>
-      </div>
-    </div>
-    <div className="w3-col l2 m6 w3-margin-bottom">
-      <div className="w3-card">
-        <img src={Michel} alt="Michel" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Michel</h3>
-          <p className="w3-opacity">Directeur des operations</p>
-        </div>
-      </div>
-    </div>
-    <div className="w3-col l2 m6 w3-margin-bottom">
-      <div className="w3-card">
-        <img src={Herrick} alt="Mike" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Herrick</h3>
-          <p className="w3-opacity">CTO et Développeur lead iOS</p>
-        </div>
-      </div>
-    </div>
-    <div className="w3-col l2 m6 w3-margin-bottom">
-      <div className="w3-card">
-        <img src={Mohamed} alt="Dan" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Mohamed</h3>
-          <p className="w3-opacity">Expert Android</p>
-        </div>
-      </div>
-    </div>
-    <div className="w3-col l2 m6 w3-margin-bottom">
-      <div className="w3-card">
-        <img src={Grace} alt="Dan" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Grâce</h3>
-          <p className="w3-opacity">Expert ReactJS</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-                
-
-                <Footer/>
     
             </Fragment>
             
