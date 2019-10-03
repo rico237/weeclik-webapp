@@ -116,6 +116,12 @@ class AboutCommerce extends Component {
                 promotion: '',
             },
 
+            urls: {
+                urlImg1: '',
+                urlImg2: '',
+                urlImg3: ''
+            }
+
         }
 
         this.onUploadPicture = this.onUploadPicture.bind(this);
@@ -252,8 +258,6 @@ class AboutCommerce extends Component {
 
 
     uploadToServer(img) {
-        // console.log("-------->>>>>><<<<<---"+this.state.commerceID);
-        
         var file = new Parse.File(img.name, img);
         var Commerce_Photos = new Parse.Object("Commerce_Photos");
         if (this.state.currentUser) {
@@ -344,8 +348,6 @@ class AboutCommerce extends Component {
                             siteWeb: _siteWeb,
                             description: _description,
                             promotion: _promotions
-
-
                         }
                     }));
                 });
@@ -359,8 +361,50 @@ class AboutCommerce extends Component {
     }
 
 
+    getAllPicture() {
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const queryCommerce = new Parse.Query(ParseCommerce);
+
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
+        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
+        
+        queryCommerce.equalTo("owner", this.state.currentUser);
+
+        let commercePicture = [];
+        queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: this.state.commerceID}));
+
+        queryCommercePhoto.find().then((response) => {
+            response.forEach((elt) => {
+                commercePicture.push(elt.get("photo").url());
+                // console.log(elt.get("photo").url());
+                // console.log(commercePicture);
+                
+            });
+            this.setState({
+                allPicture: []
+            }, function() {
+                this.setState({
+                    allPicture: ["commercePicture"]
+                })
+            })
+            
+        });
+
+        this.setState(prevState => ({
+            urls: {
+                ...prevState.urls,
+                urlImg1: commercePicture[0],
+                urlImg2: commercePicture[1],
+                urlImg3: commercePicture[2],
+            }
+        }));
+    }
+
+
     componentDidMount() {
         this.getCommerceInfo();
+        this.getAllPicture();
+        console.log("===="+JSON.stringify(this.state.urls, null, 2));
     }
 
 
@@ -409,7 +453,7 @@ class AboutCommerce extends Component {
                         <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdateCategory}>
                             <TextField
                                 select
-                                variant="filled"
+                                variant="outlined"
                                 value={this.state.commerce.currencyCategory}
                                 onChange={this.handleChangeSelect}
                                 // required
@@ -455,7 +499,7 @@ class AboutCommerce extends Component {
                                 id="outlined-name"
                                 label="Adresse"
                                 margin="dense"
-                                variant="filled"
+                                variant="outlined"
                             />
                             <TextField
                                 // required
@@ -465,7 +509,7 @@ class AboutCommerce extends Component {
                                 id="outlined-name"
                                 label="Ville"
                                 margin="dense"
-                                variant="filled"
+                                variant="outlined"
                             />
                             <TextField
                                 // required
@@ -475,7 +519,7 @@ class AboutCommerce extends Component {
                                 id="outlined-name"
                                 label="Code postal"
                                 margin="dense"
-                                variant="filled"
+                                variant="outlined"
                             />
                             <TextField
                                 required
@@ -486,7 +530,7 @@ class AboutCommerce extends Component {
                                 id="outlined-name"
                                 label="Numéro de téléphone"
                                 margin="dense"
-                                variant="filled"
+                                variant="outlined"
                             />
                             <TextField
                                 required
@@ -497,7 +541,7 @@ class AboutCommerce extends Component {
                                 id="outlined-name"
                                 label="Site web"
                                 margin="dense"
-                                variant="filled"
+                                variant="outlined"
                             />
                             <Button type="submit" className={classes.buttonSubmit} variant="contained" color="primary">Modifier les informations</Button>
                         </form>
@@ -520,7 +564,7 @@ class AboutCommerce extends Component {
                                 id="outlined-name"
                                 label="Description du commerce"
                                 margin="dense"
-                                variant="filled"
+                                variant="outlined"
                             />
                             <Button type="submit" className={classes.buttonSubmit} variant="contained" color="primary">Modifier la description</Button>
                         </form>
@@ -532,6 +576,7 @@ class AboutCommerce extends Component {
                         <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdatePromotion}>
                             <TextField
                                 required
+                                helperText="Une petite description sur ce qu'est une promotion"
                                 value={this.state.commerce.promotion}
                                 onChange={e => this.handleChangePromotion(e.target.value)}
                                 className={classes.textField}
@@ -542,7 +587,7 @@ class AboutCommerce extends Component {
                                 id="outlined-name"
                                 label="Promotion"
                                 margin="dense"
-                                variant="filled"
+                                variant="outlined"
                             />
                             <Button type="submit" className={classes.buttonSubmit} variant="contained" color="primary">Modifier la promotion</Button>
                         </form>
@@ -593,10 +638,10 @@ class AboutCommerce extends Component {
                         </GridList>
 
 
-                        <div className={classes.sousMenu}>
+                        {/* <div className={classes.sousMenu}>
                             <Typography variant="h6" gutterBottom>{"Vidéo du commerce"}</Typography>
                             <Button>COUCOU</Button>
-                        </div>
+                        </div> */}
 
                     </Container>
                 </React.Fragment>

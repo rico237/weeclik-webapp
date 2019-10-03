@@ -59,7 +59,7 @@ class Profile extends Component {
     onChange(event) {
         var currentUser = Parse.User.current();
 
-        console.log(event.target.files[0]);
+        // console.log(event.target.files[0]);
         var file = new Parse.File("image", event.target.files[0]);
         if (currentUser) {
             file.save().then(function() {
@@ -125,7 +125,7 @@ class Profile extends Component {
             currentUser.set('name', this.state.user.name);
             currentUser.save()
                 .then((user) => {
-                    console.log(user);
+                    // console.log(user);
                     this.setState(state => ({
                         canModify: !state.canModify
                     }));
@@ -143,7 +143,7 @@ class Profile extends Component {
         var Commerce = Parse.Object.extend("Commerce");
         var query = new Parse.Query(Commerce);
         query.equalTo("owner", Parse.User.createWithoutData("EruF4h35eI"));//this.state.currentUser.id
-        console.log(query.count);
+        // console.log(query.count);
 
     }
 
@@ -154,7 +154,7 @@ class Profile extends Component {
     componentDidMount() {
         var currentUser = Parse.User.current();
         if (currentUser) {
-            console.log(JSON.stringify(currentUser, null, 2));
+            // console.log(JSON.stringify(currentUser, null, 2));
             currentUser.fetch().then((fetchedUser) => {
                 var name = fetchedUser.get('name');
                 var PICTURE = fetchedUser.get('profilePictureURL');
@@ -164,7 +164,7 @@ class Profile extends Component {
                 if (!PICTURE) {
                     PICTURE = profileImg
                 }
-                console.log(objectId);
+                // console.log(objectId);
                 this.setState(prevState => ({
                     user: {                 // object that we want to update
                         ...prevState.user,  // keep all other key-value pairs

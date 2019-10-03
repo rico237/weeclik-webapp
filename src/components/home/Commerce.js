@@ -45,8 +45,11 @@ function Commerce(props) {
     const classes = useStyles();
     // const bulleComm = <span className={classes.bulletCommerce}>•</span>;
 
+    
+
     return (
         <div className={classes.divContainer}>
+            
             <Card className={classes.card}>
                 <CardMedia
                     className={classes.media}
@@ -97,6 +100,7 @@ function Commerce(props) {
                     <Typography gutterBottom variant="h5" component="h2">{props.name}</Typography>
                     <Typography gutterBottom variant="h6" component="h2">{props.status}</Typography>
                     <Typography variant="body2" color="textSecondary" component="p">{props.description}</Typography>
+                    <Typography variant="body2" color="textSecondary" component="p">{props.images}</Typography>
                 </CardContent>
                 <CardActions disableSpacing>
                     <div className={classes.divInfo}>{props.nbPartage} <FavoriteIcon/></div>

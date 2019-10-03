@@ -5,6 +5,7 @@ import NavBar from './NavBar';
 import Commerce from './Commerce';
 import Footer from '../Footer';
 import Profile from '../profile/Profile'
+import { Carousel } from 'react-bootstrap'
 
 class Account extends Component {
 
@@ -28,14 +29,18 @@ class Account extends Component {
 
     getAllCommerces() {
         const ParseCommerce = Parse.Object.extend("Commerce");
-        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
         const queryCommerce = new Parse.Query(ParseCommerce);
+
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
         const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
         
         queryCommerce.equalTo("owner", this.state.currentUser);
+
+        // console.log("vvvvvvv" + JSON.stringify(queryCommerce, null, 2));
         queryCommerce.find()
             .then(response => {
                 let newCommerce = [];
+                let commercePicture = [];
                 response.forEach((el) => {
 
                     var _status;
@@ -62,16 +67,22 @@ class Account extends Component {
                             break;
                     }
 
-                    // queryCommercePhoto.equalTo("commerce", el.id);// TODO : pointer vers commerce
-                    // queryCommercePhoto.find()
-                    //     .then(response => {})
+                    queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: el.id}));
+
+                    queryCommercePhoto.find().then(response => {
+                        response.forEach((elt) => {
+                            commercePicture.push(elt.get("photo").url());
+                            // console.log(elt.get("photo").url());
+                        });
+                    });
 
                     newCommerce.push({
                         "id": el.id,
                         "name": el.get("nomCommerce"),
                         "status": _status,
                         "description": el.get("description"),
-                        "nbPartage": el.get("nombrePartages")
+                        "nbPartage": el.get("nombrePartages"),
+                        "listImage": commercePicture
                     });
                 })
                 this.setState(({
@@ -86,7 +97,35 @@ class Account extends Component {
     }
 
     componentDidMount() {
-        this.getAllCommerces();
+        setInterval(
+            this.getAllCommerces(),
+            1000
+        );
+    }
+
+    renderImage(imageUrl) {
+        console.log('rrrrrr');
+        
+        return (
+            <img
+                    className="d-block w-100"
+                    style={{ height: 200, backgroundColor: "#F00", objectFit: "cover" }}
+                    src={imageUrl}
+                    alt="First slide"
+                />
+            // <Carousel.Item>
+            //     <img
+            //         className="d-block w-100"
+            //         style={{ height: 200, backgroundColor: "#F00", objectFit: "cover" }}
+            //         src={imageUrl}
+            //         alt="First slide"
+            //     />
+            //         <Carousel.Caption>
+            //             <h3>First slide label</h3>
+            //             <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+            //         </Carousel.Caption>
+            // </Carousel.Item>
+        )
     }
 
     render() {
@@ -97,6 +136,8 @@ class Account extends Component {
             )
         }
 
+        
+
         let listCommerce = this.state.commerceList.map((el, index) => {
             return <Commerce
                 id={el.id}
@@ -104,10 +145,12 @@ class Account extends Component {
                 status={el.status}
                 description={el.description}
                 nbPartage={el.nbPartage}
+                images={el.listImage}
                 key={index}
                 showDetails={this.onShowDetails.bind(this, el)}
             />
         })
+        console.log("$$$$$"+JSON.stringify(this.state.commerceList, null, 2));
 
         if (this.state.isSelect) {
             return (
@@ -117,6 +160,8 @@ class Account extends Component {
                 }} />
             )
         }
+
+        console.log("$$$$$"+JSON.stringify(this.state.commerceList, null, 2));
 
 
         return (
