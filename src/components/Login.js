@@ -288,63 +288,6 @@ class Login extends Component {
                         </div>
                     </div>
                 </div> */}
-
-
-                {/* Team Section */}
-{/* <div className="w3-container" style={{ padding:'128px 16px' }} id="team">
-  <h3 className="w3-center">Qui sommes nous ?</h3>
-
-
-  <div className="w3-row-padding w3-grayscale" style={{marginTop:'64px'}}>
-    <div className="w3-col l2 m6 w3-margin-bottom" style={{marginLeft:'8%'}}>
-      <div className="w3-card">
-        <img src={Aziz} alt="Aziz" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Aziz</h3>
-          <p className="w3-opacity">CEO et Fondateur</p>
-          <p></p>
-          {/* <p><button className="w3-button w3-light-grey w3-block"><i className="fa fa-envelope"></i> Contact</button></p> *//*}
-        </div>
-      </div>
-    </div>
-    <div className="w3-col l2 m6 w3-margin-bottom">
-      <div className="w3-card">
-        <img src={Michel} alt="Michel" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Michel</h3>
-          <p className="w3-opacity">Directeur des operations</p>
-        </div>
-      </div>
-    </div>
-    <div className="w3-col l2 m6 w3-margin-bottom">
-      <div className="w3-card">
-        <img src={Herrick} alt="Mike" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Herrick</h3>
-          <p className="w3-opacity">CTO et Développeur lead iOS</p>
-        </div>
-      </div>
-    </div>
-    <div className="w3-col l2 m6 w3-margin-bottom">
-      <div className="w3-card">
-        <img src={Mohamed} alt="Dan" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Mohamed</h3>
-          <p className="w3-opacity">Expert Android</p>
-        </div>
-      </div>
-    </div>
-    <div className="w3-col l2 m6 w3-margin-bottom">
-      <div className="w3-card">
-        <img src={Grace} alt="Dan" style={{width:'100%'}}/>
-        <div className="w3-container">
-          <h3>Grâce</h3>
-          <p className="w3-opacity">Expert ReactJS</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div> */}
     
             </Fragment>
             
