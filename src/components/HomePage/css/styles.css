@@ -34,6 +34,25 @@ Colors:
 /******************************/
 /*     01. General Styles     */
 /******************************/
+.w3-card {
+	background-color: white;
+}
+
+.basic-3 .w3-card h3 {
+	font-size: 1.125rem;
+    color: #000;
+	padding-top: 8px;
+	margin-bottom: 0;
+}
+
+.basic-3 .w3-card p {
+	color: #000;
+}
+
+.basic-3 .w3-card .w3-container {
+	min-height: 95px;
+}
+
 body,
 html {
     width: 100%;
