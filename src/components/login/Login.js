@@ -1,22 +1,14 @@
 import React, { Component, Fragment } from 'react';
 import Parse from 'parse';
 import { Link, Redirect } from 'react-router-dom';
-import LoadApp from './external_link/LoadApp';
-import img_promo from '../assets/images/pub_example.png';
-import img_promo2 from '../assets/images/pont-manhattan_1368-6226.jpg';
+import LoadApp from '../external_link/LoadApp';
+import img_promo from '../../assets/images/pub_example.png';
 
-import Michel from '../assets/images/michel.jpg';
-import Aziz from '../assets/images/aziz.jpg';
-import Mohamed from '../assets/images/mohamed.jpg';
-import Herrick from '../assets/images/herrick.jpg';
-import Grace from '../assets/images/grace.jpg';
-
-import Logo from '../assets/images/logo_weeclik.png';
-import Footer from './Footer';
-import { Grid, CssBaseline, Typography, Paper, Button, AppBar, Toolbar, Avatar } from '@material-ui/core';
-// import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import Logo from '../../assets/images/logo_weeclik.png';
+import { Grid, CssBaseline, Typography, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import grey from '@material-ui/core/colors/grey';
+import blue from '@material-ui/core/colors/blue';
 
 // import YouTube from 'react-youtube';
 
@@ -66,7 +58,7 @@ const styles = theme => ({
 
 
 // const greyColor = grey[500];
-const whiteColor = grey[50];
+// const whiteColor = grey[50];
 
 
 class Login extends Component {
@@ -221,7 +213,7 @@ class Login extends Component {
                                     </div>
                                                         
                                     <div className="form-group">
-                                        <Link className="nav-link" to="/forgotpassword">Mot de passe oublié?</Link>
+                                        <Link className="nav-link" to="/forgotpassword" style={{ color: blue[500], textDecoration: 'none' }}>Mot de passe oublié?</Link>
                                     </div>
                                 </form>
                                 <LoadApp/>

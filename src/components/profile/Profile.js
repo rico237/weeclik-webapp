@@ -37,7 +37,7 @@ class Profile extends Component {
                 name: '',
                 username: '',
                 email: '',
-                picture: 'https://weeclik-server-dev.herokuapp.com/parse/files/JVQZMCuNYvnecPWvWFDTZa8A/dc21467414b2346642648e97e589c888_image.png'
+                picture: ''
             }
         };
 

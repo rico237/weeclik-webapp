@@ -1,9 +1,9 @@
 import React from 'react';
 import Parse from 'parse';
 import { Switch, Route, Redirect } from 'react-router-dom';
-import Login from './Login';
+import Login from './login/Login';
 import Home from './home/Account';
-import Register from './Register';
+import Register from './register/Register';
 import AddCommerce from './home/AddCommerce';
 import AboutCommerce from './home/AboutCommerce';
 import ForgotPassword from './passwordforgot/RestorPass'
