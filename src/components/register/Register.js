@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import Footer from './Footer';
+import { Grid } from '@material-ui/core';
 import Parse from 'parse';
-import LoadApp from './external_link/LoadApp';
-import img_promo from '../assets/images/pub_example.png';
+import LoadApp from '../external_link/LoadApp';
+import img_promo from '../../assets/images/pub_example.png';
+
+import blue from '@material-ui/core/colors/blue';
 
 class Register extends Component {
 
@@ -116,9 +118,9 @@ class Register extends Component {
 
         return (
             <div>
-                <div className="container" style={{ marginTop: 80 }}>
-                    <div className="row">
-                        <div className="col-12 col-md" style={{ backgroundColor : '#FFF' }}>
+                <div className="container" style={{ marginTop: 80, height: '100%' }}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} sm={5} style={{ backgroundColor : '#FFF' }}>
                             <div>
                                 <h1 style={{color: '#000'}}>On aime, on partage!</h1>
                                 <p className="text-secondary">Gerer vos commerces avec weeclik</p>
@@ -132,7 +134,8 @@ class Register extends Component {
                                             className="form-control border-0 bg-light"
                                             id="exampleInputUsername1"
                                             placeholder="Nom"
-                                            style={{ width : '300px' }}/>
+                                            // style={{ width : '300px' }}
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <input
@@ -144,7 +147,8 @@ class Register extends Component {
                                             className="form-control border-0 bg-light"
                                             id="exampleInputEmail1"
                                             placeholder="Adresse e-mail"
-                                            style={{ width : '300px' }}/>
+                                            // style={{ width : '300px' }}
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <input
@@ -155,7 +159,8 @@ class Register extends Component {
                                             className="form-control border-0 bg-light"
                                             id="exampleInputPassword1"
                                             placeholder="Mot de passe"
-                                            style={{ width : '300px' }}/>
+                                            // style={{ width : '300px' }}
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <input
@@ -166,24 +171,27 @@ class Register extends Component {
                                             className="form-control border-0 bg-light"
                                             id="exampleInputPassword2"
                                             placeholder="Confirmer Mot de passe"
-                                            style={{ width : '300px' }}/>
+                                            // style={{ width : '300px' }}
+                                        />
                                     </div>
                                     <div className="form-group">
                                         <button type="submit" className="btn btn-primary rounded mr-2">Rejoindre weeclik</button>
                                     </div>
                                             
                                     <div className="form-group">
-                                        <Link className="nav-link" to="/">Déjà Membre Weeclik?</Link>
+                                        <Link className="nav-link" to="/" style={{ color: blue[500], textDecoration: 'none' }}>Déjà Membre Weeclik?</Link>
                                     </div>
                                 </form>
                                 <LoadApp/>
                             </div>
-                        </div>
+                        </Grid>
                 
-                        <div className="col-12 col-md" style={{ backgroundColor : '#FFF' }}>
-                            <img src={img_promo} className="rounded mx-auto d-block" alt="..." style={{ width : '600px'}}/>
-                        </div>
-                    </div>
+                        <Grid item xs={12} sm={7} style={{
+                            background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+                            border: 0,
+                            color: 'white',
+                            backgroundImage: `url(${img_promo})` }}/>
+                    </Grid>
                 </div>
             </div>
         )

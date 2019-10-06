@@ -6,6 +6,8 @@ import profileImg from '../../assets/images/users.svg';
 import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
+import grey from '@material-ui/core/colors/grey';
+
 const styles = theme => ({
     root: {
         height: '100%',
@@ -37,7 +39,7 @@ class Profile extends Component {
                 name: '',
                 username: '',
                 email: '',
-                picture: 'https://weeclik-server-dev.herokuapp.com/parse/files/JVQZMCuNYvnecPWvWFDTZa8A/dc21467414b2346642648e97e589c888_image.png'
+                picture: ''
             }
         };
 
@@ -59,7 +61,7 @@ class Profile extends Component {
     onChange(event) {
         var currentUser = Parse.User.current();
 
-        console.log(event.target.files[0]);
+        // console.log(event.target.files[0]);
         var file = new Parse.File("image", event.target.files[0]);
         if (currentUser) {
             file.save().then(function() {
@@ -125,7 +127,7 @@ class Profile extends Component {
             currentUser.set('name', this.state.user.name);
             currentUser.save()
                 .then((user) => {
-                    console.log(user);
+                    // console.log(user);
                     this.setState(state => ({
                         canModify: !state.canModify
                     }));
@@ -143,7 +145,7 @@ class Profile extends Component {
         var Commerce = Parse.Object.extend("Commerce");
         var query = new Parse.Query(Commerce);
         query.equalTo("owner", Parse.User.createWithoutData("EruF4h35eI"));//this.state.currentUser.id
-        console.log(query.count);
+        // console.log(query.count);
 
     }
 
@@ -154,17 +156,17 @@ class Profile extends Component {
     componentDidMount() {
         var currentUser = Parse.User.current();
         if (currentUser) {
-            console.log(JSON.stringify(currentUser, null, 2));
+            // console.log(JSON.stringify(currentUser, null, 2));
             currentUser.fetch().then((fetchedUser) => {
                 var name = fetchedUser.get('name');
                 var PICTURE = fetchedUser.get('profilePictureURL');
                 var username = fetchedUser.getUsername();
                 var email = fetchedUser.getEmail();
-                var objectId = fetchedUser.id;
+                // var objectId = fetchedUser.id;
                 if (!PICTURE) {
                     PICTURE = profileImg
                 }
-                console.log(objectId);
+                // console.log(objectId);
                 this.setState(prevState => ({
                     user: {                 // object that we want to update
                         ...prevState.user,  // keep all other key-value pairs
@@ -198,7 +200,7 @@ class Profile extends Component {
 
         if (this.state.canModify) {
             return (
-                <div>
+                <div style={{ color: grey[900] }}>
                     <img src={this.state.user.picture} className="rounded" style={{ width: 200 }} alt="Default profile"/>
                     <input type="file" onChange={this.onChange} />
 
@@ -210,7 +212,7 @@ class Profile extends Component {
                         maxFileSize={5242880}
                     /> */}
 
-                    <h2>{this.state.user.name}</h2>
+                    <h2 style={{ color: grey[900] }}>{this.state.user.name}</h2>
                     {/* <h3>Coordonnées</h3>
                     <p>Lorem ipsum dolor sit ame.</p> */}
 
@@ -248,8 +250,8 @@ class Profile extends Component {
         return (
             <div style={{ marginBottom: 20 }}>
                 <img src={this.state.user.picture} className="rounded" style={{ width: 200 }} alt="Default profile"/>
-                <h2>{this.state.user.name}</h2>
-                <p>{this.state.user.email}</p>
+                <h2 style={{ color: grey[900] }}>{this.state.user.name}</h2>
+                <p style={{ color: grey[700] }}>{this.state.user.email}</p>
 
                 {/* <p>{this.getNbCommerce()}</p> */}
 
