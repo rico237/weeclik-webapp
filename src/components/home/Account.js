@@ -5,7 +5,6 @@ import NavBar from './NavBar';
 import Commerce from './Commerce';
 import Footer from '../Footer';
 import Profile from '../profile/Profile'
-import { Carousel } from 'react-bootstrap'
 
 class Account extends Component {
 
@@ -15,7 +14,6 @@ class Account extends Component {
         this.state = {
             currentUser: Parse.User.current(),
             commerceList: [],
-            cccc: [],
             isSelect: false,
             id: ''
         };
@@ -32,15 +30,10 @@ class Account extends Component {
         const ParseCommerce = Parse.Object.extend("Commerce");
         const queryCommerce = new Parse.Query(ParseCommerce);
 
-        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
-        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
-        
         queryCommerce.equalTo("owner", this.state.currentUser);
 
         let newCommerces = [];
-        let commercePicture = [];
 
-        // console.log("vvvvvvv" + JSON.stringify(queryCommerce, null, 2));
         queryCommerce.find()
             .then(response => {
                 response.forEach((el) => {
@@ -69,85 +62,19 @@ class Account extends Component {
                             break;
                     }
 
-                    queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: el.id}));
-
-                    var promise1 = new Promise((resolve, reject) => {
-                        setTimeout(() => {
-                            resolve(
-                                queryCommercePhoto.find()
-                                    .then(response2 => {
-                                        response2.forEach((elt) => {
-                                            commercePicture.push(elt.get("photo").url());
-                                        });
-                                        console.log(commercePicture);
-                                        // promise1.then((value) => {
-                                            // console.log("-------------------" + value);
-                                        // })
-                                        return commercePicture;
-                                    })
-                            );
-                        }, 300);
-                    });
-
-                    // queryCommercePhoto.find()
-                    //     .then(response2 => {
-                    //         response2.forEach((elt) => {
-                    //             commercePicture.push(elt.get("photo").url());
-                    //         });
-                    //         console.log(commercePicture);
-                    //         promise1.then((value) => {
-                    //             console.log("-------------------" + value);
-                    //         })
-                    //     });
-
-
-                    let obj = {slidePicture: []}
-
-                    promise1.then((value) => {
-                        obj["slidePicture"] = value
-                        this.setState({
-                            // commerceList: value //newCommerces
-                            // listPicture: value
-                            
-                        });
-                        // // var myString = value;
-                        // // var myArray = myString.split(',');
-                        // commercePicture = value.split(',');
-                        console.log("-------_____--------" + commercePicture[0]);
-                        console.log("-------_____-----___--" + JSON.stringify(obj.slidePicture, null, 2));
-                        this.setState({
-                            cccc: obj.slidePicture
-                        })
-                    })
-
-                    console.log("----uuuu-_____-----___--" + obj.slidePicture);
-
-                    console.log(('coucou, adu, az').split(','));
-
                     newCommerces.push({
                         "id": el.id,
                         "name": el.get("nomCommerce"),
                         "status": _status,
                         "description": el.get("description"),
                         "nbPartage": el.get("nombrePartages")
-                        // "listImage": promise1
-                    });//(commercePicture + " -- " + promise1)
-
-
-                    console.log("++++++++++++++++++" + this.state.cccc);
+                    });
                     
                 });
-                console.log("Liste des commerces"+JSON.stringify(newCommerces, null, 2));
-                // this.setState({commerceList: newCommerces}, () => {
-                //     this.callAsync().catch(e => {
-
-                //     })
-                // });
+                
                 this.setState({
-                        commerceList: newCommerces,
-                        // cccc: obj.slidePicture
-                    });
-                console.log(this.state.commerceList);
+                    commerceList: newCommerces,
+                });
             })
             .catch(error => {
                 console.log(error);
@@ -156,36 +83,7 @@ class Account extends Component {
     }
 
     componentDidMount() {
-        console.log("===="+this.getAllCommerces());
-        // setInterval(
-        //     this.getAllCommerces(),
-        //     1000
-        // );
-    }
-
-    renderImage(imageUrl) {
-        console.log('rrrrrr');
-        
-        return (
-            <img
-                    className="d-block w-100"
-                    style={{ height: 200, backgroundColor: "#F00", objectFit: "cover" }}
-                    src={imageUrl}
-                    alt="First slide"
-                />
-            // <Carousel.Item>
-            //     <img
-            //         className="d-block w-100"
-            //         style={{ height: 200, backgroundColor: "#F00", objectFit: "cover" }}
-            //         src={imageUrl}
-            //         alt="First slide"
-            //     />
-            //         <Carousel.Caption>
-            //             <h3>First slide label</h3>
-            //             <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-            //         </Carousel.Caption>
-            // </Carousel.Item>
-        )
+        this.getAllCommerces();
     }
 
     render() {
@@ -196,8 +94,6 @@ class Account extends Component {
             )
         }
 
-        
-
         let listCommerce = this.state.commerceList.map((el, index) => {
             return <Commerce
                 id={el.id}
@@ -205,12 +101,10 @@ class Account extends Component {
                 status={el.status}
                 description={el.description}
                 nbPartage={el.nbPartage}
-                images={el.listImage}
                 key={index}
                 showDetails={this.onShowDetails.bind(this, el)}
             />
         })
-        console.log("$$$$$"+JSON.stringify(this.state.commerceList, null, 2));
 
         if (this.state.isSelect) {
             return (
@@ -225,11 +119,10 @@ class Account extends Component {
         return (
             <div>
                 <NavBar/>
-                <div className="container" style={{marginTop: "30px"}}>
+                <div className="container" style={{marginTop: "90px"}}>
                     <div className="row">
                         <div className="col-sm-4">
                             <Profile/>
-                            {/* <p>{this.state.currentUser}</p> */}
                         </div>
                         <div className="col-sm-8">
                             {listCommerce}
@@ -237,7 +130,7 @@ class Account extends Component {
                     </div>
                 </div>
                 <div style={{ width: '100%', marginTop: '100px', bottom: 0 }}>
-                <Footer/>
+                    <Footer/>
                 </div>
             </div>
         );

@@ -7,7 +7,6 @@ import img_promo from '../../assets/images/pub_example.png';
 import Logo from '../../assets/images/logo_weeclik.png';
 import { Grid, CssBaseline, Typography, Paper } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
-import grey from '@material-ui/core/colors/grey';
 import blue from '@material-ui/core/colors/blue';
 
 // import YouTube from 'react-youtube';

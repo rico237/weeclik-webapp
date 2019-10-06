@@ -1,17 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Parse from 'parse';
 import { } from 'react-router-dom';
 import { Typography, Card, CardMedia, CardContent, CardActions, Button } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-// import ShareIcon from '@material-ui/icons/Share';
-import IMG1 from '../../assets/images/img1.png';
-import IMG2 from '../../assets/images/img2.png';
-import IMG3 from '../../assets/images/img3.png';
 
 import { Carousel } from 'react-bootstrap'
+import { withStyles } from '@material-ui/core/styles';
+
+import grey from '@material-ui/core/colors/grey';
 
 
-const useStyles = makeStyles(theme => ({
+const useStyles = theme => ({
     root2: {
         padding: theme.spacing(3, 2),
     },
@@ -38,90 +37,108 @@ const useStyles = makeStyles(theme => ({
         margin: '0 2px',
         transform: 'scale(1)',
     },
-}));
+});
 
-function Commerce(props) {
+class Commerce extends Component {
 
-    const classes = useStyles();
-    // const bulleComm = <span className={classes.bulletCommerce}>•</span>;
+    constructor(props) {
+        super(props);
 
-    
+        this.state = {
+            listImg: []
+        }
+    }
 
-    return (
-        <div className={classes.divContainer}>
+    getPictureSlideByCommerce = () => {
+        let commercePicture = [];
+
+        const ParseCommerce = Parse.Object.extend("Commerce");
+
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
+        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
+
+        queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: this.props.id}));
+
+        queryCommercePhoto.find()
+        .then(responseSnapshot => {
+            responseSnapshot.forEach((elt) => {
+                commercePicture.push(elt.get("photo").url());
+            });
+        });
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve(commercePicture), 300)
+        });
+    }
+
+    updateUrl = async () => {
+        const listPicture = await this.getPictureSlideByCommerce();
+        this.setState({
+            listImg : listPicture
+        })
+    }
+
+    // test2 = async () => {
+    //     return Promise.resolve('test me------->');
+    // }
+
+
+
+    componentDidMount() {
+        this.updateUrl();
+        // this.test2().then((ttt) => console.log(ttt));
+    }
+
+
+
+
+    render() {
+        const { classes } = this.props;
+
+        let listSlidePicture = this.state.listImg.map((url, index) => {
+            return <Carousel.Item key={index}>
+                        <img
+                            className="d-block w-100"
+                            style={{ height: 200, backgroundColor: grey[300], objectFit: "cover" }}
+                            src={url}
+                            alt="Second slide"
+                        />
+                        {/* <Carousel.Caption>
+                            <h3>First slide label</h3>
+                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                        </Carousel.Caption> */}
+                    </Carousel.Item>
+        });
+
+        return (
+            <div className={classes.divContainer}>
             
-            <Card className={classes.card}>
-                <CardMedia
-                    className={classes.media}
-                    // image={fakeImg}
-                    title="Image par defaut du commerce"
-                >
-                    <Carousel /* showArrows={true} */
-                    className={classes.media}>
-                        <Carousel.Item>
-                            <img
-                                className="d-block w-100"
-                                style={{ height: 200, backgroundColor: "#F00", objectFit: "cover" }}
-                                src={IMG1}
-                                alt="First slide"
-                            />
-                            <Carousel.Caption>
-                                <h3>First slide label</h3>
-                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img
-                                className="d-block w-100"
-                                style={{ height: 200, backgroundColor: "#0F0", objectFit: "cover" }}
-                                src={IMG2}
-                                alt="Second slide"
-                            />
-                            <Carousel.Caption>
-                                <h3>First slide label</h3>
-                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                        <Carousel.Item>
-                            <img
-                                className="d-block w-100"
-                                style={{ height: 200, backgroundColor: "#00F", objectFit: "cover" }}
-                                src={IMG3}
-                                alt="Third slide"
-                            />
-                            <Carousel.Caption>
-                                <h3>First slide label</h3>
-                                <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                            </Carousel.Caption>
-                        </Carousel.Item>
-                    </Carousel>
-                </CardMedia>
-                <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">{props.name}</Typography>
-                    <Typography gutterBottom variant="h6" component="h2">{props.status}</Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">{props.description}</Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">{props.images}</Typography>
-                </CardContent>
-                <CardActions disableSpacing>
-                    <div className={classes.divInfo}>{props.nbPartage} <FavoriteIcon/></div>
-                    {/* <div className={classes.divInfo}>16 <ShareIcon/></div> */}
-                    <div className={classes.divInfo2}>
-                        <Button size="small" color="primary" onClick={() => props.showDetails(props.id)}>Plus de détail</Button>
-                    </div>
-                </CardActions>
-            </Card>
-            {/* <Paper className={classes.root2}>
-                <h2>{props.name}</h2>
-                <h5>Etat payé/non payé</h5>
-                <div>
-                    <img src={fakeImg} alt="..." style={{ width: 200 }} />
-                </div>
-                <p>Some text...</p>
-                <p>Sunt in culpa qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco.</p>
-                <br/>
-            </Paper> */}
-        </div>
-    )
+                <Card className={classes.card}>
+                    <CardMedia
+                        className={classes.media}
+                        // image={fakeImg}
+                        title="Image par defaut du commerce"
+                    >
+                        <Carousel /* showArrows={true} */className={classes.media}>
+                            {listSlidePicture}
+                        </Carousel>
+                    </CardMedia>
+                    <CardContent style={{ color: grey[900] }}>
+                        <Typography gutterBottom variant="h5" component="h2" style={{ color: grey[900] }}>{this.props.name}</Typography>
+                        <Typography gutterBottom variant="h6" component="h2" style={{ color: grey[900] }}>{this.props.status}</Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">{this.props.description}</Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">{this.props.images}</Typography>
+                    </CardContent>
+                    <CardActions disableSpacing>
+                        <div className={classes.divInfo}>{this.props.nbPartage} <FavoriteIcon/></div>
+                        <div className={classes.divInfo2}>
+                            <Button size="small" color="primary" onClick={() => this.props.showDetails(this.props.id)}>Plus de détail</Button>
+                        </div>
+                    </CardActions>
+                </Card>
+            </div>
+        )
+    }
 }
 
-export default Commerce;
+export default withStyles(useStyles) (Commerce);

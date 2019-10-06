@@ -11,6 +11,7 @@ import IMG1 from '../../assets/images/img1.png';
 import IMG2 from '../../assets/images/img2.png';
 import IMG3 from '../../assets/images/img3.png';
 import imageCompression from 'browser-image-compression';
+import grey from '@material-ui/core/colors/grey';
 
 const styles = theme => ({
     container: {
@@ -419,11 +420,11 @@ class AboutCommerce extends Component {
                 <NavBar/>
                 <React.Fragment>
                     <CssBaseline />
-                    <Container maxWidth="md">
+                    <Container maxWidth="md" style={{ marginTop: '100px' }}>
 
                         <Card className={classes.card}>
                             <CardContent>
-                                <Typography variant="h4" component="h2">
+                                <Typography variant="h4" component="h2" style={{ color: grey[900] }}>
                                     {this.state.commerce.name}
                                 </Typography>
                                 <Typography className={classes.title} color="textSecondary" gutterBottom>Statut</Typography>
@@ -434,7 +435,7 @@ class AboutCommerce extends Component {
                                 </Typography>
 
                                 <Typography className={classes.title} color="textSecondary" gutterBottom>Nombre de partage</Typography>
-                                <Typography variant="h5" component="h2">
+                                <Typography variant="h5" component="h2" style={{ color: grey[900] }}>
                                     <ShareRoundedIcon/> {" "}
                                     {this.state.commerce.nbPartage}
                                     {bull}
@@ -447,7 +448,7 @@ class AboutCommerce extends Component {
                         </Card>
 
                         <div className={classes.sousMenu}>
-                            <Typography variant="h6" gutterBottom>{"Catégorie du commerce"}</Typography>
+                            <Typography variant="h6" gutterBottom style={{ color: grey[900] }}>{"Catégorie du commerce"}</Typography>
                         </div>
 
                         <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdateCategory}>
@@ -486,7 +487,7 @@ class AboutCommerce extends Component {
                         </form>
 
                         <div className={classes.sousMenu}>
-                            <Typography variant="h6" gutterBottom>{"Informations du commerce"}</Typography>
+                            <Typography variant="h6" gutterBottom style={{ color: grey[900] }}>{"Informations du commerce"}</Typography>
                         </div>
 
                         <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdateInfo}>
@@ -548,7 +549,7 @@ class AboutCommerce extends Component {
 
 
                         <div className={classes.sousMenu}>
-                            <Typography variant="h6" gutterBottom>{"Description de votre commerce"}</Typography>
+                            <Typography variant="h6" gutterBottom style={{ color: grey[900] }}>{"Description de votre commerce"}</Typography>
                         </div>
 
                         <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdateDescription}>
@@ -570,7 +571,7 @@ class AboutCommerce extends Component {
                         </form>
 
                         <div className={classes.sousMenu}>
-                            <Typography variant="h6" gutterBottom>{"Promotion"}</Typography>
+                            <Typography variant="h6" gutterBottom style={{ color: grey[900] }}>{"Promotion"}</Typography>
                         </div>
 
                         <form className={classes.container} autoComplete="on" onSubmit={this.handleUpdatePromotion}>
@@ -593,8 +594,8 @@ class AboutCommerce extends Component {
                         </form>
 
                         <div className={classes.sousMenu}>
-                            <Typography variant="h6" gutterBottom>{"Photos du commerce"}</Typography>
-                            <p>3 Photos maximum</p>
+                            <Typography variant="h6" gutterBottom style={{ color: grey[900] }}>{"Photos du commerce"}</Typography>
+                            <p style={{ color: grey[600] }}>3 Photos maximum</p>
                             <input type="file" onChange={this.onUploadPicture} multiple/>
                         </div>
 

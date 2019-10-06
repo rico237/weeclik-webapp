@@ -1,8 +1,8 @@
 import React from 'react';
 import Parse from 'parse';
 import { Link, Redirect } from 'react-router-dom';
-import { AppBar, Toolbar, Typography, Button, Grid, Avatar, Container, Menu, MenuItem, IconButton, ListItemIcon } from '@material-ui/core';
-import profileImg from '../../assets/images/users.svg';
+import { AppBar, Toolbar, Typography, Grid, Avatar, Container, Menu, MenuItem, IconButton, ListItemIcon } from '@material-ui/core';
+import profileImg from '../../assets/images/LogoWeeclik.svg';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import AccountCircleOutlined from '@material-ui/icons/AccountCircleOutlined';

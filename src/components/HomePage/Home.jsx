@@ -15,7 +15,6 @@ import headerIphone from './images/header-iphone.png';
 
 
 import NavigationBar from '../home/NavBar';
-import Footer from '../Footer';
 
 
 class Home extends Component {

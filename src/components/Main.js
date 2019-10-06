@@ -1,6 +1,5 @@
 import React from 'react';
-import Parse from 'parse';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Login from './login/Login';
 import Home from './home/Account';
 import Register from './register/Register';
@@ -27,7 +26,7 @@ function Main() {
                 <Route path='/aboutcommerce' component={AboutCommerce}/>
                 <Route path='/register' component={Register}/>
                 <Route path='/forgotpassword' component={ForgotPassword}/>
-                <Route path='/login' component={Login}></Route>
+                <Route path='/login' component={Login}/>
             </Switch>
         </div>
     )

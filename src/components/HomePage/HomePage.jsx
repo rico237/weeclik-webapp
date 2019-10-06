@@ -15,7 +15,6 @@ import headerIphone from './images/header-iphone.png';
 
 
 import NavigationBar from '../NavigationBar';
-import Footer from '../Footer';
 
 
 class HomePage extends Component {
@@ -182,7 +181,7 @@ class HomePage extends Component {
                                 <ul className="list-unstyled li-space-lg">
                                 <li className="media">
                                     <i className="fas fa-square"></i>
-                                    <div className="media-body">Lire nos <a className="turquoise" href="">Termes &amp; Conditions</a>, <a className="turquoise" href="#">Politique de vie privée</a></div>
+                                    <div className="media-body">Lire nos <a className="turquoise" href="#">Termes &amp; Conditions</a>, <a className="turquoise" href="#">Politique de vie privée</a></div>
                                 </li>
                                 </ul>
                             </div>

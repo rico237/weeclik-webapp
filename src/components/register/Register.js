@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Grid, CssBaseline, Typography, Paper } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import Parse from 'parse';
 import LoadApp from '../external_link/LoadApp';
 import img_promo from '../../assets/images/pub_example.png';

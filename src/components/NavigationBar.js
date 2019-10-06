@@ -1,11 +1,11 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Grid, Typography, AppBar, Toolbar, Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { Grid, Typography, AppBar, Toolbar, Avatar, Container, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import MoreIcon from '@material-ui/icons/MoreVert';
 
 // Ressources
-import Logo from '../assets/images/logo_weeclik.png';
+import Logo from '../assets/images/LogoWeeclik.svg';
 
 const styles =  makeStyles(theme => ({
     root: {
@@ -88,30 +88,31 @@ const styles =  makeStyles(theme => ({
     return (
         <div className={classes.grow}>
             <AppBar position="fixed" elevation={1} style={{ backgroundColor: "white" }}>
-                <Toolbar>
-                    <Grid edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
-                        <Avatar alt="user img" src={Logo} className={classes.avatar} style={{borderRadius:0}}/>
-                    </Grid>
-                    <Typography variant="h4" className={classes.title}>Weeclik</Typography>
-                    {/* <Button onClick={gotoRefConnexion}>Connexion</Button> */}
-                    <div className={classes.grow}/>
-                    <div className={classes.sectionDesktop}>
-                        <Link className="btn btn-primary rounded" style={{ textDecoration: 'none' }} to="/login" role="button">Connexion</Link>
-                        <Link className="btn btn-outline-primary rounded" style={{ marginLeft: '10px', textDecoration: 'none' }} to="/register" role="button">Inscription</Link>
-                    </div>
-                    <div className={classes.sectionMobile}>
-                        <IconButton
-                            aria-label="show more"
-                            aria-controls="mobileMenuId"
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon style={{ color: 'black' }} />
-                        </IconButton>
-                    </div>
-                    
-                </Toolbar>
+                <Container fixed>
+                    <Toolbar>
+                        <Grid edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
+                            <Avatar alt="user img" src={Logo} className={classes.avatar} style={{borderRadius:0}}/>
+                        </Grid>
+                        <Typography variant="h4" className={classes.title}>Weeclik</Typography>
+                        {/* <Button onClick={gotoRefConnexion}>Connexion</Button> */}
+                        <div className={classes.grow}/>
+                        <div className={classes.sectionDesktop}>
+                            <Link className="btn btn-primary rounded" style={{ textDecoration: 'none' }} to="/login" role="button">Connexion</Link>
+                            <Link className="btn btn-outline-primary rounded" style={{ marginLeft: '10px', textDecoration: 'none' }} to="/register" role="button">Inscription</Link>
+                        </div>
+                        <div className={classes.sectionMobile}>
+                            <IconButton
+                                aria-label="show more"
+                                aria-controls="mobileMenuId"
+                                aria-haspopup="true"
+                                onClick={handleMobileMenuOpen}
+                                color="inherit"
+                            >
+                                <MoreIcon style={{ color: 'black' }} />
+                            </IconButton>
+                        </div>
+                    </Toolbar>
+                </Container>
             </AppBar>
 
             <Menu
