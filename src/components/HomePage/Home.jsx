@@ -14,10 +14,10 @@ import download from './images/download.png';
 import headerIphone from './images/header-iphone.png';
 
 
-import NavigationBar from '../NavigationBar';
+import NavigationBar from '../home/NavBar';
 
 
-class HomePage extends Component {
+class Home extends Component {
     
     render() {
 
@@ -181,7 +181,7 @@ class HomePage extends Component {
                                 <ul className="list-unstyled li-space-lg">
                                 <li className="media">
                                     <i className="fas fa-square"></i>
-                                    <div className="media-body">Lire nos <a className="turquoise" href="#">Termes &amp; Conditions</a>, <a className="turquoise" href="#">Politique de vie privée</a></div>
+                                    <div className="media-body">Lire nos <a className="turquoise" href="">Termes &amp; Conditions</a>, <a className="turquoise" href="#">Politique de vie privée</a></div>
                                 </li>
                                 </ul>
                             </div>
@@ -215,4 +215,4 @@ class HomePage extends Component {
         }
     }
     
-    export default HomePage;
+    export default Home;

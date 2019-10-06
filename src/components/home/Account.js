@@ -28,11 +28,14 @@ class Account extends Component {
 
     getAllCommerces() {
         const ParseCommerce = Parse.Object.extend("Commerce");
-        const queryCommerce   = new Parse.Query(ParseCommerce);
-        queryCommerce.equalTo( "owner", this.state.currentUser);
+        const queryCommerce = new Parse.Query(ParseCommerce);
+
+        queryCommerce.equalTo("owner", this.state.currentUser);
+
+        let newCommerces = [];
+
         queryCommerce.find()
             .then(response => {
-                let newCommerce = [];
                 response.forEach((el) => {
 
                     var _status;
@@ -59,19 +62,19 @@ class Account extends Component {
                             break;
                     }
 
-
-                    newCommerce.push({
+                    newCommerces.push({
                         "id": el.id,
                         "name": el.get("nomCommerce"),
                         "status": _status,
                         "description": el.get("description"),
                         "nbPartage": el.get("nombrePartages")
                     });
-                })
-                this.setState(({
-                    commerceList: newCommerce
-                }))
-                console.log(this.state.commerceList);
+                    
+                });
+                
+                this.setState({
+                    commerceList: newCommerces,
+                });
             })
             .catch(error => {
                 console.log(error);
@@ -116,11 +119,10 @@ class Account extends Component {
         return (
             <div>
                 <NavBar/>
-                <div className="container" style={{marginTop: "30px"}}>
+                <div className="container" style={{marginTop: "90px"}}>
                     <div className="row">
                         <div className="col-sm-4">
                             <Profile/>
-                            {/* <p>{this.state.currentUser}</p> */}
                         </div>
                         <div className="col-sm-8">
                             {listCommerce}
@@ -128,7 +130,7 @@ class Account extends Component {
                     </div>
                 </div>
                 <div style={{ width: '100%', marginTop: '100px', bottom: 0 }}>
-                <Footer/>
+                    <Footer/>
                 </div>
             </div>
         );
