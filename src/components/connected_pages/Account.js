@@ -119,15 +119,17 @@ class Account extends Component {
         return (
             <div>
                 <NavBar/>
-                <div className="container" style={{marginTop: "90px"}}>
-                    <div className="row">
-                        <div className="col-sm-4">
+                <div className="container">
+                <Profile/>
+                {listCommerce}
+                    {/* <div className="row" style={{ paddingTop: "90px", marginBottom: 20, backgroundColor: "#0F0" }}>
+                        <div className="col-sm-4" style={{ marginBottom: 20, backgroundColor: "#00F" }}>
                             <Profile/>
                         </div>
                         <div className="col-sm-8">
                             {listCommerce}
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div style={{ width: '100%', marginTop: '100px', bottom: 0 }}>
                     <Footer/>

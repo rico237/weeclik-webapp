@@ -1,4 +1,6 @@
 import React, { Component, Fragment } from 'react';
+import Parse from 'parse';
+import { Redirect } from 'react-router-dom';
 import './css/bootstrap.css';
 import './css/fontawesome-all.css';
 import './css/styles.css';
@@ -18,8 +20,20 @@ import NavigationBar from '../NavigationBar';
 
 
 class HomePage extends Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            currentUser: Parse.User.current()
+        };
+    }
     
     render() {
+        
+        if (Parse.User.current()) {
+            return <Redirect to='/home' />
+        }
 
         return (
             <Fragment>
@@ -181,7 +195,7 @@ class HomePage extends Component {
                                 <ul className="list-unstyled li-space-lg">
                                 <li className="media">
                                     <i className="fas fa-square"></i>
-                                    <div className="media-body">Lire nos <a className="turquoise" href="#">Termes &amp; Conditions</a>, <a className="turquoise" href="#">Politique de vie privée</a></div>
+                                    <div className="media-body">Lire nos <a className="turquoise" href="fake_url">Termes &amp; Conditions</a>, <a className="turquoise" href="fake_url">Politique de vie privée</a></div>
                                 </li>
                                 </ul>
                             </div>

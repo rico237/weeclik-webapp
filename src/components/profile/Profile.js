@@ -3,24 +3,53 @@ import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
 // import ImageUploader from 'react-images-upload';
 import profileImg from '../../assets/images/users.svg';
-import { Button } from '@material-ui/core';
+import { Button, IconButton, Typography, Paper, Card, Avatar, CardContent, CardActions, Dialog, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
+import EditIcon from '@material-ui/icons/Edit';
+
 import grey from '@material-ui/core/colors/grey';
+
+import AddImg from '../../assets/images/addImage.svg'
 
 const styles = theme => ({
     root: {
         height: '100%',
+        margin: theme.spacing(2),
+        // minWidth: "400px"
     },
     button: {
         margin: theme.spacing(4, 0),
     },
+    buttonAction: {
+        margin: theme.spacing(1),
+    },
     buttonUpload: {
         margin: theme.spacing(1),
+    },
+    inputLoadPicture: {
+        display: 'none'
     },
     input: {
         display: 'none',
     },
+    bigAvatar: {
+        margin: 10,
+        width: 150,
+        height: 150,
+    },
+    firstCardContent: {
+        background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+        // WebkitFilter: 'blur(0.5px)'
+        //"linear-gradient(to bottom right, #f44336, #fff)"
+    },
+    secondCardContent: {
+        background: 'white',
+        paddingLeft: "50px",
+        paddingRight: "50px",
+        // WebkitFilter: 'blur(0.5px)'
+        //"linear-gradient(to bottom right, #f44336, #fff)"
+    }
 });
 
 class Profile extends Component {
@@ -29,7 +58,7 @@ class Profile extends Component {
         super(props);
 
         this.state = {
-            canModify: false,
+            open: false,
             addCommerce: false,
             isModify: false,
             nbCommerce: 0,
@@ -53,6 +82,14 @@ class Profile extends Component {
         this.onChange = this.onChange.bind(this);
     }
 
+    handleOpen = (event) => {
+        this.setState({ open: true });
+    }
+
+    handleClose = () => {
+        this.setState({ open: false });
+    }
+
 
     /**
      * Met a jour la photo de profile
@@ -61,7 +98,6 @@ class Profile extends Component {
     onChange(event) {
         var currentUser = Parse.User.current();
 
-        // console.log(event.target.files[0]);
         var file = new Parse.File("image", event.target.files[0]);
         if (currentUser) {
             file.save().then(function() {
@@ -72,8 +108,6 @@ class Profile extends Component {
                     }, (error) => {
                         console.error(error);
                     });
-                // console.log("----------------<<<<<<<<<<<<<"+file.name+">>>>>>>>>>----------------");
-                // console.log(file.url());// TODO sauvegarder dans la table USER
             }, (error) => {
                 console.error(error);
             });
@@ -85,7 +119,7 @@ class Profile extends Component {
 
     handleClick() {
         this.setState(state => ({
-            canModify: !state.canModify
+            open: !state.open
         }));
     }
 
@@ -97,7 +131,6 @@ class Profile extends Component {
 
     handleModifyProfile() {
         this.setState(state => ({
-            canModify: !state.canModify,
             isModify: !state.isModify
         }));
     }
@@ -127,10 +160,8 @@ class Profile extends Component {
             currentUser.set('name', this.state.user.name);
             currentUser.save()
                 .then((user) => {
-                    // console.log(user);
-                    this.setState(state => ({
-                        canModify: !state.canModify
-                    }));
+                    console.log(user);
+                    this.handleClose();
                 }, (error) => {
                     console.error(error);
                 });
@@ -198,85 +229,132 @@ class Profile extends Component {
             )
         }
 
-        if (this.state.canModify) {
-            return (
-                <div style={{ color: grey[900] }}>
-                    <img src={this.state.user.picture} className="rounded" style={{ width: 200 }} alt="Default profile"/>
-                    <input type="file" onChange={this.onChange} />
-
-                    {/* <ImageUploader
-                        withIcon={false}
-                        buttonText="Choisir une image"
-                        onChange={this.onChange}
-                        imgExtension={['.jpg', '.png']}
-                        maxFileSize={5242880}
-                    /> */}
-
-                    <h2 style={{ color: grey[900] }}>{this.state.user.name}</h2>
-                    {/* <h3>Coordonnées</h3>
-                    <p>Lorem ipsum dolor sit ame.</p> */}
-
-                    <form onSubmit={this.changeMyInfo}>
-                        <fieldset>
-                            <div className="form-group">
-                                <label htmlFor="nameInput">Name</label>
-                                <input
-                                    type="text"
-                                    id="nameInput"
-                                    className="form-control"
-                                    value={this.state.user.name}
-                                    onChange={e => this.handleChangeName(e.target.value)}
-                                    placeholder={this.state.user.name}/>
-                            </div>
-                            <div className="form-group">
-                                <label htmlFor="emailInput">Mail</label>
-                                <input
-                                    type="email"
-                                    id="emailInput"
-                                    className="form-control"
-                                    value={this.state.user.email}
-                                    onChange={e => this.handleChangeMail(e.target.value)}
-                                    placeholder={this.state.user.email}/>
-                            </div>
-                            <input type="submit" className="btn btn-primary btn-sm" value="Valider"/>
-                        </fieldset>
-                    </form>
-                    <hr className="d-sm-none"></hr>
-                    <button className="btn btn-primary btn-sm invisible" onClick={this.handleClick}>Modifier le profile</button>
-                </div>
-            )
-        }
-
         return (
-            <div style={{ marginBottom: 20 }}>
-                <img src={this.state.user.picture} className="rounded" style={{ width: 200 }} alt="Default profile"/>
-                <h2 style={{ color: grey[900] }}>{this.state.user.name}</h2>
-                <p style={{ color: grey[700] }}>{this.state.user.email}</p>
+            <div style={{ marginBottom: 20, paddingTop: "90px" }}>
+                
+                <Paper className={classes.root}>
+                    <Card>
+                        <CardContent className={classes.firstCardContent}>
+                            <div>
+                                <IconButton variant="h5" component="h2" onClick={this.handleOpen} style={{ float: "right", color: grey[50]}}>
+                                    <EditIcon/>
+                                </IconButton>
+                                {/* <IconButton variant="body2" component="p" style={{ color: grey[300]}}>
+                                    {this.state.user.email}
+                                </IconButton> */}
+                            </div>
+                        
+                            <center style={{ padding: "50px" }}>
+                                <Avatar alt="Image de profile" src={this.state.user.picture} className={classes.bigAvatar} />
+                                <Typography variant="h5" component="h2" style={{ color: grey[50]}}>
+                                    {this.state.user.name}
+                                </Typography>
+                                <Typography variant="body2" component="p" style={{ color: grey[300]}}>
+                                    {this.state.user.email}
+                                </Typography>
+                            </center>
+                        </CardContent>
+                        <CardActions className={classes.secondCardContent}>
+                            <center>
+                                <Button
+                                    size="small"
+                                    color="primary"
+                                    className={classes.buttonAction}
+                                    onClick={this.handleClick2}>Creer un nouveau commerce</Button>
 
-                {/* <p>{this.getNbCommerce()}</p> */}
+                                {/* <Button size="small" color="primary" className={classes.buttonAction}>Bouton 2</Button> */}
+                                <Button
+                                    size="small"
+                                    color="primary"
+                                    className={classes.buttonAction}
+                                    onClick={this.handleOpen}>Modifier le profile</Button>
+                            </center>
+                        </CardActions>
+                    </Card>
+                </Paper>
 
-                {/* <h3>Coordonnées</h3>
-                <p>Lorem ipsum dolor sit ame.</p> */}
 
-                {/* <form>
-                    <fieldset disabled>
-                        <div className="form-group">
-                            <label htmlFor="nameInput">Name</label>
-                            <input type="text" id="nameInput" className="form-control" placeholder={this.state.user.name}/>
-                        </div>
-                        <div className="form-group">
-                            <label htmlFor="emailInput">Mail</label>
-                            <input type="email" id="emailInput" className="form-control" placeholder={this.state.user.email}/>
-                        </div>
-                    </fieldset>
-                </form> */}
-                <hr className="d-sm-none"></hr>
-                <button className="btn btn-primary btn-sm" onClick={this.handleClick}>Modifier votre profile ?</button>
-                <hr className="d-sm-none"/>
-                <div>
-                    <Button variant="contained" className={classes.button} onClick={this.handleClick2}>Creer un Nouveau commerce</Button>
+
+
+
+
+
+
+
+
+
+                <div style={{ color: grey[900], paddingTop: "90px" }}>
+                    <Dialog
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Modifier votre profile"}</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description" style={{ minWidth: "500px"}}>
+                                <input
+                                    id="icon-input-file"
+                                    accept="image/*"
+                                    type="file"
+                                    className={classes.inputLoadPicture}
+                                    onChange={this.onChange} />
+                                <label htmlFor="icon-input-file">
+                                    <img
+                                        src={AddImg}
+                                        className="rounded"
+                                        alt="Default profile"
+                                        style={{ width: 200 }}/>
+                                    {/* {this.state.user.picture} */}
+                                </label>
+
+                                {/* <ImageUploader
+                                    withIcon={false}
+                                    buttonText="Choisir une image"
+                                    onChange={this.onChange}
+                                    imgExtension={['.jpg', '.png']}
+                                    maxFileSize={5242880}
+                                /> */}
+
+                                <h2 style={{ color: grey[900] }}>{this.state.user.name}</h2>
+
+                                <form onSubmit={this.changeMyInfo}>
+                                    <fieldset>
+                                        <div className="form-group">
+                                            <label htmlFor="nameInput">Name</label>
+                                            <input
+                                                type="text"
+                                                id="nameInput"
+                                                className="form-control"
+                                                value={this.state.user.name}
+                                                onChange={e => this.handleChangeName(e.target.value)}
+                                                placeholder={this.state.user.name}/>
+                                        </div>
+                                        <div className="form-group">
+                                            <label htmlFor="emailInput">Mail</label>
+                                            <input
+                                                type="email"
+                                                id="emailInput"
+                                                className="form-control"
+                                                value={this.state.user.email}
+                                                onChange={e => this.handleChangeMail(e.target.value)}
+                                                placeholder={this.state.user.email}/>
+                                        </div>
+                                        <input type="submit" className="btn btn-primary btn-sm" value="Valider"/>
+                                    </fieldset>
+                                </form>
+                                <hr className="d-sm-none"></hr>
+                                <button className="btn btn-primary btn-sm invisible" onClick={this.handleClick}>Modifier le profile</button>
+                            </DialogContentText>
+                        </DialogContent>
+                    </Dialog>
+
+                    
                 </div>
             </div>
+
+
+
         )
     }
 }

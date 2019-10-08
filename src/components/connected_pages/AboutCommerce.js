@@ -332,9 +332,7 @@ class AboutCommerce extends Component {
 
     onUploadVideo = (event) => {
         console.log("Upload video");
-        var taille = 0;
         if (event.target.files.length === 1) {
-            taille = event.target.files.length;
             var video = event.target.files[0];
             console.log('OriginalFile size ' + (video instanceof Blob) + " MB");
             console.log('OriginalFile size ' + (video.size / 1024 / 1024) + " MB");
