@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { history } from '../helpers';
 import { alertActions } from '../redux/actions'
 
-import { HomePage } from '../components/homePage';
+import { HomePage } from '../components/homePage/index';
 import { ForgotPage } from '../components/forgotPasswordPage';
 import { ConfirmPage } from '../components/confirmationSignUpPage';
 import { LoginPage } from '../components/loginPage';
