@@ -95,7 +95,7 @@ class NavBar extends React.Component {
                             <Grid edge="start" className={classes.menuButton} color="inherit" aria-label="Menu">
                                 <Avatar alt="user img" src={profileImg} className={classes.avatar} />
                             </Grid>
-                            <Typography variant="h6" className={classes.title}><Link style={{ color: '#000', textDecoration: 'none' }} to="/home">{this.state.currentUser.get("name")} {bull} Weeclik Partenaire</Link></Typography>
+                            {/* <Typography variant="h6" className={classes.title}><Link style={{ color: '#000', textDecoration: 'none' }} to="/">{this.state.currentUser.get("name")} {bull} Weeclik Partenaire</Link></Typography> */}
                             <IconButton
                                 aria-label="show more"
                                 aria-owns={this.state.open ? 'simple-menu' : null}

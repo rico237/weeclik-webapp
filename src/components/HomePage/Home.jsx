@@ -181,7 +181,7 @@ class Home extends Component {
                                 <ul className="list-unstyled li-space-lg">
                                 <li className="media">
                                     <i className="fas fa-square"></i>
-                                    <div className="media-body">Lire nos <a className="turquoise" href="">Termes &amp; Conditions</a>, <a className="turquoise" href="#">Politique de vie privée</a></div>
+                                    <div className="media-body">Lire nos <a className="turquoise" href="fake_url">Termes &amp; Conditions</a>, <a className="turquoise" href="fake_url">Politique de vie privée</a></div>
                                 </li>
                                 </ul>
                             </div>

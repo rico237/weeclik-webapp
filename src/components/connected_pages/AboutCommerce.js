@@ -7,9 +7,6 @@ import { Container, CssBaseline, TextField, Button, MenuItem, Typography, GridLi
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
 import ShareRoundedIcon from '@material-ui/icons/ShareRounded';
 import { withStyles } from '@material-ui/core/styles';
-import IMG1 from '../../assets/images/img1.png';
-import IMG2 from '../../assets/images/img2.png';
-import IMG3 from '../../assets/images/img3.png';
 import imageCompression from 'browser-image-compression';
 import grey from '@material-ui/core/colors/grey';
 
@@ -116,6 +113,8 @@ class AboutCommerce extends Component {
 
                 promotion: '',
             },
+
+            listImg: [],
 
             urls: {
                 urlImg1: '',
@@ -316,6 +315,38 @@ class AboutCommerce extends Component {
         }
     }
 
+    uploadVideoToServer(movie) {
+        var file = new Parse.File(movie.name, movie);
+        var Commerce_Video = new Parse.Object("Commerce_Videos");
+        if (this.state.currentUser) {
+            file.save().then(() => {
+                Commerce_Video.set("nameVideo", movie.name);
+                Commerce_Video.set("video", file);
+                Commerce_Video.set("leCommerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceID));
+                Commerce_Video.save();
+            }, (error) => {
+                console.error(error);
+            });
+        }
+    }
+
+    onUploadVideo = (event) => {
+        console.log("Upload video");
+        if (event.target.files.length === 1) {
+            var video = event.target.files[0];
+            console.log('OriginalFile size ' + (video instanceof Blob) + " MB");
+            console.log('OriginalFile size ' + (video.size / 1024 / 1024) + " MB");
+            console.log(video)
+
+            this.uploadVideoToServer(video);
+
+        } else {
+            
+        }
+    }
+
+
+
     getCommerceInfo() {
         // console.log("id = " + this.state.commerceID);
         const ParseCommerce = Parse.Object.extend("Commerce");
@@ -378,7 +409,7 @@ class AboutCommerce extends Component {
             response.forEach((elt) => {
                 commercePicture.push(elt.get("photo").url());
                 // console.log(elt.get("photo").url());
-                // console.log(commercePicture);
+                console.log(commercePicture);
                 
             });
             this.setState({
@@ -402,10 +433,39 @@ class AboutCommerce extends Component {
     }
 
 
+    getPictureSlideByCommerce = () => {
+        let commercePicture = [];
+
+        const ParseCommerce = Parse.Object.extend("Commerce");
+
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
+        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
+
+        queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: this.state.commerceID}));
+
+        queryCommercePhoto.find()
+        .then(responseSnapshot => {
+            responseSnapshot.forEach((elt) => {
+                commercePicture.push(elt.get("photo").url());
+            });
+        });
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve(commercePicture), 300)
+        });
+    }
+
+    updateUrlPicture = async () => {
+        const listPicture = await this.getPictureSlideByCommerce();
+        this.setState({
+            listImg : listPicture
+        })
+    }
+
+
     componentDidMount() {
         this.getCommerceInfo();
-        this.getAllPicture();
-        console.log("===="+JSON.stringify(this.state.urls, null, 2));
+        this.updateUrlPicture();
     }
 
 
@@ -601,7 +661,7 @@ class AboutCommerce extends Component {
 
                         <GridList cellHeight={250} cols={3}>
                             <GridListTile>
-                                <img src={IMG1} alt="Titre" />
+                                <img src={this.state.listImg[0]} alt="Titre" />
                                 <GridListTileBar
                                     title="Titre A"
                                     subtitle={<span>at : "Date de creation"</span>}
@@ -613,7 +673,7 @@ class AboutCommerce extends Component {
                                 />
                             </GridListTile>
                             <GridListTile>
-                                <img src={IMG2} alt="Titre" />
+                                <img src={this.state.listImg[1]} alt="Titre" />
                                 <GridListTileBar
                                     title="Titre A"
                                     subtitle={<span>at : "Date de creation"</span>}
@@ -625,7 +685,7 @@ class AboutCommerce extends Component {
                                 />
                             </GridListTile>
                             <GridListTile>
-                                <img src={IMG3} alt="Titre" />
+                                <img src={this.state.listImg[2]} alt="Titre" />
                                 <GridListTileBar
                                     title="Titre A"
                                     subtitle={<span>at : "Date de creation"</span>}
@@ -639,10 +699,10 @@ class AboutCommerce extends Component {
                         </GridList>
 
 
-                        {/* <div className={classes.sousMenu}>
-                            <Typography variant="h6" gutterBottom>{"Vidéo du commerce"}</Typography>
-                            <Button>COUCOU</Button>
-                        </div> */}
+                        <div className={classes.sousMenu}>
+                            <Typography variant="h6" gutterBottom style={{ color: grey[900] }}>{"Vidéo du commerce"}</Typography>
+                            <input type="file" onChange={this.onUploadVideo} accept="video/mp4,video/x-m4v,video/*"/>
+                        </div>
 
                     </Container>
                 </React.Fragment>
