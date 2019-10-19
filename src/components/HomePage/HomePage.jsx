@@ -1,18 +1,13 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-
-import { Link } from 'react-router-dom';
 import { Button, Dialog, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
-
 import YouTube from 'react-youtube';
-
 import Michel from '../../assets/images/team/michel.jpg';
 import Aziz from '../../assets/images/team/aziz.jpg';
 import Mohamed from '../../assets/images/team/mohamed.jpg';
 import Herrick from '../../assets/images/team/herrick.jpg';
 import Grace from '../../assets/images/team/grace.jpg';
-
 import detail1 from './images/details-1-iphone.png';
 import detail2 from './images/details-2-iphone.png';
 import download from './images/download.png';

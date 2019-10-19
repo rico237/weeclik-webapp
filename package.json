@@ -26,8 +26,8 @@
     "video-react": "^0.14.1"
   },
   "engines": {
-    "node": "12.16.0",
-    "npm": "6.11.3"
+    "node": "10.16.0",
+    "npm": "6.9.0"
   },
   "scripts": {
     "start": "npm install && react-scripts start",
