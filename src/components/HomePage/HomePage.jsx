@@ -1,6 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
+
+import { Link } from 'react-router-dom';
+import { Button, Dialog, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
+
+import YouTube from 'react-youtube';
+
 import Michel from '../../assets/images/team/michel.jpg';
 import Aziz from '../../assets/images/team/aziz.jpg';
 import Mohamed from '../../assets/images/team/mohamed.jpg';
@@ -17,15 +23,48 @@ import './css/fontawesome-all.css';
 import './css/styles.css';
 
 
+const styleButton = {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+}
+
 class HomePage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            open: false,
         };
     }
 
+    handleOpen = () => {
+        this.setState({ open: true });
+    }
+
+    handleClose = () => {
+        this.setState({ open: false });
+    }
+
+    _onReady(event) {
+        // access to player in all event handlers via event.target
+        event.target.pauseVideo();
+    }
+
     render() {
+
+        const opts = {
+            // height: '100%',
+            width: '100%',
+            playerVars: { // https://developers.google.com/youtube/player_parameters
+                autoplay: 1
+            }
+        }
+
         return (
             <Fragment>
                 <header id="header" className="header">
@@ -71,13 +110,69 @@ class HomePage extends Component {
                             <div className="row">
                                 <div className="col-lg-6">
                                     <div className="text-container">
+                                        <h3>Être ambassadrise / ambassadeure Weeclik</h3>
+                                        <p>Partagez l'amour et la confiance que vous rend votre commerçant en la partageant avec vos proches, votre famille, vos voisins ou encore avec vos collègues de travail.</p>
+                                        <p>Intégrez le réseau de partage viral Weeclik © et profitez de promotions exclusives avec vos commerçants de confiance.</p>
+
+                                        {/* <Button variant="contained" component={Link} to="/login" className="btn-solid-lg page-scroll">Connexion</Button> */}
+                                        <Button onClick={() => {this.handleOpen()}} style={styleButton}>Devenir ambassadrise/ ambassadeure</Button>
+                                        {/* <a className="btn-solid-lg page-scroll" href="fake_url" target="_blank" rel="noopener noreferrer">Devenir ambassadrise/ ambassadeure</a> */}
+                                    </div>
+                                </div> 
+                                <div className="col-lg-6">
+                                    <img className="img-fluid" src={detail2} alt="alternative"/>
+                                </div> 
+                            </div> 
+                        </div> 
+                    </div> 
+                </div>
+
+
+
+
+                <div>
+                    <Dialog
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                        style={{ minHeight: "600px"}}
+                        // fullWidth={true}
+                        maxWidth={"md"}
+                    >
+                        <DialogTitle id="alert-dialog-title">{"Être ambassadrise / ambassadeure Weeclik"}</DialogTitle>
+                        <DialogContent>
+                            <YouTube
+                                videoId="HEPL30xM25U"
+                                opts={opts}
+                                onReady={this._onReady}
+                                style={{ margin: '10px' }}
+                            />
+                            <DialogContentText id="alert-dialog-description">
+                                
+                                
+                                
+                            </DialogContentText>
+                        </DialogContent>
+                    </Dialog>
+                </div>
+
+
+
+
+                <div className="basic-3">
+                    <div className="second">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-lg-6">
+                                    <img className="img-fluid" src={detail2} alt="alternative"/>
+                                </div> 
+                                <div className="col-lg-6">
+                                    <div className="text-container">
                                         <h3>Une réseau de confiance et humain</h3>
                                         <p>Partagez l'amour et la confiance que vous rend votre commerçant en la partageant avec vos proches, votre famille, vos voisins ou encore avec vos collègues de travail.</p>
                                         <p>Intégrez le réseau de partage viral Weeclik<sup>©</sup> et profitez de promotions exclusives avec vos commerçants de confiance.</p>
                                     </div> 
-                                </div> 
-                                <div className="col-lg-6">
-                                    <img className="img-fluid" src={detail2} alt="alternative"/>
                                 </div> 
                             </div> 
                         </div> 
@@ -206,7 +301,7 @@ class HomePage extends Component {
                     <div className="container">
                         <div className="row">
                             <div className="col-lg-12">
-                                <p className="p-small">Copyright {new Date().getFullYear()} - Weeclik<sup>©</sup></p>
+                                <p className="p-small">Copyright {new Date().getFullYear()} - Weeclik ©</p>
                             </div>
                         </div>
                     </div>
