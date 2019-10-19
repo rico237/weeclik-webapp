@@ -25,10 +25,6 @@
     "redux-thunk": "^2.3.0",
     "video-react": "^0.14.1"
   },
-  "engines": {
-    "node": "10.16.0",
-    "npm": "6.9.0"
-  },
   "scripts": {
     "start": "npm install && react-scripts start",
     "build": "react-scripts build",
