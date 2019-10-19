@@ -172,14 +172,6 @@ class Profile extends Component {
         event.preventDefault();
     }
 
-    getNbCommerce() {
-        var Commerce = Parse.Object.extend("Commerce");
-        var query = new Parse.Query(Commerce);
-        query.equalTo("owner", Parse.User.createWithoutData("EruF4h35eI"));//this.state.currentUser.id
-        // console.log(query.count);
-
-    }
-
     onFileLoad(event, file) {
         console.log(event.target.result, file.name);
     }
