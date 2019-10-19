@@ -1,5 +1,5 @@
 {
-  "name": "test-redux-app",
+  "name": "weeclik-web-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -24,6 +24,10 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
     "video-react": "^0.14.1"
+  },
+  "engines": {
+    "node": "10.16.0",
+    "npm": "6.9.0"
   },
   "scripts": {
     "start": "npm install && react-scripts start",
