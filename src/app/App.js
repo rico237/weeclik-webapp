@@ -36,7 +36,7 @@ class App extends Component {
 					<Navigation/>
 					<Switch>
 						{/* <Route exact path='/' component={HomePage}/> */}
-						<Route exact path='/home' component={HomePage}/>
+						{/* <Route exact path='/home' component={HomePage}/> */}
 						<Route exact path="/forgot" component={ForgotPage}/>
 						<Route exact path="/confirm" component={ConfirmPage}/>
 						<ProtectedSigninRoute path="/login" component={LoginPage}/>
