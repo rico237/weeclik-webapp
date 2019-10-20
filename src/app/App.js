@@ -35,7 +35,7 @@ class App extends Component {
 				<Router history={history}>
 					<Navigation/>
 					<Switch>
-						<Route exact path='/' component={HomePage}/>
+						{/* <Route exact path='/' component={HomePage}/> */}
 						<Route exact path='/home' component={HomePage}/>
 						<Route exact path="/forgot" component={ForgotPage}/>
 						<Route exact path="/confirm" component={ConfirmPage}/>
