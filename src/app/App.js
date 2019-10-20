@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { history } from '../helpers';
 import { alertActions } from '../redux/actions'
 
-import { HomePage } from '../components/homePage';
+import { HomePage } from '../components/HomePage';
 import { ForgotPage } from '../components/forgotPasswordPage';
 import { ConfirmPage } from '../components/confirmationSignUpPage';
 import { LoginPage } from '../components/loginPage';
@@ -35,8 +35,7 @@ class App extends Component {
 				<Router history={history}>
 					<Navigation/>
 					<Switch>
-						{/* <Route exact path='/' component={HomePage}/> */}
-						{/* <Route exact path='/home' component={HomePage}/> */}
+						<Route exact path='/' component={HomePage}/>
 						<Route exact path="/forgot" component={ForgotPage}/>
 						<Route exact path="/confirm" component={ConfirmPage}/>
 						<ProtectedSigninRoute path="/login" component={LoginPage}/>
