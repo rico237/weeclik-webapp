@@ -93,10 +93,8 @@ class RegisterPage extends Component {
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div style={paper}>
-                    <Avatar alt="Logo" src={logo} style={avatar}>
-                        <Link to="/">HOME</Link>
-                    </Avatar>
-                    <Typography component="h1" variant="h5">Sign up</Typography>
+                    <Avatar alt="Logo" src={logo} style={avatar}/>
+                    <Typography component="h1" variant="h5" style={{color: "#000"}}>Sign up</Typography>
                     <form style={form} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
@@ -186,7 +184,7 @@ class RegisterPage extends Component {
                             onClick={this.handleSubmit}>Sign Up</Button>
                         <Grid container justify="flex-end">
                             <Grid item>
-                                <Link to="/login">Already have an account? Sign in</Link>
+                                <Link to="/login" style={{color: "#00F"}}>Already have an account? Sign in</Link>
                             </Grid>
                         </Grid>
                     </form>

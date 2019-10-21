@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, CssBaseline, Button, Grid, GridList, GridListTile } from '@material-ui/core';
+import { Container, CssBaseline, Button, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
+
+import AddImg from '../../assets/icons/addImg.png';
+import AddVideo from '../../assets/icons/addVideo.png';
 
 import "../../../node_modules/video-react/dist/video-react.css";
 import { Player } from 'video-react';
@@ -20,11 +23,27 @@ const root = {
     paddingTop: '70px',
 }
 
+const root2 = {
+    padding: theme.spacing(5),
+}
 
 const paper = {
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4),
+    padding: theme.spacing(3),
+    // marginTop: theme.spacing(4),
+    // marginBottom: theme.spacing(4),
     // margin: '25px'
+}
+
+const styleButton = {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+    marginTop: '15px',
+    marginBottom: '15px'
 }
 //#endregion
 
@@ -344,71 +363,129 @@ class AboutCommerce extends Component {
         let columns = this.props.width === 'xs' || this.props.width === 'sm' ? 1 : 3;
 
         return (
-            <Container component="main" maxWidth="md">
+            <Container component="main" maxWidth="md" style={{ color: "#000" }}>
                 <CssBaseline/>
                 <div style={root}>
                     <Grid
                         container
-                        // direction="column"
-                        // justify="space-between"
-                        // alignItems="center"
-                    >
-                        <Grid item xs={12} className="Weeclik-App-Info-Commerce" style={paper}>
-                            <Button onClick={() => { this.goToBack() }}>Go back</Button>
-                            <Button onClick={() => { this.getDetail(this.state.commerceId) }}>Update commerce</Button>
-                            <Button onClick={() => { this.goToBack() }}>Nouvelle promotion</Button>
+                        spacing={1}
+                        direction="row"
+                        justify="center">
+                        <Grid item xs={12} sm={4} className="Weeclik-App-Info-Commerce2" style={paper}>
+                            <Paper elevation={0} style={root2}>
+                                <Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
+                                <Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ marginTop: '15px', marginBottom: '15px' }}>Update commerce</Button>
+                                <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur c'est quoi une promotion</Typography>
+                                <Button onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton}>Nouvelle promotion</Button>
+                                <Typography component="p" style={{color:"#000"}}>Payer pour voir la visibilité de votre commerce</Typography>
+                                <Button onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton}>Payer</Button>
+
+                                <Typography component="p" style={{color:"#000"}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
+                                <input
+                                    id="icon-input-file-img"
+                                    type="file"
+                                    onChange={this.onUploadImage}
+                                    style={{ display: 'None' }}
+                                    accept="image/*"
+                                    multiple/>
+                                <label htmlFor="icon-input-file-img">
+                                    <img
+                                        src={AddImg}
+                                        className="rounded"
+                                        alt="Default profile"
+                                        style={{ width: 200 }}/>
+                                </label>
+
+                                <Typography component="p" style={{color:"#000"}}>Ajouter une vidéo</Typography>
+                                <input
+                                    id="icon-input-file-video"
+                                    type="file"
+                                    onChange={this.onUploadVideo}
+                                    style={{ display: 'None' }}
+                                    accept="video/mp4,video/x-m4v,video/*"/>
+                                <label htmlFor="icon-input-file-video">
+                                    <img
+                                        src={AddVideo}
+                                        className="rounded"
+                                        alt="Default profile"
+                                        style={{ width: 200 }}/>
+                                </label>
+                                
+                            </Paper>
                         </Grid>
+                        <Grid item xs={12} sm={8} className="Weeclik-App-Info-Commerce2" style={paper}>
+                            <Paper elevation={0} style={root2}>
+                                <Typography variant="h2" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
+                                <h6 style={{color:"#000"}}>{this.state.commerce.statutCommerce}</h6>
+                                <h6 style={{color:"#000"}}>Type : {this.state.commerce.currencyCategory}</h6>
+                                <h6 style={{color:"#000"}}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>	:
+                                    {" " + this.state.commerce.adresse}
+                                </h6>
+                                <h6 style={{color:"#000"}}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> :
+                                    {" " + this.state.commerce.tel}
+                                </h6>
+                                <h6 style={{color:"#000"}}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg> : 
+                                    {" " + this.state.commerce.siteWeb}
+                                </h6>
+                                {/* <p>{this.state.commerce.promotion}</p>
+                                <p>{this.state.commerce.description}</p> */}
+                                <h5 style={{color:"#000", paddingTop: '50px'}}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+                                    {this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
+                                </h5>
+                            </Paper>
 
-                        <Grid item xs={12} className="Weeclik-App-Info-Commerce" style={paper}>
-                            <Button onClick={() => { this.goToBack() }}>Payer pour voir la visibilité de votre commerce</Button>
-                        </Grid>
+                            <div style={{margin:'10px'}}></div>
 
-                        <Grid item xs={12} className="Weeclik-App-Info-Commerce" style={paper}>
-                            <h1>{this.state.commerce.nomCommerce}</h1>
-                            <h6>{this.state.commerce.statutCommerce}</h6>
-                            <h5>{this.state.commerce.nombrePartages} {this.state.commerce.nomCommerce > 1 ? "Partages" : "Partage"}</h5>
-                            <h6>Type : {this.state.commerce.currencyCategory}</h6>
-                            <p>{this.state.commerce.siteWeb}</p>
-                            <p>{this.state.commerce.tel}</p>
-                            <p>{this.state.commerce.adresse}</p>
-                            <p>{this.state.commerce.promotion}</p>
-                            <p>{this.state.commerce.description}</p>
-                        </Grid>
+                            <Paper elevation={0} style={root2}>
+                                <Typography variant="h4" component="h3" style={{color:"#000"}}>Description du commerce</Typography>
+                                <p style={{color:"#000"}}>{this.state.commerce.description}</p>
+                            </Paper>
 
+                            <div style={{margin:'10px'}}></div>
 
-                        <Grid item xs={12} className="Weeclik-App" style={paper}>
-                            <h1>Gallerie</h1>
-                            Vos images: 
-                            <GridList cellHeight={160} cols={columns}>
-                                {this.state.listImg && [...this.state.listImg].map((url, index) => (
-                                    <GridListTile key={index}>
-                                        <img src={url} alt={"Images "+index+" du commerce"}/>
-                                    </GridListTile>
-                                ))}
-                            </GridList>
+                            <Paper elevation={0} style={root2}>
+                                <Typography variant="h4" component="h3" style={{color:"#000"}}>Images du commerce</Typography>
+                                <Grid item xs={12} style={paper}>
+                                    <GridList cellHeight={160} cols={columns}>
+                                        {this.state.listImg && [...this.state.listImg].map((url, index) => (
+                                            <GridListTile key={index}>
+                                                <img src={url} alt={"Images "+index+" du commerce"}/>
+                                            </GridListTile>
+                                        ))}
+                                    </GridList>
 
-                            Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement
-                            <input type="file" onChange={this.onUploadImage} accept='image/*' multiple/>
-                            New images:
-                            <GridList cellHeight={160} cols={columns}>
-                                {this.state.file && [...this.state.file].map((file, index) => (
-                                    <GridListTile key={index}>
-                                        <img src={URL.createObjectURL(file)} alt={"tile.title"}/>
-                                    </GridListTile>
-                                ))}
-                            </GridList>
-                        </Grid>
+                                    <p style={{color:"#000"}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</p>
+                                    {/* <input type="file" onChange={this.onUploadImage} accept='image/*' multiple/> */}
+                                    New images importé:
+                                    <GridList cellHeight={160} cols={columns}>
+                                        {this.state.file && [...this.state.file].map((file, index) => (
+                                            <GridListTile key={index}>
+                                                <img src={URL.createObjectURL(file)} alt={"tile.title"}/>
+                                            </GridListTile>
+                                        ))}
+                                    </GridList>
+                                </Grid>
+                            </Paper>
 
-                        <Grid item xs={12} className="Weeclik-App" style={paper}>
-                            <Player
-                                playsInline
-                                src={this.state.movieURL[0]}
-                            />
-                            <h6>Ajouter une vidéo</h6>
-                            <input type="file" onChange={this.onUploadVideo} accept="video/mp4,video/x-m4v,video/*"/>
+                            <div style={{margin:'10px'}}></div>
+
+                            <Paper elevation={0} style={root2}>
+                                <Typography variant="h4" component="h3" style={{color:"#000"}}>Video du commerce</Typography>
+                                <Grid item xs={12} style={paper}>
+                                    <Player
+                                        playsInline
+                                        src={this.state.movieURL[0]}
+                                    />
+                                    {/* <p style={{color:"#000"}}>Ajouter une vidéo</p>
+                                    <input type="file" onChange={this.onUploadVideo} accept="video/mp4,video/x-m4v,video/*"/> */}
+                                </Grid>
+                            </Paper>
                         </Grid>
                     </Grid>
-                    
                 </div>
             </Container>
         );

@@ -77,10 +77,8 @@ class LoginPage extends Component {
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div style={paper}>
-                    <Avatar alt="Logo" src={logo} style={avatar}>
-                        <Link to="/">HOME</Link>
-                    </Avatar>
-                    <Typography component="h1" variant="h5">Sign in</Typography>
+                    <Avatar alt="Logo" src={logo} style={avatar}/>
+                    <Typography component="h1" variant="h5" style={{color: "#000"}}>Sign in</Typography>
                     <form style={form} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
@@ -122,10 +120,10 @@ class LoginPage extends Component {
                             onClick={this.handleSubmit}>Connexion</Button>
                         <Grid container justify="flex-end">
                             <Grid item xs>
-                                <Link to="/forgot">Forgot password?</Link>
+                                <Link to="/forgot" style={{color: "#00F"}}>Forgot password?</Link>
                             </Grid>
                             <Grid item>
-                                <Link to="/register">{"Don't have an account? Sign Up"}</Link>
+                                <Link to="/register" style={{color: "#00F"}}>{"Don't have an account? Sign Up"}</Link>
                             </Grid>
                         </Grid>
                     </form>

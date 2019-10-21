@@ -18,6 +18,7 @@ const useStyles = makeStyles(theme => ({
     },
     rootNav: {
         flexGrow: 1,
+        backgroundColor: "#FFF"
     },
     bulletPrincipal: {
         display: 'inline-block',
@@ -119,8 +120,8 @@ function Navigation(props) {
                                     
                                 <div>
                                     <div className={classes.sectionDesktop}>
-                                        <Button variant="contained" component={Link} to="/login">Connexion</Button>
-                                        <Button variant="contained" component={Link} to="/register">Inscription</Button>
+                                        <Button variant="contained" color="primary" component={Link} to="/login" className={classes.menuButton}>Connexion</Button>
+                                        <Button variant="contained" color="primary" component={Link} to="/register" className={classes.menuButton}>Inscription</Button>
                                     </div>
                                     <div className={classes.sectionMobile}>
                                         <IconButton

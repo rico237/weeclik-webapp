@@ -4,16 +4,19 @@ import { Redirect } from 'react-router-dom';
 import { Container, CssBaseline, Button, TextField, MenuItem, FormControlLabel, Checkbox, Grid } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-// import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme } from '@material-ui/core/styles';
 
-
-// const theme = createMuiTheme({
-//     spacing: 4,
-// });
+const theme = createMuiTheme({
+    spacing: 4,
+});
 
 const root = {
     flexGrow: 1,
     paddingTop: '70px',
+}
+
+const button = {
+    margin: theme.spacing(1),
 }
 
 
@@ -345,8 +348,8 @@ class UpdateCommerce extends Component {
                         </Grid>
 
 
-                        <Button type="submit" className={"buttonSubmit"} variant="contained" color="primary">Modifier commerce</Button>
-                        <Button onClick={() => this.goToBack()} className={"buttonSubmit"} variant="contained" color="primary">Annuler la modification</Button>
+                        <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Modifier commerce</Button>
+                        <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={button}>Annuler</Button>
                     </form>
                 </div>
             </Container>

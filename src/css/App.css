@@ -43,3 +43,14 @@
 	font-size: calc(10px + 2vmin);
 	color: black;
 }
+
+.Weeclik-App-Info-Commerce2 {
+	/* padding: 10px 15px 15px 15px;h d b g */
+	/* background-color: white; */
+	/* display: flex; */
+	flex-direction: column;
+	/* align-items: center; */
+	/* justify-content: center; */
+	font-size: calc(10px + 2vmin);
+	color: black;
+}
