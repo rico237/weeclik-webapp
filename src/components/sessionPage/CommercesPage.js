@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, CssBaseline, Avatar, Button, GridList, GridListTile, ListSubheader, GridListTileBar, IconButton, Grid, Paper, Typography, Box } from '@material-ui/core';
+import { Container, CssBaseline, Button, GridList, GridListTile, GridListTileBar, IconButton, Grid, Paper, Typography } from '@material-ui/core';
 import IMG1 from '../../assets/images/img1.png';
 import Artisanat from '../../assets/images/categories/cover1.jpg';
 import BienEtre from '../../assets/images/categories/cover2.jpg';
@@ -37,6 +37,9 @@ const root = {
     paddingTop: '70px',
 }
 
+const root2 = {
+    padding: theme.spacing(5),
+}
 
 const paper = {
     margin: `${theme.spacing(1)}px auto`,
@@ -44,6 +47,26 @@ const paper = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+}
+
+const bannier = {
+    margin: `${theme.spacing(1)}px auto`,
+    padding: theme.spacing(2),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    // backgroundColor:"#FFF"
+}
+
+const styleButton = {
+    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+    margin: '5px'
 }
 
 
@@ -203,22 +226,55 @@ class CommercesPage extends Component {
     }
 
     render() {
-        // const { user } = this.props;className="App-header"
-        console.log(this.state.commerceList);
-
         return (
             <Container component="main" maxWidth="md">
                 <CssBaseline/>
                 <div style={root}>
+
+                    <div style={bannier}>
+                        <Grid
+                            container
+                            spacing={2}
+                            direction="row"
+                            justify="center"
+                            alignItems="center">
+                            <Grid item>
+                                <Paper elevation={0} style={root2}>
+                                    <center>
+                                        <Typography variant="h2" component="h3" style={{color:"#000"}}>{this.state.commerceList.length}</Typography>
+                                        <Typography component="p" style={{color:"#000"}}>{this.state.commerceList.length > 1 ? "Commerces" : "Commerce"}</Typography>
+                                    </center>
+                                </Paper>
+                            </Grid>
+                            
+                            <Grid item>
+                                <Paper elevation={0} style={root2}>
+                                    <center>
+                                        <Typography variant="h2" component="h3" style={{color:"#000"}}>2</Typography>
+                                        <Typography component="p" style={{color:"#000"}}>Partage totalisé</Typography>
+                                    </center>
+                                </Paper>
+                            </Grid>
+
+                            <Grid item>
+                                <Paper elevation={0} style={root2}>
+                                    <center>
+                                        <Button
+                                            variant="contained"
+                                            component={Link}
+                                            to="/createcommerce"
+                                            style={styleButton}>Ajouter un commerce</Button>
+                                        <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur la creation d'un commerce</Typography>
+                                    </center>
+                                </Paper>
+                            </Grid>
+                        </Grid>
+                    </div>
+
+
                     <Grid container direction="row-reverse" spacing={3}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <GridList cellHeight={300} spacing={4} style={{width: 'auto'}}>
-                                <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-                                    <Box component="span" m={1}>
-                                        <Button variant="contained" component={Link} to="/createcommerce">Create new commerce</Button>
-                                        <ListSubheader component="div">Mes commerces</ListSubheader>
-                                    </Box>
-                                </GridListTile>
                                 {this.state.commerceList.map((elt, index) => (
                                     
                                     <GridListTile key={index} cols={2}>
@@ -236,19 +292,13 @@ class CommercesPage extends Component {
                                 ))}
                             </GridList>
                         </Grid>
-
-                        <Grid item xs={12} sm={6}>
-                            <Paper style={paper}>
-                                <Grid item  style={{ padding: '30px' }}><Avatar>W</Avatar></Grid>
-                                <Grid item xs>
-                                    Ambassadeur ...
-                                    <Typography noWrap>
-                                        Truncation should be conditionally applicable on this long line of text as this is a much longer line than what the container can support.
-                                    </Typography>
-                                </Grid>
-                            </Paper>
-                        </Grid>
                     </Grid>
+
+
+
+
+
+
                 </div>
             </Container>
         );

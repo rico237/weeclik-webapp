@@ -5,11 +5,19 @@ import { Container, CssBaseline, Button, TextField, MenuItem, FormControlLabel, 
 import IMG1 from '../../assets/images/img1.png';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
+import { createMuiTheme } from '@material-ui/core/styles';
 
+const theme = createMuiTheme({
+    spacing: 4,
+});
 
 const root = {
     flexGrow: 1,
     paddingTop: '70px',
+}
+
+const button = {
+    margin: theme.spacing(1),
 }
 
 
@@ -204,6 +212,10 @@ class CreateCommerce extends Component {
         
     }
 
+    goToBack = () => {
+        this.props.history.goBack();
+    }
+
 
     componentDidMount() {
         // this.props.getUserInfo();
@@ -373,7 +385,8 @@ class CreateCommerce extends Component {
                         </Grid>
 
 
-                        <Button type="submit" className={"buttonSubmit"} variant="contained" color="primary">Creer le commerce</Button>
+                        <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Creer le commerce</Button>
+                        <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={button}>Annuler</Button>
                     </form>
                 </div>
             </Container>

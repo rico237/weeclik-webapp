@@ -78,7 +78,7 @@ class ForgotPage extends Component {
                 <CssBaseline/>
                 <div style={paper}>
                     <Avatar alt="Logo" src={logo} style={avatar}/>
-                    <Typography component="h1" variant="h5">Mot de passe oublié</Typography>
+                    <Typography component="h1" variant="h5" style={{color: "#000"}}>Mot de passe oublié</Typography>
                     <form style={form} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
