@@ -41,13 +41,13 @@ const root2 = {
     padding: theme.spacing(5),
 }
 
-const paper = {
-    margin: `${theme.spacing(1)}px auto`,
-    padding: theme.spacing(2),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-}
+// const paper = {
+//     margin: `${theme.spacing(1)}px auto`,
+//     padding: theme.spacing(2),
+//     display: 'flex',
+//     flexDirection: 'column',
+//     alignItems: 'center',
+// }
 
 const bannier = {
     margin: `${theme.spacing(1)}px auto`,

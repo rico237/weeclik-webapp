@@ -22,6 +22,7 @@ const paper = {
 
 const avatar = {
     margin: theme.spacing(1),
+    borderRadius: 0
 }
 
 const form = {

@@ -100,7 +100,7 @@ function Navigation(props) {
                     <Toolbar>
                         <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
                             <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
-                                <Avatar src={logo} alt="Weeclik Logo" />
+                                <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
                             </Grid>
                             <Typography style={{ float: 'left', width: '50%' }} variant="h5">Weeclik</Typography>
                         </Link>
