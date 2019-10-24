@@ -68,9 +68,9 @@ class HomePage extends Component {
                         <div className="row">
                             <div className="col-lg-6">
                             <div className="text-container">
-                                <h3>Une réseau de confiance et humain</h3>
+                                <h3>Un réseau de confiance et humain</h3>
                                 <p>Partagez l'amour et la confiance que vous rend votre commerçant en la partageant avec vos proches, votre famille, vos voisins ou encore avec vos collègues de travail.</p>
-                                <p>Intégrez le réseau de partage viral Weeclik<sup>©</sup> et profitez de promotions exclusives avec vos commerçants de confiance.</p>
+                                <p>Intégrez le réseau de partage Weeclik<sup>©</sup> et profitez de promotions exclusives avec vos commerçants de confiance.</p>
                             </div> 
                             </div> 
                             <div className="col-lg-6">
