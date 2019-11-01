@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
-import { Button, TextField, Grid } from '@material-ui/core';
+import { Container, Grid } from '@material-ui/core';
 import CheckoutForm from './CheckoutForm';
-import { borderRadius } from '@material-ui/system';
+// import { borderRadius } from '@material-ui/system';
 
 
 const root = {
@@ -42,64 +42,29 @@ class PayPage extends Component {
         if (this.state.complete) return <h1>Purchase Complete</h1>
         
         return (
-            <div style={root}>
-                <Grid container spacing={0}>
-                    <Grid item xs={12} sm={7}></Grid>
-                    <Grid item xs={12} sm={5}>
-                        <div style={{
-                            padding: '25px',
-                            marginLeft: '25px',
-                            borderRadius: '5px',
-                            backgroundColor: '#F6F9FC'
-                        }}>
-                            <StripeProvider apiKey={ this.state.stripePublicKey }>
-                                <div className="example">
-                                    <Elements>
-                                        <CheckoutForm/>
-                                    </Elements>
-                                </div>
-                            </StripeProvider>
-                        </div>
-                        {/* <form>
-                            <Grid container spacing={2}>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        name="mailUser"
-                                        id="outlined-name"
-                                        label="E-mail"
-                                        margin="dense"
-                                        variant="outlined"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        name="nameUser"
-                                        id="outlined-name"
-                                        label="Nom du titulaire de la carte"
-                                        margin="dense"
-                                        variant="outlined"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        fullWidth
-                                        name="nomCommerce"
-                                        id="outlined-name"
-                                        label="Nom du commerce"
-                                        margin="dense"
-                                        variant="outlined"
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button fullWidth variant="contained" color="primary" type="submit">Payer {this.state.prix} €</Button>
-                                </Grid>
-                            </Grid>
-                        </form> */}
+            <Container component="main" maxWidth="md">
+                <div style={root}>
+                    <Grid container spacing={0}>
+                        <Grid item xs={12} sm={7}></Grid>
+                        <Grid item xs={12} sm={5}>
+                            <div style={{
+                                padding: '25px',
+                                // marginLeft: '25px',
+                                borderRadius: '5px',
+                                backgroundColor: '#F6F9FC'
+                            }}>
+                                <StripeProvider apiKey="pk_test_9OkMxuPwf69ObxaAqfOMih5M00m24msfT0">
+                                    <div className="example">
+                                        <Elements>
+                                            <CheckoutForm/>
+                                        </Elements>
+                                    </div>
+                                </StripeProvider>
+                            </div>
+                        </Grid>
                     </Grid>
-                </Grid>
-            </div>
+                </div>
+            </Container>
         );
     }
 }

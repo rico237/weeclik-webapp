@@ -9,7 +9,8 @@ class CheckoutForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            complete: false
+            complete: false,
+            price: '299.99 €'
         };
         this.submit = this.submit.bind(this);
     }
@@ -21,7 +22,7 @@ class CheckoutForm extends Component {
     async submit(ev) {
         // User clicked submit
         let { token } = await this.props.stripe.createToken({name: "Name"});
-        let response = await fetch("/charge", {
+        let response = await fetch("http://127.0.0.1:3001/charge", {
             method: "POST",
             headers: {"Content-Type": "text/plain"},
             body: token
@@ -39,13 +40,17 @@ class CheckoutForm extends Component {
             <div>
                 <div className="checkout">
                     <label>
+                        Name
+                        <input name="name" type="text" placeholder="Name" required/>
+                    </label>
+                    <label>
                         Card details
                         <CardElement />
                     </label>
-                    <button className="button-pay" onClick={this.submit}>Payer 299 €</button>
+                    <button className="button-pay" onClick={this.submit}>Payer {this.state.price}</button>
                 </div>
                 <div>
-                    <p style={{ color: '#6B7C93'}}>Payer <span className="price">299 €</span>, pour rendre votre commerce visible</p>
+                    <p style={{ color: '#6B7C93'}}>Payer <span className="price">{this.state.price}</span>, pour rendre votre commerce visible</p>
                 </div>
             </div>
         );
