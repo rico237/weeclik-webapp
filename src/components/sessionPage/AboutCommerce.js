@@ -340,6 +340,13 @@ class AboutCommerce extends Component {
         })
     }
 
+    goToPay = (_id) => {
+        this.props.history.push({
+            pathname: '/pay',
+            state: { id: _id }
+        })
+    }
+
 
 
 
@@ -378,7 +385,7 @@ class AboutCommerce extends Component {
                                 <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur c'est quoi une promotion</Typography>
                                 <Button onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton}>Nouvelle promotion</Button>
                                 <Typography component="p" style={{color:"#000"}}>Payer pour voir la visibilité de votre commerce</Typography>
-                                <Button onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton}>Payer</Button>
+                                <Button onClick={() => { this.goToPay(this.state.commerceId) }} style={styleButton}>Payer</Button>
 
                                 <Typography component="p" style={{color:"#000"}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
                                 <input

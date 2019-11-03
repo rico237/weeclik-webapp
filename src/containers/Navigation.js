@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, Button } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
+import grey from '@material-ui/core/colors/grey';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
@@ -41,7 +42,18 @@ const useStyles = makeStyles(theme => ({
         fontSize: 30,
     },
     linkMenu: {
-        display: 'flex', alignItems: 'center', color: 'black', textDecoration: 'none', verticalAlign: 'middle'
+        display: 'flex',
+        alignItems: 'center',
+        color: 'black',
+        textDecoration: 'none',
+        verticalAlign: 'middle',
+    },
+    typographyStyle: {
+        color: 'black',
+        textDecoration: 'none',
+        '&:hover': {
+            textDecoration: 'none',
+        }
     },
     sectionDesktop: {
         display: 'none',
@@ -95,14 +107,14 @@ function Navigation(props) {
 
     return (
         <div className={classes.rootNav}>
-            <AppBar position="fixed" elevation={1}>
+            <AppBar color="inherit" position="fixed" elevation={1}>
                 <Container fixed>
                     <Toolbar>
                         <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
                             <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
                                 <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
                             </Grid>
-                            <Typography style={{ float: 'left', width: '50%' }} variant="h5">Weeclik</Typography>
+                            <Typography style={{ float: 'left', width: '50%', color: grey[500] }} variant="h5">Weeclik</Typography>
                         </Link>
                         <div style={{ marginLeft: "auto" }}>
                             {
@@ -184,7 +196,7 @@ function Navigation(props) {
                                     logoCommercant}
                                 alt="Weeclik Logo" />
                         </ListItemIcon>
-                        <Typography variant="inherit">Profile</Typography>
+                        <Typography variant="inherit" className={classes.typographyStyle}>Profile</Typography>
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={handleMenuClose}>
@@ -192,7 +204,7 @@ function Navigation(props) {
                         <ListItemIcon>
                             <Avatar src={logoCommercant} alt="Commerce Logo" />
                         </ListItemIcon>
-                        <Typography variant="inherit">Mes Commerces</Typography>
+                        <Typography variant="inherit" className={classes.typographyStyle}>Mes Commerces</Typography>
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={disconnect}>

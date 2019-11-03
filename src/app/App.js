@@ -13,6 +13,7 @@ import { LoginPage } from '../components/loginPage';
 import { RegisterPage } from '../components/registerPage';
 import { ProfilePage, CommercesPage, CreateCommerce, AboutCommerce, UpdateCommerce } from '../components/sessionPage';
 import { Page404 } from '../components/notFoundPage';
+import PayPage from '../components/private/PayPage';
 
 import '../css/App.css';
 import Navigation from '../containers/Navigation';
@@ -45,6 +46,7 @@ class App extends Component {
 						<PrivateRoute path="/createcommerce" component={CreateCommerce}/>
 						<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
 						<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>
+						<PrivateRoute path="/pay" component={PayPage}/>
 						<Route path="/*" component={Page404} />
 					</Switch>
 				</Router>
