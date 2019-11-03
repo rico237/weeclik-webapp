@@ -111,7 +111,7 @@ class HomePage extends Component {
                                             <p>Intégrez le réseau de partage viral Weeclik © et profitez de promotions exclusives avec vos commerçants de confiance.</p>
 
                                             {/* <Button variant="contained" component={Link} to="/login" className="btn-solid-lg page-scroll">Connexion</Button> */}
-                                            <Button onClick={() => {this.handleOpen()}} style={styleButton}>Devenir ambassadrise/ ambassadeure</Button>
+                                            <Button onClick={() => {this.handleOpen()}} style={styleButton}>Devenir ambassadeur / ambassadrise</Button>
                                             {/* <a className="btn-solid-lg page-scroll" href="fake_url" target="_blank" rel="noopener noreferrer">Devenir ambassadrise/ ambassadeure</a> */}
                                         </div>
                                     </div> 
