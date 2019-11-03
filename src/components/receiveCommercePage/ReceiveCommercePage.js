@@ -35,7 +35,6 @@ class ReceiveCommercePage extends Component {
 
         this.state = {
             commerceId: this.props.match.params.commerceId,
-            currentUser: Parse.User.current(),
             commerce: {
                 nomCommerce: '',
                 adresse: '',
