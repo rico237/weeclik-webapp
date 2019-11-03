@@ -1,16 +1,9 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, CssBaseline, Button, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
-import imageCompression from 'browser-image-compression';
-import { connect } from 'react-redux';
-import { userActions } from '../../redux/actions';
+import { Container, CssBaseline, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import AddImg from '../../assets/icons/addImg.png';
-import AddVideo from '../../assets/icons/addVideo.png';
-
 import "../../../node_modules/video-react/dist/video-react.css";
-import { Player } from 'video-react';
 
 
 //#region THEME
@@ -33,27 +26,15 @@ const paper = {
     // marginBottom: theme.spacing(4),
     // margin: '25px'
 }
-
-const styleButton = {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    border: 0,
-    borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-    marginTop: '15px',
-    marginBottom: '15px'
-}
 //#endregion
 
 
-class AboutCommerce extends Component {
+class ReceiveCommercePage extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            commerceId: this.props.location.state.id,
+            commerceId: this.props.match.params.commerceId,
             currentUser: Parse.User.current(),
             commerce: {
                 nomCommerce: '',
@@ -83,8 +64,6 @@ class AboutCommerce extends Component {
         this.handleValidate = this.handleValidate.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
-        this.onUploadImage = this.onUploadImage.bind(this);
     }
 
     handleChange(event) {
@@ -155,16 +134,6 @@ class AboutCommerce extends Component {
                             break;
                     }
 
-
-                    // commerce: {
-                    //     ville: '',
-                    //     bp: '',
-                    //     owner: '',
-                    //     position: '',
-                    //     mail: '',
-                    //     id: ''
-                    // },
-
                     this.setState(prevState => ({
                         commerce: {
                             ...prevState.commerce,
@@ -187,82 +156,6 @@ class AboutCommerce extends Component {
     }
 
 
-
-    //#region UPLOAD_IMAGE
-    uploadImageToServer(img) {
-        var file = new Parse.File(img.name, img);
-        var Commerce_Photos = new Parse.Object("Commerce_Photos");
-        var currentUser = Parse.User.current();
-        // console.log("$$$$$$$$$$$ "+this.state.commerceId);
-        
-        if (currentUser) {
-            file.save().then(() => {
-                Commerce_Photos.set("photo", file);
-                Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
-                Commerce_Photos.save();
-            }, (error) => {
-                console.error(error);
-            })
-        }
-    }
-
-    onUploadImage(event) {
-        this.setState({
-            file: event.target.files
-        })
-
-        var taille = 0;
-
-        if (event.target.files.length <= 3) {
-            taille = event.target.files.length;
-            for (let i = 0; i < taille; i++) {
-                var img = event.target.files[i];
-
-                var options = {
-                    maxSizeMB: 0.5,
-                    maxWidthOrHeight: 1920,
-                    useWebWorker: true
-                }
-
-                imageCompression(img, options)
-                    .then((compressedFile) => {
-                        return this.uploadImageToServer(compressedFile);
-                    })
-                    .catch((error) => {
-                        console.error(error);
-                    });
-            }
-        } else {
-            alert("Attention seulement vous pouvez ajouter que 3 images maximum");
-        }
-    }
-    //#endregion
-
-    //#region UPLOAD_VIDEO
-    uploadVideoToServer = (movie) => {
-        var file = new Parse.File(movie.name, movie);
-        var Commerce_video = new Parse.Object("Commerce_Videos");
-        // console.log("€€€€€€€€€€€ "+this.state.commerceId);
-
-        if (this.state.currentUser) {
-            file.save().then(() => {
-                Commerce_video.set("nameVideo", movie.name);
-                Commerce_video.set("video", file);
-                Commerce_video.set("leCommerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
-                Commerce_video.save();
-            }, (error) => {
-                console.error(error);
-            });
-        }
-    }
-
-    onUploadVideo = (event) => {
-        if (event.target.files.length === 1) {
-            var video = event.target.files[0];
-            this.uploadVideoToServer(video);
-        }
-    }
-    //#endregion
 
     //#region LOAD_IMAGES_AND_VIDEO
     getPicturesCommerce = () => {
@@ -352,13 +245,12 @@ class AboutCommerce extends Component {
 
 
     componentDidMount() {
-        // this.props.getUserInfo();
-        // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
         this.getCommerceData();
-        this.getUrlCommercePicture();
-        this.getUrlCommerceMovie();
-        console.log(`-----------> ${this.state.movieURL}`);
-        console.log(`-----------> ${this.props.location.state.id}`);
+        // this.getUrlCommercePicture();
+        // this.getUrlCommerceMovie();
+        // console.log(`-----------> ${this.state.movieURL}`);
+        // console.log(`-----------> ${this.props.location.state.id}`);
+        console.log(`-----------> ${this.props.match.params.commerceId}`);
         
     }
 
@@ -372,58 +264,16 @@ class AboutCommerce extends Component {
         return (
             <Container component="main" maxWidth="md" style={{ color: "#000" }}>
                 <CssBaseline/>
+                {this.props.match.params.commerceId}
                 <div style={root}>
                     <Grid
                         container
                         spacing={1}
                         direction="row"
                         justify="center">
-                        <Grid item xs={12} sm={4} className="Weeclik-App-Info-Commerce2" style={paper}>
-                            <Paper elevation={0} style={root2}>
-                                <Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
-                                <Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ marginTop: '15px', marginBottom: '15px' }}>Update commerce</Button>
-                                <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur c'est quoi une promotion</Typography>
-                                <Button onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton}>Nouvelle promotion</Button>
-                                <Typography component="p" style={{color:"#000"}}>Payer pour voir la visibilité de votre commerce</Typography>
-                                <Button onClick={() => { this.goToPay(this.state.commerceId) }} style={styleButton}>Payer</Button>
-
-                                <Typography component="p" style={{color:"#000"}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
-                                <input
-                                    id="icon-input-file-img"
-                                    type="file"
-                                    onChange={this.onUploadImage}
-                                    style={{ display: 'None' }}
-                                    accept="image/*"
-                                    multiple/>
-                                <label htmlFor="icon-input-file-img">
-                                    <img
-                                        src={AddImg}
-                                        className="rounded"
-                                        alt="Default profile"
-                                        style={{ width: 200 }}/>
-                                </label>
-
-                                <Typography component="p" style={{color:"#000"}}>Ajouter une vidéo</Typography>
-                                <input
-                                    id="icon-input-file-video"
-                                    type="file"
-                                    onChange={this.onUploadVideo}
-                                    style={{ display: 'None' }}
-                                    accept="video/mp4,video/x-m4v,video/*"/>
-                                <label htmlFor="icon-input-file-video">
-                                    <img
-                                        src={AddVideo}
-                                        className="rounded"
-                                        alt="Default profile"
-                                        style={{ width: 200 }}/>
-                                </label>
-                                
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} sm={8} className="Weeclik-App-Info-Commerce2" style={paper}>
+                        <Grid item xs={12} className="Weeclik-App-Info-Commerce2" style={paper}>
                             <Paper elevation={0} style={root2}>
                                 <Typography variant="h2" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
-                                <h6 style={{color:"#000"}}>{this.state.commerce.statutCommerce}</h6>
                                 <h6 style={{color:"#000"}}>Type : {this.state.commerce.currencyCategory}</h6>
                                 <h6 style={{color:"#000"}}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>	:
@@ -437,8 +287,6 @@ class AboutCommerce extends Component {
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg> : 
                                     {" " + this.state.commerce.siteWeb}
                                 </h6>
-                                {/* <p>{this.state.commerce.promotion}</p>
-                                <p>{this.state.commerce.description}</p> */}
                                 <h5 style={{color:"#000", paddingTop: '50px'}}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
                                     {this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
@@ -466,7 +314,6 @@ class AboutCommerce extends Component {
                                     </GridList>
 
                                     <p style={{color:"#000"}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</p>
-                                    {/* <input type="file" onChange={this.onUploadImage} accept='image/*' multiple/> */}
                                     New images importé:
                                     <GridList cellHeight={160} cols={columns}>
                                         {this.state.file && [...this.state.file].map((file, index) => (
@@ -477,20 +324,6 @@ class AboutCommerce extends Component {
                                     </GridList>
                                 </Grid>
                             </Paper>
-
-                            <div style={{margin:'10px'}}></div>
-
-                            <Paper elevation={0} style={root2}>
-                                <Typography variant="h4" component="h3" style={{color:"#000"}}>Video du commerce</Typography>
-                                <Grid item xs={12} style={paper}>
-                                    <Player
-                                        playsInline
-                                        src={this.state.movieURL[0]}
-                                    />
-                                    {/* <p style={{color:"#000"}}>Ajouter une vidéo</p>
-                                    <input type="file" onChange={this.onUploadVideo} accept="video/mp4,video/x-m4v,video/*"/> */}
-                                </Grid>
-                            </Paper>
                         </Grid>
                     </Grid>
                 </div>
@@ -499,17 +332,5 @@ class AboutCommerce extends Component {
     }
 }
 
-function mapState(state) {
-    const { user } = state.authentication;
-    return { user };
-}
-
-const actionCreators = {
-    getUserInfo: userActions.getInfo,//userActions.getAllInfo
-    // logout: userActions.logout
-}
-
-// connect permet de lier le component au state et aux actions
-const connectedAboutCommerce = connect(mapState, actionCreators) (AboutCommerce);
-export { connectedAboutCommerce as AboutCommerce };
+export { ReceiveCommercePage };
 
