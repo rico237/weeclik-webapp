@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-import { Button, Dialog, DialogTitle, DialogContent } from '@material-ui/core';
-import YouTube from 'react-youtube';
+import { Button, Dialog, DialogTitle } from '@material-ui/core';
+// import YouTube from 'react-youtube';
+import ReactPlayer from 'react-player';
 import Michel from '../../assets/images/team/michel.jpg';
 import Aziz from '../../assets/images/team/aziz.jpg';
 import Mohamed from '../../assets/images/team/mohamed.jpg';
@@ -52,13 +53,13 @@ class HomePage extends Component {
 
     render() {
 
-        const opts = {
-            // height: '100%',
-            width: '100%',
-            playerVars: { // https://developers.google.com/youtube/player_parameters
-                autoplay: 1
-            }
-        }
+        // const opts = {
+        //     // height: '100%',
+        //     width: '100%',
+        //     playerVars: { // https://developers.google.com/youtube/player_parameters
+        //         autoplay: 0
+        //     }
+        // }
 
         return (
             <Fragment>
@@ -137,14 +138,27 @@ class HomePage extends Component {
                             maxWidth={"md"}
                         >
                             <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur ou ambassadrice Weeclik"}</DialogTitle>
-                            <DialogContent>
-                                <YouTube
+                            {/* <DialogContent> */}
+                                {/* <YouTube
                                     videoId="HEPL30xM25U"
                                     opts={opts}
                                     onReady={this._onReady}
                                     style={{ margin: '5px' }}
-                                />
-                            </DialogContent>
+                                /> */}
+                            {/* </DialogContent> */}
+                            {/* Quand je mets autoplay ca bugs ERROR : de type CORS */}
+                            <ReactPlayer
+                                url={"https://youtu.be/HEPL30xM25U"}
+                                playing
+                                config={{
+                                    file: { attributes: {
+                                        autoplay: true
+                                    }},
+                                    youtube: {
+                                        playerVars: { showinfo: 1 }
+                                    }
+                                }}
+                            />
                         </Dialog>
                     </div>
 
