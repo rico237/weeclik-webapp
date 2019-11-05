@@ -167,7 +167,7 @@ class ProfilePage extends Component {
                             spacing={2}>
                             <Grid item xs={12} sm={4}>
                                 {
-                                    this.state.user.picture !== "" ?
+                                    !this.state.user.picture ?
                                     <Avatar
                                         alt="Image de profile"
                                         src={this.state.user.picture}
@@ -181,7 +181,7 @@ class ProfilePage extends Component {
                                         }}
                                     />
                                     : <Avatar
-                                        alt="Image de profile"
+                                        alt="Image de profile par defaut"
                                         src={defaultProfile}
                                         style={{
                                             margin: 10,
@@ -207,28 +207,28 @@ class ProfilePage extends Component {
                                             {" " + this.state.user.email}
                                         </h5>
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    {/* <Grid item xs={12}>
                                         <Grid container xs={12}>
-                                            {/* <Grid item xs={4}>
+                                            <Grid item xs={4}>
                                                 <div>
                                                     <h1>{this.state.nbCommerce}</h1>
                                                     <p>{this.state.nbCommerce > 1 ? "Commerces" : "Commerce"}</p>
                                                 </div>
-                                            </Grid> */}
-                                            {/* <Grid item xs={4}>
+                                            </Grid>
+                                            <Grid item xs={4}>
                                                 <div>
                                                     <h1>{this.state.nbPersonneParraine}</h1>
                                                     <p>{this.state.nbPersonneParraine > 1 ? "Parrainages" : "Parrainage"}</p>
                                                 </div>
-                                            </Grid> */}
-                                            {/* <Grid item xs={4}>
+                                            </Grid>
+                                            <Grid item xs={4}>
                                                 <div>
                                                     <h1>+10</h1>
                                                     <p>Partages</p>
                                                 </div>
-                                            </Grid> */}
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                             </Grid>
                         </Grid>

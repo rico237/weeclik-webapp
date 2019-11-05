@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import logo from '../../assets/icons/LogoWeeclik.svg';
+import logoComptePro from '../../assets/icons/users.svg';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { Container, CssBaseline, Avatar, Typography, Grid, TextField, FormControlLabel, Checkbox, Button, Box } from '@material-ui/core';
+import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button, Box } from '@material-ui/core';
 import { Copyright } from '../copyright/Copyright';
 
 
@@ -21,8 +20,10 @@ const paper = {
 }
 
 const avatar = {
-    margin: theme.spacing(1),
-    borderRadius: 0
+    margin: theme.spacing(5),
+    borderRadius: 0,
+    width: 160,
+    height: 160
 }
 
 const form = {
@@ -48,6 +49,7 @@ class RegisterPage extends Component {
                 password: '',
                 repeatPw: ''
             },
+            alertMsg: '',
             submitted: false
         };
 
@@ -73,30 +75,46 @@ class RegisterPage extends Component {
         const { user } = this.state;
         if (this.state.user.firstName &&
             this.state.user.lastName &&
-            this.state.user.username &&
             this.state.user.email &&
             this.state.user.password &&
             this.state.user.repeatPw) {
                 if (this.state.user.password === this.state.user.repeatPw) {
                     this.props.register(user);
                 }
-        } else {
-            
+        }
+        if (!this.state.user.password || !this.state.user.repeatPw) {
+            this.setState({ alertMsg: 'Veuillez entrer un mot de passe' });
+        }
+        if (!this.state.user.email) {
+            this.setState({ alertMsg: 'Veuillez entrer un e-mail' });
+        }
+        if (!this.state.user.firstName || !this.state.user.lastName) {
+            this.setState({ alertMsg: 'Veuillez entrer un prénom et un nom' });
+        }
+        // else {
+        //     this.setState({ alertMsg: 'Veuillez remplir tout les champs' });
+        // }
+        
+    }
+
+    printErrorMessage(codeError) {
+        if (codeError === 202) {
+            return 'Le compte existe déjà pour ce nom d\'utilisateur';
         }
     }
 
     render() {
 
-        // const { registering } = this.props;
-        const { user/*, submitted*/ } = this.state;
+        const { /*registering*/msg } = this.props;
+        const { user, alertMsg/*, submitted*/ } = this.state;
 
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div style={paper}>
-                    <Avatar alt="Logo" src={logo} style={avatar}/>
-                    <Typography component="h1" variant="h5" style={{color: "#000"}}>Sign up</Typography>
-                    <form style={form} noValidate>
+                    <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
+                    <Typography component="h1" variant="h5" style={{color: "#000"}}>Création d'un compte professionnel</Typography>
+                    <form style={form}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
@@ -104,9 +122,9 @@ class RegisterPage extends Component {
                                     fullWidth
                                     required
                                     variant="outlined"
-                                    type="text"
+                                    type="string"
                                     name="firstName"
-                                    label="First Name"
+                                    label="Prénom"
                                     value={user.firstName}
                                     onChange={this.handleChange}/>
                             </Grid>
@@ -116,24 +134,24 @@ class RegisterPage extends Component {
                                     fullWidth
                                     required
                                     variant="outlined"
-                                    type="text"
+                                    type="string"
                                     name="lastName"
-                                    label="Last Name"
+                                    label="Nom de famille"
                                     value={user.lastName}
                                     onChange={this.handleChange}/>
                             </Grid>
-                            <Grid item xs={12}>
+                            {/* <Grid item xs={12}>
                                 <TextField
                                     id="username"
                                     fullWidth
                                     required
                                     variant="outlined"
-                                    type="text"
+                                    type="email"
                                     name="username"
                                     label="Username"
                                     value={user.username}
                                     onChange={this.handleChange}/>
-                            </Grid>
+                            </Grid> */}
                             <Grid item xs={12}>
                                 <TextField
                                     id="email"
@@ -142,7 +160,7 @@ class RegisterPage extends Component {
                                     variant="outlined"
                                     type="email"
                                     name="email"
-                                    label="Email Address"
+                                    label="E-mail"
                                     value={user.email}
                                     onChange={this.handleChange}/>
                             </Grid>
@@ -154,7 +172,7 @@ class RegisterPage extends Component {
                                     variant="outlined"
                                     type="password"
                                     name="password"
-                                    label="Password"
+                                    label="Nouveau mot de passe"
                                     value={user.password}
                                     onChange={this.handleChange}/>
                             </Grid>
@@ -166,28 +184,31 @@ class RegisterPage extends Component {
                                     variant="outlined"
                                     type="password"
                                     name="repeatPw"
-                                    label="Reapet Password"
+                                    label="Confirmation de mot de passe"
                                     value={user.repeatPw}
                                     onChange={this.handleChange}/>
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                    label="J'accepte les conditions d'utilisation et ... professionel..."/>
+                                <label style={{ fontSize: '14px' }}>
+                                    {'En cliquant sur S\'enregistrer, vous acceptez nos '}
+                                    <a style={{ color: 'blue', textDecoration: 'none' }} href="https://weeclik.com">Conditions générales</a>{'. '}
+                                </label>
                             </Grid>
                         </Grid>
+
+                        {
+                            msg ?
+                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{this.printErrorMessage(msg)}</Typography> :
+                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
+                        }
+
                         <Button
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             style={submit}
-                            onClick={this.handleSubmit}>Sign Up</Button>
-                        <Grid container justify="flex-end">
-                            <Grid item>
-                                <Link to="/login" style={{color: "#00F"}}>Already have an account? Sign in</Link>
-                            </Grid>
-                        </Grid>
+                            onClick={this.handleSubmit}>S'enregistrer</Button>
                     </form>
                 </div>
                 <Box mt={5}>
@@ -199,8 +220,8 @@ class RegisterPage extends Component {
 }
 
 function mapState(state) {
-    const { registering } = state.registration;
-    return { registering };
+    const { registering, msg } = state.registration;
+    return { registering, msg };
 }
 
 const actionCreators = {

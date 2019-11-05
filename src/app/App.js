@@ -8,7 +8,7 @@ import { alertActions } from '../redux/actions'
 
 import { HomePage } from '../components/HomePage';
 import { ForgotPage } from '../components/forgotPasswordPage';
-import { ConfirmPage } from '../components/confirmationSignUpPage';
+// import { ConfirmPage } from '../components/confirmationSignUpPage';
 import { LoginPage } from '../components/loginPage';
 import { RegisterPage } from '../components/registerPage';
 import { ProfilePage, CommercesPage, CreateCommerce, AboutCommerce, UpdateCommerce } from '../components/sessionPage';
@@ -39,7 +39,7 @@ class App extends Component {
 					<Switch>
 						<Route exact path='/' component={HomePage}/>
 						<Route exact path="/forgot" component={ForgotPage}/>
-						<Route exact path="/confirm" component={ConfirmPage}/>
+						{/* <Route exact path="/confirm" component={ConfirmPage}/> */}
 						<ProtectedSigninRoute path="/login" component={LoginPage}/>
 						<ProtectedSignupRoute path="/register" component={RegisterPage}/>
 						<PrivateRoute path="/user" component={ProfilePage}/>

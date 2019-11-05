@@ -12,7 +12,7 @@ function register(user) {
     // console.log(`[SERVICE] : register ${JSON.stringify(user, null, 2)}`);
     var newUser = new Parse.User();
     newUser.set("name", user.firstName + " " + user.lastName);
-    newUser.set("username", user.username);
+    newUser.set("username", user.email);
     newUser.set("password", user.password);
     newUser.set("email", user.email);
     newUser.set("isPro", true);

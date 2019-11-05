@@ -103,7 +103,7 @@ class LoginPage extends Component {
                                     variant="outlined"
                                     type="email"
                                     name="username"
-                                    label="E-mail"
+                                    label="Adresse e-mail"
                                     value={username}
                                     onChange={this.handleChange}/>
                             </Grid>
@@ -142,7 +142,7 @@ class LoginPage extends Component {
                             onClick={this.handleSubmit}>S'identifier</Button>
                         <Grid container justify="flex-end">
                             <Grid item xs>
-                                <Link to="/forgot" style={{color: "#00F"}}>{"Mot de passe oublié?"}</Link>
+                                <Link to="/forgot" style={{color: "#00F"}}>{"Informations de compte oubliées ?"}</Link>
                             </Grid>
                             {/* <Grid item>
                                 <Link to="/register" style={{color: "#00F"}}>{"Vous n'avez pas de compte? S'inscrire"}</Link>

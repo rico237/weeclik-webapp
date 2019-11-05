@@ -19,6 +19,7 @@ export function registration(state = {}, action) {
         case userConstants.REGISTER_FAILURE:
             return {
                 isSigningUp: false,
+                msg: action.error.code //'L\'adresse e-mail ou mot de passe est invalide.'
                 // error: action.error.data
             };
         default:

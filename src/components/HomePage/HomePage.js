@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-import { Button, Dialog, DialogTitle, DialogContent, DialogContentText } from '@material-ui/core';
+import { Button, Dialog, DialogTitle, DialogContent } from '@material-ui/core';
 import YouTube from 'react-youtube';
 import Michel from '../../assets/images/team/michel.jpg';
 import Aziz from '../../assets/images/team/aziz.jpg';
@@ -9,7 +9,7 @@ import Mohamed from '../../assets/images/team/mohamed.jpg';
 import Herrick from '../../assets/images/team/herrick.jpg';
 import Grace from '../../assets/images/team/grace.jpg';
 import detail1 from './images/details-1-iphone.png';
-import detail2 from './images/details-2-iphone.png';
+import ambassadeurPic from '../../assets/images/blur-businessman-cellphone-727x300.jpg';
 import download from './images/download.png';
 import headerIphone from './images/header-iphone.png';
 
@@ -92,7 +92,7 @@ class HomePage extends Component {
                                 </div>
                                 <div className="col-lg-6">
                                     <div className="text-container">
-                                        <h3>Une gestion simplifié de vos commerce</h3>
+                                        <h3>Une gestion simplifiée de vos commerce</h3>
                                         <p id="balise-p">Gérez, en temps réel, les informations de votre commerce. Augmentez votre visibilité gratuitement en partageant 3 photos &amp; 1 vidéo avec la communauté Weeclik<sup>©</sup>.</p>
                                     </div>
                                 </div>
@@ -105,17 +105,18 @@ class HomePage extends Component {
                             <div className="container">
                                 <div className="row">
                                     <div className="col-lg-6">
-                                        <div className="text-container">
-                                            <h3>Devenir ambassadrise / ambassadeure Weeclik</h3>
+                                        {/* <div className="text-container"> */}
+                                            <h3>Devenir ambassadeur ou ambassadrice Weeclik dans un réseau de confiance et humain</h3>
                                             
-
+                                            <p>Partagez la confiance que vous avez à votre commerçant avec vos proches, vos voisins, vos collègues de travail.</p>
+                                            <p>Intégrez le réseau de partage Weeclik<sup>©</sup> et profitez de promotions exclusives avec vos commerçants de confiance.</p>
                                             {/* <Button variant="contained" component={Link} to="/login" className="btn-solid-lg page-scroll">Connexion</Button> */}
-                                            <Button onClick={() => {this.handleOpen()}} style={styleButton}>Devenir ambassadeur / ambassadrise</Button>
+                                            <Button onClick={() => {this.handleOpen()}} style={styleButton}>Devenir ambassadeur ou ambassadrice</Button>
                                             {/* <a className="btn-solid-lg page-scroll" href="fake_url" target="_blank" rel="noopener noreferrer">Devenir ambassadrise/ ambassadeure</a> */}
-                                        </div>
+                                        {/* </div> */}
                                     </div> 
                                     <div className="col-lg-6">
-                                        <img className="img-fluid" src={detail2} alt="alternative"/>
+                                        <img className="img-fluid" src={ambassadeurPic} alt="alternative"/>
                                     </div> 
                                 </div> 
                             </div> 
@@ -135,44 +136,20 @@ class HomePage extends Component {
                             // fullWidth={true}
                             maxWidth={"md"}
                         >
-                            <DialogTitle id="alert-dialog-title">{"Être ambassadrise / ambassadeure Weeclik"}</DialogTitle>
+                            <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur ou ambassadrice Weeclik"}</DialogTitle>
                             <DialogContent>
                                 <YouTube
                                     videoId="HEPL30xM25U"
                                     opts={opts}
                                     onReady={this._onReady}
-                                    style={{ margin: '10px' }}
+                                    style={{ margin: '5px' }}
                                 />
-                                <DialogContentText id="alert-dialog-description">
-                                    
-                                    
-                                    
-                                </DialogContentText>
                             </DialogContent>
                         </Dialog>
                     </div>
 
 
 
-
-                    <div className="basic-3">
-                        <div className="second">
-                            <div className="container">
-                                <div className="row">
-                                    <div className="col-lg-6">
-                                        <img className="img-fluid" src={detail2} alt="alternative"/>
-                                    </div> 
-                                    <div className="col-lg-6">
-                                        <div className="text-container">
-                                            <h3>Une réseau de confiance et humain</h3>
-                                            <p>Partagez l'amour et la confiance que vous rend votre commerçant en la partageant avec vos proches, votre famille, vos voisins ou encore avec vos collègues de travail.</p>
-                                            <p>Intégrez le réseau de partage viral Weeclik<sup>©</sup> et profitez de promotions exclusives avec vos commerçants de confiance.</p>
-                                        </div> 
-                                    </div> 
-                                </div> 
-                            </div> 
-                        </div> 
-                    </div>
 
                     <div className="basic-3">
                         <div className="container-fluid">

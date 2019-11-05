@@ -10,6 +10,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import { userActions } from '../redux/actions';
+import defaultProfile from '../assets/icons/defaultUser.svg'
 
 
 
@@ -107,7 +108,7 @@ function Navigation(props) {
 
     return (
         <div className={classes.rootNav}>
-            <AppBar color="inherit" position="fixed" elevation={1}>
+            <AppBar color="inherit" position="fixed" elevation={0}>
                 <Container fixed>
                     <Toolbar>
                         <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
@@ -193,7 +194,7 @@ function Navigation(props) {
                             <Avatar 
                                 src={localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
                                     JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).profilePictureURL :
-                                    logoCommercant}
+                                    defaultProfile}
                                 alt="Weeclik Logo" />
                         </ListItemIcon>
                         <Typography variant="inherit" className={classes.typographyStyle}>Profile</Typography>

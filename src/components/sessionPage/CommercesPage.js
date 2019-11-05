@@ -264,7 +264,7 @@ class CommercesPage extends Component {
                                             component={Link}
                                             to="/createcommerce"
                                             style={styleButton}>Ajouter un commerce</Button>
-                                        <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur la creation d'un commerce</Typography>
+                                        {/* <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur la creation d'un commerce</Typography> */}
                                     </center>
                                 </Paper>
                             </Grid>

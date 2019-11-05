@@ -23,8 +23,8 @@ function register(user) {
             .then(
                 user => {
                     dispatch(success(user));
-                    history.push('/confirm');
-                    dispatch(alertActions.success('Registration successful'));
+                    history.push('/user');
+                    // dispatch(alertActions.success('Registration successful'));
                     // console.log(`[ACTION] : register ${user}`);
                 },
                 error => {
@@ -35,8 +35,8 @@ function register(user) {
             );
     };
     
-    function request(user) { return { type: userConstants.REGISTER_REQUEST, user } }
-    function success(user) { return { type: userConstants.REGISTER_SUCCESS, user } }
+    function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
+    function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
     function failure(error) { return { type: userConstants.REGISTER_FAILURE, error } }
 }
 /**
