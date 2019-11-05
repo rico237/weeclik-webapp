@@ -20,7 +20,10 @@ const paper = {
 }
 
 const avatar = {
-    margin: theme.spacing(1),
+    margin: theme.spacing(5),
+    borderRadius: 0,
+    width: 160,
+    height: 160
 }
 
 const form = {
@@ -39,10 +42,12 @@ class ForgotPage extends Component {
         this.state = {
             username: '',
             submitted: false,
+            alertMsg: '',
+            sec: 3
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.loginAccount = this.loginAccount.bind(this);
+        this.sendNewPassword = this.sendNewPassword.bind(this);
     }
 
     handleChange(event) {
@@ -50,14 +55,27 @@ class ForgotPage extends Component {
         this.setState({username: username});
     }
 
-    loginAccount(event) {
+    sendNewPassword(event) {
         event.preventDefault();
         this.setState({ submitted: true });
         console.log(this.state.username);
         if (this.state.username) {
             const user = new Parse.User.requestPasswordReset(this.state.username);
             user.then(() => {
-                console.log("SEND new Password" + this.state.username);
+                // console.log("SEND new Password" + this.state.username);
+                this.setState({ alertMsg: '...' });
+                var counter = 3;
+
+                this.intervalId = setInterval(() => {
+                    counter--;
+                    if (counter === -1) {
+                        clearInterval(this.intervalId)
+                        this.props.history.push('/');
+                    } else {
+                        this.setState({ sec: counter })
+                        // console.log(counter + " secondes restantes");
+                    }
+                }, 1000);
             }).catch(() => {
                 alert("BAD : " + this.state.username);
             })
@@ -71,39 +89,53 @@ class ForgotPage extends Component {
     }
 
     render() {
-        const { username } = this.state;
+        const { username, alertMsg, sec } = this.state;
 
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
+                {
+                    
+                    
+                    
+                }
                 <div style={paper}>
                     <Avatar alt="Logo" src={logo} style={avatar}/>
-                    <Typography component="h1" variant="h5" style={{color: "#000"}}>Mot de passe oublié</Typography>
-                    <form style={form} noValidate>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="username"
+                    {
+                        alertMsg ?
+                        <div>
+                            <Typography variant="h6" style={{textAlign: "center"}}>{`Un mail a été envoyé à l'adresse suivante ${username}`}</Typography>
+                            <Typography component="p" style={{textAlign: "center"}}>{`${sec} ...`}</Typography>
+                        </div> :
+                        <div>
+                            <Typography component="h1" variant="h5" style={{color: "#000"}}>Mot de passe oublié</Typography>
+                            <Typography>Merci de saisir l'adresse mail associé à votre compte.</Typography>
+                            <form style={form}>
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12}>
+                                        <TextField
+                                            id="username"
+                                            fullWidth
+                                            required
+                                            variant="outlined"
+                                            type="email"
+                                            name="username"
+                                            label="Adresse e-mail"
+                                            value={username}
+                                            onChange={this.handleChange}/>
+                                    </Grid>
+                                </Grid>
+
+                                <Button
+                                    type="submit"
                                     fullWidth
-                                    required
-                                    variant="outlined"
-                                    type="text"
-                                    name="username"
-                                    label="Username"
-                                    value={username}
-                                    onChange={this.handleChange}/>
-                            </Grid>
-                            
-                        </Grid>
-        
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            style={submit}
-                            onClick={this.handleSubmit}>Envoyer mail</Button>
-                    </form>
+                                    variant="contained"
+                                    color="primary"
+                                    style={submit}
+                                    onClick={this.sendNewPassword}>Envoyer le mail</Button>
+                            </form>
+                        </div>
+                    }
                 </div>
             </Container>
             // <Link className="App-link" to="/login">Send</Link>

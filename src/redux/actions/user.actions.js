@@ -56,6 +56,11 @@ function login(username, password) {
                     // console.log(`[ACTION] : login ${JSON.stringify(user, null, 2)}`);
                 },
                 error => {
+                    // console.error(`[ACTION]> : bad login ${error.code}`);
+                    // if (error.code === 101) {
+                    //     // alert('L\'adresse e-mail ou mot de passe est invalide.');
+                    //     console.error(`[ACTION]> : bad login ${error.message}`);
+                    // }
                     dispatch(failure(error));
                     dispatch(alertActions.error(error));
                     // console.error(`[ACTION]> : bad login ${error}`);

@@ -22,7 +22,7 @@ class CheckoutForm extends Component {
     async submit(ev) {
         // User clicked submit
         let { token } = await this.props.stripe.createToken({name: "Name"});
-        let response = await fetch("http://127.0.0.1:3001/charge", {
+        let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/charge`, {
             method: "POST",
             headers: {"Content-Type": "text/plain"},
             body: token

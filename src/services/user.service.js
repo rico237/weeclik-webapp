@@ -40,6 +40,10 @@ function getUser() {
 }
 
 function handleResponse(response) {
-    // console.log(`[HANDLE] : -------${JSON.stringify(response, null, 2)}`);
+    if (response) {
+        console.log(`[HANDLE] : -------${JSON.stringify(response, null, 2)}`);
+    } else {
+        ;
+    }
     return response;
 }

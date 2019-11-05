@@ -107,8 +107,7 @@ class HomePage extends Component {
                                     <div className="col-lg-6">
                                         <div className="text-container">
                                             <h3>Devenir ambassadrise / ambassadeure Weeclik</h3>
-                                            <p>Partagez l'amour et la confiance que vous rend votre commerçant en la partageant avec vos proches, votre famille, vos voisins ou encore avec vos collègues de travail.</p>
-                                            <p>Intégrez le réseau de partage viral Weeclik © et profitez de promotions exclusives avec vos commerçants de confiance.</p>
+                                            
 
                                             {/* <Button variant="contained" component={Link} to="/login" className="btn-solid-lg page-scroll">Connexion</Button> */}
                                             <Button onClick={() => {this.handleOpen()}} style={styleButton}>Devenir ambassadeur / ambassadrise</Button>

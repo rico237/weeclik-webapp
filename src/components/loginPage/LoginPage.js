@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { Container, CssBaseline, Avatar, Typography, Grid, TextField, FormControlLabel, Checkbox, Button, Box } from '@material-ui/core';
+import { Container, CssBaseline, Avatar, Grid, TextField, Button, Box, Typography } from '@material-ui/core';
 import { Copyright } from '../copyright/Copyright';
 
 
@@ -21,8 +21,10 @@ const paper = {
 }
 
 const avatar = {
-    margin: theme.spacing(1),
-    borderRadius: 0
+    margin: theme.spacing(5),
+    borderRadius: 0,
+    width: 160,
+    height: 160
 }
 
 const form = {
@@ -46,6 +48,7 @@ class LoginPage extends Component {
             username: '',
             password: '',
             submitted: false,
+            alertMsg: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -63,23 +66,33 @@ class LoginPage extends Component {
         this.setState({ submitted: true });
         const { username, password } = this.state;
         if (username && password) {
-            this.props.login(username, password)
-        } else {
-            
+            this.setState({ alertMsg: '...' });
+            this.props.login(username, password);
+        }
+        if (!username && password) {
+            this.setState({ alertMsg: 'Adresse e-mail est incomplète' });
+        }
+        if (username && !password) {
+            this.setState({ alertMsg: 'Le mot de passe est incomplet' });
+        }
+        if (!username && !password) {
+            this.setState({ alertMsg: 'L\'adresse e-mail et le mot de passe sont incomplets' });
         }
     }
 
     render() {
 
-        // const { isLoggedIn } = this.props;
-        const { username, password/*, submitted*/ } = this.state;
+        const { /*isLoggedIn*/msg } = this.props;
+        // console.log("------"+msg);
+        
+        const { username, password, alertMsg/*, submitted*/ } = this.state;
 
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div style={paper}>
                     <Avatar alt="Logo" src={logo} style={avatar}/>
-                    <Typography component="h1" variant="h5" style={{color: "#000"}}>Sign in</Typography>
+                    {/* <Typography component="h1" variant="h5" style={{color: "#000"}}>Sign in</Typography> */}
                     <form style={form} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
@@ -88,9 +101,9 @@ class LoginPage extends Component {
                                     fullWidth
                                     required
                                     variant="outlined"
-                                    type="text"
+                                    type="email"
                                     name="username"
-                                    label="Username"
+                                    label="E-mail"
                                     value={username}
                                     onChange={this.handleChange}/>
                             </Grid>
@@ -102,15 +115,23 @@ class LoginPage extends Component {
                                     variant="outlined"
                                     type="password"
                                     name="password"
-                                    label="Password"
+                                    label="Mot de Passe"
                                     value={password}
                                     onChange={this.handleChange}/>
                             </Grid>
                             
                         </Grid>
-                        <FormControlLabel
+                        {/* <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"/>
+                            label="Remember me"/> */}
+
+                        {
+                            msg ?
+                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{msg}</Typography> :
+                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
+                        }
+                            
+                        
         
                         <Button
                             type="submit"
@@ -118,14 +139,14 @@ class LoginPage extends Component {
                             variant="contained"
                             color="primary"
                             style={submit}
-                            onClick={this.handleSubmit}>Connexion</Button>
+                            onClick={this.handleSubmit}>S'identifier</Button>
                         <Grid container justify="flex-end">
                             <Grid item xs>
-                                <Link to="/forgot" style={{color: "#00F"}}>Forgot password?</Link>
+                                <Link to="/forgot" style={{color: "#00F"}}>{"Mot de passe oublié?"}</Link>
                             </Grid>
-                            <Grid item>
-                                <Link to="/register" style={{color: "#00F"}}>{"Don't have an account? Sign Up"}</Link>
-                            </Grid>
+                            {/* <Grid item>
+                                <Link to="/register" style={{color: "#00F"}}>{"Vous n'avez pas de compte? S'inscrire"}</Link>
+                            </Grid> */}
                         </Grid>
                     </form>
                 </div>
@@ -138,8 +159,8 @@ class LoginPage extends Component {
 }
 
 function mapState(state) {
-    const { loggingIn } = state.authentication;
-    return { loggingIn };
+    const { loggingIn, msg } = state.authentication;
+    return { loggingIn, msg };
 }
 
 const actionCreators = {
