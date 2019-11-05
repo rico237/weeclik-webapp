@@ -163,7 +163,7 @@ class HomePage extends Component {
                                             <div className="col-lg-2 offset-lg-1 offset-0 col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Aziz} alt="Aziz" style={{width:'100%'}}/>
-                                                    <div className="w3-container">
+                                                    <div className="w3-container" style={{ margin: '0 5px' }}>
                                                         <h3>Aziz</h3>
                                                         <p className="w3-opacity">CEO et Fondateur</p>
                                                     </div>
@@ -172,7 +172,7 @@ class HomePage extends Component {
                                             <div className="col-lg-2 col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Michel} alt="Michel" style={{width:'100%'}}/>
-                                                    <div className="w3-container">
+                                                    <div className="w3-container" style={{ margin: '0 5px' }}>
                                                         <h3>Michel</h3>
                                                         <p className="w3-opacity">Directeur des operations</p>
                                                     </div>
@@ -181,7 +181,7 @@ class HomePage extends Component {
                                             <div className="col-lg-2 col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Herrick} alt="Mike" style={{width:'100%'}}/>
-                                                    <div className="w3-container">
+                                                    <div className="w3-container" style={{ margin: '0 5px' }}>
                                                         <h3>Herrick</h3>
                                                         <p className="w3-opacity">CTO et Développeur lead iOS</p>
                                                     </div>
@@ -190,7 +190,7 @@ class HomePage extends Component {
                                             <div className="col-lg-2 col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Mohamed} alt="Dan" style={{width:'100%'}}/>
-                                                    <div className="w3-container">
+                                                    <div className="w3-container" style={{ margin: '0 5px' }}>
                                                         <h3>Mohamed</h3>
                                                         <p className="w3-opacity">Expert Android</p>
                                                     </div>
@@ -199,7 +199,7 @@ class HomePage extends Component {
                                             <div className="col-lg-2 col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Grace} alt="Dan" style={{width:'100%'}}/>
-                                                    <div className="w3-container">
+                                                    <div className="w3-container" style={{ margin: '0 5px' }}>
                                                         <h3>Grâce</h3>
                                                         <p className="w3-opacity">Expert ReactJS</p>
                                                     </div>
