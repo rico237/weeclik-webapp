@@ -154,8 +154,10 @@ class AboutCommerce extends Component {
             validate: false,
             submitted: false,
             openPopupVideoDelete: false,
+            openPopupVideoAdd: false,
             alertMsg: '',
-            sec: 3
+            sec: 3,
+            sec2: 0
         };
 
         this.handleValidate = this.handleValidate.bind(this);
@@ -171,6 +173,14 @@ class AboutCommerce extends Component {
 
     handleCloseDeleteVideo = () => {
         this.setState({ openPopupVideoDelete: false });
+    }
+
+    handleOpenAddVideo = () => {
+        this.setState({ openPopupVideoAdd: true });
+    }
+
+    handleCloseAddVideo = () => {
+        this.setState({ openPopupVideoAdd: false });
     }
 
     handleChange(event) {
@@ -326,16 +336,42 @@ class AboutCommerce extends Component {
 
     //#region UPLOAD_VIDEO
     uploadVideoToServer = (movie) => {
+        this.setState({ alertMsg: 'Sauvegarde de la vidéo : ' });
+        this.handleOpenAddVideo();
+        
         var file = new Parse.File(movie.name, movie);
         var Commerce_video = new Parse.Object("Commerce_Videos");
         // console.log("€€€€€€€€€€€ "+this.state.commerceId);
 
         if (this.state.currentUser) {
-            file.save().then(() => {
+            var counter = 0;
+            this.intervalId = setInterval(() => {
+                counter++;
+            //    if (counter === 1) {
+            //         clearInterval(this.intervalId);
+            //         this.handleCloseAddVideo();
+            //         this.setState({
+            //             alertMsg: '',
+            //             sec2: 0
+            //         });
+            //         window.location.reload();
+            //         } else {
+                        this.setState({ sec2: counter })
+            //         }
+            }, 1000);
+
+            
+            file.save().then((file) => {
+                console.log("@@@@@@@@@@@@@@@@@>"+JSON.stringify(file, null, 2));
                 Commerce_video.set("nameVideo", movie.name);
                 Commerce_video.set("video", file);
                 Commerce_video.set("leCommerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
-                Commerce_video.save();
+                Commerce_video.save().then((Commerce_video) => {
+                    console.log("#################>"+JSON.stringify(Commerce_video, null, 2));
+                    this.handleCloseAddVideo();
+                    this.setState({ alertMsg: 'Vidéo sauvegardé', sec2: 0 });
+                    clearInterval(this.intervalId);
+                });
             }, (error) => {
                 console.error(error);
             });
@@ -345,7 +381,7 @@ class AboutCommerce extends Component {
     onUploadVideo = (event) => {
         if (event.target.files.length === 1) {
             var video = event.target.files[0];
-            this.uploadVideoToServer(video);
+            this.uploadVideoToServer(video);    // Ajout de la video
         }
     }
     //#endregion
@@ -424,6 +460,7 @@ class AboutCommerce extends Component {
         queryCommerceVideo.find()
         .then(responseSnapshot => {
             responseSnapshot.forEach((elt) => {
+                // Suppression de la video
                 elt.destroy()
                     .then((elt) => {
                         // The object was deleted from the Parse Cloud.
@@ -434,7 +471,7 @@ class AboutCommerce extends Component {
                             counter--;
                             if (counter === -1) {
                                 clearInterval(this.intervalId);
-                                this.handleCloseDeleteVideo();    // Suppression de la video
+                                this.handleCloseDeleteVideo();
                                 this.setState({
                                     alertMsg: '',
                                     sec: 3
@@ -695,6 +732,20 @@ class AboutCommerce extends Component {
                         maxWidth={"md"}
                     >
                         <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec}{' ...'}</DialogTitle>
+                    </Dialog>
+                </div>
+
+                <div>
+                    <Dialog
+                        open={this.state.openPopupVideoAdd}
+                        onClose={this.handleCloseAddVideo}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                        style={{ minHeight: "600px"}}
+                        // fullWidth={true}
+                        maxWidth={"md"}
+                    >
+                        <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec2}{' ...'}</DialogTitle>
                     </Dialog>
                 </div>
             </Container>
