@@ -33,7 +33,13 @@ class App extends Component {
 	render() {
 		// const { alert } = this.props;
 		return (
-			<div>
+			<div
+				style={{
+					msUserSelect: 'none',
+					MozUserSelect: 'none',
+					WebkitUserSelect: 'none',
+				}}
+			>
 				<Router history={history}>
 					<Navigation/>
 					<Switch>

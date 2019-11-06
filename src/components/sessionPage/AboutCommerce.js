@@ -1,7 +1,22 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, CssBaseline, Button, Grid, GridList, GridListTile, Paper, Typography, IconButton, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import {
+    Container,
+    CssBaseline,
+    Button, Grid,
+    Dialog,
+    DialogTitle,
+    GridList,
+    GridListTile,
+    Paper,
+    Typography,
+    IconButton,
+    Table,
+    TableHead,
+    TableRow,
+    TableCell,
+    TableBody } from '@material-ui/core';
 import MaterialTable from 'material-table';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
@@ -137,7 +152,10 @@ class AboutCommerce extends Component {
             listImg: [],
             movieURL: [],
             validate: false,
-            submitted: false
+            submitted: false,
+            openPopupVideoDelete: false,
+            alertMsg: '',
+            sec: 3
         };
 
         this.handleValidate = this.handleValidate.bind(this);
@@ -145,6 +163,14 @@ class AboutCommerce extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.onUploadImage = this.onUploadImage.bind(this);
+    }
+
+    handleOpenDeleteVideo = () => {
+        this.setState({ openPopupVideoDelete: true });
+    }
+
+    handleCloseDeleteVideo = () => {
+        this.setState({ openPopupVideoDelete: false });
     }
 
     handleChange(event) {
@@ -386,6 +412,48 @@ class AboutCommerce extends Component {
     }
     //#endregion
 
+    //#region DELETE
+    deleteMovieCommerce = () => {
+        const ParseCommerce = Parse.Object.extend("Commerce");
+
+        const ParseCommerceVideo = Parse.Object.extend("Commerce_Videos");
+        const queryCommerceVideo = new Parse.Query(ParseCommerceVideo);
+
+        queryCommerceVideo.equalTo("leCommerce", new ParseCommerce({id: this.state.commerceId}));
+
+        queryCommerceVideo.find()
+        .then(responseSnapshot => {
+            responseSnapshot.forEach((elt) => {
+                elt.destroy()
+                    .then((elt) => {
+                        // The object was deleted from the Parse Cloud.
+                        this.setState({ alertMsg: 'Suppression de la vidéo : ' })
+                        this.handleOpenDeleteVideo();
+                        var counter = 3;
+                        this.intervalId = setInterval(() => {
+                            counter--;
+                            if (counter === -1) {
+                                clearInterval(this.intervalId);
+                                this.handleCloseDeleteVideo();    // Suppression de la video
+                                this.setState({
+                                    alertMsg: '',
+                                    sec: 3
+                                });
+                                window.location.reload();
+                            } else {
+                                this.setState({ sec: counter })
+                            }
+                        }, 1000);
+                    }, (error) => {
+                        // The delete failed.
+                        // error is a Parse.Error with an error code and message.
+                        console.error(error.code + " --- " + error.message);
+                    });
+            });
+        });
+    }
+    //#endregion
+
 
 
 
@@ -419,7 +487,6 @@ class AboutCommerce extends Component {
         this.getUrlCommerceMovie();
         console.log(`-----------> ${this.state.movieURL}`);
         console.log(`-----------> ${this.props.location.state.id}`);
-        
     }
 
     render() {
@@ -553,7 +620,8 @@ class AboutCommerce extends Component {
                                         </TableHead>
                                         <TableBody>
                                             <TableRow>
-                                                <TableCell component="th" scope="row">ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy</TableCell>
+                                                <TableCell component="th" scope="row">ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy
+                                                </TableCell>
                                                 <TableCell align="right">12/2019</TableCell>
                                                 <TableCell align="right">
                                                     <IconButton aria-label="delete" color="secondary" size="small">
@@ -577,7 +645,7 @@ class AboutCommerce extends Component {
                                             <Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography>
                                         </Grid>
                                         <Grid item xs={12} sm={1}>
-                                            <IconButton aria-label="delete" color="secondary" size="small">
+                                            <IconButton onClick={() => { this.deleteMovieCommerce() }} aria-label="delete" color="secondary" size="small">
                                                 <DeleteIcon fontSize="small" />
                                             </IconButton>
                                         </Grid>
@@ -614,6 +682,20 @@ class AboutCommerce extends Component {
                             </Paper>
                         </Grid>
                     </Grid>
+                </div>
+
+                <div>
+                    <Dialog
+                        open={this.state.openPopupVideoDelete}
+                        onClose={this.handleCloseDeleteVideo}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                        style={{ minHeight: "600px"}}
+                        // fullWidth={true}
+                        maxWidth={"md"}
+                    >
+                        <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec}{' ...'}</DialogTitle>
+                    </Dialog>
                 </div>
             </Container>
         );
