@@ -35,10 +35,11 @@ class App extends Component {
 		return (
 			<div>
 				<Router history={history}>
-					{/* <Navigation/> */}
+					<Navigation/>
 					<Switch>
 						<Route exact path='/' component={HomePage}/>
-						{/* <Route exact path="/forgot" component={ForgotPage}/>
+						<Route exact path="/forgot" component={ForgotPage}/>
+						{/* <Route exact path="/confirm" component={ConfirmPage}/> */}
 						<ProtectedSigninRoute path="/login" component={LoginPage}/>
 						<ProtectedSignupRoute path="/register" component={RegisterPage}/>
 						<PrivateRoute path="/user" component={ProfilePage}/>
@@ -47,9 +48,8 @@ class App extends Component {
 						<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
 						<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>
 						<PrivateRoute path="/pay" component={PayPage}/>
-						<Route path='/commerce/id/:commerceId' component={ReceiveCommercePage}/> */}
+						<Route path='/commerce/id/:commerceId' component={ReceiveCommercePage}/>
 						<Route path="/*" component={Page404} />
-						{/* <Route exact path="/confirm" component={ConfirmPage}/> */}
 						{/* 7lt9jiAhk4 */}
 					</Switch>
 				</Router>

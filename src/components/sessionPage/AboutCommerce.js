@@ -1,16 +1,22 @@
+/* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, CssBaseline, Button, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
+import { Container, CssBaseline, Button, Grid, GridList, GridListTile, Paper, Typography, IconButton, Table, TableHead, TableRow, TableCell, TableBody } from '@material-ui/core';
+import MaterialTable from 'material-table';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 import AddImg from '../../assets/icons/addImg.png';
-import AddVideo from '../../assets/icons/addVideo.png';
+import AddVideo from '../../assets/icons/addVideo.svg';
+import Delete from '../../assets/icons/delete.svg';
+
 
 import "../../../node_modules/video-react/dist/video-react.css";
 import { Player } from 'video-react';
+import DeleteIcon from '@material-ui/icons/Delete';
+
 
 
 //#region THEME
@@ -44,6 +50,60 @@ const styleButton = {
     padding: '0 30px',
     marginTop: '15px',
     marginBottom: '15px'
+}
+//#endregion
+
+//#region MATERIALTABLE
+function MaterialTableD() {
+    const [state, setState] = React.useState({
+        columns: [
+            { title: 'Promotion', field: 'promotion' },
+            { title: 'Date de fin', field: 'dateLine', type: 'numeric' },
+        ],
+        data: [],
+    });
+    
+    return (
+        <MaterialTable
+            title="Promotions"
+            columns={state.columns}
+            data={state.data}
+            editable={{
+                onRowAdd: newData => new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve();
+                        setState(prevState => {
+                            const data = [...prevState.data];
+                            data.push(newData);
+                            return { ...prevState, data };
+                        });
+                    }, 600);
+                }),
+                onRowUpdate: (newData, oldData) => new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve();
+                        if (oldData) {
+                            setState(prevState => {
+                                const data = [...prevState.data];
+                                data[data.indexOf(oldData)] = newData;
+                                return { ...prevState, data };
+                            });
+                        }
+                    }, 600);
+                }),
+                onRowDelete: oldData => new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve();
+                        setState(prevState => {
+                            const data = [...prevState.data];
+                            data.splice(data.indexOf(oldData), 1);
+                            return { ...prevState, data };
+                        });
+                    }, 600);
+                }),
+            }}
+        ></MaterialTable>
+    )
 }
 //#endregion
 
@@ -384,7 +444,7 @@ class AboutCommerce extends Component {
                                 <Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ marginTop: '15px', marginBottom: '15px' }}>Update commerce</Button>
                                 <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur c'est quoi une promotion</Typography>
                                 <Button onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton}>Nouvelle promotion</Button>
-                                <Typography component="p" style={{color:"#000"}}>Payer pour voir la visibilité de votre commerce</Typography>
+                                <Typography component="p" style={{color:"#000"}}>Payer pour mettre le commerce en ligne</Typography>
                                 <Button onClick={() => { this.goToPay(this.state.commerceId) }} style={styleButton}>Payer</Button>
 
                                 <Typography component="p" style={{color:"#000"}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
@@ -403,20 +463,7 @@ class AboutCommerce extends Component {
                                         style={{ width: 200 }}/>
                                 </label>
 
-                                <Typography component="p" style={{color:"#000"}}>Ajouter une vidéo</Typography>
-                                <input
-                                    id="icon-input-file-video"
-                                    type="file"
-                                    onChange={this.onUploadVideo}
-                                    style={{ display: 'None' }}
-                                    accept="video/mp4,video/x-m4v,video/*"/>
-                                <label htmlFor="icon-input-file-video">
-                                    <img
-                                        src={AddVideo}
-                                        className="rounded"
-                                        alt="Default profile"
-                                        style={{ width: 200 }}/>
-                                </label>
+                                
                                 
                             </Paper>
                         </Grid>
@@ -448,13 +495,6 @@ class AboutCommerce extends Component {
                             <div style={{margin:'10px'}}></div>
 
                             <Paper elevation={0} style={root2}>
-                                <Typography variant="h4" component="h3" style={{color:"#000"}}>Description du commerce</Typography>
-                                <p style={{color:"#000"}}>{this.state.commerce.description}</p>
-                            </Paper>
-
-                            <div style={{margin:'10px'}}></div>
-
-                            <Paper elevation={0} style={root2}>
                                 <Typography variant="h4" component="h3" style={{color:"#000"}}>Images du commerce</Typography>
                                 <Grid item xs={12} style={paper}>
                                     <GridList cellHeight={160} cols={columns}>
@@ -465,7 +505,7 @@ class AboutCommerce extends Component {
                                         ))}
                                     </GridList>
 
-                                    <p style={{color:"#000"}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</p>
+                                    <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
                                     {/* <input type="file" onChange={this.onUploadImage} accept='image/*' multiple/> */}
                                     New images importé:
                                     <GridList cellHeight={160} cols={columns}>
@@ -481,7 +521,88 @@ class AboutCommerce extends Component {
                             <div style={{margin:'10px'}}></div>
 
                             <Paper elevation={0} style={root2}>
-                                <Typography variant="h4" component="h3" style={{color:"#000"}}>Video du commerce</Typography>
+                                <Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography>
+                                <Grid item x={12} style={paper}>
+                                    <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
+                                </Grid>
+                            </Paper>
+
+                            <div style={{margin:'10px'}}></div>
+
+                            <Paper elevation={0} style={root2}>
+                                <Grid
+                                    container
+                                    // justify="space-between"
+                                    alignItems="center">
+                                        <Grid item xs={8}>
+                                            <Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography>
+                                        </Grid>
+                                        <Grid item xs={4}>
+                                            <Button color="secondary" size="small">Ajouter promotion</Button>
+                                        </Grid>
+                                </Grid>
+                                
+                                <Grid item xs={12} style={paper}>
+                                    <Table aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell>Promotions</TableCell>
+                                                <TableCell align="right">Date de fin</TableCell>
+                                                <TableCell align="right">Actions</TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            <TableRow>
+                                                <TableCell component="th" scope="row">ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy</TableCell>
+                                                <TableCell align="right">12/2019</TableCell>
+                                                <TableCell align="right">
+                                                    <IconButton aria-label="delete" color="secondary" size="small">
+                                                        <DeleteIcon fontSize="small" />
+                                                    </IconButton>
+                                                </TableCell>
+                                            </TableRow>
+                                        </TableBody>
+                                    </Table>
+                                </Grid>
+                            </Paper>
+
+                            <div style={{margin:'10px'}}></div>
+
+                            <Paper elevation={0} style={root2}>
+                                <Grid
+                                    container
+                                    // justify="space-between"
+                                    alignItems="center">
+                                        <Grid item xs={12} sm={10}>
+                                            <Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography>
+                                        </Grid>
+                                        <Grid item xs={12} sm={1}>
+                                            <IconButton aria-label="delete" color="secondary" size="small">
+                                                <DeleteIcon fontSize="small" />
+                                            </IconButton>
+                                        </Grid>
+                                        <Grid item xs={12} sm={1}>
+                                            <input
+                                                id="icon-input-file-video"
+                                                type="file"
+                                                onChange={this.onUploadVideo}
+                                                style={{ display: 'None' }}
+                                                accept="video/mp4,video/x-m4v,video/*"/>
+                                            <label htmlFor="icon-input-file-video">
+                                                <img
+                                                    src={AddVideo}
+                                                    className="rounded"
+                                                    alt="Default profile"
+                                                    style={{ width: 30 }}/>
+                                            </label>
+                                        </Grid>
+                                </Grid>
+
+                                {/* <Button color="secondary" size="small">Supprimer la vidéo</Button> */}
+                                {/* <IconButton aria-label="delete" color="secondary" size="small">
+                                    <DeleteIcon fontSize="small" />
+                                </IconButton> */}
+                                
                                 <Grid item xs={12} style={paper}>
                                     <Player
                                         playsInline

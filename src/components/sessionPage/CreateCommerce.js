@@ -1,7 +1,9 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import { Container, CssBaseline, Button, TextField, MenuItem, FormControlLabel, Checkbox, Grid } from '@material-ui/core';
+import { Container, CssBaseline, Button, TextField, MenuItem, Avatar, Grid } from '@material-ui/core';
+import AddImg from '../../assets/images/addImage.svg'
 import IMG1 from '../../assets/images/img1.png';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -255,6 +257,33 @@ class CreateCommerce extends Component {
                                     variant="outlined"
                                 />
                             </Grid>
+
+                            
+                            <Grid item xs={12} sm={4}>
+                                <div style={{ width: '100%' }}>
+                                    <img
+                                        src={this.state.imgPreview ? this.state.imgPreview : AddImg}
+                                        alt="Image commerce 1"
+                                        style={{ width: '100%' }}/>
+                                </div>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <div style={{ width: '100%' }}>
+                                    <img
+                                        src={this.state.imgPreview ? this.state.imgPreview : AddImg}
+                                        alt="Image commerce 2"
+                                        style={{ width: '100%' }}/>
+                                </div>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                                <div style={{ width: '100%' }}>
+                                    <img
+                                        src={this.state.imgPreview ? this.state.imgPreview : AddImg}
+                                        alt="Image commerce 3"
+                                        style={{ width: '100%' }}/>
+                                </div>
+                            </Grid>
+
                             <Grid item xs={12}>
                                 <TextField
                                     select
@@ -374,18 +403,15 @@ class CreateCommerce extends Component {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <FormControlLabel
-                                    control={<Checkbox
-                                                required
-                                                value={this.state.validate}
-                                                onChange={this.handleValidate}
-                                                color="primary" />}
-                                    label="En cochant vous accéptez les conditions d'utilisation ..."/>
+                                <label style={{ fontSize: '14px' }}>
+                                    {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
+                                    <a style={{ color: 'blue', textDecoration: 'none' }} href="https://weeclik.com">Conditions générales</a>{'... '}
+                                </label>
                             </Grid>
                         </Grid>
 
 
-                        <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Creer le commerce</Button>
+                        <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Ajouter mon commerce</Button>
                         <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={button}>Annuler</Button>
                     </form>
                 </div>

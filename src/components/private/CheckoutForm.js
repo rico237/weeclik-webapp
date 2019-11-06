@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import './test.css'
 
+
 /**
  * https://stripe.com/docs/recipes/elements-react
  */
@@ -10,7 +11,7 @@ class CheckoutForm extends Component {
         super(props);
         this.state = {
             complete: false,
-            price: '299.99 €'
+            price: '329.99 €'
         };
         this.submit = this.submit.bind(this);
     }
@@ -32,6 +33,8 @@ class CheckoutForm extends Component {
         console.log(response);
         
     }
+
+    
 
     render() {
         if (this.state.complete) return <h1>Purchase Complete</h1>
