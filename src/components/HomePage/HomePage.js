@@ -27,6 +27,7 @@ const styleButton = {
     color: 'white',
     height: 48,
     padding: '0 30px',
+    outline: 'none'
 }
 
 class HomePage extends Component {

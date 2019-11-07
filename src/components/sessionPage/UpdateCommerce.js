@@ -34,6 +34,7 @@ class UpdateCommerce extends Component {
                 siteWeb: '',
                 tel: '',
                 description: '',
+                promotions: '',
                 statutCommerce: '',
                 nombrePartages: 0,
                 owner: '',
@@ -108,7 +109,7 @@ class UpdateCommerce extends Component {
                             siteWeb: _siteWeb,
                             tel: _tel,
                             adresse: _addr,
-                            promotion: _promotions
+                            promotions: _promotions
                         }
                     }));
                 });
@@ -163,6 +164,7 @@ class UpdateCommerce extends Component {
                 instanceCommerce.set("mail", JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,);
                 instanceCommerce.set("tel", _state_commerce.tel);
                 instanceCommerce.set("description", _state_commerce.description);
+                instanceCommerce.set("promotions", _state_commerce.promotions)
 
 
 
@@ -314,6 +316,21 @@ class UpdateCommerce extends Component {
                                     name="description"
                                     id="outlined-name"
                                     label="Description du commerce"
+                                    margin="dense"
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    // required
+                                    multiline
+                                    fullWidth
+                                    rows="4"
+                                    onChange={this.handleChange.bind(this)}
+                                    value={this.state.commerce.promotions}
+                                    name="promotions"
+                                    id="outlined-name"
+                                    label="Mes promotions"
                                     margin="dense"
                                     variant="outlined"
                                 />

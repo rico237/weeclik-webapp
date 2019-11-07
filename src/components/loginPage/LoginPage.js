@@ -34,6 +34,7 @@ const form = {
 
 const submit = {
     margin: theme.spacing(3, 0, 2),
+    outline: 'none'
 }
 
 

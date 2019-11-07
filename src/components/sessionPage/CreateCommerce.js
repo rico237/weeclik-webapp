@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
 import { Container, CssBaseline, Button, TextField, MenuItem, Grid } from '@material-ui/core';
-import AddImg from '../../assets/images/addImage.svg'
+// import AddImg from '../../assets/images/addImage.svg'
 import IMG1 from '../../assets/images/img1.png';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -39,6 +39,7 @@ class CreateCommerce extends Component {
                 description: '',
                 statutCommerce: '',
                 nombrePartages: 0,
+                promotions: '',
                 owner: '',
                 position: '',
                 mail: '',
@@ -146,6 +147,7 @@ class CreateCommerce extends Component {
                         "name": elt.get("nomCommerce"),
                         "status": _status,
                         "description": elt.get("description"),
+                        "promotions": elt.get("promotions"),
                         "nbPartage": elt.get("nombrePartages")
                     });
                 });
@@ -198,7 +200,8 @@ class CreateCommerce extends Component {
                     "typeCommerce": _state_commerce.currencyCategory,
                     "mail": JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
                     "tel": _state_commerce.tel,
-                    "description": _state_commerce.description
+                    "description": _state_commerce.description,
+                    "promotions": _state_commerce.promotions
                 })
                 .then((newCommerce) => {
                     console.log(`Le commerce ${newCommerce.id} a été créer ${JSON.stringify(currentUser, null, 2)}`);
@@ -246,7 +249,7 @@ class CreateCommerce extends Component {
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
-                                    // required
+                                    required
                                     className={"classes.textField"}
                                     fullWidth
                                     onChange={this.handleChange}
@@ -257,33 +260,6 @@ class CreateCommerce extends Component {
                                     variant="outlined"
                                 />
                             </Grid>
-
-                            
-                            <Grid item xs={12} sm={4}>
-                                <div style={{ width: '100%' }}>
-                                    <img
-                                        src={this.state.imgPreview ? this.state.imgPreview : AddImg}
-                                        alt="Image commerce 1"
-                                        style={{ width: '100%' }}/>
-                                </div>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <div style={{ width: '100%' }}>
-                                    <img
-                                        src={this.state.imgPreview ? this.state.imgPreview : AddImg}
-                                        alt="Image commerce 2"
-                                        style={{ width: '100%' }}/>
-                                </div>
-                            </Grid>
-                            <Grid item xs={12} sm={4}>
-                                <div style={{ width: '100%' }}>
-                                    <img
-                                        src={this.state.imgPreview ? this.state.imgPreview : AddImg}
-                                        alt="Image commerce 3"
-                                        style={{ width: '100%' }}/>
-                                </div>
-                            </Grid>
-
                             <Grid item xs={12}>
                                 <TextField
                                     select
@@ -292,7 +268,7 @@ class CreateCommerce extends Component {
                                     name="currencyCategory"
                                     value={this.state.commerce.currencyCategory}
                                     onChange={this.handleChange}
-                                    // required
+                                    required
                                     className={"classes.textField2"}
                                     label="Catégorie"
                                 >   
@@ -323,7 +299,7 @@ class CreateCommerce extends Component {
                             {/* Informations du commerce */}
                             <Grid item xs={12}>
                                 <TextField
-                                    // required
+                                    required
                                     className={"classes.textField"}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
@@ -336,7 +312,7 @@ class CreateCommerce extends Component {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    // required
+                                    required
                                     className={"classes.textField4"}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
@@ -349,7 +325,7 @@ class CreateCommerce extends Component {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    // required
+                                    required
                                     className={"classes.textField3"}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
@@ -362,7 +338,7 @@ class CreateCommerce extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    // required
+                                    required
                                     className={"classes.textField"}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
@@ -375,7 +351,7 @@ class CreateCommerce extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    // required
+                                    required
                                     className={"classes.textField"}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
@@ -389,7 +365,7 @@ class CreateCommerce extends Component {
                             <Grid item xs={12}>
                                 {/* Description de votre commerce */}
                                 <TextField
-                                    // required
+                                    required
                                     className={"classes.textField"}
                                     multiline
                                     fullWidth
@@ -398,6 +374,20 @@ class CreateCommerce extends Component {
                                     name="description"
                                     id="outlined-name"
                                     label="Description du commerce"
+                                    margin="dense"
+                                    variant="outlined"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    // required
+                                    multiline
+                                    fullWidth
+                                    rows="4"
+                                    onChange={this.handleChange.bind(this)}
+                                    name="promotions"
+                                    id="outlined-name"
+                                    label="Mes promotions"
                                     margin="dense"
                                     variant="outlined"
                                 />

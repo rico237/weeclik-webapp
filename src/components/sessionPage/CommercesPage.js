@@ -59,7 +59,7 @@ const root2 = {
 
 const bannier = {
     margin: `${theme.spacing(1)}px auto`,
-    padding: theme.spacing(2),
+    // padding: theme.spacing(2),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -90,6 +90,7 @@ const cover = {
 
 const card = {
     display: 'flex',
+    margin: '15px 0'
 }
 
 const details = {
@@ -271,7 +272,7 @@ class CommercesPage extends Component {
                             direction="row"
                             justify="center"
                             alignItems="center">
-                            <Grid item>
+                            <Grid item sm={2}>
                                 <Paper elevation={0} style={root2}>
                                     <center>
                                         <Typography variant="h2" component="h3" style={{color:"#000"}}>{this.state.commerceList.length}</Typography>
@@ -280,16 +281,16 @@ class CommercesPage extends Component {
                                 </Paper>
                             </Grid>
                             
-                            <Grid item>
+                            {/* <Grid item>
                                 <Paper elevation={0} style={root2}>
                                     <center>
                                         <Typography variant="h2" component="h3" style={{color:"#000"}}>2</Typography>
                                         <Typography component="p" style={{color:"#000"}}>Partage totalisé</Typography>
                                     </center>
                                 </Paper>
-                            </Grid>
+                            </Grid> */}
 
-                            <Grid item>
+                            <Grid item sm={10}>
                                 <Paper elevation={0} style={root2}>
                                     <center>
                                         <Button
@@ -317,9 +318,9 @@ class CommercesPage extends Component {
                                                 <Typography variant="subtitle1" color="textSecondary">{elt.status}</Typography>
 
                                                 <h5 style={{color:"#000"}}>
-                                                        {elt.nbPartage} {' '}
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
-                                                    </h5>
+                                                    {elt.nbPartage} {' '}
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+                                                </h5>
                                             </CardContent>
                                             <div style={controls}>
                                                 <div>
@@ -333,23 +334,6 @@ class CommercesPage extends Component {
                             </Grid>
                         </Container>
                     </Grid>
-
-{/* <GridListTile key={index} cols={2}>
-                                            <img src={elt.imgCategory} alt={elt.name} />
-                                            <GridListTileBar
-                                                title={elt.name}
-                                                subtitle={<span>status: {elt.status}</span>}
-                                                actionIcon={
-                                                    <IconButton onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`}>
-                                                        <InfoIcon />
-                                                    </IconButton>
-                                                }
-                                            />
-                                        </GridListTile> */}
-
-
-
-
                 </div>
             </Container>
         );

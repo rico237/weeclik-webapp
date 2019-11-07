@@ -13,20 +13,15 @@ import {
     Paper,
     Typography,
     IconButton,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody, 
     DialogContentText,
     DialogContent,
-    DialogActions} from '@material-ui/core';
+    DialogActions,
+    Box} from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import AddImg from '../../assets/icons/addImg.png';
 import AddVideo from '../../assets/icons/addVideo.svg';
 import Sad from '../../assets/images/sad.jpeg';
 
@@ -34,11 +29,12 @@ import Sad from '../../assets/images/sad.jpeg';
 import "../../../node_modules/video-react/dist/video-react.css";
 import { Player } from 'video-react';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Add from '@material-ui/icons/Add';
+// import Add from '@material-ui/icons/Add';
 import Info from '@material-ui/icons/Info';
 import Payment from '@material-ui/icons/Payment';
 
 import ModalImage from "react-modal-image";
+import { Copyright } from '../copyright/Copyright';
 
 
 
@@ -63,18 +59,18 @@ const paper = {
     // margin: '25px'
 }
 
-const styleButton1 = {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    border: 0,
-    borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-    marginTop: '15px',
-    marginBottom: '15px',
-    outline: 'none'
-}
+// const styleButton1 = {
+//     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+//     border: 0,
+//     borderRadius: 3,
+//     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+//     color: 'white',
+//     height: 48,
+//     padding: '0 30px',
+//     marginTop: '15px',
+//     marginBottom: '15px',
+//     outline: 'none'
+// }
 
 const styleButton2 = {
     background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
@@ -733,8 +729,8 @@ class AboutCommerce extends Component {
                                 {/* <p>{this.state.commerce.promotion}</p>
                                 <p>{this.state.commerce.description}</p> */}
                                 <h5 style={{color:"#000", paddingTop: '50px'}}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
-                                    {this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+                                    {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
                                 </h5>
                             </Paper>
 
@@ -805,9 +801,11 @@ class AboutCommerce extends Component {
                                         <Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Button color="secondary" size="small">Ajouter promotion</Button>
+                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>
+                                        {/* <Button color="secondary" size="small">Ajouter promotion</Button> */}
+
                                     </Grid>
-                                    <Grid item xs={12}>
+                                    {/* <Grid item xs={12}>
                                         <Table aria-label="simple table">
                                             <TableHead>
                                                 <TableRow>
@@ -829,7 +827,7 @@ class AboutCommerce extends Component {
                                                 </TableRow>
                                             </TableBody>
                                         </Table>
-                                    </Grid>
+                                    </Grid> */}
                                 </Grid>
                                 
                                 
@@ -939,6 +937,10 @@ class AboutCommerce extends Component {
                         </DialogActions>
                     </Dialog>
                 </div>
+
+                <Box mt={8}>
+                    <Copyright/>
+                </Box>
             </Container>
         );
     }
