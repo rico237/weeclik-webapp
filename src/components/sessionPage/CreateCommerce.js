@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import { Container, CssBaseline, Button, TextField, MenuItem, Avatar, Grid } from '@material-ui/core';
+import { Container, CssBaseline, Button, TextField, MenuItem, Grid } from '@material-ui/core';
 import AddImg from '../../assets/images/addImage.svg'
 import IMG1 from '../../assets/images/img1.png';
 import { connect } from 'react-redux';

@@ -127,6 +127,7 @@ function Navigation(props) {
                                     aria-haspopup="true"
                                     // aria-owns={this.state.open ? 'simple-menu' : null}
                                     onClick={handleProfileMenuOpen}
+                                    style={{outline: 'none'}}
                                 >
                                     <AccountCircle/>
                                 </IconButton> : 

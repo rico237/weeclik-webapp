@@ -1,6 +1,15 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, CssBaseline, Button, GridList, GridListTile, GridListTileBar, IconButton, Grid, Paper, Typography, Card, CardContent, CardMedia } from '@material-ui/core';
+import {
+    Container,
+    CssBaseline,
+    Button,
+    Grid,
+    Paper,
+    Typography,
+    Card,
+    CardContent,
+} from '@material-ui/core';
 import IMG1 from '../../assets/images/img1.png';
 import Artisanat from '../../assets/images/categories/cover1.jpg';
 import BienEtre from '../../assets/images/categories/cover2.jpg';
@@ -24,7 +33,6 @@ import Humanitaire from '../../assets/images/categories/cover19.jpg';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
-import InfoIcon from '@material-ui/icons/Info';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 
@@ -101,6 +109,7 @@ class CommercesPage extends Component {
 
         this.state = {
             commerceList: [],
+            nb: 0,
             user: {
                 name: '',
                 username: '',
@@ -314,7 +323,7 @@ class CommercesPage extends Component {
                                             </CardContent>
                                             <div style={controls}>
                                                 <div>
-                                                    <Button variant="outlined" size="small" color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`}>Plus de détail</Button>
+                                                    <Button variant="outlined" size="small" color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`} style={{outline: 'none'}}>Plus de détail</Button>
                                                 </div>
                                             </div>
                                         </div>

@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import Parse from 'parse';
@@ -17,7 +18,6 @@ import {
     TableRow,
     TableCell,
     TableBody } from '@material-ui/core';
-import MaterialTable from 'material-table';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -25,12 +25,15 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 import AddImg from '../../assets/icons/addImg.png';
 import AddVideo from '../../assets/icons/addVideo.svg';
-import Delete from '../../assets/icons/delete.svg';
 
 
 import "../../../node_modules/video-react/dist/video-react.css";
 import { Player } from 'video-react';
 import DeleteIcon from '@material-ui/icons/Delete';
+import Add from '@material-ui/icons/Add';
+import Payment from '@material-ui/icons/Payment';
+
+import ModalImage from "react-modal-image";
 
 
 
@@ -55,7 +58,7 @@ const paper = {
     // margin: '25px'
 }
 
-const styleButton = {
+const styleButton1 = {
     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
     border: 0,
     borderRadius: 3,
@@ -64,64 +67,24 @@ const styleButton = {
     height: 48,
     padding: '0 30px',
     marginTop: '15px',
-    marginBottom: '15px'
+    marginBottom: '15px',
+    outline: 'none'
+}
+
+const styleButton2 = {
+    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
+    border: 0,
+    borderRadius: 3,
+    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+    color: 'white',
+    height: 48,
+    padding: '0 30px',
+    marginTop: '15px',
+    marginBottom: '15px',
+    outline: 'none',
+    fontSize: '18px'
 }
 //#endregion
-
-//#region MATERIALTABLE
-function MaterialTableD() {
-    const [state, setState] = React.useState({
-        columns: [
-            { title: 'Promotion', field: 'promotion' },
-            { title: 'Date de fin', field: 'dateLine', type: 'numeric' },
-        ],
-        data: [],
-    });
-    
-    return (
-        <MaterialTable
-            title="Promotions"
-            columns={state.columns}
-            data={state.data}
-            editable={{
-                onRowAdd: newData => new Promise(resolve => {
-                    setTimeout(() => {
-                        resolve();
-                        setState(prevState => {
-                            const data = [...prevState.data];
-                            data.push(newData);
-                            return { ...prevState, data };
-                        });
-                    }, 600);
-                }),
-                onRowUpdate: (newData, oldData) => new Promise(resolve => {
-                    setTimeout(() => {
-                        resolve();
-                        if (oldData) {
-                            setState(prevState => {
-                                const data = [...prevState.data];
-                                data[data.indexOf(oldData)] = newData;
-                                return { ...prevState, data };
-                            });
-                        }
-                    }, 600);
-                }),
-                onRowDelete: oldData => new Promise(resolve => {
-                    setTimeout(() => {
-                        resolve();
-                        setState(prevState => {
-                            const data = [...prevState.data];
-                            data.splice(data.indexOf(oldData), 1);
-                            return { ...prevState, data };
-                        });
-                    }, 600);
-                }),
-            }}
-        ></MaterialTable>
-    )
-}
-//#endregion
-
 
 class AboutCommerce extends Component {
     constructor(props) {
@@ -157,12 +120,23 @@ class AboutCommerce extends Component {
             openPopupVideoAdd: false,
             alertMsg: '',
             sec: 3,
-            sec2: 0
+            sec2: 0,
+            imgPreview1: null,
+            imgPreview2: null,
+            imgPreview3: null,
+            idPic1: '',
+            idPic2: '',
+            idPic3: '',
+            colorStatus: '#F00'
         };
 
         this.handleValidate = this.handleValidate.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        this.changePicture1 = this.changePicture1.bind(this);
+        this.changePicture2 = this.changePicture2.bind(this);
+        this.changePicture3 = this.changePicture3.bind(this);
 
         this.onUploadImage = this.onUploadImage.bind(this);
     }
@@ -232,22 +206,28 @@ class AboutCommerce extends Component {
                     switch (_statusCommerce) {
                         case 0:
                             _statusCommerce = "Hors ligne - en attente de paiement"
+                            this.setState({colorStatus: '#F00'});
                             break;
                         case 1:
                             _statusCommerce = "En ligne"
+                            this.setState({colorStatus: '#00F'});
                             break;
                         case 2:
                             _statusCommerce = "Hors ligne - paiement annulé"
+                            this.setState({colorStatus: '#F00'});
                             break;
                         case 3:
                             _statusCommerce = "Erreur lors du paiement ou du renouvellement"
+                            this.setState({colorStatus: '#F00'});
                             break;
                         case 4:
                             _statusCommerce = ""
+                            this.setState({colorStatus: '#F00'});
                             break;
                     
                         default:
                             _statusCommerce = "Statut inconnu"
+                            this.setState({colorStatus: '#F00'});
                             break;
                     }
 
@@ -283,14 +263,86 @@ class AboutCommerce extends Component {
     }
 
 
+    //#region UPLOAD_IMAGE_PER_IMAGE
+    changePicture1(event) {
+        var currentUser = Parse.User.current();
+        var file = new Parse.File("image", event.target.files[0]);
+        var Commerce_Photos = new Parse.Object("Commerce_Photos");
+        if (currentUser) {
+            this.setState({
+                imgPreview1: URL.createObjectURL(event.target.files[0]),
+            });
+            file.save().then(() => {
+                Commerce_Photos.set("photo", file);
+                Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
+                Commerce_Photos.save()
+                    .then((snapshot) => {
+                        this.setState({
+                            idPic1: snapshot.id
+                        })
+                        window.location.reload();
+                    });
+            }, (error) => {
+                console.error(error.code + " --- " + error.message);
+            })
+        }
+    }
+
+    changePicture2(event) {
+        var currentUser = Parse.User.current();
+        var file = new Parse.File("image", event.target.files[0]);
+        var Commerce_Photos = new Parse.Object("Commerce_Photos");
+        if (currentUser) {
+            this.setState({
+                imgPreview2: URL.createObjectURL(event.target.files[0])
+            });
+            file.save().then(() => {
+                Commerce_Photos.set("photo", file);
+                Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
+                Commerce_Photos.save()
+                    .then((snapshot) => {
+                        this.setState({
+                            idPic2: snapshot.id
+                        })
+                        window.location.reload();
+                    });
+            }, (error) => {
+                console.error(error.code + " --- " + error.message);
+            })
+        }
+    }
+
+    changePicture3(event) {
+        var currentUser = Parse.User.current();
+        var file = new Parse.File("image", event.target.files[0]);
+        var Commerce_Photos = new Parse.Object("Commerce_Photos");
+        if (currentUser) {
+            this.setState({
+                imgPreview3: URL.createObjectURL(event.target.files[0])
+            });
+            file.save().then(() => {
+                Commerce_Photos.set("photo", file);
+                Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
+                Commerce_Photos.save()
+                    .then((snapshot) => {
+                        this.setState({
+                            idPic3: snapshot.id
+                        })
+                        window.location.reload();
+                    });
+            }, (error) => {
+                console.error(error.code + " --- " + error.message);
+            })
+        }
+    }
+    //#endregion
+
 
     //#region UPLOAD_IMAGE
     uploadImageToServer(img) {
         var file = new Parse.File(img.name, img);
         var Commerce_Photos = new Parse.Object("Commerce_Photos");
         var currentUser = Parse.User.current();
-        // console.log("$$$$$$$$$$$ "+this.state.commerceId);
-        
         if (currentUser) {
             file.save().then(() => {
                 Commerce_Photos.set("photo", file);
@@ -341,7 +393,6 @@ class AboutCommerce extends Component {
         
         var file = new Parse.File(movie.name, movie);
         var Commerce_video = new Parse.Object("Commerce_Videos");
-        // console.log("€€€€€€€€€€€ "+this.state.commerceId);
 
         if (this.state.currentUser) {
             var counter = 0;
@@ -413,7 +464,15 @@ class AboutCommerce extends Component {
         const listPicture = await this.getPicturesCommerce();
         this.setState({
             listImg : listPicture
+        }, () => {
+            this.setState({
+                imgPreview1: this.state.listImg[0],
+                imgPreview2: this.state.listImg[1],
+                imgPreview3: this.state.listImg[2]
+            })
         })
+        console.log("aaaa   a   aaa "+this.state.imgPreview1);
+        
     }
 
     getMovieCommerce = () => {
@@ -489,6 +548,87 @@ class AboutCommerce extends Component {
             });
         });
     }
+
+    deleteAllPictureCommerce = () => {
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
+        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
+
+        queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: this.state.commerceId}));
+
+        queryCommercePhoto.find()
+        .then(responseSnapshot => {
+            responseSnapshot.forEach((elt) => {
+                // Suppression de la photo
+                elt.destroy()
+                    .then((elt) => {
+                        // The object was deleted from the Parse Cloud.
+                        this.setState({ alertMsg: 'Suppression de la photo : ' })
+
+                        var counter = 3;
+                        this.intervalId = setInterval(() => {
+                            counter--;
+                            if (counter === -1) {
+                                clearInterval(this.intervalId);
+                                // this.handleCloseDeleteVideo();
+                                this.setState({
+                                    alertMsg: '',
+                                    sec: 3
+                                });
+                                window.location.reload();
+                            } else {
+                                console.log("--->"+counter);
+                                this.setState({ sec: counter })
+                            }
+                        }, 1000);
+                    }, (error) => {
+                        // The delete failed.
+                        // error is a Parse.Error with an error code and message.
+                        console.error(error.code + " --- " + error.message);
+                    })
+            })
+        })
+    }
+
+    deletePictureCommerce1 = (imgId) => {
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
+        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
+
+        queryCommercePhoto.equalTo("objectId", imgId);
+
+        queryCommercePhoto.find()
+        .then(responseSnapshot => {
+            responseSnapshot.forEach((elt) => {
+                // Suppression de la photo
+                elt.destroy()
+                    .then((elt) => {
+                        // The object was deleted from the Parse Cloud.
+                        this.setState({ alertMsg: 'Suppression de la photo : ' })
+
+                        var counter = 3;
+                        this.intervalId = setInterval(() => {
+                            counter--;
+                            if (counter === -1) {
+                                clearInterval(this.intervalId);
+                                // this.handleCloseDeleteVideo();
+                                this.setState({
+                                    alertMsg: '',
+                                    sec: 3
+                                });
+                                window.location.reload();
+                            } else {
+                                console.log("--->"+counter);
+                                this.setState({ sec: counter })
+                            }
+                        }, 1000);
+                    }, (error) => {
+                        // The delete failed.
+                        // error is a Parse.Error with an error code and message.
+                        console.error(error.code + " --- " + error.message);
+                    })
+            })
+        })
+    }
     //#endregion
 
 
@@ -544,37 +684,18 @@ class AboutCommerce extends Component {
                         justify="center">
                         <Grid item xs={12} sm={4} className="Weeclik-App-Info-Commerce2" style={paper}>
                             <Paper elevation={0} style={root2}>
-                                <Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
-                                <Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ marginTop: '15px', marginBottom: '15px' }}>Update commerce</Button>
-                                <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur c'est quoi une promotion</Typography>
-                                <Button onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton}>Nouvelle promotion</Button>
-                                <Typography component="p" style={{color:"#000"}}>Payer pour mettre le commerce en ligne</Typography>
-                                <Button onClick={() => { this.goToPay(this.state.commerceId) }} style={styleButton}>Payer</Button>
-
-                                <Typography component="p" style={{color:"#000"}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
-                                <input
-                                    id="icon-input-file-img"
-                                    type="file"
-                                    onChange={this.onUploadImage}
-                                    style={{ display: 'None' }}
-                                    accept="image/*"
-                                    multiple/>
-                                <label htmlFor="icon-input-file-img">
-                                    <img
-                                        src={AddImg}
-                                        className="rounded"
-                                        alt="Default profile"
-                                        style={{ width: 200 }}/>
-                                </label>
-
-                                
-                                
+                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
+                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ marginTop: '15px', marginBottom: '15px' }}>Update commerce</Button>
+                                {/* <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur c'est quoi une promotion</Typography>
+                                <Button fullWidth onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton1}>Nouvelle promotion</Button> */}
+                                <Typography component="p" style={{color:"#000"}}>Payer pour mettre votre commerce en ligne</Typography>
+                                <Button fullWidth onClick={() => { this.goToPay(this.state.commerceId) }} style={styleButton2} startIcon={<Payment />}>Payer 329.99 €</Button>    
                             </Paper>
                         </Grid>
                         <Grid item xs={12} sm={8} className="Weeclik-App-Info-Commerce2" style={paper}>
                             <Paper elevation={0} style={root2}>
-                                <Typography variant="h2" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
-                                <h6 style={{color:"#000"}}>{this.state.commerce.statutCommerce}</h6>
+                                <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
+                                <h6 style={{color: this.state.colorStatus}}>{this.state.commerce.statutCommerce}</h6>
                                 <h6 style={{color:"#000"}}>Type : {this.state.commerce.currencyCategory}</h6>
                                 <h6 style={{color:"#000"}}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>	:
@@ -599,26 +720,48 @@ class AboutCommerce extends Component {
                             <div style={{margin:'10px'}}></div>
 
                             <Paper elevation={0} style={root2}>
-                                <Typography variant="h4" component="h3" style={{color:"#000"}}>Images du commerce</Typography>
-                                <Grid item xs={12} style={paper}>
-                                    <GridList cellHeight={160} cols={columns}>
-                                        {this.state.listImg && [...this.state.listImg].map((url, index) => (
-                                            <GridListTile key={index}>
-                                                <img src={url} alt={"Images "+index+" du commerce"}/>
-                                            </GridListTile>
-                                        ))}
-                                    </GridList>
-
-                                    <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
-                                    {/* <input type="file" onChange={this.onUploadImage} accept='image/*' multiple/> */}
-                                    New images importé:
-                                    <GridList cellHeight={160} cols={columns}>
-                                        {this.state.file && [...this.state.file].map((file, index) => (
-                                            <GridListTile key={index}>
-                                                <img src={URL.createObjectURL(file)} alt={"tile.title"}/>
-                                            </GridListTile>
-                                        ))}
-                                    </GridList>
+                                <Grid
+                                    container
+                                    justify="space-between"
+                                    alignItems="center">
+                                    <Grid item xs={12}>
+                                        <Typography variant="h5" component="h3" style={{color:"#000"}}>Images du commerce</Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <input
+                                            id="icon-input-file-img"
+                                            type="file"
+                                            onChange={this.onUploadImage}
+                                            style={{ display: 'None' }}
+                                            accept="image/*"
+                                            multiple/>
+                                        <label htmlFor="icon-input-file-img">
+                                            <Button variant="outlined" color="primary" size="small" component="span">
+                                                Ajouter des images
+                                            </Button>
+                                        </label>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        <Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small">Supprimer les Images</Button>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <GridList cellHeight={160} cols={columns}>
+                                            {this.state.listImg && [...this.state.listImg].map((url, index) => (
+                                                <GridListTile key={index}>
+                                                    <ModalImage
+                                                        small={url}
+                                                        large={url}
+                                                        hideDownload="false"
+                                                        hideZoom="false"
+                                                        style={{maxHeight: '160px'}}
+                                                    />
+                                                </GridListTile>
+                                            ))}
+                                        </GridList>
+                                    </Grid>
                                 </Grid>
                             </Paper>
 
@@ -626,7 +769,7 @@ class AboutCommerce extends Component {
 
                             <Paper elevation={0} style={root2}>
                                 <Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography>
-                                <Grid item x={12} style={paper}>
+                                <Grid item x={12}>
                                     <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
                                 </Grid>
                             </Paper>
@@ -636,39 +779,39 @@ class AboutCommerce extends Component {
                             <Paper elevation={0} style={root2}>
                                 <Grid
                                     container
-                                    // justify="space-between"
                                     alignItems="center">
-                                        <Grid item xs={8}>
-                                            <Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography>
-                                        </Grid>
-                                        <Grid item xs={4}>
-                                            <Button color="secondary" size="small">Ajouter promotion</Button>
-                                        </Grid>
+                                    <Grid item xs={12}>
+                                        <Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Button color="secondary" size="small">Ajouter promotion</Button>
+                                    </Grid>
+                                    <Grid item xs={12}>
+                                        <Table aria-label="simple table">
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell>Promotions</TableCell>
+                                                    <TableCell align="right">Date de fin</TableCell>
+                                                    <TableCell align="right">Actions</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
+                                                <TableRow>
+                                                    <TableCell component="th" scope="row">ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy
+                                                    </TableCell>
+                                                    <TableCell align="right">12/2019</TableCell>
+                                                    <TableCell align="right">
+                                                        <IconButton aria-label="delete" color="secondary" size="small">
+                                                            <DeleteIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </TableCell>
+                                                </TableRow>
+                                            </TableBody>
+                                        </Table>
+                                    </Grid>
                                 </Grid>
                                 
-                                <Grid item xs={12} style={paper}>
-                                    <Table aria-label="simple table">
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell>Promotions</TableCell>
-                                                <TableCell align="right">Date de fin</TableCell>
-                                                <TableCell align="right">Actions</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell component="th" scope="row">ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy
-                                                </TableCell>
-                                                <TableCell align="right">12/2019</TableCell>
-                                                <TableCell align="right">
-                                                    <IconButton aria-label="delete" color="secondary" size="small">
-                                                        <DeleteIcon fontSize="small" />
-                                                    </IconButton>
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </Grid>
+                                
                             </Paper>
 
                             <div style={{margin:'10px'}}></div>
@@ -702,19 +845,12 @@ class AboutCommerce extends Component {
                                             </label>
                                         </Grid>
                                 </Grid>
-
-                                {/* <Button color="secondary" size="small">Supprimer la vidéo</Button> */}
-                                {/* <IconButton aria-label="delete" color="secondary" size="small">
-                                    <DeleteIcon fontSize="small" />
-                                </IconButton> */}
                                 
-                                <Grid item xs={12} style={paper}>
+                                <Grid item xs={12}>
                                     <Player
                                         playsInline
                                         src={this.state.movieURL[0]}
                                     />
-                                    {/* <p style={{color:"#000"}}>Ajouter une vidéo</p>
-                                    <input type="file" onChange={this.onUploadVideo} accept="video/mp4,video/x-m4v,video/*"/> */}
                                 </Grid>
                             </Paper>
                         </Grid>

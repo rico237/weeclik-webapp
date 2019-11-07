@@ -62,9 +62,11 @@ class PayPage extends Component {
                 <div style={root}>
                     <Grid container spacing={0}>
                         <Grid item xs={12} sm={7}>
-                            <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
-                            <Typography variant="h6">-50% la première année</Typography>
-                            <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{"Ajouter une description sur les prix"}</Typography>
+                            <center>
+                                <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
+                                <Typography variant="h6">-50% la première année</Typography>
+                                <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{"Ajouter une description sur les prix"}</Typography>
+                            </center>
                         </Grid>
                         <Grid item xs={12} sm={5}>
                             <div style={{
