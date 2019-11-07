@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { CardElement, injectStripe } from 'react-stripe-elements';
-import './test.css'
+import './style-stripe.css'
 
 
 /**
@@ -50,7 +50,7 @@ class CheckoutForm extends Component {
                         Card details
                         <CardElement />
                     </label>
-                    <button className="button-pay" onClick={this.submit}>Payer {this.state.price}</button>
+                    <button className="button-pay" onClick={this.submit} style={{outline: 'none'}}>Payer {this.state.price}</button>
                 </div>
                 <div>
                     <p style={{ color: '#6B7C93'}}>Payer <span className="price">{this.state.price}</span>, pour rendre votre commerce visible</p>

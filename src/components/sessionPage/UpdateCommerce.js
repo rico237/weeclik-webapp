@@ -17,16 +17,8 @@ const root = {
 
 const button = {
     margin: theme.spacing(1),
+    outline: 'none'
 }
-
-
-// const paper = {
-//     margin: `${theme.spacing(1)}px auto`,
-//     padding: theme.spacing(2),
-//     display: 'flex',
-//     flexDirection: 'column',
-//     alignItems: 'center',
-// }
 
 
 
@@ -105,16 +97,6 @@ class UpdateCommerce extends Component {
                     var _description = fetchedCommerce.get('description');
                     var _promotions = fetchedCommerce.get('promotions');
 
-
-                    // commerce: {
-                    //     ville: '',
-                    //     bp: '',
-                    //     owner: '',
-                    //     position: '',
-                    //     mail: '',
-                    //     id: ''
-                    // },
-
                     this.setState(prevState => ({
                         commerce: {
                             ...prevState.commerce,
@@ -157,8 +139,8 @@ class UpdateCommerce extends Component {
         const _state_commerce = this.state.commerce;
         let addr = "";
 
-        if (_state_commerce !== "" && _state_commerce.ville !== "" && _state_commerce.bp !== "") {
-            addr = _state_commerce.adresse + ", " + _state_commerce.ville + " " + _state_commerce.bp;
+        if (_state_commerce !== "") {
+            addr = _state_commerce.adresse;
         } else if (_state_commerce.adresse !== "") {
             addr = _state_commerce.adresse;
         }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Avatar, Dialog, DialogTitle, DialogContent, Grid, Container, Typography } from '@material-ui/core';
+import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Container, Typography } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import defaultProfile from '../../assets/icons/defaultUser.svg'
 import AddImg from '../../assets/images/addImage.svg'
@@ -271,78 +271,21 @@ class ProfilePage extends Component {
                             <Grid item xs={12} sm={8}>
                                 <Grid container spacing={4}>
                                     <Grid item xs={12}><h1>{this.state.user.name}</h1></Grid>
-                                    {/* <Grid item xs={12}>
-                                        <h4>{"Ambassadrise / Ambassadeur ?"}</h4>
-                                        <Button onClick={() => {this.handleOpen()}} style={styleButton}>Devenir ambassadrise/ ambassadeure</Button>
-                                    </Grid> */}
                                     <Grid item xs={12}>
                                         <h5>
                                             <svg width="48" height="48" fill="#FFF" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
                                             {" " + this.state.user.email}
                                         </h5>
                                     </Grid>
-                                    {/* <Grid item xs={12}>
-                                        <Grid container xs={12}>
-                                            <Grid item xs={4}>
-                                                <div>
-                                                    <h1>{this.state.nbCommerce}</h1>
-                                                    <p>{this.state.nbCommerce > 1 ? "Commerces" : "Commerce"}</p>
-                                                </div>
-                                            </Grid>
-                                            <Grid item xs={4}>
-                                                <div>
-                                                    <h1>{this.state.nbPersonneParraine}</h1>
-                                                    <p>{this.state.nbPersonneParraine > 1 ? "Parrainages" : "Parrainage"}</p>
-                                                </div>
-                                            </Grid>
-                                            <Grid item xs={4}>
-                                                <div>
-                                                    <h1>+10</h1>
-                                                    <p>Partages</p>
-                                                </div>
-                                            </Grid>
-                                        </Grid>
-                                    </Grid> */}
                                     <div xs={12}>
-                                        <Button variant="contained" style={{ margin: '10px' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier votre profile</Button>
-                                        <Button variant="outlined" style={{ margin: '10px' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer de mot de passe</Button>
+                                        <Button variant="contained" style={{ margin: '10px', outline: 'none' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier votre profile</Button>
+                                        <Button variant="outlined" style={{ margin: '10px', outline: 'none' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer de mot de passe</Button>
                                     </div>
                                 </Grid>
                             </Grid>
                         </Grid>
                         
                     </Container>
-
-                    
-
-
-
-                    {/* <div>
-                        <Dialog
-                            open={this.state.openAmbassador}
-                            onClose={this.handleClose}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                            style={{ minHeight: "600px"}}
-                            // fullWidth={true}
-                            maxWidth={"md"}
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Être ambassadrise / ambassadeure Weeclik"}</DialogTitle>
-                            <DialogContent>
-                                <YouTube
-                                    videoId="HEPL30xM25U"
-                                    opts={opts}
-                                    onReady={this._onReady}
-                                    style={{ margin: '10px' }}
-                                />
-                                <DialogContentText id="alert-dialog-description">
-                                    
-                                    
-                                    
-                                </DialogContentText>
-                            </DialogContent>
-                        </Dialog>
-                    </div> */}
 
 
                     <div>
@@ -396,6 +339,9 @@ class ProfilePage extends Component {
                                     </form>
                                 </div>
                             </DialogContent>
+                            <DialogActions>
+                                <Button onClick={this.handleCloseUpdatePass} color="secondary" style={{outline: 'none'}}>Annuler la modification du mot de passe</Button>
+                            </DialogActions>
                         </Dialog>
                     </div>
 
@@ -465,6 +411,9 @@ class ProfilePage extends Component {
                                     </form>
                                 </div>
                             </DialogContent>
+                            {/* <DialogActions>
+                                <Button onClick={this.handleCloseUpdateProfile} color="secondary" style={{outline: 'none'}}>Annuler la modification du mot de passe</Button>
+                            </DialogActions> */}
                         </Dialog>
                     </div>
                 </header>

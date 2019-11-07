@@ -55,6 +55,7 @@ input[type="text"] {
     color: #FFF;
     cursor: pointer;
     margin: 10px 0;
+    outline: none;
 }
 
 /* .split-form {

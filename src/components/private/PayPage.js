@@ -13,6 +13,11 @@ const theme = createMuiTheme({
 const root = {
     flexGrow: 1,
     paddingTop: '70px',
+    minHeight: '100vh',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center'
 }
 
 const avatar = {
@@ -60,15 +65,20 @@ class PayPage extends Component {
         return (
             <Container component="main" maxWidth="md">
                 <div style={root}>
-                    <Grid container spacing={0}>
-                        <Grid item xs={12} sm={7}>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="center"
+                        spacing={0}>
+                        <Grid item xs={12} sm={6}>
                             <center>
                                 <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
                                 <Typography variant="h6">-50% la première année</Typography>
-                                <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{"Ajouter une description sur les prix"}</Typography>
+                                {/* <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{"Ajouter une description sur les prix"}</Typography> */}
                             </center>
                         </Grid>
-                        <Grid item xs={12} sm={5}>
+                        <Grid item xs={12} sm={6}>
                             <div style={{
                                 padding: '25px',
                                 // marginLeft: '25px',
@@ -83,7 +93,7 @@ class PayPage extends Component {
                                     </div>
                                 </StripeProvider>
 
-                                <Button onClick={() => this.goToBack()} variant="outlined" size="small" color="secondary" style={{ width: '100%'}}>Non merci</Button>
+                                <Button fullWidth onClick={() => this.goToBack()} variant="outlined" size="small" color="secondary" style={{outline: 'none'}}>Non merci</Button>
                             </div>
                         </Grid>
                     </Grid>

@@ -17,7 +17,10 @@ import {
     TableHead,
     TableRow,
     TableCell,
-    TableBody } from '@material-ui/core';
+    TableBody, 
+    DialogContentText,
+    DialogContent,
+    DialogActions} from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -25,12 +28,14 @@ import { createMuiTheme } from '@material-ui/core/styles';
 
 import AddImg from '../../assets/icons/addImg.png';
 import AddVideo from '../../assets/icons/addVideo.svg';
+import Sad from '../../assets/images/sad.jpeg';
 
 
 import "../../../node_modules/video-react/dist/video-react.css";
 import { Player } from 'video-react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import Add from '@material-ui/icons/Add';
+import Info from '@material-ui/icons/Info';
 import Payment from '@material-ui/icons/Payment';
 
 import ModalImage from "react-modal-image";
@@ -118,6 +123,7 @@ class AboutCommerce extends Component {
             submitted: false,
             openPopupVideoDelete: false,
             openPopupVideoAdd: false,
+            openInfo: false,
             alertMsg: '',
             sec: 3,
             sec2: 0,
@@ -139,6 +145,14 @@ class AboutCommerce extends Component {
         this.changePicture3 = this.changePicture3.bind(this);
 
         this.onUploadImage = this.onUploadImage.bind(this);
+    }
+
+    handleOpenInfo = () => {
+        this.setState({ openInfo: true });
+    }
+
+    handleCloseInfo = () => {
+        this.setState({ openInfo: false });
     }
 
     handleOpenDeleteVideo = () => {
@@ -413,15 +427,16 @@ class AboutCommerce extends Component {
 
             
             file.save().then((file) => {
-                console.log("@@@@@@@@@@@@@@@@@>"+JSON.stringify(file, null, 2));
+                // console.log("@@@@@@@@@@@@@@@@@>"+JSON.stringify(file, null, 2));
                 Commerce_video.set("nameVideo", movie.name);
                 Commerce_video.set("video", file);
                 Commerce_video.set("leCommerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
                 Commerce_video.save().then((Commerce_video) => {
-                    console.log("#################>"+JSON.stringify(Commerce_video, null, 2));
+                    // console.log("#################>"+JSON.stringify(Commerce_video, null, 2));
                     this.handleCloseAddVideo();
                     this.setState({ alertMsg: 'Vidéo sauvegardé', sec2: 0 });
                     clearInterval(this.intervalId);
+                    window.location.reload();
                 });
             }, (error) => {
                 console.error(error);
@@ -431,6 +446,7 @@ class AboutCommerce extends Component {
 
     onUploadVideo = (event) => {
         if (event.target.files.length === 1) {
+            this.deleteMovieCommerce();
             var video = event.target.files[0];
             this.uploadVideoToServer(video);    // Ajout de la video
         }
@@ -684,8 +700,8 @@ class AboutCommerce extends Component {
                         justify="center">
                         <Grid item xs={12} sm={4} className="Weeclik-App-Info-Commerce2" style={paper}>
                             <Paper elevation={0} style={root2}>
-                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
-                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ marginTop: '15px', marginBottom: '15px' }}>Update commerce</Button>
+                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
+                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Modifier le commerce</Button>
                                 {/* <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur c'est quoi une promotion</Typography>
                                 <Button fullWidth onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton1}>Nouvelle promotion</Button> */}
                                 <Typography component="p" style={{color:"#000"}}>Payer pour mettre votre commerce en ligne</Typography>
@@ -695,7 +711,12 @@ class AboutCommerce extends Component {
                         <Grid item xs={12} sm={8} className="Weeclik-App-Info-Commerce2" style={paper}>
                             <Paper elevation={0} style={root2}>
                                 <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
-                                <h6 style={{color: this.state.colorStatus}}>{this.state.commerce.statutCommerce}</h6>
+                                <h6 style={{color: this.state.colorStatus, margin: '10px 0'}}>
+                                    {this.state.commerce.statutCommerce}{' '}
+                                    <IconButton onClick={() => { this.handleOpenInfo() }} aria-label="delete" style={{ color: "gray", outline: 'none'}} size="small">
+                                        <Info fontSize="small" />
+                                    </IconButton>
+                                </h6>
                                 <h6 style={{color:"#000"}}>Type : {this.state.commerce.currencyCategory}</h6>
                                 <h6 style={{color:"#000"}}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>	:
@@ -707,7 +728,7 @@ class AboutCommerce extends Component {
                                 </h6>
                                 <h6 style={{color:"#000"}}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-5 14H4v-4h11v4zm0-5H4V9h11v4zm5 5h-4V9h4v9z"/></svg> : 
-                                    {" " + this.state.commerce.siteWeb}
+                                    {" "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
                                 </h6>
                                 {/* <p>{this.state.commerce.promotion}</p>
                                 <p>{this.state.commerce.description}</p> */}
@@ -745,7 +766,7 @@ class AboutCommerce extends Component {
                                         </label>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small">Supprimer les Images</Button>
+                                        <Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small" style={{outline: 'none'}}>Supprimer les Images</Button>
                                     </Grid>
                                     <Grid item xs={12}>
                                         <GridList cellHeight={160} cols={columns}>
@@ -825,7 +846,7 @@ class AboutCommerce extends Component {
                                             <Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography>
                                         </Grid>
                                         <Grid item xs={12} sm={1}>
-                                            <IconButton onClick={() => { this.deleteMovieCommerce() }} aria-label="delete" color="secondary" size="small">
+                                            <IconButton onClick={() => { this.deleteMovieCommerce() }} aria-label="delete" color="secondary" size="small" style={{outline: 'none'}}>
                                                 <DeleteIcon fontSize="small" />
                                             </IconButton>
                                         </Grid>
@@ -847,10 +868,21 @@ class AboutCommerce extends Component {
                                 </Grid>
                                 
                                 <Grid item xs={12}>
-                                    <Player
-                                        playsInline
-                                        src={this.state.movieURL[0]}
-                                    />
+                                    {
+                                        this.state.movieURL[0] ?
+                                        (<Player
+                                            playsInline
+                                            src={this.state.movieURL[0]}
+                                        />) :
+                                        (<center>
+                                            <img
+                                                src={Sad}
+                                                style={{ width: 100}}
+                                            />
+                                            <Typography variant="h3" style={{color: 'gray'}}>Pas de vidéo</Typography>
+
+                                        </center>)
+                                    }
                                 </Grid>
                             </Paper>
                         </Grid>
@@ -882,6 +914,29 @@ class AboutCommerce extends Component {
                         maxWidth={"md"}
                     >
                         <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec2}{' ...'}</DialogTitle>
+                    </Dialog>
+                </div>
+
+                <div>
+                    <Dialog
+                        open={this.state.openInfo}
+                        onClose={this.handleCloseInfo}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                        style={{ minHeight: "600px"}}
+                        // fullWidth={true}
+                        maxWidth={"sm"}
+                    >
+                        <DialogTitle id="alert-dialog-title">A propos du status</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                {this.state.commerce.statutCommerce}{' '}
+                                Veut dire que le commerce est toujours sur Weeclik mais invisible de tout le monde car il y a surement eu une erreur dans le paiement ou que l'abonnement n'est plus valable
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={this.handleCloseInfo} color="primary" autoFocus style={{outline: 'none'}}>Ok</Button>
+                        </DialogActions>
                     </Dialog>
                 </div>
             </Container>
