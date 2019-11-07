@@ -58,7 +58,7 @@ class ForgotPage extends Component {
     sendNewPassword(event) {
         event.preventDefault();
         this.setState({ submitted: true });
-        console.log(this.state.username);
+        // console.log(this.state.username);
         if (this.state.username) {
             const user = new Parse.User.requestPasswordReset(this.state.username);
             user.then(() => {

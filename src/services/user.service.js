@@ -27,7 +27,7 @@ function login(username, password) {
 }
 
 function logout() {
-    console.log(`[SERVICE] : logout`);
+    // console.log(`[SERVICE] : logout`);
     return Parse.User.logOut();
     // remove user from local storage to log user out
     // localStorage.removeItem('user');
@@ -36,12 +36,12 @@ function logout() {
 function getUser() {
     var currentUser = Parse.User.current();
     // console.log(`[GET] : ${JSON.stringify(currentUser, null, 2)}`);
-    return currentUser.fetch().then(() => console.log("aaaaa"));
+    return currentUser.fetch().then(() => {});
 }
 
 function handleResponse(response) {
     if (response) {
-        console.log(`[HANDLE] : -------${JSON.stringify(response, null, 2)}`);
+        // console.log(`[HANDLE] : -------${JSON.stringify(response, null, 2)}`);
     } else {
         ;
     }

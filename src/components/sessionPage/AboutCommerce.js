@@ -133,6 +133,7 @@ class AboutCommerce extends Component {
             idPic1: '',
             idPic2: '',
             idPic3: '',
+            nbImageUpload: 0,
             colorStatus: '#F00'
         };
 
@@ -369,16 +370,17 @@ class AboutCommerce extends Component {
                     if (n === 0) {
                         instanceCommerce.id = this.state.commerceId
                         instanceCommerce.set("thumbnailPrincipal", { "__type": "Pointer", "className": "Commerce_Photos", "objectId": snapshot.id });
-                        // instanceCommerce.set("siteWeb", "www.google.fr");
                         instanceCommerce.save().then(() => {
                             // console.log("$$$$$ default image");
                         }, (error) => {
                             console.error('Failed to update commerce');
                         })
                     }
-                    if (n === n_max-1) {
-                        // console.log("$$$$$"+n+" -- "+n_max);
-                        // window.location.reload();
+                    this.setState({
+                        nbImageUpload: this.state.nbImageUpload + 1
+                    })
+                    if (this.state.nbImageUpload === n_max) {
+                        window.location.reload();
                     }
                 });
             }, (error) => {
@@ -507,8 +509,7 @@ class AboutCommerce extends Component {
                 imgPreview3: this.state.listImg[2]
             })
         })
-        console.log("aaaa   a   aaa "+this.state.imgPreview1);
-        
+        // console.log("aaaa   a   aaa "+this.state.imgPreview1);
     }
 
     getMovieCommerce = () => {
@@ -535,11 +536,11 @@ class AboutCommerce extends Component {
 
     getUrlCommerceMovie = async () => {
         const movie = await this.getMovieCommerce();
-        console.log(`--fff-------> ${movie}`);
+        // console.log(`--fff-------> ${movie}`);
         this.setState({
             movieURL: movie
         })
-        console.log(`--ggg-------> ${this.state.movieURL}`);
+        // console.log(`--ggg-------> ${this.state.movieURL}`);
     }
     //#endregion
 
@@ -652,7 +653,7 @@ class AboutCommerce extends Component {
                                 });
                                 window.location.reload();
                             } else {
-                                console.log("--->"+counter);
+                                // console.log("--->"+counter);
                                 this.setState({ sec: counter })
                             }
                         }, 1000);
@@ -697,16 +698,15 @@ class AboutCommerce extends Component {
         this.getCommerceData();
         this.getUrlCommercePicture();
         this.getUrlCommerceMovie();
-        console.log(`-----------> ${this.state.movieURL}`);
-        console.log(`-----------> ${this.props.location.state.id}`);
+        // console.log(`-----------> ${this.state.movieURL}`);
+        // console.log(`-----------> ${this.props.location.state.id}`);
     }
 
     render() {
         // const { user } = this.props;className="App-header"
-        console.log(this.state.commerce);
-        console.log(this.state.listImg);
-
-        let columns = this.props.width === 'xs' || this.props.width === 'sm' ? 1 : 3;
+        // console.log(this.state.commerce);
+        // console.log(this.state.listImg);
+        // let columns = this.props.width === 'xs' || this.props.width === 'sm' ? 1 : 3;
 
         return (
             <Container component="main" maxWidth="md" style={{ color: "#000" }}>
@@ -771,18 +771,24 @@ class AboutCommerce extends Component {
                                         <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <input
-                                            id="icon-input-file-img"
-                                            type="file"
-                                            onChange={this.onUploadImage}
-                                            style={{ display: 'None' }}
-                                            accept="image/*"
-                                            multiple/>
-                                        <label htmlFor="icon-input-file-img">
-                                            <Button variant="outlined" color="primary" size="small" component="span">
-                                                Ajouter des images
-                                            </Button>
-                                        </label>
+                                        {
+                                            this.state.listImg.length < 3 ?
+                                            (<div>
+                                                <input
+                                                    id="icon-input-file-img"
+                                                    type="file"
+                                                    onChange={this.onUploadImage}
+                                                    style={{ display: 'None' }}
+                                                    accept="image/*"
+                                                    multiple/>
+                                                <label htmlFor="icon-input-file-img">
+                                                    <Button variant="outlined" color="primary" size="small" component="span">
+                                                        Ajouter des images
+                                                    </Button>
+                                                </label>
+                                            </div>):
+                                            (<div></div>)
+                                        }
                                     </Grid>
                                     <Grid item xs={6}>
                                         {
@@ -794,16 +800,18 @@ class AboutCommerce extends Component {
                                     <Grid item xs={12}>
                                         {
                                             this.state.listImg.length > 0 ?
-                                            (<GridList cellHeight={160} cols={columns}>
+                                            (<GridList cellHeight={180} cols={3} style={{ height: '450' }}>
                                                 {this.state.listImg && [...this.state.listImg].map((url, index) => (
                                                     <GridListTile key={index}>
-                                                        <ModalImage
-                                                            small={url}
-                                                            large={url}
-                                                            hideDownload="false"
-                                                            hideZoom="false"
-                                                            style={{maxHeight: '160px'}}
-                                                        />
+                                                        <div style={{height: '200px', overflow: 'hidden'}}>
+                                                            <ModalImage
+                                                                small={url}
+                                                                large={url}
+                                                                hideDownload="false"
+                                                                hideZoom="false"
+                                                                style={{height: '160px'}}
+                                                            />
+                                                        </div>
                                                     </GridListTile>
                                                 ))}
                                             </GridList>):

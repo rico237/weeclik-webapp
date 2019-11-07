@@ -125,7 +125,7 @@ class ProfilePage extends Component {
         if (currentUser) {
             if (this.state.lastPassword && this.state.newPassword && this.state.newPassword2) {
                 if (this.state.newPassword === this.state.newPassword2) {
-                    console.log(`Mot de passe identique`);
+                    // console.log(`Mot de passe identique`);
                     currentUser.setPassword(this.state.newPassword);
                     currentUser.save()
                         .then((user) => {
@@ -166,7 +166,7 @@ class ProfilePage extends Component {
                 currentUser.set('profilePictureURL', file.url());
                 currentUser.save()
                     .then((user) => {
-                        console.log(user);
+                        // console.log(user);
                     }, (error) => {
                         console.error(error);
                     });

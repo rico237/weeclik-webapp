@@ -150,7 +150,7 @@ class UpdateCommerce extends Component {
             _state_commerce.currencyCategory !== "" &&
             _state_commerce.tel !== "" && addr !== "") {
 
-                const currentUser = Parse.User.current()
+                // const currentUser = Parse.User.current()
                 const ParseCommerce = Parse.Object.extend("Commerce");
                 const instanceCommerce = new ParseCommerce();
                 const point         = new Parse.GeoPoint({latitude: 0.0, longitude: 0.0});
@@ -171,7 +171,7 @@ class UpdateCommerce extends Component {
 
                 instanceCommerce.save()
                 .then((newCommerce) => {
-                    console.log(`Le commerce ${newCommerce.id} a été créer ${JSON.stringify(currentUser, null, 2)}`);
+                    // console.log(`Le commerce ${newCommerce.id} a été créer ${JSON.stringify(currentUser, null, 2)}`);
                     this.isCreate(newCommerce.id);
                 }, (error) => {
                     console.error(`Failed to create new object, with error code: ' + ${error.message}`);
@@ -193,7 +193,7 @@ class UpdateCommerce extends Component {
 
     render() {
         // const { user } = this.props;className="App-header"
-        console.log(this.state.commerce);
+        // console.log(this.state.commerce);
 
         if (this.state.isCreate) {
             return (

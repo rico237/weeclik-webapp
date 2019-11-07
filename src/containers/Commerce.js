@@ -86,7 +86,7 @@ class Commerce extends Component {
 
     render() {
         const { classes } = this.props;
-        console.log("---------------- "+this.props.name);
+        // console.log("---------------- "+this.props.name);
         
 
         return (

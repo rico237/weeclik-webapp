@@ -204,7 +204,7 @@ class CreateCommerce extends Component {
                     "promotions": _state_commerce.promotions
                 })
                 .then((newCommerce) => {
-                    console.log(`Le commerce ${newCommerce.id} a été créer ${JSON.stringify(currentUser, null, 2)}`);
+                    // console.log(`Le commerce ${newCommerce.id} a été créer ${JSON.stringify(currentUser, null, 2)}`);
                     this.isCreate(newCommerce.id);
                 }, (error) => {
                     console.error(`Failed to create new object, with error code: ' + ${error.message}`);
@@ -230,7 +230,7 @@ class CreateCommerce extends Component {
 
     render() {
         // const { user } = this.props;className="App-header"
-        console.log(this.state.commerce);
+        // console.log(this.state.commerce);
 
         if (this.state.isCreate) {
             return (

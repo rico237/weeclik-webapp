@@ -80,8 +80,8 @@ function logout() {
 }
 
 function getInfo() {
-    const aa = userService.getUser();
-    console.log(`[---------] : ${JSON.stringify(aa, null, 2)}`);
+    // const aa = userService.getUser();
+    // console.log(`[---------] : ${JSON.stringify(aa, null, 2)}`);
     return { type: userConstants.GET_REQUEST }
     // userService.getUserInfo();
     // return dispatch => {

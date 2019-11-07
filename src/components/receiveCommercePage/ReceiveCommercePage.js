@@ -210,11 +210,11 @@ class ReceiveCommercePage extends Component {
 
     getUrlCommerceMovie = async () => {
         const movie = await this.getMovieCommerce();
-        console.log(`--fff-------> ${movie}`);
+        // console.log(`--fff-------> ${movie}`);
         this.setState({
             movieURL: movie
         })
-        console.log(`--ggg-------> ${this.state.movieURL}`);
+        // console.log(`--ggg-------> ${this.state.movieURL}`);
     }
     //#endregion
 
@@ -249,14 +249,14 @@ class ReceiveCommercePage extends Component {
         // this.getUrlCommerceMovie();
         // console.log(`-----------> ${this.state.movieURL}`);
         // console.log(`-----------> ${this.props.location.state.id}`);
-        console.log(`-----------> ${this.props.match.params.commerceId}`);
+        // console.log(`-----------> ${this.props.match.params.commerceId}`);
         
     }
 
     render() {
         // const { user } = this.props;className="App-header"
-        console.log(this.state.commerce);
-        console.log(this.state.listImg);
+        // console.log(this.state.commerce);
+        // console.log(this.state.listImg);
 
         let columns = this.props.width === 'xs' || this.props.width === 'sm' ? 1 : 3;
 
