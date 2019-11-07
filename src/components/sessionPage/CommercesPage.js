@@ -80,8 +80,9 @@ const styleButton = {
 const controls = {
     display: 'flex',
     alignItems: 'center',
-    paddingLeft: theme.spacing(1),
-    paddingBottom: theme.spacing(1),
+    padding: theme.spacing(2),
+    // paddingLeft: theme.spacing(1),
+    // paddingBottom: theme.spacing(1),
 }
 
 const cover = {
@@ -323,10 +324,16 @@ class CommercesPage extends Component {
                                                 </h5>
                                             </CardContent>
                                             <div style={controls}>
-                                                <div>
+                                                <Grid container justify="flex-start" spacing={1}>
+                                                    <Grid item>
+                                                        <Button color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`} style={{outline: 'none'}}>Plus de détail</Button>
+                                                    </Grid>
+                                                </Grid>
+                                                {/* <div>
                                                     <Button variant="outlined" size="small" color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`} style={{outline: 'none'}}>Plus de détail</Button>
-                                                </div>
+                                                </div> */}
                                             </div>
+                                            
                                         </div>
                                     </Card>
                                             

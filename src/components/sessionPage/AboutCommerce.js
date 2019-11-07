@@ -36,6 +36,10 @@ import Payment from '@material-ui/icons/Payment';
 import ModalImage from "react-modal-image";
 import { Copyright } from '../copyright/Copyright';
 
+//#region COLOR
+import grey from '@material-ui/core/colors/grey';
+//#endregion
+
 
 
 //#region THEME
@@ -349,15 +353,34 @@ class AboutCommerce extends Component {
 
 
     //#region UPLOAD_IMAGE
-    uploadImageToServer(img) {
+    uploadImageToServer(img, n, n_max) {
         var file = new Parse.File(img.name, img);
         var Commerce_Photos = new Parse.Object("Commerce_Photos");
+        var ParseCommerce = Parse.Object.extend("Commerce");
         var currentUser = Parse.User.current();
+        
+
         if (currentUser) {
             file.save().then(() => {
                 Commerce_Photos.set("photo", file);
                 Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
-                Commerce_Photos.save();
+                Commerce_Photos.save().then((snapshot) => {
+                    const instanceCommerce = new ParseCommerce();
+                    if (n === 0) {
+                        instanceCommerce.id = this.state.commerceId
+                        instanceCommerce.set("thumbnailPrincipal", { "__type": "Pointer", "className": "Commerce_Photos", "objectId": snapshot.id });
+                        // instanceCommerce.set("siteWeb", "www.google.fr");
+                        instanceCommerce.save().then(() => {
+                            // console.log("$$$$$ default image");
+                        }, (error) => {
+                            console.error('Failed to update commerce');
+                        })
+                    }
+                    if (n === n_max-1) {
+                        // console.log("$$$$$"+n+" -- "+n_max);
+                        // window.location.reload();
+                    }
+                });
             }, (error) => {
                 console.error(error);
             })
@@ -384,12 +407,13 @@ class AboutCommerce extends Component {
 
                 imageCompression(img, options)
                     .then((compressedFile) => {
-                        return this.uploadImageToServer(compressedFile);
+                        return this.uploadImageToServer(compressedFile, i, taille);
                     })
                     .catch((error) => {
                         console.error(error);
                     });
             }
+            
         } else {
             alert("Attention seulement vous pouvez ajouter que 3 images maximum");
         }
@@ -575,21 +599,20 @@ class AboutCommerce extends Component {
                 elt.destroy()
                     .then((elt) => {
                         // The object was deleted from the Parse Cloud.
-                        this.setState({ alertMsg: 'Suppression de la photo : ' })
-
+                        this.setState({ alertMsg: 'Suppression de(s) photo(s) : ' })
+                        this.handleOpenDeleteVideo();
                         var counter = 3;
                         this.intervalId = setInterval(() => {
                             counter--;
                             if (counter === -1) {
                                 clearInterval(this.intervalId);
-                                // this.handleCloseDeleteVideo();
+                                this.handleCloseDeleteVideo();
                                 this.setState({
                                     alertMsg: '',
                                     sec: 3
                                 });
                                 window.location.reload();
                             } else {
-                                console.log("--->"+counter);
                                 this.setState({ sec: counter })
                             }
                         }, 1000);
@@ -762,22 +785,30 @@ class AboutCommerce extends Component {
                                         </label>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small" style={{outline: 'none'}}>Supprimer les Images</Button>
+                                        {
+                                            this.state.listImg.length > 0 ?
+                                            (<Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small" style={{outline: 'none'}}>Supprimer les Images</Button>):
+                                            (<div></div>)
+                                        }
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <GridList cellHeight={160} cols={columns}>
-                                            {this.state.listImg && [...this.state.listImg].map((url, index) => (
-                                                <GridListTile key={index}>
-                                                    <ModalImage
-                                                        small={url}
-                                                        large={url}
-                                                        hideDownload="false"
-                                                        hideZoom="false"
-                                                        style={{maxHeight: '160px'}}
-                                                    />
-                                                </GridListTile>
-                                            ))}
-                                        </GridList>
+                                        {
+                                            this.state.listImg.length > 0 ?
+                                            (<GridList cellHeight={160} cols={columns}>
+                                                {this.state.listImg && [...this.state.listImg].map((url, index) => (
+                                                    <GridListTile key={index}>
+                                                        <ModalImage
+                                                            small={url}
+                                                            large={url}
+                                                            hideDownload="false"
+                                                            hideZoom="false"
+                                                            style={{maxHeight: '160px'}}
+                                                        />
+                                                    </GridListTile>
+                                                ))}
+                                            </GridList>):
+                                            (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas d'images"}</Typography>)
+                                        }
                                     </Grid>
                                 </Grid>
                             </Paper>
@@ -801,9 +832,12 @@ class AboutCommerce extends Component {
                                         <Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>
+                                        {
+                                            this.state.commerce.promotion ?
+                                            (<Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>):
+                                            (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas de promotions en cours"}</Typography>)
+                                        }
                                         {/* <Button color="secondary" size="small">Ajouter promotion</Button> */}
-
                                     </Grid>
                                     {/* <Grid item xs={12}>
                                         <Table aria-label="simple table">
@@ -877,7 +911,7 @@ class AboutCommerce extends Component {
                                                 src={Sad}
                                                 style={{ width: 100}}
                                             />
-                                            <Typography variant="h3" style={{color: 'gray'}}>Pas de vidéo</Typography>
+                                            <Typography variant="h3" style={{color: grey[300]}}>Pas de vidéo</Typography>
 
                                         </center>)
                                     }
