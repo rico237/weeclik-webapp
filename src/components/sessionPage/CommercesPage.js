@@ -87,6 +87,8 @@ const controls = {
 
 const cover = {
     width: 160,
+    height: 160,
+    margin: "7px"
 }
 
 const card = {

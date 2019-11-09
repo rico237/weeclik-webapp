@@ -351,7 +351,7 @@ class CreateCommerce extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    required
+                                    // required
                                     className={"classes.textField"}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
