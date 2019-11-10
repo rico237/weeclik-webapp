@@ -870,31 +870,38 @@ class AboutCommerce extends Component {
                             <Paper elevation={0} style={root2}>
                                 <Grid
                                     container
-                                    // justify="space-between"
+                                    justify="space-between"
                                     alignItems="center">
-                                        <Grid item xs={12} sm={10}>
+                                        <Grid item xs={12}>
                                             <Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography>
                                         </Grid>
-                                        <Grid item xs={12} sm={1}>
-                                            <IconButton onClick={() => { this.deleteMovieCommerce() }} aria-label="delete" color="secondary" size="small" style={{outline: 'none'}}>
-                                                <DeleteIcon fontSize="small" />
-                                            </IconButton>
+                                        <Grid item xs={6}>
+                                            {
+                                                this.state.movieURL[0] ?
+                                                (<div></div>) :
+                                                (<div>
+                                                    <input
+                                                        id="icon-input-file-video"
+                                                        type="file"
+                                                        onChange={this.onUploadVideo}
+                                                        style={{ display: 'None' }}
+                                                        accept="video/mp4,video/x-m4v,video/*"/>
+                                                    <label htmlFor="icon-input-file-video">
+                                                        <Button variant="outlined" color="primary" size="small" component="span">
+                                                            Ajouter une vidéo
+                                                        </Button>
+                                                    </label>
+                                                </div>)
+                                            }
                                         </Grid>
-                                        <Grid item xs={12} sm={1}>
-                                            <input
-                                                id="icon-input-file-video"
-                                                type="file"
-                                                onChange={this.onUploadVideo}
-                                                style={{ display: 'None' }}
-                                                accept="video/mp4,video/x-m4v,video/*"/>
-                                            <label htmlFor="icon-input-file-video">
-                                                <img
-                                                    src={AddVideo}
-                                                    className="rounded"
-                                                    alt="Default profile"
-                                                    style={{ width: 30 }}/>
-                                            </label>
+                                        <Grid item xs={6}>
+                                            {
+                                                this.state.movieURL[0] ?
+                                                (<Button onClick={() => { this.deleteMovieCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Supprimer la vidéo</Button>) : (<div></div>)
+                                            }
+                                            
                                         </Grid>
+                                        
                                 </Grid>
                                 
                                 <Grid item xs={12}>
