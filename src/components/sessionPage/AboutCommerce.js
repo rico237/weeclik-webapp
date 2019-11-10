@@ -16,6 +16,7 @@ import {
     DialogContentText,
     DialogContent,
     DialogActions,
+    CircularProgress,
     Box} from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
@@ -943,7 +944,14 @@ class AboutCommerce extends Component {
                         // fullWidth={true}
                         maxWidth={"md"}
                     >
-                        <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec}{' ...'}</DialogTitle>
+                        {/* <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec}{' ...'}</DialogTitle> */}
+                        <DialogTitle id="alert-dialog-title" style={{
+                            width: "100px",
+                            height: "100px",
+                            display: 'block',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                        }}><CircularProgress color="secondary" /></DialogTitle>
                     </Dialog>
                 </div>
 
@@ -957,7 +965,15 @@ class AboutCommerce extends Component {
                         // fullWidth={true}
                         maxWidth={"md"}
                     >
-                        <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec2}{' ...'}</DialogTitle>
+                        {/* <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec2}{' ...'}</DialogTitle> */}
+                        <DialogTitle id="alert-dialog-title" style={{
+                            width: "100px",
+                            height: "100px",
+                            display: 'block',
+                            marginLeft: 'auto',
+                            marginRight: 'auto',
+                            alignItems: 'center'
+                        }}><CircularProgress /></DialogTitle>
                     </Dialog>
                 </div>
 
