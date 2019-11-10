@@ -108,7 +108,7 @@ class HomePage extends Component {
                                 <div className="row">
                                     <div className="col-lg-6">
                                         {/* <div className="text-container"> */}
-                                            <h3>Devenir ambassadeur ou ambassadrice Weeclik dans un réseau de confiance et humain</h3>
+                                            <h3>Devenir ambassadeur et ambassadrice du seul réseau de confiance humain</h3>
                                             
                                             <p>Partagez la confiance que vous avez avec votre commerçant avec vos proches, vos voisins, vos collègues de travail.</p>
                                             <p>Intégrez le réseau de partage Weeclik<sup>©</sup> et profitez de promotions exclusives avec vos commerçants de confiance.</p>
