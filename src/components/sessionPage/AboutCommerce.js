@@ -17,7 +17,8 @@ import {
     DialogContent,
     DialogActions,
     CircularProgress,
-    Box} from '@material-ui/core';
+    Box,
+    GridListTileBar} from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -490,7 +491,7 @@ class AboutCommerce extends Component {
         queryCommercePhoto.find()
         .then(responseSnapshot => {
             responseSnapshot.forEach((elt) => {
-                commercePicture.push(elt.get("photo").url());
+                commercePicture.push({ id: elt.id, url : elt.get("photo").url()});
             });
         });
         
@@ -627,7 +628,7 @@ class AboutCommerce extends Component {
         })
     }
 
-    deletePictureCommerce1 = (imgId) => {
+    deletePictureCommerceById = (imgId) => {
         const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
         const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
 
@@ -641,13 +642,13 @@ class AboutCommerce extends Component {
                     .then((elt) => {
                         // The object was deleted from the Parse Cloud.
                         this.setState({ alertMsg: 'Suppression de la photo : ' })
-
+                        this.handleOpenDeleteVideo();
                         var counter = 3;
                         this.intervalId = setInterval(() => {
                             counter--;
                             if (counter === -1) {
                                 clearInterval(this.intervalId);
-                                // this.handleCloseDeleteVideo();
+                                this.handleCloseDeleteVideo();
                                 this.setState({
                                     alertMsg: '',
                                     sec: 3
@@ -802,26 +803,29 @@ class AboutCommerce extends Component {
                                     <Grid item xs={6}>
                                         {
                                             this.state.listImg.length > 0 ?
-                                            (<Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small" style={{outline: 'none'}}>Supprimer les Images</Button>):
+                                            (<Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Tout supprimer</Button>):
                                             (<div></div>)
                                         }
                                     </Grid>
                                     <Grid item xs={12}>
                                         {
                                             this.state.listImg.length > 0 ?
-                                            (<GridList cellHeight={180} cols={3} style={{ height: '450' }}>
-                                                {this.state.listImg && [...this.state.listImg].map((url, index) => (
-                                                    <GridListTile key={index}>
-                                                        <div style={{height: '200px', overflow: 'hidden'}}>
+                                            (<GridList cellHeight={250} cols={3} style={{ height: '450' }}>
+                                                {this.state.listImg && [...this.state.listImg].map((object, index) => (
+                                                    <div key={index}>
+                                                        <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
                                                             <ModalImage
-                                                                small={url}
-                                                                large={url}
+                                                                small={object.url}
+                                                                large={object.url}
                                                                 hideDownload="false"
                                                                 hideZoom="false"
-                                                                style={{height: '160px'}}
+                                                                style={{width: '100%'}}
                                                             />
                                                         </div>
-                                                    </GridListTile>
+                                                        <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
+                                                            <DeleteIcon fontSize="small" />
+                                                        </IconButton>
+                                                    </div>
                                                 ))}
                                             </GridList>):
                                             (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas d'images"}</Typography>)
@@ -856,29 +860,6 @@ class AboutCommerce extends Component {
                                         }
                                         {/* <Button color="secondary" size="small">Ajouter promotion</Button> */}
                                     </Grid>
-                                    {/* <Grid item xs={12}>
-                                        <Table aria-label="simple table">
-                                            <TableHead>
-                                                <TableRow>
-                                                    <TableCell>Promotions</TableCell>
-                                                    <TableCell align="right">Date de fin</TableCell>
-                                                    <TableCell align="right">Actions</TableCell>
-                                                </TableRow>
-                                            </TableHead>
-                                            <TableBody>
-                                                <TableRow>
-                                                    <TableCell component="th" scope="row">ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy ayfjvbezvfhjekhzfgiyuhjejzfgiuyezy
-                                                    </TableCell>
-                                                    <TableCell align="right">12/2019</TableCell>
-                                                    <TableCell align="right">
-                                                        <IconButton aria-label="delete" color="secondary" size="small">
-                                                            <DeleteIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </TableCell>
-                                                </TableRow>
-                                            </TableBody>
-                                        </Table>
-                                    </Grid> */}
                                 </Grid>
                                 
                                 
