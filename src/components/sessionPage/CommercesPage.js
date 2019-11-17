@@ -34,6 +34,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
+import { GeoLocation } from 'react-redux-geolocation';
 
 
 const theme = createMuiTheme({
@@ -56,6 +57,15 @@ const root2 = {
 //     flexDirection: 'column',
 //     alignItems: 'center',
 // }
+
+const geo = props => {
+    return (
+        <div>
+            <GeoLocation/>
+            {props}
+        </div>
+    )
+}
 
 const bannier = {
     margin: `${theme.spacing(1)}px auto`,
@@ -256,6 +266,7 @@ class CommercesPage extends Component {
     }
 
 
+
     componentDidMount() {
         // this.props.getUserInfo();
         // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
@@ -343,6 +354,9 @@ class CommercesPage extends Component {
                             </Grid>
                         </Container>
                     </Grid>
+
+                    {/* <div><GeoLocation/></div> */}
+                    
                 </div>
             </Container>
         );
