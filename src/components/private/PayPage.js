@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Elements, StripeProvider } from 'react-stripe-elements';
-import { Container, Grid, Typography, Avatar, Button } from '@material-ui/core';
+import { Container, Grid, Typography, Avatar, Button, Link } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import CheckoutForm from './CheckoutForm';
 import logoComptePro from '../../assets/icons/users.svg';
@@ -12,7 +12,7 @@ const theme = createMuiTheme({
 
 const root = {
     flexGrow: 1,
-    paddingTop: '70px',
+    // paddingTop: '70px',
     minHeight: '100vh',
     display: 'flex',
     flexDirection: 'column',
@@ -63,7 +63,7 @@ class PayPage extends Component {
         if (this.state.complete) return <h1>Purchase Complete</h1>
         
         return (
-            <Container component="main" maxWidth="md">
+            <Container component="main" maxWidth="md" style={{ marginTop: '-100px' }}>
                 <div style={root}>
                     <Grid
                         container
@@ -74,7 +74,21 @@ class PayPage extends Component {
                         <Grid item xs={12} sm={6}>
                             <center>
                                 <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
-                                <Typography variant="h6">-50% la première année</Typography>
+                                <Typography variant="h4">Offre de lancement</Typography>
+                                <div style={{ margin: '15px', textAlign: 'justify' }}>
+                                    Pour son lancement l'ajout d'un commerce sur Weeclik est à un tarif préférenciel de 329.99 €
+                                </div>
+                                <div style={{ margin: '15px', textAlign: 'justify' }}>
+                                    {/* <Typography variant="p" style={{ marginTop: '15px', textAlign: 'justify' }}> */}
+                                        Votre paiement sera débité de votre compte. L'abonnement vous permet d'obtenir un commerce sur le réseau Weeclik pour une durée d'un an, sans renouvellement automatique.
+                                        Le rachat de cet abonnement pour un commerce existant rajoute un an à sa période de visibilité sur le réseau Weeclik.
+
+                                        En vous abonnant, vous acceptez nos <Link href={'_blank'}>Conditions générales</Link> et <Link href={'_blank'}>Politique de Confidentialité</Link>.
+                                    {/* </Typography> */}
+                                </div>
+                                <Typography variant="p" style={{ textAlign: 'justify' }}>
+                                    
+                                </Typography>
                                 {/* <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{"Ajouter une description sur les prix"}</Typography> */}
                             </center>
                         </Grid>

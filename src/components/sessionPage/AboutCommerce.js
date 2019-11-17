@@ -9,7 +9,6 @@ import {
     Dialog,
     DialogTitle,
     GridList,
-    GridListTile,
     Paper,
     Typography,
     IconButton,
@@ -17,15 +16,11 @@ import {
     DialogContent,
     DialogActions,
     CircularProgress,
-    Box,
-    GridListTileBar} from '@material-ui/core';
+    Box} from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-
-import AddVideo from '../../assets/icons/addVideo.svg';
-import Sad from '../../assets/images/sad.jpeg';
 
 
 import "../../../node_modules/video-react/dist/video-react.css";
