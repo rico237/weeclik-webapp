@@ -43,11 +43,11 @@ class CheckoutForm extends Component {
             <div>
                 <div className="checkout">
                     <label>
-                        Name
-                        <input name="name" type="text" placeholder="Name" required/>
+                        Nom complet
+                        <input name="name" type="text" placeholder="Nom du propriétaire" required/>
                     </label>
                     <label>
-                        Card details
+                        Détails de la carte
                         <CardElement />
                     </label>
                     <button className="button-pay" onClick={this.submit} style={{outline: 'none'}}>Payer {this.state.price}</button>
