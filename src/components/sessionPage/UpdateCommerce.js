@@ -342,7 +342,7 @@ class UpdateCommerce extends Component {
                                                 value={this.state.validate}
                                                 onChange={this.handleValidate}
                                                 color="primary" />}
-                                    label="En cochant vous accéptez les conditions d'utilisation ..."/>
+                                    label="En cochant vous acceptez les conditions d'utilisation ..."/>
                             </Grid>
                         </Grid>
 

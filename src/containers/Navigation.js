@@ -211,7 +211,7 @@ function Navigation(props) {
                 </MenuItem>
                 <MenuItem onClick={disconnect}>
                     <ListItemIcon><PowerSettingsNewIcon/></ListItemIcon>
-                    <Typography variant="inherit">Log-out</Typography>
+                    <Typography variant="inherit">Se déconnecter</Typography>
                 </MenuItem>
             </Menu>
         </div>
