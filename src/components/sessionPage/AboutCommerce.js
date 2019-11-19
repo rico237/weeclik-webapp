@@ -973,8 +973,13 @@ class AboutCommerce extends Component {
                         <DialogTitle id="alert-dialog-title">A propos du status</DialogTitle>
                         <DialogContent>
                             <DialogContentText id="alert-dialog-description">
-                                {this.state.commerce.statutCommerce}{' '}
-                                Veut dire que le commerce est toujours sur Weeclik mais invisible de tout le monde car il y a surement eu une erreur dans le paiement ou que l'abonnement n'est plus valable
+                                {/* {this.state.commerce.statutCommerce}{' '} */}
+                                {
+                                    this.state.commerce.statutCommerce === 'En ligne' ?
+                                    (<p>Votre commerce est en ligne et visible de tous, prêt à être partagé</p>) :
+                                    (<p>Votre commerce est toujours sur Weeclik mais invisible de tout le monde car il y a surement eu une erreur dans le paiement ou que lʼabonnement nʼest plus valable</p>)
+                                }
+                                
                             </DialogContentText>
                         </DialogContent>
                         <DialogActions>
