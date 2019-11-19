@@ -247,7 +247,7 @@ class ProfilePage extends Component {
         const { alertMsg, sec } = this.state;
         return (
             <div>
-                <header className="App-header">
+                <header className="App-header-profile">
                     <Container maxWidth="md">
                         <Grid
                             container
@@ -255,7 +255,7 @@ class ProfilePage extends Component {
                             justify="center"
                             alignItems="center"
                             spacing={2}>
-                            <Grid item xs={12} sm={4}>
+                            <Grid item xs={12}>
                                 {
                                     this.state.user.picture ?
                                     <Avatar
@@ -295,8 +295,24 @@ class ProfilePage extends Component {
                                     outline: 'none',
                                     marginBottom: '50px'
                                 }}>Changer photo</Button>
+
+                                    <center>
+                                        <Grid item xs={12} style={{ marginBottom: '0px' }}>
+                                            <h1 style={{color:"#000"}}>
+                                                {this.state.user.name}
+                                            </h1>
+                                            <h5 style={{color:"#404040"}}>
+                                                <svg width="48" height="48" fill="#787878" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
+                                                {" " + this.state.user.email}
+                                            </h5>
+                                        </Grid>
+                                        <div xs={12}>
+                                            <Button variant="contained" size="small" style={{ margin: '10px', outline: 'none' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier votre profile</Button>
+                                            <Button variant="outlined" size="small" style={{ margin: '10px', outline: 'none' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer de mot de passe</Button>
+                                        </div>
+                                    </center>
                             </Grid>
-                            <Grid item xs={12} sm={8}>
+                            <Grid item xs={12}>
                                 <Grid container spacing={4}>
                                     <center>
                                         <Grid item xs={12} style={{ marginBottom: '0px' }}>
