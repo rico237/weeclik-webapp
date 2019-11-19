@@ -11,16 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
-.mainHeader {
-  font-family: "Rubik", "Lato", sans-serif;
-  /* background: linear-gradient(to right, #30CFD0 0%, #330867 100%); */
-  /* background-image: url('https://fr.freepik.com/photos-gratuite/pont-manhattan_1198596.htm'); */
-  background-clip: text;
-  -webkit-background-clip: text;
-  /* color: transparent; */
-	/* -webkit-text-fill-color: transparent; */
-  
-  text-shadow: 2px 4px 10px black;
-  line-height: 30px;
-}
