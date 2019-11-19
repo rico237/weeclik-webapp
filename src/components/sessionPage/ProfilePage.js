@@ -6,6 +6,7 @@ import defaultProfile from '../../assets/icons/defaultUser.svg'
 import AddImg from '../../assets/images/addImage.svg'
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
+import EditIcon from '@material-ui/icons/Edit';
 
 
 class ProfilePage extends Component {
@@ -305,12 +306,18 @@ class ProfilePage extends Component {
                                             {this.state.user.email}
                                         </h5>
                                     </div>
-                                    {/* <div style={{ float: "right" }}>
-                                        <IconButton></IconButton>
-                                    </div> */}
+                                    <div style={{ float: "right" }}>
+                                        <IconButton
+                                            aria-label="edit"
+                                            onClick={() => {this.handleOpenUpdateProfile()}}
+                                            style={{ margin: '10px', outline: 'none' }}
+                                        >
+                                            <EditIcon />
+                                        </IconButton>
+                                    </div>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Button variant="contained" size="small" style={{ margin: '10px', outline: 'none' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier vos informations</Button>
+                                    {/* <Button variant="contained" size="small" style={{ margin: '10px', outline: 'none' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier vos informations</Button> */}
                                     <Button variant="outlined" size="small" style={{ margin: '10px', outline: 'none' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer de mot de passe</Button>
                                 </Grid>
                             </Grid>
