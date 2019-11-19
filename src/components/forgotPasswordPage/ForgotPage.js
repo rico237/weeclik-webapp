@@ -3,7 +3,7 @@ import Parse from 'parse';
 import logo from '../../assets/icons/LogoWeeclik.svg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button } from '@material-ui/core';
+import { Container, CssBaseline, Avatar, Typography, Grid, TextField } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 
 
@@ -32,6 +32,7 @@ const form = {
 }
 
 const submit = {
+    width: '100%', // Fix IE 11 issue.
     margin: theme.spacing(3, 0, 2),
 }
 
@@ -126,13 +127,15 @@ class ForgotPage extends Component {
                                     </Grid>
                                 </Grid>
 
-                                <Button
+                                <input
+                                    className="btn-solid-lg"
                                     type="submit"
                                     fullWidth
                                     variant="contained"
                                     color="primary"
                                     style={submit}
-                                    onClick={this.sendNewPassword}>Envoyer le mail</Button>
+                                    value="Envoyer le mail"
+                                    onClick={this.sendNewPassword}/>
                             </form>
                         </div>
                     }

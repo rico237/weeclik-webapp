@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Container, Typography } from '@material-ui/core';
+import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Container, Typography, IconButton } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import defaultProfile from '../../assets/icons/defaultUser.svg'
 import AddImg from '../../assets/images/addImage.svg'
@@ -248,7 +248,7 @@ class ProfilePage extends Component {
         return (
             <div>
                 <header className="App-header-profile">
-                    <Container maxWidth="md">
+                    <Container maxWidth="sm">
                         <Grid
                             container
                             direction="row"
@@ -293,42 +293,25 @@ class ProfilePage extends Component {
                                     marginLeft: 'auto',
                                     marginRight: 'auto',
                                     outline: 'none',
-                                    marginBottom: '50px'
-                                }}>Changer photo</Button>
-
-                                    <center>
-                                        <Grid item xs={12} style={{ marginBottom: '0px' }}>
-                                            <h1 style={{color:"#000"}}>
-                                                {this.state.user.name}
-                                            </h1>
-                                            <h5 style={{color:"#404040"}}>
-                                                <svg width="48" height="48" fill="#787878" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
-                                                {" " + this.state.user.email}
-                                            </h5>
-                                        </Grid>
-                                        <div xs={12}>
-                                            <Button variant="contained" size="small" style={{ margin: '10px', outline: 'none' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier votre profile</Button>
-                                            <Button variant="outlined" size="small" style={{ margin: '10px', outline: 'none' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer de mot de passe</Button>
-                                        </div>
-                                    </center>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <Grid container spacing={4}>
-                                    <center>
-                                        <Grid item xs={12} style={{ marginBottom: '0px' }}>
-                                            <h1 style={{color:"#000"}}>
-                                                {this.state.user.name}
-                                            </h1>
-                                            <h5 style={{color:"#404040"}}>
-                                                <svg width="48" height="48" fill="#787878" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V8l8 5 8-5v10zm-8-7L4 6h16l-8 5z"/></svg>
-                                                {" " + this.state.user.email}
-                                            </h5>
-                                        </Grid>
-                                        <div xs={12}>
-                                            <Button variant="contained" size="small" style={{ margin: '10px', outline: 'none' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier votre profile</Button>
-                                            <Button variant="outlined" size="small" style={{ margin: '10px', outline: 'none' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer de mot de passe</Button>
-                                        </div>
-                                    </center>
+                                    marginBottom: '30px'
+                                }}>Modifier</Button>
+                                
+                                <Grid item xs={12} style={{ margin: '0px 10px', padding: '10px 10px', background: "#FFF", height: '100%', overflow: 'auto' }}>
+                                    <div style={{ float: "left" }}>
+                                        <h5 style={{color:"#000"}}>
+                                            {this.state.user.name}
+                                        </h5>
+                                        <h5 style={{color:"grey"}}>
+                                            {this.state.user.email}
+                                        </h5>
+                                    </div>
+                                    {/* <div style={{ float: "right" }}>
+                                        <IconButton></IconButton>
+                                    </div> */}
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Button variant="contained" size="small" style={{ margin: '10px', outline: 'none' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier vos informations</Button>
+                                    <Button variant="outlined" size="small" style={{ margin: '10px', outline: 'none' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer de mot de passe</Button>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -388,7 +371,7 @@ class ProfilePage extends Component {
                                 </div>
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={this.handleCloseUpdatePass} color="secondary" style={{outline: 'none'}}>Annuler la modification du mot de passe</Button>
+                                {/* <Button onClick={this.handleCloseUpdatePass} color="secondary" style={{outline: 'none'}}>Annuler la modification du mot de passe</Button> */}
                             </DialogActions>
                         </Dialog>
                     </div>
@@ -402,13 +385,13 @@ class ProfilePage extends Component {
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                         >
-                            <DialogTitle id="alert-dialog-title">{"Modifier votre profile"}</DialogTitle>
+                            <DialogTitle id="alert-dialog-title">{"Modifier votre profil"}</DialogTitle>
                             <DialogContent>
                                 <div id="alert-dialog-description" style={{ minWidth: "500px"}}>
                                     <form onSubmit={this.changeMyInfo}>
                                         <fieldset>
                                             <div className="form-group">
-                                                <label htmlFor="nameInput">Name</label>
+                                                <label htmlFor="nameInput">Nom complet</label>
                                                 <input
                                                     type="text"
                                                     id="nameInput"
@@ -441,7 +424,7 @@ class ProfilePage extends Component {
                                 </div>
                             </DialogContent>
                             <DialogActions>
-                                <Button onClick={this.handleCloseUpdateProfile} color="secondary" style={{outline: 'none'}}>Annuler</Button>
+                                {/* <Button onClick={this.handleCloseUpdateProfile} color="secondary" style={{outline: 'none'}}>Annuler</Button> */}
                             </DialogActions>
                         </Dialog>
                     </div>
@@ -454,7 +437,7 @@ class ProfilePage extends Component {
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                         >
-                            <DialogTitle id="alert-dialog-title">{"Modifier votre photo de profile"}</DialogTitle>
+                            <DialogTitle id="alert-dialog-title">{"Modifier votre photo de profil"}</DialogTitle>
                             <DialogContent>
                                 <div id="alert-dialog-description" style={{ minWidth: "500px"}}>
                                     <center>
@@ -474,7 +457,7 @@ class ProfilePage extends Component {
                                             </label>
                                         </div>
                                     </center>
-                                    <Typography variant="h5">Cliquer sur l'image en haut pour changer votre image de profile</Typography>
+                                    <Typography variant="h5">Cliquer sur l'image en haut pour changer votre image de profil</Typography>
                                 </div>
                             </DialogContent>
                             {/* <DialogActions>

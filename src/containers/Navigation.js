@@ -198,7 +198,7 @@ function Navigation(props) {
                                     defaultProfile}
                                 alt="Weeclik Logo" />
                         </ListItemIcon>
-                        <Typography variant="inherit" className={classes.typographyStyle}>Profile</Typography>
+                        <Typography variant="inherit" className={classes.typographyStyle}>Mon profil</Typography>
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={handleMenuClose}>
@@ -206,7 +206,7 @@ function Navigation(props) {
                         <ListItemIcon>
                             <Avatar src={logoCommercant} alt="Commerce Logo" />
                         </ListItemIcon>
-                        <Typography variant="inherit" className={classes.typographyStyle}>Mes Commerces</Typography>
+                        <Typography variant="inherit" className={classes.typographyStyle}>Mes commerces</Typography>
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={disconnect}>

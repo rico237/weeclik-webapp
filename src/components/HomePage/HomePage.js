@@ -126,7 +126,7 @@ class HomePage extends Component {
                             fullWidth={true}
                             maxWidth={"md"}
                         >
-                            <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur ou ambassadrice Weeclik"}</DialogTitle>
+                            <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur et ambassadrice du seul réseau de confiance humain"}</DialogTitle>
                             <YouTube
                                 videoId="dWOpGZhz2h8"
                                 opts={opts}
@@ -203,7 +203,7 @@ class HomePage extends Component {
                     <div className="basic-4">
                         <div className="container">
                             <div className="row">
-                                <div className="col-lg-6 col-xl-5">
+                                <div className="col-lg-6 col-xl-5" style={{textAlign: 'justify'}}>
                                     <div className="text-container">
                                         <h2>Télécharger <span className="blue">Weeclik</span></h2>
                                         <p className="p-large">Profitez de promotions diverses et variés, faites parti d'un réseaux de commerçants de confiance, ensemble œuvrons pour des valeures plus humaines.</p> 
@@ -225,7 +225,7 @@ class HomePage extends Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-md-4">
-                                    <div className="footer-col">
+                                    <div className="footer-col" style={{textAlign: 'justify'}}>
                                         <h4>À propos de Weeclik</h4>
                                         <p>Chez Weeclik, nous sommes pionniers dans le partage de confiance.
                                         <br/>Avec notre app, adoptez vous aussi le réflexe de partage avec vos commerçants !</p>
@@ -252,7 +252,7 @@ class HomePage extends Component {
                                             </a>
                                         </span>
                                         <span className="fa-stack">
-                                            <a href="https://m.facebook.com/weeclik" target="_blank" rel="noopener noreferrer">
+                                            <a href="https://www.facebook.com/weeclik" target="_blank" rel="noopener noreferrer">
                                                 <i className="fas fa-circle fa-stack-2x"></i>
                                                 <i className="fab fa-facebook fa-stack-1x"></i>
                                             </a>

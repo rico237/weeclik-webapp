@@ -54,7 +54,7 @@ class App extends Component {
 						<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
 						<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>
 						<PrivateRoute path="/pay" component={PayPage}/>
-						<Route path='/commerce/id/:commerceId' component={ReceiveCommercePage}/>
+						<Route path='/commerce/:commerceId' component={ReceiveCommercePage}/>
 						<Route path="/*" component={Page404} />
 						{/* 7lt9jiAhk4 */}
 					</Switch>

@@ -52,7 +52,7 @@ function login(username, password) {
             .then(
                 user => {
                     dispatch(success(user));
-                    history.push('/');
+                    history.push('/user');
                     // console.log(`[ACTION] : login ${JSON.stringify(user, null, 2)}`);
                 },
                 error => {
