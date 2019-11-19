@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Container, Typography } from '@material-ui/core';
+import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Container, Typography, IconButton } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import defaultProfile from '../../assets/icons/defaultUser.svg'
 import AddImg from '../../assets/images/addImage.svg'
@@ -306,7 +306,7 @@ class ProfilePage extends Component {
                                         </h5>
                                     </div>
                                     {/* <div style={{ float: "right" }}>
-                                        <h1 style={{color:"#000"}}>a</h1>
+                                        <IconButton></IconButton>
                                     </div> */}
                                 </Grid>
                                 <Grid item xs={12}>

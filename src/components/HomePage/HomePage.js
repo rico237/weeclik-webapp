@@ -252,7 +252,7 @@ class HomePage extends Component {
                                             </a>
                                         </span>
                                         <span className="fa-stack">
-                                            <a href="https://m.facebook.com/weeclik" target="_blank" rel="noopener noreferrer">
+                                            <a href="https://www.facebook.com/weeclik" target="_blank" rel="noopener noreferrer">
                                                 <i className="fas fa-circle fa-stack-2x"></i>
                                                 <i className="fab fa-facebook fa-stack-1x"></i>
                                             </a>

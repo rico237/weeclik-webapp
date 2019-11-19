@@ -198,7 +198,7 @@ function Navigation(props) {
                                     defaultProfile}
                                 alt="Weeclik Logo" />
                         </ListItemIcon>
-                        <Typography variant="inherit" className={classes.typographyStyle}>Profile</Typography>
+                        <Typography variant="inherit" className={classes.typographyStyle}>Mon Profil</Typography>
                     </Link>
                 </MenuItem>
                 <MenuItem onClick={handleMenuClose}>
