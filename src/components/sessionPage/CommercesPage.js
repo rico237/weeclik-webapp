@@ -34,7 +34,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { GeoLocation } from 'react-redux-geolocation';
 
 
 const theme = createMuiTheme({
@@ -57,15 +56,6 @@ const root2 = {
 //     flexDirection: 'column',
 //     alignItems: 'center',
 // }
-
-const geo = props => {
-    return (
-        <div>
-            <GeoLocation/>
-            {props}
-        </div>
-    )
-}
 
 const bannier = {
     margin: `${theme.spacing(1)}px auto`,

@@ -1,9 +1,9 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-import { Button, Dialog, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogTitle } from '@material-ui/core';
 import YouTube from 'react-youtube';
-// import ReactPlayer from 'react-player';
 import Michel from '../../assets/images/team/michel.jpg';
 import Aziz from '../../assets/images/team/aziz.jpg';
 import Mohamed from '../../assets/images/team/mohamed.jpg';
@@ -17,18 +17,6 @@ import headerIphone from './images/header-iphone.png';
 import './css/bootstrap.css';
 import './css/fontawesome-all.css';
 import './css/styles.css';
-
-
-const styleButton = {
-    background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-    border: 0,
-    borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-    outline: 'none'
-}
 
 class HomePage extends Component {
     constructor(props) {
@@ -113,7 +101,7 @@ class HomePage extends Component {
                                             <p>Partagez la confiance que vous avez avec votre commerçant avec vos proches, vos voisins, vos collègues de travail.</p>
                                             <p>Intégrez le réseau de partage Weeclik<sup>©</sup> et profitez de promotions exclusives avec vos commerçants de confiance.</p>
                                             {/* <Button variant="contained" component={Link} to="/login" className="btn-solid-lg page-scroll">Connexion</Button> */}
-                                            <Button onClick={() => {this.handleOpen()}} style={styleButton}>Devenir ambassadeur ou ambassadrice</Button>
+                                            <a className="btn-solid-lg" onClick={() => {this.handleOpen()}}>DEVENIR AMBASSADEUR OU AMBASSADRICE</a>
                                             {/* <a className="btn-solid-lg page-scroll" href="fake_url" target="_blank" rel="noopener noreferrer">Devenir ambassadrise/ ambassadeure</a> */}
                                         {/* </div> */}
                                     </div> 
@@ -139,27 +127,12 @@ class HomePage extends Component {
                             maxWidth={"md"}
                         >
                             <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur ou ambassadrice Weeclik"}</DialogTitle>
-                            {/* <DialogContent> */}
-                                <YouTube
-                                    videoId="HEPL30xM25U"
-                                    opts={opts}
-                                    onReady={this._onReady}
-                                    style={{ margin: '5px' }}
-                                />
-                            {/* </DialogContent> */}
-                            {/* Quand je mets autoplay ca bugs ERROR : de type CORS */}
-                            {/* <ReactPlayer
-                                url={"https://youtu.be/HEPL30xM25U"}
-                                playing
-                                config={{
-                                    file: { attributes: {
-                                        autoplay: true
-                                    }},
-                                    youtube: {
-                                        playerVars: { showinfo: 1 }
-                                    }
-                                }}
-                            /> */}
+                            <YouTube
+                                videoId="dWOpGZhz2h8"
+                                opts={opts}
+                                onReady={this._onReady}
+                                style={{ margin: '5px' }}
+                            />
                         </Dialog>
                     </div>
 
