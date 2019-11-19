@@ -3,7 +3,7 @@ import logoComptePro from '../../assets/icons/users.svg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Button, Box } from '@material-ui/core';
+import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Box } from '@material-ui/core';
 import { Copyright } from '../copyright/Copyright';
 
 
@@ -141,18 +141,6 @@ class RegisterPage extends Component {
                                     value={user.lastName}
                                     onChange={this.handleChange}/>
                             </Grid>
-                            {/* <Grid item xs={12}>
-                                <TextField
-                                    id="username"
-                                    fullWidth
-                                    required
-                                    variant="outlined"
-                                    type="email"
-                                    name="username"
-                                    label="Username"
-                                    value={user.username}
-                                    onChange={this.handleChange}/>
-                            </Grid> */}
                             <Grid item xs={12}>
                                 <TextField
                                     id="email"
@@ -191,7 +179,7 @@ class RegisterPage extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <label style={{ fontSize: '14px' }}>
-                                    {'En cliquant sur S\'enregistrer, vous acceptez nos '}
+                                    {'En cliquant sur s\'enregistrer, vous acceptez nos '}
                                     <a style={{ color: 'blue', textDecoration: 'none' }} href="https://weeclik.com">Conditions générales</a>{'. '}
                                 </label>
                             </Grid>
@@ -203,13 +191,15 @@ class RegisterPage extends Component {
                             <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
                         }
 
-                        <Button
+                        <input
+                            className="btn-solid-lg"
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             style={submit}
-                            onClick={this.handleSubmit}>S'enregistrer</Button>
+                            value="S'enregistrer"
+                            onClick={this.handleSubmit}/>
                     </form>
                 </div>
                 <Box mt={5}>

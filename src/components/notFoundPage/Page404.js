@@ -1,7 +1,7 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component } from 'react';
-import logo from '../../logo.svg';
+import logo from '../../assets/icons/LogoWeeclik.svg';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 
 
@@ -15,11 +15,10 @@ class Page404 extends Component {
 
     render() {
         return (
-            <header className="App-header">
+            <header className="App-header2">
 				<img src={logo} className="App-logo" alt="logo" />
-                <h1 style={{color:'red'}}><code>404</code></h1>
-                <h1 style={{color:'red'}}>NOT FOUND!!!</h1>
-                <Link className="App-link" to="/">Home</Link>
+                <h1 style={{ margin: '40px'}}>Cette page n'existe pas.</h1>
+                <a className="btn-solid-lg" href="/">ACCUEIL</a>
 			</header>
         );
     }

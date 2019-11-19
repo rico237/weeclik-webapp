@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { Container, CssBaseline, Avatar, Grid, TextField, Button, Box, Typography } from '@material-ui/core';
+import { Container, CssBaseline, Avatar, Grid, TextField, Box, Typography } from '@material-ui/core';
 import { Copyright } from '../copyright/Copyright';
 
 
@@ -33,6 +33,7 @@ const form = {
 }
 
 const submit = {
+    width: '100%', // Fix IE 11 issue.
     margin: theme.spacing(3, 0, 2),
     outline: 'none'
 }
@@ -83,17 +84,15 @@ class LoginPage extends Component {
 
     render() {
 
-        const { /*isLoggedIn*/msg } = this.props;
-        // console.log("------"+msg);
+        const { msg } = this.props;
         
-        const { username, password, alertMsg/*, submitted*/ } = this.state;
+        const { username, password, alertMsg } = this.state;
 
         return (
             <Container component="main" maxWidth="xs">
                 <CssBaseline/>
                 <div style={paper}>
                     <Avatar alt="Logo" src={logo} style={avatar}/>
-                    {/* <Typography component="h1" variant="h5" style={{color: "#000"}}>Sign in</Typography> */}
                     <form style={form} noValidate>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
@@ -116,16 +115,12 @@ class LoginPage extends Component {
                                     variant="outlined"
                                     type="password"
                                     name="password"
-                                    label="Mot de Passe"
+                                    label="Mot de passe"
                                     value={password}
                                     onChange={this.handleChange}/>
                             </Grid>
                             
                         </Grid>
-                        {/* <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
-                            label="Remember me"/> */}
-
                         {
                             msg ?
                             <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{msg}</Typography> :
@@ -134,20 +129,20 @@ class LoginPage extends Component {
                             
                         
         
-                        <Button
+                        <input
+                            className="btn-solid-lg"
                             type="submit"
                             fullWidth
                             variant="contained"
                             color="primary"
                             style={submit}
-                            onClick={this.handleSubmit}>S'identifier</Button>
+                            value="S'identifier"
+                            onClick={this.handleSubmit}/>
+
                         <Grid container justify="flex-end">
                             <Grid item xs>
                                 <Link to="/forgot" style={{color: "#00F"}}>{"Informations de compte oubliées ?"}</Link>
                             </Grid>
-                            {/* <Grid item>
-                                <Link to="/register" style={{color: "#00F"}}>{"Vous n'avez pas de compte? S'inscrire"}</Link>
-                            </Grid> */}
                         </Grid>
                     </form>
                 </div>

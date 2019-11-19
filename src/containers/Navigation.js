@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../assets/icons/LogoWeeclik.svg';
 import logoCommercant from '../assets/icons/users.svg';
 import { Link } from 'react-router-dom';
-import { AppBar, Container, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, Button } from '@material-ui/core';
+import { AppBar, Container, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import grey from '@material-ui/core/colors/grey';
@@ -134,8 +134,8 @@ function Navigation(props) {
                                     
                                 <div>
                                     <div className={classes.sectionDesktop}>
-                                        <Button variant="contained" color="primary" component={Link} to="/login" className={classes.menuButton}>Connexion</Button>
-                                        <Button variant="contained" color="primary" component={Link} to="/register" className={classes.menuButton}>Inscription</Button>
+                                        <a className="btn-solid-lg" href="/login" style={{ marginRight: '5px' }}>Connexion</a>
+                                        <a className="btn-solid-lg"  href="/register" style={{ marginRight: '5px' }}>Inscription</a>
                                     </div>
                                     <div className={classes.sectionMobile}>
                                         <IconButton
@@ -211,7 +211,7 @@ function Navigation(props) {
                 </MenuItem>
                 <MenuItem onClick={disconnect}>
                     <ListItemIcon><PowerSettingsNewIcon/></ListItemIcon>
-                    <Typography variant="inherit">Log-out</Typography>
+                    <Typography variant="inherit">Se déconnecter</Typography>
                 </MenuItem>
             </Menu>
         </div>

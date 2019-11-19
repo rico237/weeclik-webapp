@@ -17,7 +17,6 @@
     "react-modal-image": "^2.5.0",
     "react-player": "^1.13.0",
     "react-redux": "^7.1.1",
-    "react-redux-geolocation": "^1.0.14",
     "react-router": "^5.1.2",
     "react-router-dom": "^5.1.2",
     "react-router-redux": "^4.0.8",
