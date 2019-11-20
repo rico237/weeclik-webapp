@@ -153,7 +153,38 @@ class ProfilePage extends Component {
                                     </div>
                                 </Grid>
 
-                                <Grid item xs={12} style={{ background: "#E2E2E2", margin: '0px 10px', padding: '10px', color: 'black', fontWeight: 'bold' }}>Mes commerces</Grid>
+                                <Grid item xs={12} style={{
+                                    background: "#E2E2E2",
+                                    margin: '0px 10px',
+                                    padding: '10px',
+                                    color: 'black',
+                                    fontWeight: 'bold',
+                                    // position: '-webkit-sticky',
+                                    position: 'sticky',
+                                    top: '55px',
+
+                                }}>Mes commerces</Grid>
+
+                                {/* <Grid item xs={12} style={{ margin: '0px 10px', paddingBottom: '2000px', background: "#FFF", height: '100%', overflow: 'auto' }}>
+                                    <div style={{ float: "left" }}>
+                                        <h5 style={{color:"#000"}}>
+                                            {this.state.user.name}
+                                        </h5>
+                                        <h5 style={{color:"grey"}}>
+                                            {this.state.user.email}
+                                        </h5>
+                                    </div>
+                                    <div style={{ float: "right" }}>
+                                        <IconButton
+                                            aria-label="edit"
+                                            component={Link}
+                                            to="/updateuser"
+                                            style={{ margin: '10px', outline: 'none' }}
+                                        >
+                                            <EditIcon />
+                                        </IconButton>
+                                    </div>
+                                </Grid> */}
                             </Grid>
                         </Grid>
                         
