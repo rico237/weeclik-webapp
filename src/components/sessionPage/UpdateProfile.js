@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
+import { Link } from 'react-router-dom';
 import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Container, Typography, Box, Badge } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import defaultProfile from '../../assets/icons/defaultUser.svg'
@@ -224,16 +225,6 @@ class UpdateProfile extends Component {
     }
 
     render() {
-
-        // const opts = {
-        //     // height: '100%',
-        //     width: '100%',
-        //     playerVars: { // https://developers.google.com/youtube/player_parameters
-        //         autoplay: 1
-        //     }
-        // }
-
-        // const { user } = this.props;
         const { alertMsg, sec } = this.state;
         return (
             <div>
@@ -313,25 +304,43 @@ class UpdateProfile extends Component {
                                 <Grid item xs={12} style={{ background: "#E2E2E2", margin: '0px 10px', padding: '10px', color: 'black', fontWeight: 'bold' }}>Mes informations</Grid>
                                 
                                 <Grid item xs={12} style={{ margin: '0px 10px', padding: '10px', background: "#FFF", height: '100%', overflow: 'auto' }}>
-                                    <div style={{ float: "left" }}>
-                                        <h5 style={{color:"#000"}}>
-                                            {this.state.user.name}
-                                        </h5>
-                                        <h5 style={{color:"grey"}}>
-                                            {this.state.user.email}
-                                        </h5>
-                                    </div>
-                                    <div style={{ float: "right" }}>
-                                        <Button
-                                            onClick={() => {this.handleOpenUpdateProfile()}}
-                                            style={{ margin: '10px', outline: 'none' }}
-                                        >
-                                            Enregistrer
-                                        </Button>
-                                    </div>
+                                    <form onSubmit={this.changeMyInfo}>
+                                        <fieldset>
+                                            <div className="form-group">
+                                                <input
+                                                    type="text"
+                                                    id="nameInput"
+                                                    className="form-control"
+                                                    value={this.state.user.name}
+                                                    onChange={e => this.handleChangeName(e.target.value)}
+                                                    placeholder={this.state.user.name}/>
+                                            </div>
+                                            <div className="form-group">
+                                                <input
+                                                    type="email"
+                                                    id="emailInput"
+                                                    className="form-control"
+                                                    value={this.state.user.email}
+                                                    onChange={e => this.handleChangeMail(e.target.value)}
+                                                    placeholder={this.state.user.email}/>
+                                            </div>
+                                            {
+                                                alertMsg ?
+                                                <div>
+                                                    <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
+                                                    <Typography component="p" style={{textAlign: "center"}}>{`${sec} ...`}</Typography>
+                                                </div> :
+                                                <div></div>
+                                            }
+                                            <input type="submit" className="btn btn-solid-lg" value="ENREGISTRER" style={{ outline: 'none', width: '100%' }}/>
+                                        </fieldset>
+                                    </form>
                                 </Grid>
                                 <Grid item xs={12} style={{ padding: '20px 20px 0 0' }}>
                                     <Button size="large" style={{ margin: '10px', outline: 'none', width: '100%', background: '#FFF' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer mon mot de passe</Button>
+                                </Grid>
+                                <Grid item xs={12} style={{ padding: '20px 20px 0 0' }}>
+                                    <Button variant="outlined" color="secondary" component={Link} to="/user" style={{ marginLeft: '10px', marginRight: '10px', outline: 'none', width: '100%' }}>Mon profil</Button>
                                 </Grid>
                             </Grid>
                         </Grid>
@@ -405,7 +414,7 @@ class UpdateProfile extends Component {
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                         >
-    <DialogTitle id="alert-dialog-title">{"Modifier votre profil"}<p onClick={() => this.handleCloseUpdateProfile()} style={{ cursor: 'pointer', float: 'right', width: '20px', color: 'grey', fontWeight: 'bold' }}>{"X"}</p></DialogTitle>
+                            <DialogTitle id="alert-dialog-title">{"Modifier votre profil"}<p onClick={() => this.handleCloseUpdateProfile()} style={{ cursor: 'pointer', float: 'right', width: '20px', color: 'grey', fontWeight: 'bold' }}>{"X"}</p></DialogTitle>
                             <DialogContent>
                                 <div id="alert-dialog-description" style={{ minWidth: "500px"}}>
                                     <form onSubmit={this.changeMyInfo}>
