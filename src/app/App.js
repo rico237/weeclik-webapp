@@ -11,7 +11,7 @@ import { ForgotPage } from '../components/forgotPasswordPage';
 // import { ConfirmPage } from '../components/confirmationSignUpPage';
 import { LoginPage } from '../components/loginPage';
 import { RegisterPage } from '../components/registerPage';
-import { ProfilePage, CommercesPage, CreateCommerce, AboutCommerce, UpdateCommerce } from '../components/sessionPage';
+import { ProfilePage, UpdateProfile, CommercesPage, CreateCommerce, AboutCommerce, UpdateCommerce } from '../components/sessionPage';
 import { Page404 } from '../components/notFoundPage';
 import { ReceiveCommercePage } from '../components/receiveCommercePage';
 import PayPage from '../components/private/PayPage';
@@ -49,6 +49,7 @@ class App extends Component {
 						<ProtectedSigninRoute path="/login" component={LoginPage}/>
 						<ProtectedSignupRoute path="/register" component={RegisterPage}/>
 						<PrivateRoute path="/user" component={ProfilePage}/>
+						<PrivateRoute path="/updateuser" component={UpdateProfile}/>
 						<PrivateRoute path="/commerces" component={CommercesPage}/>
 						<PrivateRoute path="/createcommerce" component={CreateCommerce}/>
 						<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
