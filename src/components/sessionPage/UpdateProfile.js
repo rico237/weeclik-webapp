@@ -82,13 +82,20 @@ class UpdateProfile extends Component {
     }
 
     handleCloseUpdatePass = () => {
-        this.setState({ openUpdatePass: false });
+        this.setState({
+            openUpdatePass: false,
+            alertMsg: '',
+            lastPassword: '',
+            newPassword: '',
+            newPassword2: ''
+        });
     }
 
     changeMyInfo(event) {
         var currentUser = Parse.User.current();
         if (currentUser) {
             currentUser.setEmail(this.state.user.email);
+            currentUser.setUsername(this.state.user.email);
             currentUser.set('name', this.state.user.name);
             currentUser.save()
                 .then((user) => {
@@ -111,7 +118,8 @@ class UpdateProfile extends Component {
                         }
                     }, 1000);
                 }, (error) => {
-                    console.error(error);
+                    this.setState({ alertMsg: "Cette adresse e-mail est déjà utilisée" });
+                    // console.error(error);
                 });
             
         } else {
@@ -125,33 +133,66 @@ class UpdateProfile extends Component {
         var currentUser = Parse.User.current();
         if (currentUser) {
             if (this.state.lastPassword && this.state.newPassword && this.state.newPassword2) {
-                if (this.state.newPassword === this.state.newPassword2) {
-                    // console.log(`Mot de passe identique`);
-                    currentUser.setPassword(this.state.newPassword);
-                    currentUser.save()
-                        .then((user) => {
-                            this.setState({ alertMsg: "Mot de passe à été changé avec succès" });
+                    if (this.state.newPassword === this.state.newPassword2) {
+                        if (this.state.newPassword.length > 5 && this.state.newPassword.length < 16) {
+                            Parse.User.logIn(currentUser.getUsername(), this.state.lastPassword).then((usr) => {
+                                // console.log(`Mot de passe identique`);
+                                currentUser.setPassword(this.state.newPassword);
+                                currentUser.save()
+                                    .then((user) => {
+                                        this.setState({ alertMsg: "Mot de passe sauvegardé" });
+                                        this.intervalId = setInterval(() => {
+                                            this.handleCloseUpdatePass();
+                                            clearInterval(this.intervalId);
+                                            this.setState({
+                                                alertMsg: '',
+                                                lastPassword: '',
+                                                newPassword: '',
+                                                newPassword2: ''
+                                            });
+                                        }, 3000);
+                                    }, (error) => {
+                                        console.error(error);
+                                    })
+                            }, (error) => {
+                                this.setState({ alertMsg: "Veuillez saisir votre mot de passe principal" });
+                                this.intervalId = setInterval(() => {
+                                    clearInterval(this.intervalId);
+                                    this.setState({
+                                        lastPassword: '',
+                                        newPassword: '',
+                                        newPassword2: ''
+                                    });
+                                }, 3000);
+                            })
+                        } else {
+                            this.setState({ alertMsg: "Le mot de passe doit comporter entre six et quinze caractères" });
                             this.intervalId = setInterval(() => {
-                                this.handleCloseUpdatePass();
                                 clearInterval(this.intervalId);
                                 this.setState({
-                                    alertMsg: '',
                                     lastPassword: '',
                                     newPassword: '',
                                     newPassword2: ''
                                 });
                             }, 3000);
-                        }, (error) => {
-                            console.error(error);
-                        })
-                } else {
-                    this.setState({ alertMsg: "Mot de passe pas identique" });
-                    // console.error(`Mot de passe pas identique`);
-                }
-                // console.log(`Last: ${this.state.lastPassword} - New: ${this.state.newPassword} - New2: ${this.state.newPassword2}`);
+                        }
+                    } else {
+                        this.setState({ alertMsg: "Le mot de passe n'est pas identique" });
+                        this.intervalId = setInterval(() => {
+                            clearInterval(this.intervalId);
+                            this.setState({
+                                lastPassword: '',
+                                newPassword: '',
+                                newPassword2: ''
+                            });
+                        }, 3000);
+                    }
+            } else {
+                this.setState({ alertMsg: "Veuillez remplir tous les champs" });
+                this.intervalId = setInterval(() => {
+                    clearInterval(this.intervalId);
+                }, 3000);
             }
-        } else {
-            
         }
     }
 
@@ -167,6 +208,7 @@ class UpdateProfile extends Component {
                 currentUser.set('profilePictureURL', file.url());
                 currentUser.save()
                     .then((user) => {
+                        console.log("OK")
                         // this.setState({ alertMsg: "Votre photo à été mise à jour" });
                         // this.intervalId = setInterval(() => {
                         //     this.setState({
@@ -201,7 +243,6 @@ class UpdateProfile extends Component {
                 if (!PICTURE) {
                     PICTURE = {defaultProfile}
                 }
-                // console.log("%%%%%zahdu%%% " +JSON.stringify(snapshot, null, 2));
                 this.setState(prevState => ({
                     user: {
                         ...prevState.user,
@@ -219,8 +260,6 @@ class UpdateProfile extends Component {
 
 
     componentDidMount() {
-        // this.props.getUserInfo();
-        // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
         this.getUserPicture();
     }
 
@@ -266,7 +305,7 @@ class UpdateProfile extends Component {
                                             }
                                         >
                                             {
-                                                this.state.user.picture ? (
+                                                this.state.user.picture.length > 2 ? (
                                                     <Avatar
                                                         alt="Image de profile"
                                                         src={this.state.user.picture}
@@ -300,7 +339,6 @@ class UpdateProfile extends Component {
                                     </Box>
                                 </Box>
                                 
-
                                 <Grid item xs={12} style={{ background: "#E2E2E2", margin: '0px 10px', padding: '10px', color: 'black', fontWeight: 'bold' }}>Mes informations</Grid>
                                 
                                 <Grid item xs={12} style={{ margin: '0px 10px', padding: '10px', background: "#FFF", height: '100%', overflow: 'auto' }}>
@@ -327,8 +365,13 @@ class UpdateProfile extends Component {
                                             {
                                                 alertMsg ?
                                                 <div>
-                                                    <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
-                                                    <Typography component="p" style={{textAlign: "center"}}>{`${sec} ...`}</Typography>
+                                                    {/* <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography> */}
+                                                    {/* <Typography component="p" style={{textAlign: "center"}}>{`${sec} ...`}</Typography> */}
+                                                    <div className="bouncing-loader">
+                                                        <div></div>
+                                                        <div></div>
+                                                        <div></div>
+                                                    </div>
                                                 </div> :
                                                 <div></div>
                                             }
@@ -361,7 +404,6 @@ class UpdateProfile extends Component {
                                     <form onSubmit={this.changeMyPassword}>
                                         <fieldset>
                                             <div className="form-group">
-                                                <label htmlFor="lastInput">Ancien mot de passe</label>
                                                 <input
                                                     name="lastPassword"
                                                     type="password"
@@ -372,7 +414,6 @@ class UpdateProfile extends Component {
                                                     placeholder={"Ancien mot de passe"}/>
                                             </div>
                                             <div className="form-group">
-                                                <label htmlFor="newInput">Nouveau mot de passe</label>
                                                 <input
                                                     name="newPassword"
                                                     type="password"
@@ -383,7 +424,6 @@ class UpdateProfile extends Component {
                                                     placeholder={"Nouveau mot de passe"}/>
                                             </div>
                                             <div className="form-group">
-                                                <label htmlFor="newInput2">Confirmation du mot de passe</label>
                                                 <input
                                                     name="newPassword2"
                                                     type="password"
@@ -394,14 +434,11 @@ class UpdateProfile extends Component {
                                                     placeholder={"Confirmation du mot de passe"}/>
                                             </div>
                                             <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
-                                            <input type="submit" className="btn btn-primary btn-sm" value="Réinitialiser le mot de passe"/>
+                                            <input type="submit" className="btn btn-solid-lg" style={{ outline: 'none', width: '100%' }} value="Réinitialiser mon mot de passe"/>
                                         </fieldset>
                                     </form>
                                 </div>
                             </DialogContent>
-                            <DialogActions>
-                                {/* <Button onClick={this.handleCloseUpdatePass} color="secondary" style={{outline: 'none'}}>Annuler la modification du mot de passe</Button> */}
-                            </DialogActions>
                         </Dialog>
                     </div>
 

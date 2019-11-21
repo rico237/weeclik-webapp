@@ -22,9 +22,6 @@ const root2 = {
 
 const paper = {
     padding: theme.spacing(3),
-    // marginTop: theme.spacing(4),
-    // marginBottom: theme.spacing(4),
-    // margin: '25px'
 }
 //#endregion
 
@@ -245,18 +242,9 @@ class ReceiveCommercePage extends Component {
 
     componentDidMount() {
         this.getCommerceData();
-        // this.getUrlCommercePicture();
-        // this.getUrlCommerceMovie();
-        // console.log(`-----------> ${this.state.movieURL}`);
-        // console.log(`-----------> ${this.props.location.state.id}`);
-        // console.log(`-----------> ${this.props.match.params.commerceId}`);
-        
     }
 
     render() {
-        // const { user } = this.props;className="App-header"
-        // console.log(this.state.commerce);
-        // console.log(this.state.listImg);
 
         let columns = this.props.width === 'xs' || this.props.width === 'sm' ? 1 : 3;
 

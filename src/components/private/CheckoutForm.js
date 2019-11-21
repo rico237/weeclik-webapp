@@ -21,7 +21,6 @@ class CheckoutForm extends Component {
      * @param {*} ev 
      */
     async submit(ev) {
-        // User clicked submit
         let { token } = await this.props.stripe.createToken({name: "Name"});
         let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/charge`, {
             method: "POST",
@@ -30,8 +29,6 @@ class CheckoutForm extends Component {
         });
 
         if (response.ok) this.setState({complete: true})
-        // console.log(response);
-        
     }
 
     
@@ -50,7 +47,6 @@ class CheckoutForm extends Component {
                         Détails de la carte
                         <CardElement />
                     </label>
-                    {/* button-pay */}
                     <button className="btn-solid-lg" onClick={this.submit} style={{outline: 'none', width: '100%', marginBottom: '50px'}}>Payer {this.state.price}</button>
                 </div>
                 <div>

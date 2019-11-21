@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Link } from 'react-router-dom';
@@ -99,9 +100,9 @@ class ProfilePage extends Component {
                             spacing={2}>
                             <Grid item xs={12}>
                                 {
-                                    this.state.user.picture ?
-                                    <Avatar
-                                        alt="Image de profile"
+                                    this.state.user.picture.length > 2 ?
+                                    (<div><Avatar
+                                        alt="Image profil"
                                         src={this.state.user.picture}
                                         style={{
                                             margin: 10,
@@ -113,9 +114,9 @@ class ProfilePage extends Component {
                                             border: 'solid #DA5456',
                                             marginBottom: '30px'
                                         }}
-                                    />
-                                    : <Avatar
-                                        alt="Image de profile par defaut"
+                                    /></div>)
+                                    : (<Avatar
+                                        alt="Image de profil par defaut"
                                         src={defaultProfile}
                                         style={{
                                             margin: 10,
@@ -127,7 +128,7 @@ class ProfilePage extends Component {
                                             border: 'solid #DA5456',
                                             marginBottom: '30px'
                                         }}
-                                    />
+                                    />)
                                 }
 
                                 <Grid item xs={12} style={{ background: "#E2E2E2", margin: '0px 10px', padding: '10px', color: 'black', fontWeight: 'bold' }}>Mon profil</Grid>

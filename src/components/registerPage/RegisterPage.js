@@ -81,7 +81,12 @@ class RegisterPage extends Component {
             this.state.user.repeatPw) {
                 if (this.state.user.password === this.state.user.repeatPw) {
                     this.props.register(user);
+                } else {
+                    this.setState({ alertMsg: 'Le mot de passe n\'est pas identique' });
                 }
+        }
+        if (this.state.user.password.length <= 5 && this.state.user.password.length > 15) {
+            this.setState({ alertMsg: 'Le mot de passe doit comporter entre six et quinze caractères' });
         }
         if (!this.state.user.password || !this.state.user.repeatPw) {
             this.setState({ alertMsg: 'Veuillez entrer un mot de passe' });
@@ -92,6 +97,12 @@ class RegisterPage extends Component {
         if (!this.state.user.firstName || !this.state.user.lastName) {
             this.setState({ alertMsg: 'Veuillez entrer un prénom et un nom' });
         }
+        if (this.state.user.password && !this.state.user.repeatPw) {
+            this.setState({ alertMsg: 'Veuillez confirmer votre mot de passe' });
+        }
+        // if (this.state.user.password || this.state.user.repeatPw) {
+        //     this.setState({ alertMsg: 'Le mot de passe n\'est pas identique' });
+        // }
         // else {
         //     this.setState({ alertMsg: 'Veuillez remplir tout les champs' });
         // }
@@ -100,7 +111,7 @@ class RegisterPage extends Component {
 
     printErrorMessage(codeError) {
         if (codeError === 202) {
-            return 'Le compte existe déjà pour ce nom d\'utilisateur';
+            return 'Cette adresse e-mail est déjà utilisée';
         }
     }
 
@@ -180,7 +191,7 @@ class RegisterPage extends Component {
                             <Grid item xs={12}>
                                 <label style={{ fontSize: '14px' }}>
                                     {'En cliquant sur s\'enregistrer, vous acceptez nos '}
-                                    <a style={{ color: 'blue', textDecoration: 'none' }} href="https://weeclik.com">Conditions générales</a>{'. '}
+                                    <a style={{ color: 'blue', textDecoration: 'none' }} href="fake_url">Conditions générales</a>{'. '}
                                 </label>
                             </Grid>
                         </Grid>
@@ -194,7 +205,7 @@ class RegisterPage extends Component {
                         <input
                             className="btn-solid-lg"
                             type="submit"
-                            fullWidth
+                            // fullWidth
                             variant="contained"
                             color="primary"
                             style={submit}
