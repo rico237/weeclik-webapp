@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../assets/icons/LogoWeeclik.svg';
-import logoCommercant from '../assets/icons/users.svg';
+// import logoCommercant from '../assets/icons/users.svg';
 import { Link } from 'react-router-dom';
 import { AppBar, Container, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -201,14 +201,14 @@ function Navigation(props) {
                         <Typography variant="inherit" className={classes.typographyStyle}>Mon profil</Typography>
                     </Link>
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
+                {/* <MenuItem onClick={handleMenuClose}>
                     <Link to="/commerces" className={classes.linkMenu}>
                         <ListItemIcon>
                             <Avatar src={logoCommercant} alt="Commerce Logo" />
                         </ListItemIcon>
                         <Typography variant="inherit" className={classes.typographyStyle}>Mes commerces</Typography>
                     </Link>
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={disconnect}>
                     <ListItemIcon><PowerSettingsNewIcon/></ListItemIcon>
                     <Typography variant="inherit">Se déconnecter</Typography>
