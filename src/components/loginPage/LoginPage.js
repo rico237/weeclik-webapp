@@ -97,7 +97,7 @@ class LoginPage extends Component {
         const { username, password, alertMsg } = this.state;
 
         return (
-            <div component="main" maxWidth="sm" className="App-header2">
+            <div component="main" className="App-header2">
                 <CssBaseline/>
                 <Paper style={root}>
                     <div style={paper}>
