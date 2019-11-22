@@ -74,6 +74,46 @@ class ProfilePage extends Component {
         this.setState({ open: false });
     }
 
+
+    getThumbnailCommerce = (idCommerce) => {
+        let commercePicture = '';
+
+        const ParseCommerce = Parse.Object.extend("Commerce");
+
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
+        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
+
+        queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: idCommerce}));
+
+        queryCommercePhoto.find()
+        .then(responseSnapshot => {
+            responseSnapshot.forEach((elt) => {
+                commercePicture = elt.get("photo").url();
+                // commercePicture.push({ id: elt.id, url : elt.get("photo").url()});
+            });
+        });
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve(commercePicture), 300)
+        });
+    }
+
+    getUrlCommercePicture = async (idCommerce) => {
+        const listPicture = await this.getThumbnailCommerce(idCommerce);
+        // console.log("#####>>>>"+listPicture);
+        return listPicture;
+        // this.setState({
+        //     listImg : listPicture
+        // }, () => {
+        //     this.setState({
+        //         imgPreview1: this.state.listImg[0],
+        //         imgPreview2: this.state.listImg[1],
+        //         imgPreview3: this.state.listImg[2]
+        //     })
+        // })
+        // console.log("aaaa   a   aaa "+this.state.imgPreview1);
+    }
+
     getAllCommerces() {
         const ParseCommerce = Parse.Object.extend("Commerce");
         const queryCommerce = new Parse.Query(ParseCommerce);
@@ -81,10 +121,19 @@ class ProfilePage extends Component {
         queryCommerce.equalTo("owner", Parse.User.current());
 
         let newCommerces = [];
+        
 
         queryCommerce.find()
             .then(snapshot => {
                 snapshot.forEach((elt) => {
+                    // console.log("----> "+JSON.stringify(elt, null, 2));
+                    // console.log("----> "+JSON.stringify(elt.get("thumbnailPrincipal"), null, 2));
+                    if (this.getUrlCommercePicture(elt.id)) {
+                        this.getUrlCommercePicture(elt.id).then((value) => {
+                            console.log(value)
+                        })
+                    }
+                    this.getUrlCommercePicture(elt.id);
                     var _status;
                     var _img;
 

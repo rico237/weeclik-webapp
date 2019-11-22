@@ -2,7 +2,7 @@ import React from 'react';
 import logo from '../assets/icons/LogoWeeclik.svg';
 // import logoCommercant from '../assets/icons/users.svg';
 import { Link } from 'react-router-dom';
-import { AppBar, Container, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
+import { AppBar, /*Container,*/ Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import grey from '@material-ui/core/colors/grey';
@@ -109,7 +109,7 @@ function Navigation(props) {
     return (
         <div className={classes.rootNav}>
             <AppBar color="inherit" position="fixed" elevation={0}>
-                <Container fixed>
+                {/* <Container fixed> */}
                     <Toolbar>
                         <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
                             <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
@@ -153,7 +153,7 @@ function Navigation(props) {
                         </div>
                         
                     </Toolbar>
-                </Container>
+                {/* </Container> */}
             </AppBar>
 
 

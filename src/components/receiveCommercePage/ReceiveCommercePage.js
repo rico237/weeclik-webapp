@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, CssBaseline, Grid, GridList, GridListTile, Paper, Typography } from '@material-ui/core';
+import { Container, CssBaseline, Grid, GridList, GridListTile, Paper, Typography, AppBar, Tabs, Tab } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
+import Header from './Header';
+
+import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
+import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
+import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
+import MailRoundedIcon from '@material-ui/icons/MailRounded';
+import PhotoLibraryRoundedIcon from '@material-ui/icons/PhotoLibraryRounded';
 
 import "../../../node_modules/video-react/dist/video-react.css";
 
@@ -13,7 +20,7 @@ const theme = createMuiTheme({
 
 const root = {
     flexGrow: 1,
-    paddingTop: '70px',
+    paddingTop: '40px',
 }
 
 const root2 = {
@@ -54,12 +61,17 @@ class ReceiveCommercePage extends Component {
             listImg: [],
             movieURL: [],
             validate: false,
-            submitted: false
+            submitted: false,
+            activeTabIndex: 0
         };
 
         this.handleValidate = this.handleValidate.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleChangeTab = (event, value) => {
+        this.setState({ activeTabIndex: value })
     }
 
     handleChange(event) {
@@ -253,6 +265,43 @@ class ReceiveCommercePage extends Component {
                 <CssBaseline/>
                 {this.props.match.params.commerceId}
                 <div style={root}>
+                    <Header/>
+                    <AppBar position="static" color="default" elevation={0}>
+                        <Tabs
+                            indicatorColor="primary"
+                            textColor="primary"
+                            variant="fullWidth"
+                            value={this.state.activeTabIndex}
+                            onChange={this.handleChangeTab}
+                            TabIndicatorProps={{style: { backgroundColor: "#00000000" }}}
+                            aria-label="simple tabs example">
+                            <Tab
+                                onClick={() => {console.log("Téléphone")}}
+                                icon={<PhoneRoundedIcon />}
+                                aria-label="Téléphone"
+                                style={{outline: 'none', color: '#1A76D2'}}/>
+                            <Tab
+                                onClick={() => {console.log("Localisation")}}
+                                icon={<RoomRoundedIcon />}
+                                aria-label="Localisation"
+                                style={{outline: 'none', color: '#1A76D2'}}/>
+                            <Tab
+                                onClick={() => {console.log("Site Web")}}
+                                icon={<LanguageRoundedIcon />}
+                                aria-label="Site Web"
+                                style={{outline: 'none', color: '#1A76D2'}}/>
+                            <Tab
+                                onClick={() => {console.log("Mail")}}
+                                icon={<MailRoundedIcon />}
+                                aria-label="Mail"
+                                style={{outline: 'none', color: '#1A76D2'}}/>
+                            <Tab
+                                onClick={() => {console.log("Galerie")}}
+                                icon={<PhotoLibraryRoundedIcon />}
+                                aria-label="Galerie"
+                                style={{outline: 'none', color: '#1A76D2'}}/>
+                        </Tabs>
+                    </AppBar>
                     <Grid
                         container
                         spacing={1}
