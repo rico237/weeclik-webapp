@@ -2,12 +2,15 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import { Container, CssBaseline, Button, TextField, MenuItem, Grid } from '@material-ui/core';
+import { Container, CssBaseline, Button, TextField, MenuItem, Grid, Box } from '@material-ui/core';
 // import AddImg from '../../assets/images/addImage.svg'
 import IMG1 from '../../assets/images/img1.png';
+import addCommercePicture from '../../assets/icons/addCommercePicture.png';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
+
+import { Copyright } from '../copyright/Copyright';
 
 const theme = createMuiTheme({
     spacing: 4,
@@ -242,170 +245,201 @@ class CreateCommerce extends Component {
         }
 
         return (
-            <Container component="main" maxWidth="sm">
-                <CssBaseline/>
-                <div style={root}>
-                    <form onSubmit={this.createNewCommerce}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    className={"classes.textField"}
-                                    fullWidth
-                                    onChange={this.handleChange}
-                                    name="nomCommerce"
-                                    id="outlined-name"
-                                    label="Nom du commerce"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
+            <div>
+                <Container component="main" maxWidth="sm">
+                    <CssBaseline/>
+                    <div style={root}>
+                        <form onSubmit={this.createNewCommerce}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField"}
+                                        fullWidth
+                                        onChange={this.handleChange}
+                                        name="nomCommerce"
+                                        id="outlined-name"
+                                        label="Nom du commerce"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                        <img
+                                            alt="select1"
+                                            src={addCommercePicture}
+                                            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                        <img
+                                            alt="select2"
+                                            src={addCommercePicture}
+                                            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                        <img
+                                            alt="select3"
+                                            src={addCommercePicture}
+                                            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                        />
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        select
+                                        fullWidth
+                                        variant="outlined"
+                                        name="currencyCategory"
+                                        value={this.state.commerce.currencyCategory}
+                                        onChange={this.handleChange}
+                                        required
+                                        className={"classes.textField2"}
+                                        label="Catégorie"
+                                    >   
+                                        <MenuItem value=""><em>Aucune</em></MenuItem>
+                                        <MenuItem value="Alimentaire">Alimentaire</MenuItem>
+                                        <MenuItem value="Artisanat">Artisanat</MenuItem>
+                                        <MenuItem value="Bâtiment">Bâtiment</MenuItem>
+                                        <MenuItem value="Bien-être">Bien-être</MenuItem>
+                                        <MenuItem value="Décoration">Décoration</MenuItem>
+                                        <MenuItem value="Dépannage">Dépannage</MenuItem>
+                                        <MenuItem value="Evènement">Evènement</MenuItem>
+                                        <MenuItem value="E-commerce">E-commerce</MenuItem>
+                                        <MenuItem value="Fabricant">Fabricant</MenuItem>
+                                        <MenuItem value="Garagiste">Garagiste</MenuItem>
+                                        <MenuItem value="Hôtellerie">Hôtellerie</MenuItem>
+                                        <MenuItem value="Humanitaire">Humanitaire</MenuItem>
+                                        <MenuItem value="Immobilier">Immobilier</MenuItem>
+                                        <MenuItem value="Informatique">Informatique</MenuItem>
+                                        <MenuItem value="Nautisme">Nautisme</MenuItem>
+                                        <MenuItem value="Restauration">Restauration</MenuItem>
+                                        <MenuItem value="Textile">Textile</MenuItem>
+                                        <MenuItem value="Transport">Transport</MenuItem>
+                                        <MenuItem value="Tourisme">Tourisme</MenuItem>
+                                        <MenuItem value="Santé">Santé</MenuItem>
+                                        <MenuItem value="Autre">Autre</MenuItem>
+                                    </TextField>
+                                </Grid>
+                                {/* Informations du commerce */}
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="adresse"
+                                        id="outlined-name"
+                                        label="Adresse"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField4"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="bp"
+                                        id="outlined-name"
+                                        label="Code postal"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField3"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="ville"
+                                        id="outlined-name"
+                                        label="Ville"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="tel"
+                                        id="outlined-name"
+                                        label="Numéro de téléphone"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        // required
+                                        className={"classes.textField"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="siteWeb"
+                                        id="outlined-name"
+                                        label="Site web"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    {/* Description de votre commerce */}
+                                    <TextField
+                                        required
+                                        className={"classes.textField"}
+                                        multiline
+                                        fullWidth
+                                        rows="4"
+                                        onChange={this.handleChange.bind(this)}
+                                        name="description"
+                                        id="outlined-name"
+                                        label="Description du commerce"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        // required
+                                        multiline
+                                        fullWidth
+                                        rows="4"
+                                        onChange={this.handleChange.bind(this)}
+                                        name="promotions"
+                                        id="outlined-name"
+                                        label="Mes promotions"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <label style={{ fontSize: '14px' }}>
+                                        {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
+                                        <a style={{ color: 'blue', textDecoration: 'none' }} href="fake_url">Conditions générales</a>{'... '}
+                                    </label>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    select
-                                    fullWidth
-                                    variant="outlined"
-                                    name="currencyCategory"
-                                    value={this.state.commerce.currencyCategory}
-                                    onChange={this.handleChange}
-                                    required
-                                    className={"classes.textField2"}
-                                    label="Catégorie"
-                                >   
-                                    <MenuItem value=""><em>Aucune</em></MenuItem>
-                                    <MenuItem value="Alimentaire">Alimentaire</MenuItem>
-                                    <MenuItem value="Artisanat">Artisanat</MenuItem>
-                                    <MenuItem value="Bâtiment">Bâtiment</MenuItem>
-                                    <MenuItem value="Bien-être">Bien-être</MenuItem>
-                                    <MenuItem value="Décoration">Décoration</MenuItem>
-                                    <MenuItem value="Dépannage">Dépannage</MenuItem>
-                                    <MenuItem value="Evènement">Evènement</MenuItem>
-                                    <MenuItem value="E-commerce">E-commerce</MenuItem>
-                                    <MenuItem value="Fabricant">Fabricant</MenuItem>
-                                    <MenuItem value="Garagiste">Garagiste</MenuItem>
-                                    <MenuItem value="Hôtellerie">Hôtellerie</MenuItem>
-                                    <MenuItem value="Humanitaire">Humanitaire</MenuItem>
-                                    <MenuItem value="Immobilier">Immobilier</MenuItem>
-                                    <MenuItem value="Informatique">Informatique</MenuItem>
-                                    <MenuItem value="Nautisme">Nautisme</MenuItem>
-                                    <MenuItem value="Restauration">Restauration</MenuItem>
-                                    <MenuItem value="Textile">Textile</MenuItem>
-                                    <MenuItem value="Transport">Transport</MenuItem>
-                                    <MenuItem value="Tourisme">Tourisme</MenuItem>
-                                    <MenuItem value="Santé">Santé</MenuItem>
-                                    <MenuItem value="Autre">Autre</MenuItem>
-                                </TextField>
-                            </Grid>
-                            {/* Informations du commerce */}
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    className={"classes.textField"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="adresse"
-                                    id="outlined-name"
-                                    label="Adresse"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    className={"classes.textField4"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="bp"
-                                    id="outlined-name"
-                                    label="Code postal"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    className={"classes.textField3"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="ville"
-                                    id="outlined-name"
-                                    label="Ville"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    className={"classes.textField"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="tel"
-                                    id="outlined-name"
-                                    label="Numéro de téléphone"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    // required
-                                    className={"classes.textField"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="siteWeb"
-                                    id="outlined-name"
-                                    label="Site web"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                {/* Description de votre commerce */}
-                                <TextField
-                                    required
-                                    className={"classes.textField"}
-                                    multiline
-                                    fullWidth
-                                    rows="4"
-                                    onChange={this.handleChange.bind(this)}
-                                    name="description"
-                                    id="outlined-name"
-                                    label="Description du commerce"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    // required
-                                    multiline
-                                    fullWidth
-                                    rows="4"
-                                    onChange={this.handleChange.bind(this)}
-                                    name="promotions"
-                                    id="outlined-name"
-                                    label="Mes promotions"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <label style={{ fontSize: '14px' }}>
-                                    {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
-                                    <a style={{ color: 'blue', textDecoration: 'none' }} href="fake_url">Conditions générales</a>{'... '}
-                                </label>
-                            </Grid>
-                        </Grid>
 
-
-                        <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Ajouter mon commerce</Button>
-                        <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={button}>Annuler</Button>
-                    </form>
-                </div>
-            </Container>
+                            <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Ajouter mon commerce</Button>
+                            <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={button}>Annuler</Button>
+                        </form>
+                    </div>
+                </Container>
+                <Box mt={5}>
+                    <Copyright/>
+                </Box>
+            </div>
         );
     }
 }

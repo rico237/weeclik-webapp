@@ -163,14 +163,6 @@ class ProfilePage extends Component {
         queryCommerce.find()
             .then(snapshot => {
                 snapshot.forEach((elt) => {
-                    // console.log("----> "+JSON.stringify(elt, null, 2));
-                    // console.log("----> "+JSON.stringify(elt.get("thumbnailPrincipal"), null, 2));
-                    // if (this.getUrlCommercePicture(elt.id)) {
-                    //     this.getUrlCommercePicture(elt.id).then((value) => {
-                    //         console.log(value)
-                    //     })
-                    // }
-                    // this.getUrlCommercePicture(elt.id);
                     var _status;
                     var _img;
 
@@ -450,21 +442,6 @@ class ProfilePage extends Component {
                                         color="inherit"
                                         noWrap
                                         style={{ marginTop: '20px', flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5,  }}>Mes commerces</Typography>
-
-                                    {/* <Button
-                                        variant="contained"
-                                        component={Link}
-                                        to="/createcommerce"
-                                        style={{
-                                            background: '#1EB0F8',
-                                            border: 0,
-                                            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-                                            color: 'white',
-                                            // position: 'absolute',
-                                            // bottom: '10%',
-                                            // left: '10px'
-                                        }}
-                                    >Nouveau commerce</Button> */}
 
                                     <Grid container direction="row-reverse" spacing={5}>
                                         <Container component="main" maxWidth="md">
