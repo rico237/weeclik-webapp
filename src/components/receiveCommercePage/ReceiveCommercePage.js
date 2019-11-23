@@ -48,8 +48,6 @@ const card = {
     overflow: 'initial',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    textAlign: 'center',
     paddingLeft: 8,
     paddingRight: 8,
     background:
@@ -59,13 +57,20 @@ const card = {
 const media = {
     flexShrink: 0,
     width: '50%',
-    paddingTop: '50%',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    float: 'right',
+    // marginRight: 'auto',
 }
 
 const content = {
 
+}
+
+const overline = {
+    lineHeight: 2,
+    color: '#ffffff',
+    fontWeight: 'bold',
+    fontSize: '0.625rem',
+    opacity: 0.7,
 }
 //#endregion
 
@@ -336,10 +341,10 @@ class ReceiveCommercePage extends Component {
                                     <Typography style={heading} variant="h6" gutterBottom>
                                         Promotions
                                     </Typography>
-                                    <Grid container spacing={3}>
+                                    <Grid container spacing={1}>
                                         <Grid item xs={8}>
-                                            <Typography style={heading} variant="h6" gutterBottom>
-                                                Promotions
+                                            <Typography style={overline} variant="overline">
+                                                Promotions Blab bla bla
                                             </Typography>
                                         </Grid>
                                         <Grid item xs={4}>
@@ -361,9 +366,6 @@ class ReceiveCommercePage extends Component {
                                 <h6 style={{color:"#000"}}>
                                     {" " + this.state.commerce.siteWeb}
                                 </h6>
-                                <h5 style={{color:"#000", paddingTop: '50px'}}>
-                                    {this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
-                                </h5>
                             </Paper>
                             
                             <div style={{margin:'10px'}}></div>

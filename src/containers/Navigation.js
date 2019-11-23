@@ -144,6 +144,7 @@ function Navigation(props) {
                                             aria-haspopup="true"
                                             onClick={handleMobileMenuOpen}
                                             color="inherit"
+                                            style={{outline: 'none'}}
                                         >
                                             <MoreIcon style={{ color: 'black' }} />
                                         </IconButton>
