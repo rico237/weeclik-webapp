@@ -1,10 +1,9 @@
 import React from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-// import { maxWidth } from '@material-ui/system';
-// import { Paper, Typography, MobileStepper, Button } from '@material-ui/core';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
-import IMG2 from '../../assets/pub2.png';
+
+import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -28,15 +27,12 @@ const useStyles = makeStyles(theme => ({
         objectPosition: 'right top'
     },
     div: {
-        // background: '#FFF'
+        position: 'relative',
+        width: '100%' /* for IE 6 */
     }
 }));
 
 const tutorialSteps = [
-	{
-	  label: 'Bird',
-	  imgPath: IMG2,
-	},
 	{
 	  label: 'Bali, Indonesia',
 	  imgPath:
@@ -51,19 +47,10 @@ const tutorialSteps = [
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
-function Header() {
+function Header(commerceParams) {
     const classes = useStyles();
     const theme = useTheme();
     const [activeStep, setActiveStep] = React.useState(0);
-    // const maxSteps = tutorialSteps.length;
-
-    // const handleNext = () => {
-    //     setActiveStep(prevActiveStep => prevActiveStep + 1);
-    // }
-
-    // const handleBack = () => {
-    //     setActiveStep(prevActiveStep => prevActiveStep - 1);
-    // }
 
     const handleStepChange = step => {
         setActiveStep(step);
@@ -87,23 +74,31 @@ function Header() {
                                     alt={step.label}
                                 />
                             ) : null}
+                            <div style={{
+                                font: 'bold 24px/45px Helvetica, Sans-Serif',
+                                letterSpacing: '-1px',
+                                background: 'rgba(0, 0, 0, 0.3)',
+                                color: 'white',
+                                position: 'absolute',
+                                top: 0, left: 0,
+                                width: '100%', height: '100%'}}>
+                                <div style={{
+                                    position: 'relative',
+                                    textAlign: 'center'
+                                }}>
+                                    <h1 style={{textAlign: 'center', marginTop: '150px'}}>{commerceParams.name}</h1>
+                                    <p style={{fontStyle: 'italic'}}>{commerceParams.type}</p>
+                                    <p style={{
+                                        position: 'absolute',
+                                        marginLeft: '16px',
+                                        marginBottom: '8px',
+                                        marginTop: '70px'}}>{commerceParams.nbShare}{' '} <FavoriteRoundedIcon/></p>
+                                </div>
+                            </div>
                         </div>
                     ))
                 }
             </AutoPlaySwipeableViews>
-            
-            {/* <MobileStepper
-                steps={maxSteps}
-                position="static"
-                variant="dots"
-                activeStep={activeStep}
-                nextButton={
-                    <Button size="small" onClick={handleNext} disabled={activeStep === maxSteps - 1}>Next</Button>
-                }
-                backButton={
-                    <Button size="small" onClick={handleBack} disabled={activeStep === 0}>Back</Button>
-                }
-            /> */}
         </div>
     )
     
