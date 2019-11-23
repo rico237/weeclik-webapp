@@ -2,33 +2,70 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Link } from 'react-router-dom';
-import { Avatar, Grid, Container, IconButton, Paper, Typography, Button } from '@material-ui/core';
+import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, Box } from '@material-ui/core';
 import defaultProfile from '../../assets/icons/defaultUser.svg'
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
+import { createMuiTheme } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import CommercePicture from './CommercePicture';
+
+import { Copyright } from '../copyright/Copyright';
 
 import IMG1 from '../../assets/images/img1.png';
 import Artisanat from '../../assets/images/categories/cover1.jpg';
 import BienEtre from '../../assets/images/categories/cover2.jpg';
 import Decoration from '../../assets/images/categories/cover3.jpg';
 import ECommerce from '../../assets/images/categories/cover4.jpg';
-// import IMG1 from '../../assets/images/categories/cover5.jpg';
 import Hotellerie from '../../assets/images/categories/cover6.jpg';
 import Immobilier from '../../assets/images/categories/cover7.jpg';
 import Informatique from '../../assets/images/categories/cover8.jpg';
 import Alimentaire from '../../assets/images/categories/cover9.jpg';
-// import IMG1 from '../../assets/images/categories/cover10.jpg';
-// import IMG1 from '../../assets/images/categories/cover11.jpg';
 import Nautisme from '../../assets/images/categories/cover12.png';
 import Sante from '../../assets/images/categories/cover13.jpg';
 import Restauration from '../../assets/images/categories/cover14.jpg';
-// import IMG1 from '../../assets/images/categories/cover15.jpg';
 import Textile from '../../assets/images/categories/cover16.jpg';
 import Tourisme from '../../assets/images/categories/cover17.jpg';
 import Transport from '../../assets/images/categories/cover18.jpg';
 import Humanitaire from '../../assets/images/categories/cover19.jpg';
+
+
+//#region THEME
+const theme = createMuiTheme({
+    spacing: 4,
+});
+
+const heading = {
+    fontWeight: '900',
+    color: '#FFF',
+    letterSpacing: 0.5,
+}
+
+const card = {
+    width: '100%',
+    borderRadius: theme.spacing(2), // 16px
+    transition: '0.3s',
+    boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
+    position: 'relative',
+    overflow: 'initial',
+    display: 'flex',
+    flexDirection: 'column',
+    background:
+      'linear-gradient(34deg, rgba(55,16,83,1) 0%, rgba(162,73,190,1) 29%, rgba(33,16,83,1) 92%)',
+}
+
+const media = {
+    flexShrink: 0,
+    width: '50%',
+    float: 'right',
+    // marginRight: 'auto',
+}
+
+const content = {
+
+}
+//#endregion
+
 
 
 class ProfilePage extends Component {
@@ -74,7 +111,6 @@ class ProfilePage extends Component {
     handleCloseUpdateProfile = () => {
         this.setState({ open: false });
     }
-
 
     getThumbnailCommerce = (idCommerce) => {
         let commercePicture = '';
@@ -294,91 +330,87 @@ class ProfilePage extends Component {
         return (
             <div>
                 <header className="App-header-profile">
-                    <Container maxWidth="sm">
-                        <Grid
-                            container
-                            direction="row"
-                            justify="center"
-                            alignItems="center"
-                            spacing={2}>
-                            <Grid item xs={12}>
-                                {
-                                    this.state.user.picture.length > 2 ?
-                                    (<div><Avatar
-                                        alt="Image profil"
-                                        src={this.state.user.picture}
-                                        style={{
-                                            margin: 10,
-                                            width: 150,
-                                            height: 150,
-                                            display: 'block',
-                                            marginLeft: 'auto',
-                                            marginRight: 'auto',
-                                            border: 'solid #DA5456',
-                                            marginBottom: '30px'
-                                        }}
-                                    /></div>)
-                                    : (<Avatar
-                                        alt="Image de profil par defaut"
-                                        src={defaultProfile}
-                                        style={{
-                                            margin: 10,
-                                            width: 150,
-                                            height: 150,
-                                            display: 'block',
-                                            marginLeft: 'auto',
-                                            marginRight: 'auto',
-                                            border: 'solid #DA5456',
-                                            marginBottom: '30px'
-                                        }}
-                                    />)
-                                }
+                    <div style={{height: '100vh', margin: '0px', padding: '0px'}}>
+                        <Grid container spacing={2} style={{height: '100vh'}}>
+                            <Grid item xs={12} sm={3} style={{background: 'white'}}>
+                                <Paper style={{ margin: '10px', padding: '20px' }}>
+                                    <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
+                                        <Grid item xs={12}>
+                                            <div>
+                                                {
+                                                    this.state.user.picture.length > 2 ?
+                                                    (<div><Avatar
+                                                        alt="Image profil"
+                                                        src={this.state.user.picture}
+                                                        style={{
+                                                            margin: 10,
+                                                            width: 150,
+                                                            height: 150,
+                                                            display: 'block',
+                                                            marginLeft: 'auto',
+                                                            marginRight: 'auto',
+                                                            border: 'solid #DA5456',
+                                                            marginBottom: '30px'
+                                                        }}
+                                                    /></div>) :
+                                                    (<Avatar
+                                                        alt="Image de profil par defaut"
+                                                        src={defaultProfile}
+                                                        style={{
+                                                            margin: 10,
+                                                            width: 150,
+                                                            height: 150,
+                                                            display: 'block',
+                                                            marginLeft: 'auto',
+                                                            marginRight: 'auto',
+                                                            border: 'solid #DA5456',
+                                                            marginBottom: '30px'
+                                                        }}
+                                                    />)
+                                                }
+                                                <center style={{color: "black", padding: "auto 0px"}}>
+                                                    <CardHeader
+                                                        style={{ /*background: '#FFF', borderRadius: 16, padding: 16, */fontWeight: 'bold',
+                                                            fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
+                                                        }}
+                                                        title={this.state.user.name}
+                                                        subheader={this.state.user.email}
+                                                    />
+                                                </center>
+                                            </div>
+                                            <div style={{ float: "right", top: '0' }}>
+                                                <IconButton
+                                                    aria-label="edit"
+                                                    component={Link}
+                                                    to="/updateuser"
+                                                    style={{ margin: '10px', outline: 'none' }}
+                                                >
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </div>
+                                        </Grid>
+                                    </Grid>
+                                </Paper>
 
-                                <Grid item xs={12} style={{ background: "#E2E2E2", margin: '0px 10px', padding: '10px', color: 'black', fontWeight: 'bold' }}>Mon profil</Grid>
                                 
-                                <Grid item xs={12} style={{ margin: '0px 10px', padding: '10px', background: "#FFF", height: '100%', overflow: 'auto' }}>
-                                    <div style={{ float: "left" }}>
-                                        <h5 style={{color:"#000"}}>
-                                            {this.state.user.name}
-                                        </h5>
-                                        <h5 style={{color:"grey"}}>
-                                            {this.state.user.email}
-                                        </h5>
-                                    </div>
-                                    <div style={{ float: "right" }}>
-                                        <IconButton
-                                            aria-label="edit"
-                                            component={Link}
-                                            to="/updateuser"
-                                            style={{ margin: '10px', outline: 'none' }}
-                                        >
-                                            <EditIcon />
-                                        </IconButton>
-                                    </div>
-                                </Grid>
-
-                                <Grid item xs={12} style={{
-                                    background: "#E2E2E2",
-                                    margin: '0px 10px',
-                                    padding: '10px',
-                                    color: 'black',
-                                    fontWeight: 'bold',
-                                    // position: '-webkit-sticky',
-                                    position: 'sticky',
-                                    top: '55px',
-
-                                }}>
-                                    <div style={{ display: 'flex' }}>
-                                        <Typography
-                                            variant="h5"
-                                            color="inherit"
-                                            noWrap
-                                            style={{ flexDirection: "column" }}>Mes commerces</Typography>
-                                        <Typography
-                                            variant="body2"
-                                            color="inherit"
-                                            noWrap
-                                            style={{ marginLeft: "25%" }}>
+                            </Grid>
+                            <Grid item xs={12} sm={9} style={{background: '#F8F9FC'}}>
+                                <Container component="main" maxWidth="md">
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} sm={6}>
+                                            <Card style={card}>
+                                                <CardContent style={content}>
+                                                    <Grid container spacing={1}>
+                                                        <Grid item xs={8}>
+                                                            <Typography style={heading} variant="h6" gutterBottom>
+                                                            TODO : Description sur la réduction dès la premiere utilisation
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item xs={4}>
+                                                            <img alt="Ambassador" src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
+                                                        </Grid>
+                                                    </Grid>
+                                                </CardContent>
                                                 <Button
                                                     variant="contained"
                                                     component={Link}
@@ -390,53 +422,98 @@ class ProfilePage extends Component {
                                                         color: 'white',
                                                     }}
                                                 >Nouveau commerce</Button>
-                                            </Typography>
-                                    </div>
-                                </Grid>
-
-                                <Grid container direction="row-reverse" spacing={5}>
-                                    <Container component="main" maxWidth="sm">
-                                        <Grid item xs={12} style={{ marginTop: '25px' }}>
-                                            {this.state.commerceList.map((elt, index) => (
-                                                <div key={index} style={{ flexGrow: 1, paddingBottom: '5px' }}>
-                                                    <Paper style={{ padding: '10px', margin: 'auto', maxWidth: 500 }}>
-                                                        <Grid container spacing={1}>
-                                                            <Grid item xs={4}>
-                                                                <CommercePicture
-                                                                    commerceId={elt.id}
-                                                                    imgCategory={elt.imgCategory}
-                                                                    title={elt.name}
-                                                                />
-                                                            </Grid>
-                                                            <Grid item xs={8} container>
-                                                                <Grid item xs container direction="column" spacing={2}>
-                                                                    <Grid item xs>
-                                                                        <Typography gutterBottom variant="subtitle1">{elt.name}</Typography>
-                                                                        <Typography variant="body2" color="textSecondary">{elt.status}</Typography>
-                                                                    </Grid>
-                                                                    <Grid item>
-                                                                        <Button color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`} style={{outline: 'none'}}>Plus de détail</Button>
-                                                                    </Grid>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <h5 style={{color:"#000"}}>
-                                                                        {elt.nbPartage} {' '}
-                                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
-                                                                    </h5>
-                                                                </Grid>
-                                                            </Grid>
-                                                        </Grid>
-                                                    </Paper>
-                                                </div>
-                                            ))}
+                                            </Card>
                                         </Grid>
-                                    </Container>
-                                </Grid>
+
+                                        <Grid item xs={12} sm={6}>
+                                            <Card style={card}>
+                                                <CardContent style={content}>
+                                                    <Grid container spacing={1}>
+                                                        <Grid item xs={8}>
+                                                            <Typography style={heading} variant="h6" gutterBottom>
+                                                            Devenir ambassadeur et ambassadrice du seul réseau de confiance humain
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item xs={4}>
+                                                            <img alt="Ambassador" src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
+                                                        </Grid>
+                                                    </Grid>
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
+
+
+                                    </Grid>
+
+                                    <Typography
+                                        variant="h5"
+                                        color="inherit"
+                                        noWrap
+                                        style={{ marginTop: '20px', flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5,  }}>Mes commerces</Typography>
+
+                                    {/* <Button
+                                        variant="contained"
+                                        component={Link}
+                                        to="/createcommerce"
+                                        style={{
+                                            background: '#1EB0F8',
+                                            border: 0,
+                                            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                                            color: 'white',
+                                            // position: 'absolute',
+                                            // bottom: '10%',
+                                            // left: '10px'
+                                        }}
+                                    >Nouveau commerce</Button> */}
+
+                                    <Grid container direction="row-reverse" spacing={5}>
+                                        <Container component="main" maxWidth="md">
+                                            <Grid container spacing={2} style={{ marginTop: '25px' }}>
+                                                {this.state.commerceList.map((elt, index) => (
+                                                    <Grid key={index} item xs={12} sm={6}>
+                                                        <div style={{ flexGrow: 1 }}>
+                                                            <Paper style={{ padding: '10px', margin: 'auto', maxWidth: 500 }}>
+                                                                <Grid container spacing={1}>
+                                                                    <Grid item xs={4}>
+                                                                        <CommercePicture
+                                                                            commerceId={elt.id}
+                                                                            imgCategory={elt.imgCategory}
+                                                                            title={elt.name}
+                                                                        />
+                                                                    </Grid>
+                                                                    <Grid item xs={8} container>
+                                                                        <Grid item xs container direction="column" spacing={2}>
+                                                                            <Grid item xs>
+                                                                                <Typography gutterBottom variant="subtitle1">{elt.name}</Typography>
+                                                                                <Typography variant="body2" color="textSecondary">{elt.status}</Typography>
+                                                                            </Grid>
+                                                                            <Grid item>
+                                                                                <Button color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`} style={{outline: 'none'}}>Plus de détail</Button>
+                                                                            </Grid>
+                                                                        </Grid>
+                                                                        <Grid item>
+                                                                            <h5 style={{color:"#000"}}>
+                                                                                {elt.nbPartage} {' '}
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+                                                                            </h5>
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Paper>
+                                                        </div>
+                                                    </Grid>
+                                                ))}
+                                            </Grid>
+                                        </Container>
+                                    </Grid>
+                                </Container>
                             </Grid>
                         </Grid>
-                        
-                    </Container>
+                    </div>
                 </header>
+                <Box mt={5}>
+                    <Copyright/>
+                </Box>
             </div>
         );
     }
