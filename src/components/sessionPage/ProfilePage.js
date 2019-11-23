@@ -7,6 +7,7 @@ import defaultProfile from '../../assets/icons/defaultUser.svg'
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import EditIcon from '@material-ui/icons/Edit';
+import CommercePicture from './CommercePicture';
 
 import IMG1 from '../../assets/images/img1.png';
 import Artisanat from '../../assets/images/categories/cover1.jpg';
@@ -128,12 +129,12 @@ class ProfilePage extends Component {
                 snapshot.forEach((elt) => {
                     // console.log("----> "+JSON.stringify(elt, null, 2));
                     // console.log("----> "+JSON.stringify(elt.get("thumbnailPrincipal"), null, 2));
-                    if (this.getUrlCommercePicture(elt.id)) {
-                        this.getUrlCommercePicture(elt.id).then((value) => {
-                            console.log(value)
-                        })
-                    }
-                    this.getUrlCommercePicture(elt.id);
+                    // if (this.getUrlCommercePicture(elt.id)) {
+                    //     this.getUrlCommercePicture(elt.id).then((value) => {
+                    //         console.log(value)
+                    //     })
+                    // }
+                    // this.getUrlCommercePicture(elt.id);
                     var _status;
                     var _img;
 
@@ -401,7 +402,11 @@ class ProfilePage extends Component {
                                                     <Paper style={{ padding: '10px', margin: 'auto', maxWidth: 500 }}>
                                                         <Grid container spacing={1}>
                                                             <Grid item xs={4}>
-                                                                <img style={{width: 128, height: 128}} src={elt.imgCategory} alt={elt.name} />
+                                                                <CommercePicture
+                                                                    commerceId={elt.id}
+                                                                    imgCategory={elt.imgCategory}
+                                                                    title={elt.name}
+                                                                />
                                                             </Grid>
                                                             <Grid item xs={8} container>
                                                                 <Grid item xs container direction="column" spacing={2}>

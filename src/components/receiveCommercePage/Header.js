@@ -32,19 +32,6 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-const tutorialSteps = [
-	{
-	  label: 'Bali, Indonesia',
-	  imgPath:
-		'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80',
-	},
-	{
-	  label: 'Goč, Serbia',
-	  imgPath:
-		'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-	},
-];
-
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
 function Header(commerceParams) {
@@ -55,6 +42,19 @@ function Header(commerceParams) {
     const handleStepChange = step => {
         setActiveStep(step);
     }
+
+    const tutorialSteps = [
+        {
+          label: 'Image 1',
+          imgPath:
+            'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80',
+        },
+        {
+          label: 'Image 2',
+          imgPath:
+            'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
+        },
+    ]
 
     return (
         <div className={classes.root}>

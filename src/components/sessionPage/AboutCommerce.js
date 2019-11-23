@@ -30,7 +30,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Info from '@material-ui/icons/Info';
 import Payment from '@material-ui/icons/Payment';
 
-import ModalImage from "react-modal-image";
+// import ModalImage from "react-modal-image";
 import { Copyright } from '../copyright/Copyright';
 
 //#region COLOR
@@ -773,7 +773,7 @@ class AboutCommerce extends Component {
                                         <Typography variant="h5" component="h3" style={{color:"#000"}}>Images du commerce</Typography>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
+                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
                                     </Grid>
                                     <Grid item xs={6}>
                                         {
@@ -809,12 +809,16 @@ class AboutCommerce extends Component {
                                                 {this.state.listImg && [...this.state.listImg].map((object, index) => (
                                                     <div key={index}>
                                                         <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
-                                                            <ModalImage
+                                                            {/* <ModalImage
                                                                 small={object.url}
                                                                 large={object.url}
                                                                 hideDownload="false"
                                                                 hideZoom="false"
                                                                 style={{width: '100%'}}
+                                                            /> */}
+                                                            <img
+                                                                src={object.url}
+                                                                style={{width: '200px', height: '200px', objectFit: 'cover'}}
                                                             />
                                                         </div>
                                                         <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>

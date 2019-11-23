@@ -395,7 +395,7 @@ class CreateCommerce extends Component {
                             <Grid item xs={12}>
                                 <label style={{ fontSize: '14px' }}>
                                     {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
-                                    <a style={{ color: 'blue', textDecoration: 'none' }} href="https://weeclik.com">Conditions générales</a>{'... '}
+                                    <a style={{ color: 'blue', textDecoration: 'none' }} href="fake_url">Conditions générales</a>{'... '}
                                 </label>
                             </Grid>
                         </Grid>

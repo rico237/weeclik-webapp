@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Parse from 'parse';
 import { Container, CssBaseline, Grid, Paper, Typography, AppBar, Tabs, Tab, Card, CardContent, CardHeader } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
-import Header from './Header';
+import CommercePicture from './CommercePicture';
 
 import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
@@ -291,7 +291,13 @@ class ReceiveCommercePage extends Component {
                 <CssBaseline/>
                 {this.props.match.params.commerceId}
                 <div style={root}>
-                    <Header name={this.state.commerce.nomCommerce} type={this.state.commerce.currencyCategory} nbShare={this.state.commerce.nombrePartages}/>
+
+                    <CommercePicture
+                        commerceId={this.props.match.params.commerceId}
+                        commerceName={this.state.commerce.nomCommerce}
+                        commerceCategory={this.state.commerce.currencyCategory}
+                        commerceNbShare={this.state.commerce.nombrePartages}/>
+
                     <AppBar position="static" color="default" elevation={0}>
                         <Tabs
                             indicatorColor="primary"
