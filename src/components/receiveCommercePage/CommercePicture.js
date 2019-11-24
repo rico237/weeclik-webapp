@@ -41,8 +41,6 @@ class CommercePicture extends React.Component {
 
     getUrlCommercePicture = async () => {
         const listPicture = await this.getPicturesCommerce();
-        console.log(listPicture);
-        
         this.setState({
             listImg : listPicture
         })
@@ -89,7 +87,7 @@ class CommercePicture extends React.Component {
     render() {
         return (
             <div>
-                <Header name={this.props.commerceName} type={this.props.commerceCategory} nbShare={this.props.commerceNbShare}/>
+                <Header listDesImages={this.state.listImg} name={this.props.commerceName} type={this.props.commerceCategory} nbShare={this.props.commerceNbShare}/>
             </div>
         )
     }

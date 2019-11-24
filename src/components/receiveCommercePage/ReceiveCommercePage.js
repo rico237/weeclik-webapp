@@ -1,15 +1,15 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, CssBaseline, Grid, Paper, Typography, AppBar, Tabs, Tab, Card, CardContent, CardHeader } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Paper, Typography, Card, CardContent, CardHeader } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import CommercePicture from './CommercePicture';
 
-import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
-import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
-import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
-import MailRoundedIcon from '@material-ui/icons/MailRounded';
-import PhotoLibraryRoundedIcon from '@material-ui/icons/PhotoLibraryRounded';
+// import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
+// import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
+// import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
+// import MailRoundedIcon from '@material-ui/icons/MailRounded';
+// import PhotoLibraryRoundedIcon from '@material-ui/icons/PhotoLibraryRounded';
 
 import "../../../node_modules/video-react/dist/video-react.css";
 
@@ -26,6 +26,7 @@ const root = {
 
 const root2 = {
     padding: theme.spacing(5),
+    borderRadius: 16,
 }
 
 const paper = {
@@ -265,7 +266,6 @@ class ReceiveCommercePage extends Component {
         this.setState({
             movieURL: movie
         })
-        // console.log(`--ggg-------> ${this.state.movieURL}`);
     }
     //#endregion
 
@@ -297,8 +297,9 @@ class ReceiveCommercePage extends Component {
                         commerceName={this.state.commerce.nomCommerce}
                         commerceCategory={this.state.commerce.currencyCategory}
                         commerceNbShare={this.state.commerce.nombrePartages}/>
-
-                    <AppBar position="static" color="default" elevation={0}>
+                    
+                    <div>
+                    {/* <AppBar position="static" color="default" elevation={0}>
                         <Tabs
                             indicatorColor="primary"
                             textColor="primary"
@@ -333,7 +334,8 @@ class ReceiveCommercePage extends Component {
                                 aria-label="Galerie"
                                 style={{outline: 'none', color: '#1A76D2'}}/>
                         </Tabs>
-                    </AppBar>
+                    </AppBar> */}
+                    </div>
                     <Grid
                         container
                         spacing={1}
@@ -367,7 +369,19 @@ class ReceiveCommercePage extends Component {
                                     {" " + this.state.commerce.adresse}
                                 </h6>
                                 <h6 style={{color:"#000"}}>
+                                    {" " + this.state.commerce.adresse}
+                                </h6>
+                                <h6 style={{color:"#000"}}>
+                                    {" " + this.state.commerce.adresse}
+                                </h6>
+                                <h6 style={{color:"#000"}}>
+                                    {" " + this.state.commerce.adresse}
+                                </h6>
+                                <h6 style={{color:"#000"}}>
                                     {" " + this.state.commerce.tel}
+                                </h6>
+                                <h6 style={{color:"#000"}}>
+                                    {" " + this.state.commerce.mail}
                                 </h6>
                                 <h6 style={{color:"#000"}}>
                                     {" " + this.state.commerce.siteWeb}

@@ -43,18 +43,11 @@ function Header(commerceParams) {
         setActiveStep(step);
     }
 
-    const tutorialSteps = [
-        {
-          label: 'Image 1',
-          imgPath:
-            'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80',
-        },
-        {
-          label: 'Image 2',
-          imgPath:
-            'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60',
-        },
-    ]
+    const tutorialSteps = commerceParams.listDesImages
+    // [
+    //     'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=400&h=250&q=80',
+    //     'https://images.unsplash.com/photo-1512341689857-198e7e2f3ca8?auto=format&fit=crop&w=400&h=250&q=60'
+    // ]
 
     return (
         <div className={classes.root}>
@@ -66,12 +59,12 @@ function Header(commerceParams) {
             >
                 {
                     tutorialSteps.map((step, index) => (
-                        <div key={step.label} className={classes.div}>
+                        <div key={index} className={classes.div}>
                             {Math.abs(activeStep - index) <= 2 ? (
                                 <img
                                     className={classes.img}
-                                    src={step.imgPath}
-                                    alt={step.label}
+                                    src={step}
+                                    alt={"Image "+index}
                                 />
                             ) : null}
                             <div style={{
@@ -86,7 +79,7 @@ function Header(commerceParams) {
                                     position: 'relative',
                                     textAlign: 'center'
                                 }}>
-                                    <h1 style={{textAlign: 'center', marginTop: '150px'}}>{commerceParams.name}</h1>
+                                    <h1 style={{textAlign: 'center', marginTop: '150px', fontFamily: "'Pacifico', cursive", fontSize: '75px'}}>{commerceParams.name}</h1>
                                     <p style={{fontStyle: 'italic'}}>{commerceParams.type}</p>
                                     <p style={{
                                         position: 'absolute',
@@ -101,7 +94,6 @@ function Header(commerceParams) {
             </AutoPlaySwipeableViews>
         </div>
     )
-    
 }
 
 export default Header;
