@@ -23,7 +23,7 @@ class CheckoutForm extends Component {
     async submit(ev) {
         console.log("-------> "+ process.env.REACT_APP_ROOT_SERVER_URL);
         let { token } = await this.props.stripe.createToken({name: "Name"});
-        console.log("-------> "+ token);
+        console.log("-------> "+ JSON.stringify(token, null, 2));
         let response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/charge`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
