@@ -25,7 +25,7 @@ class CheckoutForm extends Component {
         let { token } = await this.props.stripe.createToken({name: "Name"});
         let response = await fetch(`https://weeclik-server-dev.herokuapp.com/charge`, {
             method: "POST",
-            headers: {"Content-Type": "text/plain"},
+            headers: {"Content-Type": "application/json"},
             body: token
         });
 
