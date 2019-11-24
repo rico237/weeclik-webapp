@@ -23,7 +23,7 @@ class CheckoutForm extends Component {
     async submit(ev) {
         console.log("-------> "+ process.env.REACT_APP_ROOT_SERVER_URL);
         let { token } = await this.props.stripe.createToken({name: "Name"});
-        let response = await fetch(`/charge`, {
+        let response = await fetch(`https://weeclik-server-dev.herokuapp.com/charge`, {
             method: "POST",
             headers: {"Content-Type": "text/plain"},
             body: token
