@@ -284,15 +284,6 @@ class CommercesPage extends Component {
                                     </center>
                                 </Paper>
                             </Grid>
-                            
-                            {/* <Grid item>
-                                <Paper elevation={0} style={root2}>
-                                    <center>
-                                        <Typography variant="h2" component="h3" style={{color:"#000"}}>2</Typography>
-                                        <Typography component="p" style={{color:"#000"}}>Partage totalisé</Typography>
-                                    </center>
-                                </Paper>
-                            </Grid> */}
 
                             <Grid item sm={10}>
                                 <Paper elevation={0} style={root2}>
@@ -302,7 +293,6 @@ class CommercesPage extends Component {
                                             component={Link}
                                             to="/createcommerce"
                                             style={styleButton}>Ajouter un commerce</Button>
-                                        {/* <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur la creation d'un commerce</Typography> */}
                                     </center>
                                 </Paper>
                             </Grid>
@@ -332,9 +322,6 @@ class CommercesPage extends Component {
                                                         <Button color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`} style={{outline: 'none'}}>Plus de détail</Button>
                                                     </Grid>
                                                 </Grid>
-                                                {/* <div>
-                                                    <Button variant="outlined" size="small" color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`} style={{outline: 'none'}}>Plus de détail</Button>
-                                                </div> */}
                                             </div>
                                             
                                         </div>
@@ -344,8 +331,6 @@ class CommercesPage extends Component {
                             </Grid>
                         </Container>
                     </Grid>
-
-                    {/* <div><GeoLocation/></div> */}
                     
                 </div>
             </Container>

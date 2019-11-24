@@ -2,12 +2,13 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import { Container, CssBaseline, Button, TextField, MenuItem, Grid } from '@material-ui/core';
-// import AddImg from '../../assets/images/addImage.svg'
-import IMG1 from '../../assets/images/img1.png';
+import { Container, CssBaseline, Button, TextField, MenuItem, Typography, Grid, Box } from '@material-ui/core';
+import addCommercePicture from '../../assets/icons/addCommercePicture.png';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
+
+import { Copyright } from '../copyright/Copyright';
 
 const theme = createMuiTheme({
     spacing: 4,
@@ -20,6 +21,17 @@ const root = {
 
 const button = {
     margin: theme.spacing(1),
+}
+
+
+
+const getBase64 = (file) => {
+    return new Promise((resolve,reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
 }
 
 
@@ -45,6 +57,13 @@ class CreateCommerce extends Component {
                 mail: '',
                 currencyCategory: '',
             },
+            imgPreview1: null,
+            imgPreview1a: null,
+            imgPreview2: null,
+            imgPreview2a: null,
+            imgPreview3: null,
+            imgPreview3a: null,
+            nbImageUpload: 0,
 
             id: '',
 
@@ -59,6 +78,9 @@ class CreateCommerce extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.createNewCommerce = this.createNewCommerce.bind(this);
+        this.handleChangePicture1 = this.handleChangePicture1.bind(this);
+        this.handleChangePicture2 = this.handleChangePicture2.bind(this);
+        this.handleChangePicture3 = this.handleChangePicture3.bind(this);
     }
 
     handleChange(event) {
@@ -81,31 +103,60 @@ class CreateCommerce extends Component {
         this.setState({ submitted: true });
     }
 
-    getUserPicture() {
-        var currentUser = Parse.User.current();
-        if (currentUser) {
-            currentUser.fetch().then((snapshot) => {
-                var name = snapshot.get('name');
-                var PICTURE = snapshot.get('profilePictureURL');
-                var username = snapshot.getUsername();
+    //#region UPLOAD_IMAGES
+    handleChangePicture1(event) {
+        const file = event.target.files[0];
+        getBase64(file).then((base64) => {
+            localStorage["file1Base64"] = base64;
+        })
+        this.setState({
+            imgPreview1: URL.createObjectURL(file),
+        });
+    }
+    handleChangePicture2(event) {
+        const file = event.target.files[0];
+        getBase64(file).then((base64) => {
+            localStorage["file2Base64"] = base64;
+        })
+        this.setState({
+            imgPreview2: URL.createObjectURL(file),
+        });
+    }
+    handleChangePicture3(event) {
+        const file = event.target.files[0];
+        getBase64(file).then((base64) => {
+            localStorage["file3Base64"] = base64;
+        })
+        this.setState({
+            imgPreview3: URL.createObjectURL(file),
+        });
+    }
 
-                if (!PICTURE) {
-                    PICTURE = {IMG1}
-                }
-                // console.log("%%%%%zahdu%%% " +JSON.stringify(snapshot, null, 2));
-                this.setState(prevState => ({
-                    user: {
-                        ...prevState.user,
-                        name: name,
-                        username: username,
-                        picture: PICTURE
-                    }
-                }))
+    _uploadImageToSerServer(img, idCommerce, localStore) {
+        var file = new Parse.File("img.name", { base64: img });
+        var Commerce_Photos = new Parse.Object("Commerce_Photos");
+        var ParseCommerce = Parse.Object.extend("Commerce");
+        var currentUser = Parse.User.current();
+
+        if (currentUser) {
+            file.save().then((f) => {
+                Commerce_Photos.set("photo", file);
+                Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(idCommerce));
+                Commerce_Photos.save().then((snapshot) => {
+                    const instanceCommerce = new ParseCommerce();
+                    instanceCommerce.id = idCommerce
+                    instanceCommerce.set("thumbnailPrincipal", { "__type": "Pointer", "className": "Commerce_Photos", "objectId": snapshot.id });
+                    instanceCommerce.save().then(() => {
+                        localStorage.removeItem(localStore)
+                        localStorage.removeItem("file11Base64")
+                    }, (error) => {
+                        console.error('Failed to update commerce');
+                    })
+                })
             })
-        } else {
-            
         }
     }
+    //#endregion
 
     getAllCommerces() {
         const ParseCommerce = Parse.Object.extend("Commerce");
@@ -204,7 +255,19 @@ class CreateCommerce extends Component {
                     "promotions": _state_commerce.promotions
                 })
                 .then((newCommerce) => {
-                    // console.log(`Le commerce ${newCommerce.id} a été créer ${JSON.stringify(currentUser, null, 2)}`);
+                    var localStore = "";
+                    if (this.state.imgPreview1) {
+                        localStore = "file1Base64";
+                        this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                    }
+                    if (this.state.imgPreview2) {
+                        localStore = "file2Base64";
+                        this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                    }
+                    if (this.state.imgPreview3) {
+                        localStore = "file3Base64";
+                        this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                    }
                     this.isCreate(newCommerce.id);
                 }, (error) => {
                     console.error(`Failed to create new object, with error code: ' + ${error.message}`);
@@ -223,15 +286,10 @@ class CreateCommerce extends Component {
 
 
     componentDidMount() {
-        // this.props.getUserInfo();
-        // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
         this.getAllCommerces();
     }
 
     render() {
-        // const { user } = this.props;className="App-header"
-        // console.log(this.state.commerce);
-
         if (this.state.isCreate) {
             return (
                 <Redirect to={{
@@ -242,170 +300,249 @@ class CreateCommerce extends Component {
         }
 
         return (
-            <Container component="main" maxWidth="sm">
-                <CssBaseline/>
-                <div style={root}>
-                    <form onSubmit={this.createNewCommerce}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    className={"classes.textField"}
-                                    fullWidth
-                                    onChange={this.handleChange}
-                                    name="nomCommerce"
-                                    id="outlined-name"
-                                    label="Nom du commerce"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
+            <div>
+                <Container component="main" maxWidth="sm">
+                    <CssBaseline/>
+                    <div style={root}>
+                        <form onSubmit={this.createNewCommerce}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField"}
+                                        fullWidth
+                                        onChange={this.handleChange}
+                                        name="nomCommerce"
+                                        id="outlined-name"
+                                        label="Nom du commerce"
+                                        placeholder="Nom du commerce"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Typography
+                                        variant="h5"
+                                        color="inherit"
+                                        noWrap
+                                        style={{ flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5 }}>Photos du commerce</Typography>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                        <input
+                                            id="icon-input-file-img1"
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: 'None' }}
+                                            onChange={this.handleChangePicture1}
+                                        />
+                                        <label htmlFor="icon-input-file-img1">
+                                            <img
+                                                alt="select1"
+                                                src={
+                                                    this.state.imgPreview1?
+                                                    this.state.imgPreview1 :
+                                                    addCommercePicture
+                                                }
+                                                style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                            />
+                                        </label>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                        <input
+                                            id="icon-input-file-img2"
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: 'None' }}
+                                            onChange={this.handleChangePicture2}
+                                        />
+                                        <label htmlFor="icon-input-file-img2">
+                                            <img
+                                                alt="select2"
+                                                src={
+                                                    this.state.imgPreview2?
+                                                    this.state.imgPreview2 :
+                                                    addCommercePicture
+                                                }
+                                                style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                            />
+                                        </label>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={4}>
+                                    <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                        <input
+                                            id="icon-input-file-img3"
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: 'None' }}
+                                            onChange={this.handleChangePicture3}
+                                        />
+                                        <label htmlFor="icon-input-file-img3">
+                                            <img
+                                                alt="select3"
+                                                src={
+                                                    this.state.imgPreview3?
+                                                    this.state.imgPreview3 :
+                                                    addCommercePicture
+                                                }
+                                                style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                            />
+                                        </label>
+                                    </div>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        select
+                                        fullWidth
+                                        variant="outlined"
+                                        name="currencyCategory"
+                                        value={this.state.commerce.currencyCategory}
+                                        onChange={this.handleChange}
+                                        required
+                                        className={"classes.textField2"}
+                                        label="Catégorie"
+                                        helperText="Veuillez sélectionner une catégorie"
+                                    >   
+                                        <MenuItem value=""><em>Aucune</em></MenuItem>
+                                        <MenuItem value="Alimentaire">Alimentaire</MenuItem>
+                                        <MenuItem value="Artisanat">Artisanat</MenuItem>
+                                        <MenuItem value="Bâtiment">Bâtiment</MenuItem>
+                                        <MenuItem value="Bien-être">Bien-être</MenuItem>
+                                        <MenuItem value="Décoration">Décoration</MenuItem>
+                                        <MenuItem value="Dépannage">Dépannage</MenuItem>
+                                        <MenuItem value="Evènement">Evènement</MenuItem>
+                                        <MenuItem value="E-commerce">E-commerce</MenuItem>
+                                        <MenuItem value="Fabricant">Fabricant</MenuItem>
+                                        <MenuItem value="Garagiste">Garagiste</MenuItem>
+                                        <MenuItem value="Hôtellerie">Hôtellerie</MenuItem>
+                                        <MenuItem value="Humanitaire">Humanitaire</MenuItem>
+                                        <MenuItem value="Immobilier">Immobilier</MenuItem>
+                                        <MenuItem value="Informatique">Informatique</MenuItem>
+                                        <MenuItem value="Nautisme">Nautisme</MenuItem>
+                                        <MenuItem value="Restauration">Restauration</MenuItem>
+                                        <MenuItem value="Textile">Textile</MenuItem>
+                                        <MenuItem value="Transport">Transport</MenuItem>
+                                        <MenuItem value="Tourisme">Tourisme</MenuItem>
+                                        <MenuItem value="Santé">Santé</MenuItem>
+                                        <MenuItem value="Autre">Autre</MenuItem>
+                                    </TextField>
+                                </Grid>
+                                {/* Informations du commerce */}
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="adresse"
+                                        id="outlined-name"
+                                        label="Adresse"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField4"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="bp"
+                                        id="outlined-name"
+                                        label="Code postal"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField3"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="ville"
+                                        id="outlined-name"
+                                        label="Ville"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        required
+                                        className={"classes.textField"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="tel"
+                                        id="outlined-name"
+                                        label="Numéro de téléphone"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        // required
+                                        className={"classes.textField"}
+                                        fullWidth
+                                        onChange={this.handleChange.bind(this)}
+                                        name="siteWeb"
+                                        id="outlined-name"
+                                        label="Site web"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    {/* Description de votre commerce */}
+                                    <TextField
+                                        required
+                                        className={"classes.textField"}
+                                        multiline
+                                        fullWidth
+                                        rows="4"
+                                        onChange={this.handleChange.bind(this)}
+                                        name="description"
+                                        id="outlined-name"
+                                        label="Description du commerce"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        // required
+                                        multiline
+                                        fullWidth
+                                        rows="4"
+                                        onChange={this.handleChange.bind(this)}
+                                        name="promotions"
+                                        id="outlined-name"
+                                        label="Mes promotions"
+                                        margin="dense"
+                                        variant="outlined"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <label style={{ fontSize: '14px' }}>
+                                        {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
+                                        <a style={{ color: 'blue', textDecoration: 'none' }} href="fake_url">Conditions générales</a>{'... '}
+                                    </label>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    select
-                                    fullWidth
-                                    variant="outlined"
-                                    name="currencyCategory"
-                                    value={this.state.commerce.currencyCategory}
-                                    onChange={this.handleChange}
-                                    required
-                                    className={"classes.textField2"}
-                                    label="Catégorie"
-                                >   
-                                    <MenuItem value=""><em>Aucune</em></MenuItem>
-                                    <MenuItem value="Alimentaire">Alimentaire</MenuItem>
-                                    <MenuItem value="Artisanat">Artisanat</MenuItem>
-                                    <MenuItem value="Bâtiment">Bâtiment</MenuItem>
-                                    <MenuItem value="Bien-être">Bien-être</MenuItem>
-                                    <MenuItem value="Décoration">Décoration</MenuItem>
-                                    <MenuItem value="Dépannage">Dépannage</MenuItem>
-                                    <MenuItem value="Evènement">Evènement</MenuItem>
-                                    <MenuItem value="E-commerce">E-commerce</MenuItem>
-                                    <MenuItem value="Fabricant">Fabricant</MenuItem>
-                                    <MenuItem value="Garagiste">Garagiste</MenuItem>
-                                    <MenuItem value="Hôtellerie">Hôtellerie</MenuItem>
-                                    <MenuItem value="Humanitaire">Humanitaire</MenuItem>
-                                    <MenuItem value="Immobilier">Immobilier</MenuItem>
-                                    <MenuItem value="Informatique">Informatique</MenuItem>
-                                    <MenuItem value="Nautisme">Nautisme</MenuItem>
-                                    <MenuItem value="Restauration">Restauration</MenuItem>
-                                    <MenuItem value="Textile">Textile</MenuItem>
-                                    <MenuItem value="Transport">Transport</MenuItem>
-                                    <MenuItem value="Tourisme">Tourisme</MenuItem>
-                                    <MenuItem value="Santé">Santé</MenuItem>
-                                    <MenuItem value="Autre">Autre</MenuItem>
-                                </TextField>
-                            </Grid>
-                            {/* Informations du commerce */}
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    className={"classes.textField"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="adresse"
-                                    id="outlined-name"
-                                    label="Adresse"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    className={"classes.textField4"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="bp"
-                                    id="outlined-name"
-                                    label="Code postal"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    required
-                                    className={"classes.textField3"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="ville"
-                                    id="outlined-name"
-                                    label="Ville"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    required
-                                    className={"classes.textField"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="tel"
-                                    id="outlined-name"
-                                    label="Numéro de téléphone"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    // required
-                                    className={"classes.textField"}
-                                    fullWidth
-                                    onChange={this.handleChange.bind(this)}
-                                    name="siteWeb"
-                                    id="outlined-name"
-                                    label="Site web"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                {/* Description de votre commerce */}
-                                <TextField
-                                    required
-                                    className={"classes.textField"}
-                                    multiline
-                                    fullWidth
-                                    rows="4"
-                                    onChange={this.handleChange.bind(this)}
-                                    name="description"
-                                    id="outlined-name"
-                                    label="Description du commerce"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    // required
-                                    multiline
-                                    fullWidth
-                                    rows="4"
-                                    onChange={this.handleChange.bind(this)}
-                                    name="promotions"
-                                    id="outlined-name"
-                                    label="Mes promotions"
-                                    margin="dense"
-                                    variant="outlined"
-                                />
-                            </Grid>
-                            <Grid item xs={12}>
-                                <label style={{ fontSize: '14px' }}>
-                                    {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
-                                    <a style={{ color: 'blue', textDecoration: 'none' }} href="https://weeclik.com">Conditions générales</a>{'... '}
-                                </label>
-                            </Grid>
-                        </Grid>
 
-
-                        <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Ajouter mon commerce</Button>
-                        <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={button}>Annuler</Button>
-                    </form>
-                </div>
-            </Container>
+                            <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Ajouter mon commerce</Button>
+                            <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={button}>Annuler</Button>
+                        </form>
+                    </div>
+                </Container>
+                <Box mt={5}>
+                    <Copyright/>
+                </Box>
+            </div>
         );
     }
 }

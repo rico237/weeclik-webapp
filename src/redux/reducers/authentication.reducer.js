@@ -21,7 +21,7 @@ export function authentication(state = initialState, action) {
         case userConstants.LOGIN_FAILURE:
             // console.log(`------->${JSON.stringify(action, null, 2)}`);
             return {
-                msg: 'L\'adresse e-mail ou mot de passe est invalide.'
+                msg: 'L\'adresse e-mail ou le mot de passe est invalide.'
             };
         case userConstants.LOGOUT:
             return {  };

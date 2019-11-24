@@ -1,11 +1,70 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Container, Typography, IconButton } from '@material-ui/core';
-import { Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
+import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, Box } from '@material-ui/core';
 import defaultProfile from '../../assets/icons/defaultUser.svg'
-import AddImg from '../../assets/images/addImage.svg'
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
+import { createMuiTheme } from '@material-ui/core/styles';
+import EditIcon from '@material-ui/icons/Edit';
+import CommercePicture from './CommercePicture';
+
+import { Copyright } from '../copyright/Copyright';
+
+import IMG1 from '../../assets/images/img1.png';
+import Artisanat from '../../assets/images/categories/cover1.jpg';
+import BienEtre from '../../assets/images/categories/cover2.jpg';
+import Decoration from '../../assets/images/categories/cover3.jpg';
+import Hotellerie from '../../assets/images/categories/cover6.jpg';
+import Immobilier from '../../assets/images/categories/cover7.jpg';
+import Informatique from '../../assets/images/categories/cover8.jpg';
+import Alimentaire from '../../assets/images/categories/cover9.jpg';
+import Nautisme from '../../assets/images/categories/cover12.png';
+import Sante from '../../assets/images/categories/cover13.jpg';
+import Restauration from '../../assets/images/categories/cover14.jpg';
+import Textile from '../../assets/images/categories/cover16.jpg';
+import Tourisme from '../../assets/images/categories/cover17.jpg';
+import Transport from '../../assets/images/categories/cover18.jpg';
+import Humanitaire from '../../assets/images/categories/cover19.jpg';
+
+
+//#region THEME
+const theme = createMuiTheme({
+    spacing: 4,
+});
+
+const heading = {
+    fontWeight: '900',
+    color: '#FFF',
+    letterSpacing: 0.5,
+}
+
+const card = {
+    width: '100%',
+    borderRadius: theme.spacing(2), // 16px
+    transition: '0.3s',
+    boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
+    position: 'relative',
+    overflow: 'initial',
+    display: 'flex',
+    flexDirection: 'column',
+    background:
+      'linear-gradient(34deg, rgba(55,16,83,1) 0%, rgba(162,73,190,1) 29%, rgba(33,16,83,1) 92%)',
+}
+
+const media = {
+    flexShrink: 0,
+    width: '50%',
+    float: 'right',
+    // marginRight: 'auto',
+}
+
+const content = {
+
+}
+//#endregion
+
 
 
 class ProfilePage extends Component {
@@ -20,23 +79,10 @@ class ProfilePage extends Component {
                 email: ''
             },
             alertMsg: '',
-            lastPassword: '',
-            newPassword: '',
-            newPassword2: '',
-            nbPersonneParraine: 0,
+            commerceList: [],
             nbCommerce: 0,
             open: false,
-            openUpdatePicture: false,
-            openAmbassador: false,
-            openUpdatePass: false,
-            imgPreview: null,
-            sec: 3
         };
-
-        this.changeMyInfo = this.changeMyInfo.bind(this);
-        this.changeMyPassword = this.changeMyPassword.bind(this);
-        this.changePicture = this.changePicture.bind(this);
-        this.handleChangePass = this.handleChangePass.bind(this);
     }
 
     handleChangeName(value) {
@@ -46,10 +92,6 @@ class ProfilePage extends Component {
                 name: value   // update the value of specific key
             }
         }))
-    }
-
-    handleChangePass(event) {
-        this.setState({ [event.target.name]: event.target.value })
     }
 
     handleChangeMail(value) {
@@ -69,133 +111,155 @@ class ProfilePage extends Component {
         this.setState({ open: false });
     }
 
-    handleOpen = () => {
-        this.setState({ openAmbassador: true });
-    }
+    getThumbnailCommerce = (idCommerce) => {
+        let commercePicture = '';
 
-    handleClose = () => {
-        this.setState({ openAmbassador: false });
-    }
+        const ParseCommerce = Parse.Object.extend("Commerce");
 
-    handleOpenUpdatePass = () => {
-        this.setState({ openUpdatePass: true });
-    }
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
+        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
 
-    handleCloseUpdatePass = () => {
-        this.setState({ openUpdatePass: false });
-    }
+        queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: idCommerce}));
 
-    handleOpenUpdatePicture = () => {
-        this.setState({ openUpdatePicture: true });
-    }
-
-    handleCloseUpdatePicture = () => {
-        this.setState({ openUpdatePicture: false });
-    }
-
-    changeMyInfo(event) {
-        var currentUser = Parse.User.current();
-        if (currentUser) {
-            currentUser.setEmail(this.state.user.email);
-            currentUser.set('name', this.state.user.name);
-            currentUser.save()
-                .then((user) => {
-                    // console.log(user);
-                    this.setState({ alertMsg: "Le profile a été modifié avec succès" });
-                    var counter = 3;
-
-                    this.intervalId = setInterval(() => {
-                        counter--;
-                        if (counter === -1) {
-                            clearInterval(this.intervalId);
-                            this.handleCloseUpdateProfile();
-                            this.setState({
-                                alertMsg: '',
-                                sec: 3
-                            });
-                            window.location.reload();
-                        } else {
-                            this.setState({ sec: counter })
-                        }
-                    }, 1000);
-                }, (error) => {
-                    console.error(error);
-                });
-            
-        } else {
-            
-        }
-        event.preventDefault();
-    }
-
-    changeMyPassword(event) {
-        event.preventDefault();
-        var currentUser = Parse.User.current();
-        if (currentUser) {
-            if (this.state.lastPassword && this.state.newPassword && this.state.newPassword2) {
-                if (this.state.newPassword === this.state.newPassword2) {
-                    // console.log(`Mot de passe identique`);
-                    currentUser.setPassword(this.state.newPassword);
-                    currentUser.save()
-                        .then((user) => {
-                            this.setState({ alertMsg: "Mot de passe à été changé avec succès" });
-                            this.intervalId = setInterval(() => {
-                                this.handleCloseUpdatePass();
-                                clearInterval(this.intervalId);
-                                this.setState({
-                                    alertMsg: '',
-                                    lastPassword: '',
-                                    newPassword: '',
-                                    newPassword2: ''
-                                });
-                            }, 3000);
-                        }, (error) => {
-                            console.error(error);
-                        })
-                } else {
-                    this.setState({ alertMsg: "Mot de passe pas identique" });
-                    // console.error(`Mot de passe pas identique`);
-                }
-                // console.log(`Last: ${this.state.lastPassword} - New: ${this.state.newPassword} - New2: ${this.state.newPassword2}`);
-            }
-        } else {
-            
-        }
-    }
-
-    changePicture(event) {
-        var currentUser = Parse.User.current();
-
-        var file = new Parse.File("image", event.target.files[0]);
-        if (currentUser) {
-            this.setState({
-                imgPreview: URL.createObjectURL(event.target.files[0])
+        queryCommercePhoto.find()
+        .then(responseSnapshot => {
+            responseSnapshot.forEach((elt) => {
+                commercePicture = elt.get("photo").url();
+                // commercePicture.push({ id: elt.id, url : elt.get("photo").url()});
             });
-            file.save().then(function() {
-                currentUser.set('profilePictureURL', file.url());
-                currentUser.save()
-                    .then((user) => {
-                        // this.setState({ alertMsg: "Votre photo à été mise à jour" });
-                        // this.intervalId = setInterval(() => {
-                        //     this.handleCloseUpdatePicture();
-                        //     this.setState({
-                        //         alertMsg: '',
-                        //     })
-                        // }, 3000);
-                        window.location.reload();
-                    }, (error) => {
-                        console.error(error);
+        });
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve(commercePicture), 300)
+        });
+    }
+
+    getUrlCommercePicture = async (idCommerce) => {
+        const listPicture = await this.getThumbnailCommerce(idCommerce);
+        // console.log("#####>>>>"+listPicture);
+        return listPicture;
+        // this.setState({
+        //     listImg : listPicture
+        // }, () => {
+        //     this.setState({
+        //         imgPreview1: this.state.listImg[0],
+        //         imgPreview2: this.state.listImg[1],
+        //         imgPreview3: this.state.listImg[2]
+        //     })
+        // })
+        // console.log("aaaa   a   aaa "+this.state.imgPreview1);
+    }
+
+    getAllCommerces() {
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const queryCommerce = new Parse.Query(ParseCommerce);
+
+        queryCommerce.equalTo("owner", Parse.User.current());
+
+        let newCommerces = [];
+        
+
+        queryCommerce.find()
+            .then(snapshot => {
+                snapshot.forEach((elt) => {
+                    var _status;
+                    var _img;
+
+                    switch (elt.get("statutCommerce")) {
+                        case 0:
+                            _status = "Hors ligne - en attente de paiement"
+                            break;
+                        case 1:
+                            _status = "En ligne"
+                            break;
+                        case 2:
+                            _status = "Hors ligne - paiement annulé"
+                            break;
+                        case 3:
+                            _status = "Erreur lors du paiement ou du renouvellement"
+                            break;
+                        case 4:
+                            _status = ""
+                            break;
+                    
+                        default:
+                            _status = "Statut inconnu"
+                            break;
+                    }
+
+                    switch (elt.get("typeCommerce")) {
+                        case "Alimentaire":
+                            _img = Alimentaire
+                            break;
+                        case "Artisanat":
+                            _img = Artisanat
+                            break;
+                        case "Bien-être":
+                            _img = BienEtre
+                            break;
+                        case "Décoration":
+                            _img = Decoration
+                            break;
+                        case "Hôtellerie":
+                            _img = Hotellerie
+                            break;
+                        case "Humanitaire":
+                            _img = Humanitaire
+                            break;
+                        case "Immobilier":
+                            _img = Immobilier
+                            break;
+                        case "Informatique":
+                            _img = Informatique
+                            break;
+                        case "Nautisme":
+                            _img = Nautisme
+                            break;
+                        case "Restauration":
+                            _img = Restauration
+                            break;
+                        case "Textile":
+                            _img = Textile
+                            break;
+                        case "Transport":
+                            _img = Transport
+                            break;
+                        case "Tourisme":
+                            _img = Tourisme
+                            break;
+                        case "Santé":
+                            _img = Sante
+                            break;
+                    
+                        default:
+                            _img = IMG1
+                            break;
+                    }
+
+                    newCommerces.push({
+                        "id": elt.id,
+                        "name": elt.get("nomCommerce"),
+                        "status": _status,
+                        "imgCategory": _img,
+                        "description": elt.get("description"),
+                        "nbPartage": elt.get("nombrePartages")
                     });
-            }, (error) => {
+                });
+
+                this.setState({
+                    commerceList: newCommerces,
+                });
+            })
+            .catch(error => {
                 console.error(error);
             });
-        } else {
-            
-        }
     }
 
-    getNbCommerce = () => {
-        return 1;
+    goToDetail = (_id) => {
+        this.props.history.push({
+            pathname: '/aboutcommerce',
+            state: { id: _id }
+        })
     }
 
     getUserPicture() {
@@ -210,7 +274,7 @@ class ProfilePage extends Component {
                 if (!PICTURE) {
                     PICTURE = {defaultProfile}
                 }
-                // console.log("%%%%%zahdu%%% " +JSON.stringify(snapshot, null, 2));
+
                 this.setState(prevState => ({
                     user: {
                         ...prevState.user,
@@ -228,244 +292,183 @@ class ProfilePage extends Component {
 
 
     componentDidMount() {
-        // this.props.getUserInfo();
-        // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
         this.getUserPicture();
+        this.getAllCommerces();
     }
 
     render() {
-
-        // const opts = {
-        //     // height: '100%',
-        //     width: '100%',
-        //     playerVars: { // https://developers.google.com/youtube/player_parameters
-        //         autoplay: 1
-        //     }
-        // }
-
-        // const { user } = this.props;
-        const { alertMsg, sec } = this.state;
         return (
             <div>
                 <header className="App-header-profile">
-                    <Container maxWidth="sm">
-                        <Grid
-                            container
-                            direction="row"
-                            justify="center"
-                            alignItems="center"
-                            spacing={2}>
-                            <Grid item xs={12}>
-                                {
-                                    this.state.user.picture ?
-                                    <Avatar
-                                        alt="Image de profile"
-                                        src={this.state.user.picture}
-                                        style={{
-                                            margin: 10,
-                                            width: 150,
-                                            height: 150,
-                                            display: 'block',
-                                            marginLeft: 'auto',
-                                            marginRight: 'auto',
-                                        }}
-                                    />
-                                    : <Avatar
-                                        alt="Image de profile par defaut"
-                                        src={defaultProfile}
-                                        style={{
-                                            margin: 10,
-                                            width: 150,
-                                            height: 150,
-                                            display: 'block',
-                                            marginLeft: 'auto',
-                                            marginRight: 'auto',
-                                        }}
-                                    />
-                                }
-                                <Button
-                                    onClick={() => {this.handleOpenUpdatePicture()}}
-                                    variant="contained"
-                                    size="small"
-                                    color="primary"
-                                    style={{
-                                    display: 'block',
-                                    marginLeft: 'auto',
-                                    marginRight: 'auto',
-                                    outline: 'none',
-                                    marginBottom: '30px'
-                                }}>Modifier</Button>
+                    <div style={{height: '100vh', margin: '0px', padding: '0px'}}>
+                        <Grid container spacing={2} style={{height: '100vh'}}>
+                            <Grid item xs={12} sm={3} style={{background: 'white'}}>
+                                <Paper style={{ margin: '10px', padding: '20px' }}>
+                                    <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
+                                        <Grid item xs={12}>
+                                            <div>
+                                                {
+                                                    this.state.user.picture.length > 2 ?
+                                                    (<div><Avatar
+                                                        alt="Image profil"
+                                                        src={this.state.user.picture}
+                                                        style={{
+                                                            margin: 10,
+                                                            width: 150,
+                                                            height: 150,
+                                                            display: 'block',
+                                                            marginLeft: 'auto',
+                                                            marginRight: 'auto',
+                                                            border: 'solid #DA5456',
+                                                            marginBottom: '30px'
+                                                        }}
+                                                    /></div>) :
+                                                    (<Avatar
+                                                        alt="Image de profil par defaut"
+                                                        src={defaultProfile}
+                                                        style={{
+                                                            margin: 10,
+                                                            width: 150,
+                                                            height: 150,
+                                                            display: 'block',
+                                                            marginLeft: 'auto',
+                                                            marginRight: 'auto',
+                                                            border: 'solid #DA5456',
+                                                            marginBottom: '30px'
+                                                        }}
+                                                    />)
+                                                }
+                                                <center style={{color: "black", padding: "auto 0px"}}>
+                                                    <CardHeader
+                                                        style={{ /*background: '#FFF', borderRadius: 16, padding: 16, */fontWeight: 'bold',
+                                                            fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
+                                                        }}
+                                                        title={this.state.user.name}
+                                                        subheader={this.state.user.email}
+                                                    />
+                                                </center>
+                                            </div>
+                                            <div style={{ float: "right", top: '0' }}>
+                                                <IconButton
+                                                    aria-label="edit"
+                                                    component={Link}
+                                                    to="/updateuser"
+                                                    style={{ margin: '10px', outline: 'none' }}
+                                                >
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </div>
+                                        </Grid>
+                                    </Grid>
+                                </Paper>
+
                                 
-                                <Grid item xs={12} style={{ margin: '0px 10px', padding: '10px 10px', background: "#FFF", height: '100%', overflow: 'auto' }}>
-                                    <div style={{ float: "left" }}>
-                                        <h5 style={{color:"#000"}}>
-                                            {this.state.user.name}
-                                        </h5>
-                                        <h5 style={{color:"grey"}}>
-                                            {this.state.user.email}
-                                        </h5>
-                                    </div>
-                                    {/* <div style={{ float: "right" }}>
-                                        <IconButton></IconButton>
-                                    </div> */}
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <Button variant="contained" size="small" style={{ margin: '10px', outline: 'none' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier vos informations</Button>
-                                    <Button variant="outlined" size="small" style={{ margin: '10px', outline: 'none' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer de mot de passe</Button>
-                                </Grid>
+                            </Grid>
+                            <Grid item xs={12} sm={9} style={{background: '#F8F9FC'}}>
+                                <Container component="main" maxWidth="md">
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} sm={6}>
+                                            <Card style={card}>
+                                                <CardContent style={content}>
+                                                    <Grid container spacing={1}>
+                                                        <Grid item xs={8}>
+                                                            <Typography style={heading} variant="h6" gutterBottom>
+                                                            TODO : Description sur la réduction dès la premiere utilisation
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item xs={4}>
+                                                            <img alt="Ambassador" src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
+                                                        </Grid>
+                                                    </Grid>
+                                                </CardContent>
+                                                <Button
+                                                    variant="contained"
+                                                    component={Link}
+                                                    to="/createcommerce"
+                                                    style={{
+                                                        background: '#1EB0F8',
+                                                        border: 0,
+                                                        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                                                        color: 'white',
+                                                    }}
+                                                >Nouveau commerce</Button>
+                                            </Card>
+                                        </Grid>
+
+                                        <Grid item xs={12} sm={6}>
+                                            <Card style={card}>
+                                                <CardContent style={content}>
+                                                    <Grid container spacing={1}>
+                                                        <Grid item xs={8}>
+                                                            <Typography style={heading} variant="h6" gutterBottom>
+                                                            Devenir ambassadeur et ambassadrice du seul réseau de confiance humain
+                                                            </Typography>
+                                                        </Grid>
+                                                        <Grid item xs={4}>
+                                                            <img alt="Ambassador" src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
+                                                        </Grid>
+                                                    </Grid>
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
+
+
+                                    </Grid>
+
+                                    <Typography
+                                        variant="h5"
+                                        color="inherit"
+                                        noWrap
+                                        style={{ marginTop: '20px', flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5,  }}>Mes commerces</Typography>
+
+                                    <Grid container direction="row-reverse" spacing={5}>
+                                        <Container component="main" maxWidth="md">
+                                            <Grid container spacing={2} style={{ marginTop: '25px' }}>
+                                                {this.state.commerceList.map((elt, index) => (
+                                                    <Grid key={index} item xs={12} sm={6}>
+                                                        <div style={{ flexGrow: 1 }}>
+                                                            <Paper style={{ padding: '10px', margin: 'auto', maxWidth: 500 }}>
+                                                                <Grid container spacing={1}>
+                                                                    <Grid item xs={4}>
+                                                                        <CommercePicture
+                                                                            commerceId={elt.id}
+                                                                            imgCategory={elt.imgCategory}
+                                                                            title={elt.name}
+                                                                        />
+                                                                    </Grid>
+                                                                    <Grid item xs={8} container>
+                                                                        <Grid item xs container direction="column" spacing={2}>
+                                                                            <Grid item xs>
+                                                                                <Typography gutterBottom variant="subtitle1">{elt.name}</Typography>
+                                                                                <Typography variant="body2" color="textSecondary">{elt.status}</Typography>
+                                                                            </Grid>
+                                                                            <Grid item>
+                                                                                <Button color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`} style={{outline: 'none'}}>Plus de détail</Button>
+                                                                            </Grid>
+                                                                        </Grid>
+                                                                        <Grid item>
+                                                                            <h5 style={{color:"#000"}}>
+                                                                                {elt.nbPartage} {' '}
+                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+                                                                            </h5>
+                                                                        </Grid>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Paper>
+                                                        </div>
+                                                    </Grid>
+                                                ))}
+                                            </Grid>
+                                        </Container>
+                                    </Grid>
+                                </Container>
                             </Grid>
                         </Grid>
-                        
-                    </Container>
-
-
-                    <div>
-                        <Dialog
-                            open={this.state.openUpdatePass}
-                            onClose={this.handleCloseUpdatePass}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Changer mon mot de passe"}</DialogTitle>
-                            <DialogContent>
-                                <div id="alert-dialog-description" style={{ minWidth: "500px"}}>
-                                    <form onSubmit={this.changeMyPassword}>
-                                        <fieldset>
-                                            <div className="form-group">
-                                                <label htmlFor="lastInput">Ancien mot de passe</label>
-                                                <input
-                                                    name="lastPassword"
-                                                    type="password"
-                                                    id="lastInput"
-                                                    className="form-control"
-                                                    value={this.state.lastPassword}
-                                                    onChange={this.handleChangePass}
-                                                    placeholder={"Ancien mot de passe"}/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="newInput">Nouveau mot de passe</label>
-                                                <input
-                                                    name="newPassword"
-                                                    type="password"
-                                                    id="newInput"
-                                                    className="form-control"
-                                                    value={this.state.newPassword}
-                                                    onChange={this.handleChangePass}
-                                                    placeholder={"Nouveau mot de passe"}/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="newInput2">Confirmation du mot de passe</label>
-                                                <input
-                                                    name="newPassword2"
-                                                    type="password"
-                                                    id="newInput2"
-                                                    className="form-control"
-                                                    value={this.state.newPassword2}
-                                                    onChange={this.handleChangePass}
-                                                    placeholder={"Confirmation du mot de passe"}/>
-                                            </div>
-                                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
-                                            <input type="submit" className="btn btn-primary btn-sm" value="Réinitialiser le mot de passe"/>
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </DialogContent>
-                            <DialogActions>
-                                {/* <Button onClick={this.handleCloseUpdatePass} color="secondary" style={{outline: 'none'}}>Annuler la modification du mot de passe</Button> */}
-                            </DialogActions>
-                        </Dialog>
-                    </div>
-
-
-
-                    <div>
-                        <Dialog
-                            open={this.state.open}
-                            onClose={this.handleCloseUpdateProfile}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Modifier votre profil"}</DialogTitle>
-                            <DialogContent>
-                                <div id="alert-dialog-description" style={{ minWidth: "500px"}}>
-                                    <form onSubmit={this.changeMyInfo}>
-                                        <fieldset>
-                                            <div className="form-group">
-                                                <label htmlFor="nameInput">Nom complet</label>
-                                                <input
-                                                    type="text"
-                                                    id="nameInput"
-                                                    className="form-control"
-                                                    value={this.state.user.name}
-                                                    onChange={e => this.handleChangeName(e.target.value)}
-                                                    placeholder={this.state.user.name}/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="emailInput">Mail</label>
-                                                <input
-                                                    type="email"
-                                                    id="emailInput"
-                                                    className="form-control"
-                                                    value={this.state.user.email}
-                                                    onChange={e => this.handleChangeMail(e.target.value)}
-                                                    placeholder={this.state.user.email}/>
-                                            </div>
-                                            {
-                                                alertMsg ?
-                                                <div>
-                                                    <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
-                                                    <Typography component="p" style={{textAlign: "center"}}>{`${sec} ...`}</Typography>
-                                                </div> :
-                                                <div></div>
-                                            }
-                                            <input type="submit" className="btn btn-primary btn-sm" value="Valider"/>
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </DialogContent>
-                            <DialogActions>
-                                {/* <Button onClick={this.handleCloseUpdateProfile} color="secondary" style={{outline: 'none'}}>Annuler</Button> */}
-                            </DialogActions>
-                        </Dialog>
-                    </div>
-
-
-                    <div>
-                        <Dialog
-                            open={this.state.openUpdatePicture}
-                            onClose={this.handleCloseUpdatePicture}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Modifier votre photo de profil"}</DialogTitle>
-                            <DialogContent>
-                                <div id="alert-dialog-description" style={{ minWidth: "500px"}}>
-                                    <center>
-                                        <input
-                                            id="icon-input-file"
-                                            accept="image/*"
-                                            type="file"
-                                            style={{ display: 'None' }}
-                                            onChange={this.changePicture} />
-                                        <div style={{width: 200}}>
-                                            <label htmlFor="icon-input-file">
-                                                <img
-                                                    src={this.state.imgPreview ? this.state.imgPreview : AddImg}
-                                                    className="rounded"
-                                                    alt="Default profile"
-                                                    style={{ width: '200px' }}/>
-                                            </label>
-                                        </div>
-                                    </center>
-                                    <Typography variant="h5">Cliquer sur l'image en haut pour changer votre image de profil</Typography>
-                                </div>
-                            </DialogContent>
-                            {/* <DialogActions>
-                                <Button onClick={this.handleCloseUpdateProfile} color="secondary" style={{outline: 'none'}}>Annuler</Button>
-                            </DialogActions> */}
-                        </Dialog>
                     </div>
                 </header>
+                <Box mt={5}>
+                    <Copyright/>
+                </Box>
             </div>
         );
     }

@@ -82,8 +82,8 @@ class HomePage extends Component {
                                 </div>
                                 <div className="col-lg-6">
                                     <div className="text-container">
-                                        <h3>Une gestion simplifiée de vos commerce</h3>
-                                        <p id="balise-p">Gérez, en temps réel, les informations de votre commerce. Augmentez votre visibilité gratuitement en partageant 3 photos &amp; 1 vidéo avec la communauté Weeclik<sup>©</sup>.</p>
+                                        <h3>Une gestion simplifiée de vos commerces</h3>
+                                        <p id="balise-p">Gérez, en temps réel, les informations de votre commerce. Augmentez votre visibilité gratuitement en partageant votre commerce avec la communauté Weeclik.</p>
                                     </div>
                                 </div>
                             </div>
@@ -98,8 +98,8 @@ class HomePage extends Component {
                                         {/* <div className="text-container"> */}
                                             <h3>Devenir ambassadeur et ambassadrice du seul réseau de confiance humain</h3>
                                             
-                                            <p>Partagez la confiance que vous avez avec votre commerçant avec vos proches, vos voisins, vos collègues de travail.</p>
-                                            <p>Intégrez le réseau de partage Weeclik<sup>©</sup> et profitez de promotions exclusives avec vos commerçants de confiance.</p>
+                                            <p>Partagez la confiance que vous avez avec votre commerçant à vos proches, voisins et collègues de travail.</p>
+                                            <p>Intégrez le réseau de partage Weeclik et profitez de promotions exclusives avec vos commerçants de confiance.</p>
                                             {/* <Button variant="contained" component={Link} to="/login" className="btn-solid-lg page-scroll">Connexion</Button> */}
                                             <a className="btn-solid-lg" onClick={() => {this.handleOpen()}}>DEVENIR AMBASSADEUR OU AMBASSADRICE</a>
                                             {/* <a className="btn-solid-lg page-scroll" href="fake_url" target="_blank" rel="noopener noreferrer">Devenir ambassadrise/ ambassadeure</a> */}
@@ -186,10 +186,10 @@ class HomePage extends Component {
                                             </div>
                                             <div className="col-lg-2 col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
-                                                    <img src={Grace} alt="Dan" style={{width:'100%'}}/>
+                                                    <img src={Grace} alt="Dan" style={{width:'100%', objectFit: 'cover'}}/>
                                                     <div className="w3-container" style={{ margin: '0 5px' }}>
                                                         <h3>Grâce</h3>
-                                                        <p className="w3-opacity">Expert ReactJS</p>
+                                                        <p className="w3-opacity">Développeur</p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -206,7 +206,7 @@ class HomePage extends Component {
                                 <div className="col-lg-6 col-xl-5" style={{textAlign: 'justify'}}>
                                     <div className="text-container">
                                         <h2>Télécharger <span className="blue">Weeclik</span></h2>
-                                        <p className="p-large">Profitez de promotions diverses et variés, faites parti d'un réseaux de commerçants de confiance, ensemble œuvrons pour des valeures plus humaines.</p> 
+                                        <p className="p-large">Profitez de promotions diverses et variées, faites partis d'un réseau de commerçants de confiance, ensemble œuvrons pour des valeurs plus humaines.</p> 
                                         <p className="p-large weeclik-slogan">Avec Weeclik<sup>©</sup>, on aime, on partage.</p>
                                         <a className="btn-solid-lg" href="https://apps.apple.com/us/app/weeclik/id1082731862" target="_blank" rel="noopener noreferrer"><i className="fab fa-apple"></i>APP STORE</a>
                                         <a className="btn-solid-lg" href="https://play.google.com/store/apps/details?id=cantum.weeclik" target="_blank" rel="noopener noreferrer"><i className="fab fa-google-play"></i>PLAY STORE</a>
@@ -228,7 +228,7 @@ class HomePage extends Component {
                                     <div className="footer-col" style={{textAlign: 'justify'}}>
                                         <h4>À propos de Weeclik</h4>
                                         <p>Chez Weeclik, nous sommes pionniers dans le partage de confiance.
-                                        <br/>Avec notre app, adoptez vous aussi le réflexe de partage avec vos commerçants !</p>
+                                        <br/>Avec notre App, adoptez vous aussi le réflexe de partager vos commerçants !</p>
                                     </div>
                                 </div>
                                 <div className="col-md-4">
