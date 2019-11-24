@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import { Container, CssBaseline, Button, TextField, MenuItem, Grid, Box } from '@material-ui/core';
+import imageCompression from 'browser-image-compression';
+import { Container, CssBaseline, Button, TextField, MenuItem, Typography, Grid, Box } from '@material-ui/core';
 // import AddImg from '../../assets/images/addImage.svg'
 import IMG1 from '../../assets/images/img1.png';
 import addCommercePicture from '../../assets/icons/addCommercePicture.png';
@@ -48,6 +49,13 @@ class CreateCommerce extends Component {
                 mail: '',
                 currencyCategory: '',
             },
+            imgPreview1: null,
+            imgPreview1a: null,
+            imgPreview2: null,
+            imgPreview2a: null,
+            imgPreview3: null,
+            imgPreview3a: null,
+            nbImageUpload: 0,
 
             id: '',
 
@@ -62,6 +70,11 @@ class CreateCommerce extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.createNewCommerce = this.createNewCommerce.bind(this);
+        this.changePicture1 = this.changePicture1.bind(this);
+        this.changePicture2 = this.changePicture2.bind(this);
+        this.changePicture3 = this.changePicture3.bind(this);
+
+        this.onUploadImage = this.onUploadImage.bind(this);
     }
 
     handleChange(event) {
@@ -109,6 +122,84 @@ class CreateCommerce extends Component {
             
         }
     }
+
+
+
+
+
+
+    //#region UPLOAD_IMAGES
+    changePicture1(event) {
+        // var file = new Parse.File("image", event.target.files[0]);
+        this.setState({
+            imgPreview1: URL.createObjectURL(event.target.files[0]),
+            // imgPreview1a: JSON.parse(event.target.files[0])
+        });
+    }
+    changePicture2(event) {
+        this.setState({
+            imgPreview2: URL.createObjectURL(event.target.files[0]),
+            // imgPreview2a: JSON.parse(event.target.files[0])
+        });
+    }
+    changePicture3(event) {
+        this.setState({
+            imgPreview3: URL.createObjectURL(event.target.files[0]),
+            // imgPreview3a: JSON.parse(event.target.files[0])
+        });
+    }
+
+    _uploadImageToSerServer(img, idCommerce) {
+        var file = new Parse.File(img.name, img);
+        var Commerce_Photos = new Parse.Object("Commerce_Photos");
+        var ParseCommerce = Parse.Object.extend("Commerce");
+        var currentUser = Parse.User.current();
+
+        if (currentUser) {
+            file.save().then(() => {
+                Commerce_Photos.set("photo", file);
+                Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
+                Commerce_Photos.save().then((snapshot) => {
+                    const instanceCommerce = new ParseCommerce();
+                    instanceCommerce.id = idCommerce
+                    instanceCommerce.set("thumbnailPrincipal", { "__type": "Pointer", "className": "Commerce_Photos", "objectId": snapshot.id });
+                    instanceCommerce.save().then(() => {
+                        // console.log("$$$$$ default image");
+                    }, (error) => {
+                        console.error('Failed to update commerce');
+                    })
+                    this.setState({
+                        nbImageUpload: this.state.nbImageUpload + 1
+                    })
+                })
+            })
+        }
+    }
+
+    onUploadImage(_file, _idCommerce) {
+        if (_file instanceof Blob) {
+            var options = {
+                maxSizeMB: 0.5,
+                maxWidthOrHeight: 1920,
+                useWebWorker: true
+            }
+            imageCompression(_file, options)
+                .then((compressedFile) => {
+                    return this._uploadImageToSerServer(compressedFile, _idCommerce);
+                })
+                .catch((error) => {
+                    console.error(error);
+                })
+        }
+    }
+
+    //#endregion
+
+
+
+
+
+
 
     getAllCommerces() {
         const ParseCommerce = Parse.Object.extend("Commerce");
@@ -207,6 +298,20 @@ class CreateCommerce extends Component {
                     "promotions": _state_commerce.promotions
                 })
                 .then((newCommerce) => {
+                    if (this.state.imgPreview1) {
+                        console.log("---- "+(typeof this.state.imgPreview1))
+                        console.log("---- "+(typeof document.querySelector('input[id=icon-input-file-img1]').files[0]))
+                        console.log("----ddd "+(typeof JSON.parse(document.querySelector('input[id=icon-input-file-img1]').files[0])))
+                        console.log("----/// "+(typeof this.state.imgPreview1a))
+                        console.log("---- "+JSON.stringify(document.querySelector('input[id=icon-input-file-img1]').files[0]))
+                        // this.onUploadImage(document.querySelector('input[id=icon-input-file-img1]').files[0], newCommerce.id);
+                    }
+                    if (this.state.imgPreview2) {
+                        // this.onUploadImage(document.querySelector('input[id=icon-input-file-img2]').files[0], newCommerce.id);
+                    }
+                    if (this.state.imgPreview3) {
+                        // this.onUploadImage(document.querySelector('input[id=icon-input-file-img3]').files[0], newCommerce.id);
+                    }
                     // console.log(`Le commerce ${newCommerce.id} a été créer ${JSON.stringify(currentUser, null, 2)}`);
                     this.isCreate(newCommerce.id);
                 }, (error) => {
@@ -260,35 +365,82 @@ class CreateCommerce extends Component {
                                         name="nomCommerce"
                                         id="outlined-name"
                                         label="Nom du commerce"
+                                        placeholder="Nom du commerce"
                                         margin="dense"
                                         variant="outlined"
                                     />
                                 </Grid>
+                                <Grid item xs={12}>
+                                    <Typography
+                                        variant="h5"
+                                        color="inherit"
+                                        noWrap
+                                        style={{ flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5 }}>Photos du commerce</Typography>
+                                </Grid>
                                 <Grid item xs={4}>
                                     <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
-                                        <img
-                                            alt="select1"
-                                            src={addCommercePicture}
-                                            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                        <input
+                                            id="icon-input-file-img1"
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: 'None' }}
+                                            onChange={this.changePicture1}
                                         />
+                                        <label htmlFor="icon-input-file-img1">
+                                            <img
+                                                alt="select1"
+                                                src={
+                                                    this.state.imgPreview1?
+                                                    this.state.imgPreview1 :
+                                                    addCommercePicture
+                                                }
+                                                style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                            />
+                                        </label>
                                     </div>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
-                                        <img
-                                            alt="select2"
-                                            src={addCommercePicture}
-                                            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                        <input
+                                            id="icon-input-file-img2"
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: 'None' }}
+                                            onChange={this.changePicture2}
                                         />
+                                        <label htmlFor="icon-input-file-img2">
+                                            <img
+                                                alt="select2"
+                                                src={
+                                                    this.state.imgPreview2?
+                                                    this.state.imgPreview2 :
+                                                    addCommercePicture
+                                                }
+                                                style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                            />
+                                        </label>
                                     </div>
                                 </Grid>
                                 <Grid item xs={4}>
                                     <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
-                                        <img
-                                            alt="select3"
-                                            src={addCommercePicture}
-                                            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                        <input
+                                            id="icon-input-file-img3"
+                                            type="file"
+                                            accept="image/*"
+                                            style={{ display: 'None' }}
+                                            onChange={this.changePicture3}
                                         />
+                                        <label htmlFor="icon-input-file-img3">
+                                            <img
+                                                alt="select3"
+                                                src={
+                                                    this.state.imgPreview3?
+                                                    this.state.imgPreview3 :
+                                                    addCommercePicture
+                                                }
+                                                style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                            />
+                                        </label>
                                     </div>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -302,6 +454,7 @@ class CreateCommerce extends Component {
                                         required
                                         className={"classes.textField2"}
                                         label="Catégorie"
+                                        helperText="Veuillez sélectionner une catégorie"
                                     >   
                                         <MenuItem value=""><em>Aucune</em></MenuItem>
                                         <MenuItem value="Alimentaire">Alimentaire</MenuItem>
