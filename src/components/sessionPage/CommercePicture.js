@@ -39,7 +39,6 @@ class CommercePicture extends React.Component {
 
     getUrlCommercePicture = async () => {
         const listPicture = await this.getPicturesCommerce();
-        
         this.setState({
             listImg : listPicture
         })

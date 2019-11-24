@@ -2,10 +2,7 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import imageCompression from 'browser-image-compression';
 import { Container, CssBaseline, Button, TextField, MenuItem, Typography, Grid, Box } from '@material-ui/core';
-// import AddImg from '../../assets/images/addImage.svg'
-import IMG1 from '../../assets/images/img1.png';
 import addCommercePicture from '../../assets/icons/addCommercePicture.png';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -24,6 +21,17 @@ const root = {
 
 const button = {
     margin: theme.spacing(1),
+}
+
+
+
+const getBase64 = (file) => {
+    return new Promise((resolve,reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
 }
 
 
@@ -70,11 +78,9 @@ class CreateCommerce extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.createNewCommerce = this.createNewCommerce.bind(this);
-        this.changePicture1 = this.changePicture1.bind(this);
-        this.changePicture2 = this.changePicture2.bind(this);
-        this.changePicture3 = this.changePicture3.bind(this);
-
-        this.onUploadImage = this.onUploadImage.bind(this);
+        this.handleChangePicture1 = this.handleChangePicture1.bind(this);
+        this.handleChangePicture2 = this.handleChangePicture2.bind(this);
+        this.handleChangePicture3 = this.handleChangePicture3.bind(this);
     }
 
     handleChange(event) {
@@ -97,109 +103,60 @@ class CreateCommerce extends Component {
         this.setState({ submitted: true });
     }
 
-    getUserPicture() {
-        var currentUser = Parse.User.current();
-        if (currentUser) {
-            currentUser.fetch().then((snapshot) => {
-                var name = snapshot.get('name');
-                var PICTURE = snapshot.get('profilePictureURL');
-                var username = snapshot.getUsername();
-
-                if (!PICTURE) {
-                    PICTURE = {IMG1}
-                }
-                // console.log("%%%%%zahdu%%% " +JSON.stringify(snapshot, null, 2));
-                this.setState(prevState => ({
-                    user: {
-                        ...prevState.user,
-                        name: name,
-                        username: username,
-                        picture: PICTURE
-                    }
-                }))
-            })
-        } else {
-            
-        }
-    }
-
-
-
-
-
-
     //#region UPLOAD_IMAGES
-    changePicture1(event) {
-        // var file = new Parse.File("image", event.target.files[0]);
+    handleChangePicture1(event) {
+        const file = event.target.files[0];
+        getBase64(file).then((base64) => {
+            localStorage["file1Base64"] = base64;
+        })
         this.setState({
-            imgPreview1: URL.createObjectURL(event.target.files[0]),
-            // imgPreview1a: JSON.parse(event.target.files[0])
+            imgPreview1: URL.createObjectURL(file),
         });
     }
-    changePicture2(event) {
+    handleChangePicture2(event) {
+        const file = event.target.files[0];
+        getBase64(file).then((base64) => {
+            localStorage["file2Base64"] = base64;
+        })
         this.setState({
-            imgPreview2: URL.createObjectURL(event.target.files[0]),
-            // imgPreview2a: JSON.parse(event.target.files[0])
+            imgPreview2: URL.createObjectURL(file),
         });
     }
-    changePicture3(event) {
+    handleChangePicture3(event) {
+        const file = event.target.files[0];
+        getBase64(file).then((base64) => {
+            localStorage["file3Base64"] = base64;
+        })
         this.setState({
-            imgPreview3: URL.createObjectURL(event.target.files[0]),
-            // imgPreview3a: JSON.parse(event.target.files[0])
+            imgPreview3: URL.createObjectURL(file),
         });
     }
 
-    _uploadImageToSerServer(img, idCommerce) {
-        var file = new Parse.File(img.name, img);
+    _uploadImageToSerServer(img, idCommerce, localStore) {
+        var file = new Parse.File("img.name", { base64: img });
         var Commerce_Photos = new Parse.Object("Commerce_Photos");
         var ParseCommerce = Parse.Object.extend("Commerce");
         var currentUser = Parse.User.current();
 
         if (currentUser) {
-            file.save().then(() => {
+            file.save().then((f) => {
                 Commerce_Photos.set("photo", file);
-                Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
+                Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(idCommerce));
                 Commerce_Photos.save().then((snapshot) => {
                     const instanceCommerce = new ParseCommerce();
                     instanceCommerce.id = idCommerce
                     instanceCommerce.set("thumbnailPrincipal", { "__type": "Pointer", "className": "Commerce_Photos", "objectId": snapshot.id });
                     instanceCommerce.save().then(() => {
-                        // console.log("$$$$$ default image");
+                        localStorage.removeItem(localStore)
+                        localStorage.removeItem("file11Base64")
                     }, (error) => {
                         console.error('Failed to update commerce');
-                    })
-                    this.setState({
-                        nbImageUpload: this.state.nbImageUpload + 1
                     })
                 })
             })
         }
     }
-
-    onUploadImage(_file, _idCommerce) {
-        if (_file instanceof Blob) {
-            var options = {
-                maxSizeMB: 0.5,
-                maxWidthOrHeight: 1920,
-                useWebWorker: true
-            }
-            imageCompression(_file, options)
-                .then((compressedFile) => {
-                    return this._uploadImageToSerServer(compressedFile, _idCommerce);
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-        }
-    }
-
     //#endregion
-
-
-
-
-
-
 
     getAllCommerces() {
         const ParseCommerce = Parse.Object.extend("Commerce");
@@ -298,21 +255,19 @@ class CreateCommerce extends Component {
                     "promotions": _state_commerce.promotions
                 })
                 .then((newCommerce) => {
+                    var localStore = "";
                     if (this.state.imgPreview1) {
-                        console.log("---- "+(typeof this.state.imgPreview1))
-                        console.log("---- "+(typeof document.querySelector('input[id=icon-input-file-img1]').files[0]))
-                        console.log("----ddd "+(typeof JSON.parse(document.querySelector('input[id=icon-input-file-img1]').files[0])))
-                        console.log("----/// "+(typeof this.state.imgPreview1a))
-                        console.log("---- "+JSON.stringify(document.querySelector('input[id=icon-input-file-img1]').files[0]))
-                        // this.onUploadImage(document.querySelector('input[id=icon-input-file-img1]').files[0], newCommerce.id);
+                        localStore = "file1Base64";
+                        this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
                     }
                     if (this.state.imgPreview2) {
-                        // this.onUploadImage(document.querySelector('input[id=icon-input-file-img2]').files[0], newCommerce.id);
+                        localStore = "file2Base64";
+                        this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
                     }
                     if (this.state.imgPreview3) {
-                        // this.onUploadImage(document.querySelector('input[id=icon-input-file-img3]').files[0], newCommerce.id);
+                        localStore = "file3Base64";
+                        this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
                     }
-                    // console.log(`Le commerce ${newCommerce.id} a été créer ${JSON.stringify(currentUser, null, 2)}`);
                     this.isCreate(newCommerce.id);
                 }, (error) => {
                     console.error(`Failed to create new object, with error code: ' + ${error.message}`);
@@ -331,15 +286,10 @@ class CreateCommerce extends Component {
 
 
     componentDidMount() {
-        // this.props.getUserInfo();
-        // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
         this.getAllCommerces();
     }
 
     render() {
-        // const { user } = this.props;className="App-header"
-        // console.log(this.state.commerce);
-
         if (this.state.isCreate) {
             return (
                 <Redirect to={{
@@ -384,7 +334,7 @@ class CreateCommerce extends Component {
                                             type="file"
                                             accept="image/*"
                                             style={{ display: 'None' }}
-                                            onChange={this.changePicture1}
+                                            onChange={this.handleChangePicture1}
                                         />
                                         <label htmlFor="icon-input-file-img1">
                                             <img
@@ -406,7 +356,7 @@ class CreateCommerce extends Component {
                                             type="file"
                                             accept="image/*"
                                             style={{ display: 'None' }}
-                                            onChange={this.changePicture2}
+                                            onChange={this.handleChangePicture2}
                                         />
                                         <label htmlFor="icon-input-file-img2">
                                             <img
@@ -428,7 +378,7 @@ class CreateCommerce extends Component {
                                             type="file"
                                             accept="image/*"
                                             style={{ display: 'None' }}
-                                            onChange={this.changePicture3}
+                                            onChange={this.handleChangePicture3}
                                         />
                                         <label htmlFor="icon-input-file-img3">
                                             <img

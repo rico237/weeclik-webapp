@@ -201,7 +201,7 @@ function Navigation(props) {
                                     edge="end"
                                     aria-label="Se déconnecter"
                                     onClick={disconnect}
-                                    style={{outline: 'none'}}>
+                                    style={{outline: 'none', width: '55px'}}>
                                     <PowerSettingsNewRoundedIcon/>
                                 </IconButton>
                             </LightTooltip>

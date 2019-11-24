@@ -16,7 +16,6 @@ import IMG1 from '../../assets/images/img1.png';
 import Artisanat from '../../assets/images/categories/cover1.jpg';
 import BienEtre from '../../assets/images/categories/cover2.jpg';
 import Decoration from '../../assets/images/categories/cover3.jpg';
-import ECommerce from '../../assets/images/categories/cover4.jpg';
 import Hotellerie from '../../assets/images/categories/cover6.jpg';
 import Immobilier from '../../assets/images/categories/cover7.jpg';
 import Informatique from '../../assets/images/categories/cover8.jpg';
@@ -195,29 +194,11 @@ class ProfilePage extends Component {
                         case "Artisanat":
                             _img = Artisanat
                             break;
-                        case "Bâtiment":
-                            _img = "Hors ligne - paiement annulé"
-                            break;
                         case "Bien-être":
                             _img = BienEtre
                             break;
                         case "Décoration":
                             _img = Decoration
-                            break;
-                        case "Dépannage":
-                            _img = "Hors ligne - en attente de paiement"
-                            break;
-                        case "Evènement":
-                            _img = "Hors ligne - en attente de paiement"
-                            break;
-                        case "E-commerce":
-                            _img = ECommerce
-                            break;
-                        case "Fabricant":
-                            _img = "Hors ligne - en attente de paiement"
-                            break;
-                        case "Garagiste":
-                            _img = "Hors ligne - en attente de paiement"
                             break;
                         case "Hôtellerie":
                             _img = Hotellerie
@@ -248,9 +229,6 @@ class ProfilePage extends Component {
                             break;
                         case "Santé":
                             _img = Sante
-                            break;
-                        case "Autre":
-                            _img = "Hors ligne - en attente de paiement"
                             break;
                     
                         default:
