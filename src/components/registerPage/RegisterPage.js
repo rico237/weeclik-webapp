@@ -3,8 +3,8 @@ import logoComptePro from '../../assets/icons/users.svg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { Container, CssBaseline, Avatar, Typography, Grid, TextField, Box } from '@material-ui/core';
-import { Copyright } from '../copyright/Copyright';
+import { Container, CssBaseline, Avatar, Typography, Grid, TextField } from '@material-ui/core';
+import { Footer } from '../footer/Footer';
 
 
 const theme = createMuiTheme({
@@ -14,6 +14,7 @@ const theme = createMuiTheme({
 const paper = {
     marginTop: theme.spacing(8),
     paddingTop: '70px',
+    paddingBottom: '100px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -121,102 +122,102 @@ class RegisterPage extends Component {
         const { user, alertMsg/*, submitted*/ } = this.state;
 
         return (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline/>
-                <div style={paper}>
-                    <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
-                    <Typography component="h1" variant="h5" style={{color: "#000"}}>Création d'un compte professionnel</Typography>
-                    <form style={form}>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    id="firstName"
-                                    fullWidth
-                                    required
-                                    variant="outlined"
-                                    type="string"
-                                    name="firstName"
-                                    label="Prénom"
-                                    value={user.firstName}
-                                    onChange={this.handleChange}/>
+            <div>
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline/>
+                    <div style={paper}>
+                        <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
+                        <Typography component="h1" variant="h5" style={{color: "#000"}}>Création d'un compte professionnel</Typography>
+                        <form style={form}>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        id="firstName"
+                                        fullWidth
+                                        required
+                                        variant="outlined"
+                                        type="string"
+                                        name="firstName"
+                                        label="Prénom"
+                                        value={user.firstName}
+                                        onChange={this.handleChange}/>
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                    <TextField
+                                        id="lastName"
+                                        fullWidth
+                                        required
+                                        variant="outlined"
+                                        type="string"
+                                        name="lastName"
+                                        label="Nom de famille"
+                                        value={user.lastName}
+                                        onChange={this.handleChange}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="email"
+                                        fullWidth
+                                        required
+                                        variant="outlined"
+                                        type="email"
+                                        name="email"
+                                        label="E-mail"
+                                        value={user.email}
+                                        onChange={this.handleChange}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="password"
+                                        fullWidth
+                                        required
+                                        variant="outlined"
+                                        type="password"
+                                        name="password"
+                                        label="Nouveau mot de passe"
+                                        value={user.password}
+                                        onChange={this.handleChange}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="repeatPw"
+                                        fullWidth
+                                        required
+                                        variant="outlined"
+                                        type="password"
+                                        name="repeatPw"
+                                        label="Confirmation de mot de passe"
+                                        value={user.repeatPw}
+                                        onChange={this.handleChange}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <label style={{ fontSize: '14px' }}>
+                                        {'En cliquant sur s\'enregistrer, vous acceptez nos '}
+                                        <a style={{ color: 'blue', textDecoration: 'none' }} href="fake_url">Conditions générales</a>{'. '}
+                                    </label>
+                                </Grid>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
-                                <TextField
-                                    id="lastName"
-                                    fullWidth
-                                    required
-                                    variant="outlined"
-                                    type="string"
-                                    name="lastName"
-                                    label="Nom de famille"
-                                    value={user.lastName}
-                                    onChange={this.handleChange}/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="email"
-                                    fullWidth
-                                    required
-                                    variant="outlined"
-                                    type="email"
-                                    name="email"
-                                    label="E-mail"
-                                    value={user.email}
-                                    onChange={this.handleChange}/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="password"
-                                    fullWidth
-                                    required
-                                    variant="outlined"
-                                    type="password"
-                                    name="password"
-                                    label="Nouveau mot de passe"
-                                    value={user.password}
-                                    onChange={this.handleChange}/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="repeatPw"
-                                    fullWidth
-                                    required
-                                    variant="outlined"
-                                    type="password"
-                                    name="repeatPw"
-                                    label="Confirmation de mot de passe"
-                                    value={user.repeatPw}
-                                    onChange={this.handleChange}/>
-                            </Grid>
-                            <Grid item xs={12}>
-                                <label style={{ fontSize: '14px' }}>
-                                    {'En cliquant sur s\'enregistrer, vous acceptez nos '}
-                                    <a style={{ color: 'blue', textDecoration: 'none' }} href="fake_url">Conditions générales</a>{'. '}
-                                </label>
-                            </Grid>
-                        </Grid>
 
-                        {
-                            msg ?
-                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{this.printErrorMessage(msg)}</Typography> :
-                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
-                        }
+                            {
+                                msg ?
+                                <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{this.printErrorMessage(msg)}</Typography> :
+                                <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
+                            }
 
-                        <input
-                            className="btn-solid-lg"
-                            type="submit"
-                            // fullWidth
-                            variant="contained"
-                            color="primary"
-                            style={submit}
-                            value="S'enregistrer"
-                            onClick={this.handleSubmit}/>
-                    </form>
-                </div>
-                <Box mt={5}>
-                    <Copyright/>
-                </Box>
-            </Container>
+                            <input
+                                className="btn-solid-lg"
+                                type="submit"
+                                // fullWidth
+                                variant="contained"
+                                color="primary"
+                                style={submit}
+                                value="S'enregistrer"
+                                onClick={this.handleSubmit}/>
+                        </form>
+                    </div>
+                </Container>
+                <Footer/>
+            </div>
         );
     }
 }

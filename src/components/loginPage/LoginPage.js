@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { CssBaseline, Avatar, Grid, TextField, Box, Typography, Paper } from '@material-ui/core';
-import { Copyright } from '../copyright/Copyright';
+import { CssBaseline, Avatar, Grid, TextField, Typography, Paper } from '@material-ui/core';
+import { Footer } from '../footer/Footer';
 
 
 const theme = createMuiTheme({
@@ -15,6 +15,7 @@ const theme = createMuiTheme({
 const root = {
     // marginTop: theme.spacing(8),
     marginTop: '70px',
+    marginBottom: '100px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -156,9 +157,7 @@ class LoginPage extends Component {
                         </form>
                     </div>
                 </Paper>
-                <Box mt={8}>
-                    <Copyright/>
-                </Box>
+                <Footer/>
             </div>
         );
     }

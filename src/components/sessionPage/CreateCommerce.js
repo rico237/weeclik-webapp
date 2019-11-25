@@ -2,13 +2,14 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import { Container, CssBaseline, Button, TextField, MenuItem, Typography, Grid, Box } from '@material-ui/core';
+import { Container, CssBaseline, Button, TextField, MenuItem, Typography, Grid } from '@material-ui/core';
 import addCommercePicture from '../../assets/icons/addCommercePicture.png';
+import BGImage from '../../assets/images/download-background.jpg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import { Copyright } from '../copyright/Copyright';
+import { Footer } from '../footer/Footer';
 
 const theme = createMuiTheme({
     spacing: 4,
@@ -21,6 +22,7 @@ const root = {
 
 const button = {
     margin: theme.spacing(1),
+    outline: 'none'
 }
 
 
@@ -300,8 +302,8 @@ class CreateCommerce extends Component {
         }
 
         return (
-            <div>
-                <Container component="main" maxWidth="sm">
+            <div style={{backgroundImage: `linear-gradient(rgba(29, 177, 248, 0.5), rgba(255, 255, 255, 0.5)), url("${BGImage}")`, backgroundRepeat: 'repeat', objectFit: 'cover', height: '100%'}}>
+                <Container component="main" maxWidth="sm" style={{background: "white", paddingBottom: '50px'}}>
                     <CssBaseline/>
                     <div style={root}>
                         <form onSubmit={this.createNewCommerce}>
@@ -534,14 +536,21 @@ class CreateCommerce extends Component {
                                 </Grid>
                             </Grid>
 
-                            <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Ajouter mon commerce</Button>
+                            <input
+                                className="btn-solid-lg"
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                value="Créer mon commerce"
+                                style={button}
+                            />
+
+                            {/* <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Ajouter mon commerce</Button> */}
                             <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={button}>Annuler</Button>
                         </form>
                     </div>
                 </Container>
-                <Box mt={5}>
-                    <Copyright/>
-                </Box>
+                <Footer/>
             </div>
         );
     }

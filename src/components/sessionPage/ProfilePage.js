@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Link } from 'react-router-dom';
-import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, Box, Badge, Tooltip, CardActions,
+import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, Badge, Tooltip, CardActions,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -10,7 +10,7 @@ import { createMuiTheme, withStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import CommercePicture from './CommercePicture';
 
-import { Copyright } from '../copyright/Copyright';
+import { Footer } from '../footer/Footer';
 
 import AppStore from '../../assets/icons/app-store-badge.png';
 import GooglePlay from '../../assets/icons/google-play-badge.png';
@@ -423,8 +423,8 @@ class ProfilePage extends Component {
                                         </Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <img alt="App Store" src={AppStore} style={{ width: "50%"}}/>
-                                        <img alt="Google Play" src={GooglePlay} style={{ width: "50%"}}/>
+                                        <img alt="App Store" onClick={() => window.open("https://apps.apple.com/us/app/weeclik/id1082731862?l=fr")} src={AppStore} style={{ width: "50%"}}/>
+                                        <img alt="Google Play" onClick={() => window.open("https://play.google.com/store/apps/details?id=cantum.weeclik")} src={GooglePlay} style={{ width: "50%"}}/>
                                     </CardActions>
                                 </Card>
 
@@ -539,9 +539,7 @@ class ProfilePage extends Component {
                         </Grid>
                     </div>
                 </header>
-                <Box mt={5}>
-                    <Copyright/>
-                </Box>
+                <Footer/>
             </div>
         );
     }
