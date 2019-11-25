@@ -187,12 +187,12 @@ function Navigation(props) {
                                     aria-label="Go to profile page"
                                     aria-haspopup="true"
                                     className={classes.button}
-                                    startIcon={<Avatar 
-                                                    src={localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
-                                                        JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).profilePictureURL :
-                                                        defaultProfile}
-                                                    alt="Weeclik Logo"
-                                                    style={{ width: '24px', height: '24px'}} />}
+                                    // startIcon={<Avatar 
+                                    //                 src={localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
+                                    //                     JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).profilePictureURL :
+                                    //                     defaultProfile}
+                                    //                 alt="Weeclik Logo"
+                                    //                 style={{ width: '24px', height: '24px'}} />}
                                 >Mon profil</Button>
                             </LightTooltip>
                             <Box mx={9}/>

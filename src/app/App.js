@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import { PrivateRoute, ProtectedSigninRoute, ProtectedSignupRoute } from '../components';
-import { ProfilePage, UpdateProfile, CreateCommerce, AboutCommerce, UpdateCommerce } from '../components/sessionPage';
+import { ProfilePage, CreateCommerce, AboutCommerce, UpdateCommerce } from '../components/sessionPage';
 import { connect } from 'react-redux';
 import { history } from '../helpers';
 import { alertActions } from '../redux/actions'
@@ -44,7 +44,6 @@ class App extends Component {
 						<ProtectedSigninRoute path="/login" component={LoginPage}/>
 						<ProtectedSignupRoute path="/register" component={RegisterPage}/>
 						<PrivateRoute path="/user" component={ProfilePage}/>
-						<PrivateRoute path="/updateuser" component={UpdateProfile}/>
 						<PrivateRoute path="/createcommerce" component={CreateCommerce}/>
 						<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
 						<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>

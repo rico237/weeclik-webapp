@@ -2,31 +2,22 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Link } from 'react-router-dom';
-import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, Box } from '@material-ui/core';
-import defaultProfile from '../../assets/icons/defaultUser.svg'
+import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, Box, Badge, Tooltip,
+} from '@material-ui/core';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme, withStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import CommercePicture from './CommercePicture';
 
 import { Copyright } from '../copyright/Copyright';
 
-import IMG1 from '../../assets/images/img1.png';
-import Artisanat from '../../assets/images/categories/cover1.jpg';
-import BienEtre from '../../assets/images/categories/cover2.jpg';
-import Decoration from '../../assets/images/categories/cover3.jpg';
-import Hotellerie from '../../assets/images/categories/cover6.jpg';
-import Immobilier from '../../assets/images/categories/cover7.jpg';
-import Informatique from '../../assets/images/categories/cover8.jpg';
-import Alimentaire from '../../assets/images/categories/cover9.jpg';
-import Nautisme from '../../assets/images/categories/cover12.png';
-import Sante from '../../assets/images/categories/cover13.jpg';
-import Restauration from '../../assets/images/categories/cover14.jpg';
-import Textile from '../../assets/images/categories/cover16.jpg';
-import Tourisme from '../../assets/images/categories/cover17.jpg';
-import Transport from '../../assets/images/categories/cover18.jpg';
-import Humanitaire from '../../assets/images/categories/cover19.jpg';
+import NoImage from '../../assets/images/no-image.png';
+import NoProfile from '../../assets/images/no-profile.jpg';
+
+import { UpdateUser } from './UpdateUser';
+
+
 
 
 //#region THEME
@@ -63,8 +54,72 @@ const media = {
 const content = {
 
 }
-//#endregion
 
+const LightTooltip = withStyles(theme => ({
+    tooltip: {
+        backgroundColor: theme.palette.common.white,
+        color: 'rgba(0, 0, 0, 0.87)',
+        boxShadow: theme.shadows[1],
+        fontSize: 11,
+    },
+}))(Tooltip);
+
+const StyledBadgeRed = withStyles(theme => ({
+    badge: {
+        backgroundColor: '#F00',
+        width: 15,
+        height: 15,
+        boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+        '&::after': {
+            position: 'absolute',
+            top: 0, left: 0,
+            width: '100%', height: '100%',
+            borderRadius: '50%',
+            animation: '$ripple 1.2s infinite ease-in-out',
+            border: '1px solid #F00',
+            content: '""',
+        },
+    },
+    '@keyframes ripple': {
+        '0%': {
+            transform: 'scale(.8)',
+            opacity: 1,
+        },
+        '100%': {
+            transform: 'scale(2.4)',
+            opacity: 0,
+        },
+    }
+}))(Badge)
+
+const StyledBadgeGreen = withStyles(theme => ({
+    badge: {
+        backgroundColor: '#44b700',
+        width: 15,
+        height: 15,
+        boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+        '&::after': {
+            position: 'absolute',
+            top: 0, left: 0,
+            width: '100%', height: '100%',
+            borderRadius: '50%',
+            animation: '$ripple 1.2s infinite ease-in-out',
+            border: '1px solid #44b700',
+            content: '""',
+        },
+    },
+    '@keyframes ripple': {
+        '0%': {
+            transform: 'scale(.8)',
+            opacity: 1,
+        },
+        '100%': {
+            transform: 'scale(2.4)',
+            opacity: 0,
+        },
+    }
+}))(Badge)
+//#endregion
 
 
 class ProfilePage extends Component {
@@ -79,9 +134,11 @@ class ProfilePage extends Component {
                 email: ''
             },
             alertMsg: '',
+            colorStatus: 'textSecondary',
             commerceList: [],
             nbCommerce: 0,
             open: false,
+            modifyUserProfile: false
         };
     }
 
@@ -136,18 +193,7 @@ class ProfilePage extends Component {
 
     getUrlCommercePicture = async (idCommerce) => {
         const listPicture = await this.getThumbnailCommerce(idCommerce);
-        // console.log("#####>>>>"+listPicture);
         return listPicture;
-        // this.setState({
-        //     listImg : listPicture
-        // }, () => {
-        //     this.setState({
-        //         imgPreview1: this.state.listImg[0],
-        //         imgPreview2: this.state.listImg[1],
-        //         imgPreview3: this.state.listImg[2]
-        //     })
-        // })
-        // console.log("aaaa   a   aaa "+this.state.imgPreview1);
     }
 
     getAllCommerces() {
@@ -163,20 +209,24 @@ class ProfilePage extends Component {
             .then(snapshot => {
                 snapshot.forEach((elt) => {
                     var _status;
-                    var _img;
+                    var _color;
 
                     switch (elt.get("statutCommerce")) {
                         case 0:
                             _status = "Hors ligne - en attente de paiement"
+                            _color = "#F00"
                             break;
                         case 1:
                             _status = "En ligne"
+                            _color = "#0F0"
                             break;
                         case 2:
                             _status = "Hors ligne - paiement annulé"
+                            _color = "#F00"
                             break;
                         case 3:
                             _status = "Erreur lors du paiement ou du renouvellement"
+                            _color = "#F00"
                             break;
                         case 4:
                             _status = ""
@@ -187,62 +237,14 @@ class ProfilePage extends Component {
                             break;
                     }
 
-                    switch (elt.get("typeCommerce")) {
-                        case "Alimentaire":
-                            _img = Alimentaire
-                            break;
-                        case "Artisanat":
-                            _img = Artisanat
-                            break;
-                        case "Bien-être":
-                            _img = BienEtre
-                            break;
-                        case "Décoration":
-                            _img = Decoration
-                            break;
-                        case "Hôtellerie":
-                            _img = Hotellerie
-                            break;
-                        case "Humanitaire":
-                            _img = Humanitaire
-                            break;
-                        case "Immobilier":
-                            _img = Immobilier
-                            break;
-                        case "Informatique":
-                            _img = Informatique
-                            break;
-                        case "Nautisme":
-                            _img = Nautisme
-                            break;
-                        case "Restauration":
-                            _img = Restauration
-                            break;
-                        case "Textile":
-                            _img = Textile
-                            break;
-                        case "Transport":
-                            _img = Transport
-                            break;
-                        case "Tourisme":
-                            _img = Tourisme
-                            break;
-                        case "Santé":
-                            _img = Sante
-                            break;
-                    
-                        default:
-                            _img = IMG1
-                            break;
-                    }
-
                     newCommerces.push({
                         "id": elt.id,
                         "name": elt.get("nomCommerce"),
                         "status": _status,
-                        "imgCategory": _img,
+                        "imgCategory": NoImage,
                         "description": elt.get("description"),
-                        "nbPartage": elt.get("nombrePartages")
+                        "nbPartage": elt.get("nombrePartages"),
+                        "colorStatus": _color
                     });
                 });
 
@@ -272,7 +274,7 @@ class ProfilePage extends Component {
                 var mail = snapshot.getEmail();
 
                 if (!PICTURE) {
-                    PICTURE = {defaultProfile}
+                    PICTURE = {NoProfile}
                 }
 
                 this.setState(prevState => ({
@@ -303,68 +305,125 @@ class ProfilePage extends Component {
                     <div style={{height: '100vh', margin: '0px', padding: '0px'}}>
                         <Grid container spacing={2} style={{height: '100vh'}}>
                             <Grid item xs={12} sm={3} style={{background: 'white'}}>
-                                <Paper style={{ margin: '10px', padding: '20px' }}>
-                                    <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
-                                        <Grid item xs={12}>
-                                            <div>
-                                                {
-                                                    this.state.user.picture.length > 2 ?
-                                                    (<div><Avatar
-                                                        alt="Image profil"
-                                                        src={this.state.user.picture}
-                                                        style={{
-                                                            margin: 10,
-                                                            width: 150,
-                                                            height: 150,
-                                                            display: 'block',
-                                                            marginLeft: 'auto',
-                                                            marginRight: 'auto',
-                                                            border: 'solid #DA5456',
-                                                            marginBottom: '30px'
-                                                        }}
-                                                    /></div>) :
-                                                    (<Avatar
-                                                        alt="Image de profil par defaut"
-                                                        src={defaultProfile}
-                                                        style={{
-                                                            margin: 10,
-                                                            width: 150,
-                                                            height: 150,
-                                                            display: 'block',
-                                                            marginLeft: 'auto',
-                                                            marginRight: 'auto',
-                                                            border: 'solid #DA5456',
-                                                            marginBottom: '30px'
-                                                        }}
-                                                    />)
-                                                }
-                                                <center style={{color: "black", padding: "auto 0px"}}>
-                                                    <CardHeader
-                                                        style={{ /*background: '#FFF', borderRadius: 16, padding: 16, */fontWeight: 'bold',
-                                                            fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
-                                                        }}
-                                                        title={this.state.user.name}
-                                                        subheader={this.state.user.email}
-                                                    />
-                                                </center>
-                                            </div>
-                                            <div style={{ float: "right", top: '0' }}>
-                                                <IconButton
-                                                    aria-label="edit"
-                                                    component={Link}
-                                                    to="/updateuser"
-                                                    style={{ margin: '10px', outline: 'none' }}
-                                                >
-                                                    <EditIcon />
-                                                </IconButton>
-                                            </div>
+                                {/**
+                                 * COMPONENT GET USER PROFILE
+                                 */}
+                                {
+                                    this.state.modifyUserProfile ?
+                                    (<Card style={{ margin: '0 10px' }}>
+                                        <UpdateUser/>
+                                        {/* <Button onClick={() => {this.setState({modifyUserProfile: false});console.log("Bye")}}>Valider</Button> */}
+                                    </Card>) :
+                                    (<Card style={{ margin: '0 10px' }}>
+                                        <CardHeader
+                                            action={
+                                                <LightTooltip title="Modifier mon profil.">
+                                                    <IconButton
+                                                        aria-label="edit"
+                                                        onClick={() => {this.setState({modifyUserProfile: true});console.log("Coucou")}}
+                                                        // component={Link}
+                                                        // to="/updateuser"
+                                                        style={{outline: 'none'}}
+                                                    >
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </LightTooltip>
+                                            }
+                                        />
+                                        <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
+                                                            
+                                            <Grid item xs={12}>
+                                                <div>
+                                                    {
+                                                        this.state.user.picture.length > 2 ?
+                                                        (<div><Avatar
+                                                            alt="Image profil"
+                                                            src={this.state.user.picture}
+                                                            style={{
+                                                                margin: 10,
+                                                                width: 150,
+                                                                height: 150,
+                                                                display: 'block',
+                                                                marginLeft: 'auto',
+                                                                marginRight: 'auto',
+                                                                border: 'solid #DA5456',
+                                                                marginBottom: '10px'
+                                                            }}
+                                                        /></div>) :
+                                                        (<Avatar
+                                                            alt="Image de profil par defaut"
+                                                            src={NoProfile}
+                                                            style={{
+                                                                margin: 10,
+                                                                width: 150,
+                                                                height: 150,
+                                                                display: 'block',
+                                                                marginLeft: 'auto',
+                                                                marginRight: 'auto',
+                                                                border: 'solid #DA5456',
+                                                                marginBottom: '10px'
+                                                            }}
+                                                        />)
+                                                    }
+                                                    <center style={{color: "black", padding: "auto 0px"}}>
+                                                        <CardHeader
+                                                            style={{ fontWeight: 'bold',
+                                                                fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
+                                                            }}
+                                                            title={this.state.user.name}
+                                                            subheader={this.state.user.email}
+                                                        />
+                                                        {
+                                                            this.props.user.emailVerified ?
+                                                            (<CardHeader
+                                                                subheader= {
+                                                                    <LightTooltip placement="top" title="Votre email a été confirmé.">
+                                                                        <StyledBadgeGreen
+                                                                            overlap="circle"
+                                                                            anchorOrigin={{
+                                                                                vertical: 'top',
+                                                                                horizontal: 'left',
+                                                                            }}
+                                                                            variant="dot"
+                                                                            style={{paddingBottom: '60px', paddingLeft: '40px'}}>
+                                                                                Mail confirmé
+                                                                        </StyledBadgeGreen>
+                                                                    </LightTooltip>}/>) :
+                                                            (<CardHeader
+                                                                subheader= {
+                                                                    <LightTooltip placement="top" title="Votre email n'a pas été confirmé. Un mail a été envoyé pour que vous puissiez le confirmer. Il se peut que ce mail soit mis dans les courriers indésirables. Après confirmation veuillez vous reconnecter.">
+                                                                        <StyledBadgeRed
+                                                                            overlap="circle"
+                                                                            anchorOrigin={{
+                                                                                vertical: 'top',
+                                                                                horizontal: 'left',
+                                                                            }}
+                                                                            variant="dot"
+                                                                            style={{paddingBottom: '60px', paddingLeft: '40px'}}>
+                                                                                Mail pas confirmé
+                                                                        </StyledBadgeRed>
+                                                                    </LightTooltip>}/>)
+                                                        }
+                                                    </center>
+                                                </div>
+                                                <div style={{ float: "right", top: '0' }}>
+                                                    
+                                                </div>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
-                                </Paper>
+                                    </Card>)
+                                }
 
-                                
+
+
+
+
+
                             </Grid>
                             <Grid item xs={12} sm={9} style={{background: '#F8F9FC'}}>
+                                {/**
+                                 * COMPONENT GET ALL COMMERCE
+                                 */}
                                 <Container component="main" maxWidth="md">
                                     <Grid container spacing={2}>
                                         <Grid item xs={12} sm={6}>
@@ -373,7 +432,7 @@ class ProfilePage extends Component {
                                                     <Grid container spacing={1}>
                                                         <Grid item xs={8}>
                                                             <Typography style={heading} variant="h6" gutterBottom>
-                                                            TODO : Description sur la réduction dès la premiere utilisation
+                                                                Pour son lancement l'ajout d'un commerce sur Weeclik est à un tarif préférenciel de 329.99 €
                                                             </Typography>
                                                         </Grid>
                                                         <Grid item xs={4}>
@@ -440,7 +499,7 @@ class ProfilePage extends Component {
                                                                         <Grid item xs container direction="column" spacing={2}>
                                                                             <Grid item xs>
                                                                                 <Typography gutterBottom variant="subtitle1">{elt.name}</Typography>
-                                                                                <Typography variant="body2" color="textSecondary">{elt.status}</Typography>
+                                                                                <Typography variant="body2" style={{color: elt.colorStatus}}>{elt.status}</Typography>
                                                                             </Grid>
                                                                             <Grid item>
                                                                                 <Button color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`} style={{outline: 'none'}}>Plus de détail</Button>
