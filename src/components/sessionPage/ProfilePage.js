@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Link } from 'react-router-dom';
-import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, Box, Badge, Tooltip,
+import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, Box, Badge, Tooltip, CardActions,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -12,6 +12,8 @@ import CommercePicture from './CommercePicture';
 
 import { Copyright } from '../copyright/Copyright';
 
+import AppStore from '../../assets/icons/app-store-badge.png';
+import GooglePlay from '../../assets/icons/google-play-badge.png';
 import NoImage from '../../assets/images/no-image.png';
 import NoProfile from '../../assets/images/no-profile.jpg';
 
@@ -304,7 +306,7 @@ class ProfilePage extends Component {
                 <header className="App-header-profile">
                     <div style={{height: '100vh', margin: '0px', padding: '0px'}}>
                         <Grid container spacing={2} style={{height: '100vh'}}>
-                            <Grid item xs={12} sm={3} style={{background: 'white'}}>
+                            <Grid item xs={12} sm={3} style={{backgroundImage: `linear-gradient(rgba(246, 247, 250, 0.1), rgba(255, 255, 255, 0.5))`}}>
                                 {/**
                                  * COMPONENT GET USER PROFILE
                                  */}
@@ -406,13 +408,25 @@ class ProfilePage extends Component {
                                                         }
                                                     </center>
                                                 </div>
-                                                <div style={{ float: "right", top: '0' }}>
-                                                    
-                                                </div>
                                             </Grid>
                                         </Grid>
                                     </Card>)
                                 }
+
+                                <Card style={{ color:"#000", margin: '10px', backgroundImage: `linear-gradient(rgba(29, 177, 248, 0.5), rgba(255, 255, 255, 0.5)), url("https://jkkm.info/ui/images/awards/victory.png")` }}>
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Télécharger Weeclik le réseau de confiance humain
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            Profitez de promotions diverses et variées, faites partis d'un réseau de commerçants de confiance.
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <img alt="App Store" src={AppStore} style={{ width: "50%"}}/>
+                                        <img alt="Google Play" src={GooglePlay} style={{ width: "50%"}}/>
+                                    </CardActions>
+                                </Card>
 
 
 
