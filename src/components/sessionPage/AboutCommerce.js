@@ -16,7 +16,8 @@ import {
     DialogContent,
     DialogActions,
     CircularProgress,
-    Box} from '@material-ui/core';
+    Box,
+    Card} from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -30,7 +31,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import Info from '@material-ui/icons/Info';
 import Payment from '@material-ui/icons/Payment';
 
-// import ModalImage from "react-modal-image";
+import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
+import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
+import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
+import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
+import CallRoundedIcon from '@material-ui/icons/CallRounded';
+
 import { Copyright } from '../copyright/Copyright';
 
 //#region COLOR
@@ -211,6 +217,7 @@ class AboutCommerce extends Component {
                     var _typeCommerce = fetchedCommerce.get('typeCommerce');
                     var _addr = fetchedCommerce.get('adresse');
                     var _tel = fetchedCommerce.get('tel');
+                    var _mail = fetchedCommerce.get('mail');
                     var _siteWeb = fetchedCommerce.get('siteWeb');
                     var _description = fetchedCommerce.get('description');
                     var _promotions = fetchedCommerce.get('promotions');
@@ -263,6 +270,7 @@ class AboutCommerce extends Component {
                             currencyCategory: _typeCommerce,
                             siteWeb: _siteWeb,
                             tel: _tel,
+                            mail: _mail,
                             adresse: _addr,
                             promotion: _promotions
                         }
@@ -690,21 +698,12 @@ class AboutCommerce extends Component {
 
 
     componentDidMount() {
-        // this.props.getUserInfo();
-        // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
         this.getCommerceData();
         this.getUrlCommercePicture();
         this.getUrlCommerceMovie();
-        // console.log(`-----------> ${this.state.movieURL}`);
-        // console.log(`-----------> ${this.props.location.state.id}`);
     }
 
     render() {
-        // const { user } = this.props;className="App-header"
-        // console.log(this.state.commerce);
-        // console.log(this.state.listImg);
-        // let columns = this.props.width === 'xs' || this.props.width === 'sm' ? 1 : 3;
-
         return (
             <Container component="main" maxWidth="md" style={{ color: "#000" }}>
                 <CssBaseline/>
@@ -718,8 +717,6 @@ class AboutCommerce extends Component {
                             <Paper elevation={0} style={root2}>
                                 <Button fullWidth variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
                                 <Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Modifier le commerce</Button>
-                                {/* <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur c'est quoi une promotion</Typography>
-                                <Button fullWidth onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton1}>Nouvelle promotion</Button> */}
                                 {
                                     this.state.commerce.statutCommerce !== "En ligne"?
                                     (<div>
@@ -733,7 +730,7 @@ class AboutCommerce extends Component {
                             </Paper>
                         </Grid>
                         <Grid item xs={12} sm={8} className="Weeclik-App-Info-Commerce2" style={paper}>
-                            <Paper elevation={0} style={root2}>
+                            <Card elevation={0} style={root2}>
                                 <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
                                 <h6 style={{color: this.state.colorStatus, margin: '10px 0'}}>
                                     {this.state.commerce.statutCommerce}{' '}
@@ -743,24 +740,26 @@ class AboutCommerce extends Component {
                                 </h6>
                                 <h6 style={{color:"#000"}}>Type : {this.state.commerce.currencyCategory}</h6>
                                 <h6 style={{color:"#000"}}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>	:
-                                    {" " + this.state.commerce.adresse}
+                                    <RoomRoundedIcon/>
+                                    {" : " + this.state.commerce.adresse}
                                 </h6>
                                 <h6 style={{color:"#000"}}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> :
-                                    {" " + this.state.commerce.tel}
+                                    <CallRoundedIcon/>
+                                    {" : " + this.state.commerce.tel}
                                 </h6>
                                 <h6 style={{color:"#000"}}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg> :
-                                    {" "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
+                                    <EmailRoundedIcon/>
+                                    {" : "}<a href={"http://"+this.state.commerce.mail} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.mail}</a>
                                 </h6>
-                                {/* <p>{this.state.commerce.promotion}</p>
-                                <p>{this.state.commerce.description}</p> */}
+                                <h6 style={{color:"#000"}}>
+                                    <LanguageRoundedIcon/>
+                                    {" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
+                                </h6>
                                 <h5 style={{color:"#000", paddingTop: '50px'}}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+                                    <FavoriteBorderRoundedIcon style={{color:"#F00"}}/>
                                     {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
                                 </h5>
-                            </Paper>
+                            </Card>
 
                             <div style={{margin:'10px'}}></div>
 
@@ -809,13 +808,6 @@ class AboutCommerce extends Component {
                                                 {this.state.listImg && [...this.state.listImg].map((object, index) => (
                                                     <div key={index}>
                                                         <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
-                                                            {/* <ModalImage
-                                                                small={object.url}
-                                                                large={object.url}
-                                                                hideDownload="false"
-                                                                hideZoom="false"
-                                                                style={{width: '100%'}}
-                                                            /> */}
                                                             <img
                                                                 src={object.url}
                                                                 style={{width: '200px', height: '200px', objectFit: 'cover'}}
@@ -857,7 +849,6 @@ class AboutCommerce extends Component {
                                             (<Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>):
                                             (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas de promotions en cours"}</Typography>)
                                         }
-                                        {/* <Button color="secondary" size="small">Ajouter promotion</Button> */}
                                     </Grid>
                                 </Grid>
                                 
@@ -928,10 +919,8 @@ class AboutCommerce extends Component {
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                         style={{ minHeight: "600px"}}
-                        // fullWidth={true}
                         maxWidth={"md"}
                     >
-                        {/* <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec}{' ...'}</DialogTitle> */}
                         <DialogTitle id="alert-dialog-title" style={{
                             width: "100px",
                             height: "100px",
@@ -949,10 +938,8 @@ class AboutCommerce extends Component {
                         aria-labelledby="alert-dialog-title"
                         aria-describedby="alert-dialog-description"
                         style={{ minHeight: "600px"}}
-                        // fullWidth={true}
                         maxWidth={"md"}
                     >
-                        {/* <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec2}{' ...'}</DialogTitle> */}
                         <DialogTitle id="alert-dialog-title" style={{
                             width: "100px",
                             height: "100px",

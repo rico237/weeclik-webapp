@@ -251,7 +251,7 @@ class CreateCommerce extends Component {
                     "nombrePartages": 0,
                     "owner": Parse.User.createWithoutData(currentUser.id),
                     "typeCommerce": _state_commerce.currencyCategory,
-                    "mail": JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
+                    "mail": this.props.user.email,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
                     "tel": _state_commerce.tel,
                     "description": _state_commerce.description,
                     "promotions": _state_commerce.promotions
@@ -289,6 +289,7 @@ class CreateCommerce extends Component {
 
     componentDidMount() {
         this.getAllCommerces();
+        console.log(this.props.user.email);
     }
 
     render() {

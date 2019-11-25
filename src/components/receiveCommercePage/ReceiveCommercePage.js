@@ -5,11 +5,10 @@ import { Container, CssBaseline, Grid, Paper, Typography, Card, CardContent, Car
 import { createMuiTheme } from '@material-ui/core/styles';
 import CommercePicture from './CommercePicture';
 
-// import PhoneRoundedIcon from '@material-ui/icons/PhoneRounded';
-// import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
-// import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
-// import MailRoundedIcon from '@material-ui/icons/MailRounded';
-// import PhotoLibraryRoundedIcon from '@material-ui/icons/PhotoLibraryRounded';
+import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
+import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
+import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
+import CallRoundedIcon from '@material-ui/icons/CallRounded';
 
 import "../../../node_modules/video-react/dist/video-react.css";
 
@@ -297,45 +296,6 @@ class ReceiveCommercePage extends Component {
                         commerceName={this.state.commerce.nomCommerce}
                         commerceCategory={this.state.commerce.currencyCategory}
                         commerceNbShare={this.state.commerce.nombrePartages}/>
-                    
-                    <div>
-                    {/* <AppBar position="static" color="default" elevation={0}>
-                        <Tabs
-                            indicatorColor="primary"
-                            textColor="primary"
-                            variant="fullWidth"
-                            value={this.state.activeTabIndex}
-                            onChange={this.handleChangeTab}
-                            TabIndicatorProps={{style: { backgroundColor: "#00000000" }}}
-                            aria-label="simple tabs example">
-                            <Tab
-                                onClick={() => {console.log("Téléphone")}}
-                                icon={<PhoneRoundedIcon />}
-                                aria-label="Téléphone"
-                                style={{outline: 'none', color: '#1A76D2'}}/>
-                            <Tab
-                                onClick={() => {console.log("Localisation")}}
-                                icon={<RoomRoundedIcon />}
-                                aria-label="Localisation"
-                                style={{outline: 'none', color: '#1A76D2'}}/>
-                            <Tab
-                                onClick={() => {console.log("Site Web")}}
-                                icon={<LanguageRoundedIcon />}
-                                aria-label="Site Web"
-                                style={{outline: 'none', color: '#1A76D2'}}/>
-                            <Tab
-                                onClick={() => {window.open("mailto:xyz@abc.com")}}
-                                icon={<MailRoundedIcon />}
-                                aria-label="Mail"
-                                style={{outline: 'none', color: '#1A76D2'}}/>
-                            <Tab
-                                onClick={() => {console.log("Galerie")}}
-                                icon={<PhotoLibraryRoundedIcon />}
-                                aria-label="Galerie"
-                                style={{outline: 'none', color: '#1A76D2'}}/>
-                        </Tabs>
-                    </AppBar> */}
-                    </div>
                     <Grid
                         container
                         spacing={1}
@@ -366,25 +326,20 @@ class ReceiveCommercePage extends Component {
 
                             <Paper elevation={0} style={root2}>
                                 <h6 style={{color:"#000"}}>
-                                    {" " + this.state.commerce.adresse}
+                                    <RoomRoundedIcon/>
+                                    {" : " + this.state.commerce.adresse}
                                 </h6>
                                 <h6 style={{color:"#000"}}>
-                                    {" " + this.state.commerce.adresse}
+                                    <CallRoundedIcon/>
+                                    {" : " + this.state.commerce.tel}
                                 </h6>
                                 <h6 style={{color:"#000"}}>
-                                    {" " + this.state.commerce.adresse}
+                                    <EmailRoundedIcon/>
+                                    {" : "}<a href={"http://"+this.state.commerce.mail} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.mail}</a>
                                 </h6>
                                 <h6 style={{color:"#000"}}>
-                                    {" " + this.state.commerce.adresse}
-                                </h6>
-                                <h6 style={{color:"#000"}}>
-                                    {" " + this.state.commerce.tel}
-                                </h6>
-                                <h6 style={{color:"#000"}}>
-                                    {" " + this.state.commerce.mail}
-                                </h6>
-                                <h6 style={{color:"#000"}}>
-                                    {" " + this.state.commerce.siteWeb}
+                                    <LanguageRoundedIcon/>
+                                    {" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
                                 </h6>
                             </Paper>
                             
