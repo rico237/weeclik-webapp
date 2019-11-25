@@ -41,6 +41,7 @@ class HomePage extends Component {
     }
 
     render() {
+        // navigator.geolocation.getCurrentPosition((position) => {console.log("----> "+position.coords.latitude+" "+position.coords.longitude)})
 
         const opts = {
             // height: '100%',
