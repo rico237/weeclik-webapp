@@ -11,6 +11,7 @@ import { LoginPage } from '../components/loginPage';
 import { RegisterPage } from '../components/registerPage';
 import { Page404 } from '../components/notFoundPage';
 import { ReceiveCommercePage } from '../components/receiveCommercePage';
+import CreateCom from '../components/sessionPage/CreateCom';
 import PayPage from '../components/private/PayPage';
 
 import '../css/App.css';
@@ -44,6 +45,7 @@ class App extends Component {
 						<ProtectedSigninRoute path="/login" component={LoginPage}/>
 						<ProtectedSignupRoute path="/register" component={RegisterPage}/>
 						<PrivateRoute path="/user" component={ProfilePage}/>
+						<PrivateRoute path="/createcom" component={CreateCom}/>
 						<PrivateRoute path="/createcommerce" component={CreateCommerce}/>
 						<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
 						<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>

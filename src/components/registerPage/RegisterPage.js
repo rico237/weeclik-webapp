@@ -114,6 +114,9 @@ class RegisterPage extends Component {
         if (codeError === 202) {
             return 'Cette adresse e-mail est déjà utilisée';
         }
+        if (codeError === 125) {
+            return "Cette adresse e-mail est n'est pas valide";
+        }
     }
 
     render() {

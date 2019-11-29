@@ -434,11 +434,11 @@ class ProfilePage extends Component {
 
 
                             </Grid>
-                            <Grid item xs={12} sm={9} style={{background: '#F8F9FC'}}>
+                            <Grid item xs={12} sm={9} style={{background: '#F8F9FC', height: '100vh', paddingBottom: '100px'}}>
                                 {/**
                                  * COMPONENT GET ALL COMMERCE
                                  */}
-                                <Container component="main" maxWidth="md">
+                                <Container component="main" maxWidth="md" style={{height: '100vh', paddingBottom: '300px'}}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={12} sm={6}>
                                             <Card style={card}>
