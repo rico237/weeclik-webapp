@@ -21,16 +21,17 @@ class CheckoutForm extends Component {
      * @param {*} ev 
      */
     async submit(ev) {
-        console.log("-------> "+ process.env.REACT_APP_ROOT_SERVER_URL);
-        let { token } = await this.props.stripe.createToken({name: "Name"});
-        console.log("-------> "+ JSON.stringify(token, null, 2));
+        ev.preventDefault();
+        // TODO: Insert real name
+        let token = await this.props.stripe.createToken({name: "Name"});
         let response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/charge`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
-            body: token
+            body: JSON.stringify(token)
         });
-
-        if (response.ok) this.setState({complete: true})
+        if (response.ok) {
+            this.setState({complete: true})
+        }
     }
 
     
