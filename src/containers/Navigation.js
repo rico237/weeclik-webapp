@@ -1,14 +1,12 @@
 import React from 'react';
 import logo from '../assets/icons/LogoWeeclik.svg';
-// import logoCommercant from '../assets/icons/users.svg';
 import { Link } from 'react-router-dom';
-import { AppBar, Tooltip, Container, Box, Button, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, withStyles } from '@material-ui/core';
+import { AppBar, Tooltip, Container, Box, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, withStyles } from '@material-ui/core';
 import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRounded';
 import DehazeRoundedIcon from '@material-ui/icons/DehazeRounded';
-import grey from '@material-ui/core/colors/grey';
 import { connect } from 'react-redux';
 import { userActions } from '../redux/actions';
 import defaultProfile from '../assets/icons/defaultUser.svg'
@@ -54,6 +52,14 @@ const useStyles = makeStyles(theme => ({
     menuButton: {
         marginRight: theme.spacing(2),
     },
+    nameTitle: {
+        float: 'left',
+        fontFamily: 'Rubik, sans-serif',
+        fontWeight: 'bold',
+        fontSize: '25px',
+        color: '#1EB0F8',
+        filter: 'brightness(1)'
+    },
     title: {
         flexGrow: 1,
     },
@@ -70,12 +76,13 @@ const useStyles = makeStyles(theme => ({
         flexGrow: 1,
     },
     button: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(2, 4),
         color: "#141C58",
         fontSize: 15,
         fontWeight: 'bold',
         "&:hover": {
-            backgroundColor: "rgba(255, 255, 255, 0.1)"
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            color: 'none'
         }
     },
     linkButton: {
@@ -160,13 +167,13 @@ function Navigation(props) {
                 <AppBar color="inherit" position="absolute" elevation={0}>
                     {
                         !localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
-                        (<Container maxWidth={'xl'}><Toolbar>
+                        (<Container maxWidth={'lg'}><Toolbar>
                             <LightTooltip title="Accueil">
                                 <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-                                    <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
+                                    <Grid edge="start" style={{ float: 'left', padding: '10px' }} color="inherit" aria-label="Menu">
                                         <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
                                     </Grid>
-                                    <Typography style={{ float: 'left', width: '50%', fontWeight: 'bold', color: grey[500] }} variant="h5">Weeclik</Typography>
+                                    <Typography className={classes.nameTitle} variant="h5">{'Weeclik'}</Typography>
                                 </Link>
                             </LightTooltip>
                             <div className={classes.grow}/>
@@ -191,40 +198,32 @@ function Navigation(props) {
                                 </div>
                             </div>
                         </Toolbar></Container>) :
-                        (<Toolbar>
+                        (<Container maxWidth={'lg'}><Toolbar>
                             <LightTooltip title="Accueil">
                                 <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-                                    <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
+                                    <Grid edge="start" style={{ float: 'left', padding: '10px' }} color="inherit" aria-label="Menu">
                                         <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
                                     </Grid>
-                                    <Typography style={{ float: 'left', width: '50%', fontWeight: 'bold', color: grey[500] }} variant="h5">Weeclik</Typography>
+                                    <Typography className={classes.nameTitle} variant="h5">{'Weeclik'}</Typography>
                                 </Link>
                             </LightTooltip>
                             <div className={classes.grow}/>
                             <div className={classes.sectionDesktop}>
                                 <LightTooltip title="Accueil">
-                                    <Button
-                                        component={Link}
-                                        to='/'
+                                    <button
                                         aria-label="Go to accueil page"
                                         aria-haspopup="true"
                                         className={classes.button}
-                                    >Accueil</Button>
+                                        onClick={() => window.location.href="/"}
+                                        style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Accueil</button>
                                 </LightTooltip>
                                 <LightTooltip title="Mon profil">
-                                    <Button
-                                        component={Link}
-                                        to='/user'
+                                    <button
                                         aria-label="Go to profile page"
                                         aria-haspopup="true"
                                         className={classes.button}
-                                        // startIcon={<Avatar 
-                                        //                 src={localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
-                                        //                     JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).profilePictureURL :
-                                        //                     defaultProfile}
-                                        //                 alt="Weeclik Logo"
-                                        //                 style={{ width: '24px', height: '24px'}} />}
-                                    >Mon profil</Button>
+                                        onClick={() => window.location.href="/user"}
+                                        style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Mon profil</button>
                                 </LightTooltip>
                                 <Box mx={9}/>
                                 <LightTooltip title="Se déconnecter">
@@ -254,7 +253,7 @@ function Navigation(props) {
                                     </div>
                             </div>
                                 
-                        </Toolbar>)
+                        </Toolbar></Container>)
                     }
                 </AppBar>
             </ThemeProvider>

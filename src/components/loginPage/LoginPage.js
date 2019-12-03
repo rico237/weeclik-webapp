@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { CssBaseline, Avatar, Grid, TextField, Typography, Paper } from '@material-ui/core';
+import { Avatar, Grid, TextField, Typography, Paper } from '@material-ui/core';
 import Footer from '../footer/Footer';
 
 
@@ -99,7 +99,6 @@ class LoginPage extends Component {
 
         return (
             <div component="main" className="App-header2">
-                <CssBaseline/>
                 <Paper style={root}>
                     <div style={paper}>
                         <Avatar alt="Logo" src={logo} style={avatar}/>
@@ -142,7 +141,6 @@ class LoginPage extends Component {
                             <input
                                 className="btn-solid-lg"
                                 type="submit"
-                                // fullWidth
                                 variant="contained"
                                 color="primary"
                                 style={submit}

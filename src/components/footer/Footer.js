@@ -6,6 +6,9 @@ import Logo_Instagram from '../../assets/icons/instagram.svg';
 import Logo_Facebook from '../../assets/icons/facebook.svg';
 import Logo_Twitter from '../../assets/icons/twitter.svg';
 
+import AppStore from '../../assets/icons/app-store-badge.png';
+import GooglePlay from '../../assets/icons/google-play-badge.png';
+
 const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
@@ -42,7 +45,7 @@ export default function Footer() {
 
     return (
         <div className={classes.root}>
-			<Container maxWidth={'xl'}>
+			<Container maxWidth={'lg'}>
 				<div className={classes.section1}>
 					<Grid container>
 						<Grid item xs={12} sm>
@@ -75,6 +78,10 @@ export default function Footer() {
 						</Grid>
 						<Grid item xs={12} sm>
 							<Typography variant="h3" color="textSecondary" className={classes.title}>Weeclik dans votre poche</Typography>
+							<center style={{padding: 0}}>
+								<img alt="App Store" onClick={() => window.open("https://apps.apple.com/us/app/weeclik/id1082731862?l=fr")} src={AppStore} style={{ width: "40%", cursor: 'pointer', margin: '10px' }}/>
+								<img alt="Google Play" onClick={() => window.open("https://play.google.com/store/apps/details?id=cantum.weeclik")} src={GooglePlay} style={{ width: "40%", cursor: 'pointer', margin: '10px' }}/>
+							</center>
 						</Grid>
 					</Grid>
 				</div>
@@ -87,13 +94,13 @@ export default function Footer() {
 							</Typography>
 						</Grid>
 						<Grid item>
-								<IconButton>
+								<IconButton onClick={() => window.open("https://m.facebook.com/weeclik")} style={{outline: 'none'}}>
 									<img alt="facebook" src={Logo_Facebook} style={{ width: '24px'}}/>
 								</IconButton>
-								<IconButton>
+								<IconButton onClick={() => window.open("https://twitter.com/weeclik")} style={{outline: 'none'}}>
 									<img alt="twitter" src={Logo_Twitter} style={{ width: '24px'}}/>
 								</IconButton>
-								<IconButton>
+								<IconButton onClick={() => window.open()} style={{outline: 'none'}}>
 									<img alt="instagram" src={Logo_Instagram} style={{ width: '24px'}}/>
 								</IconButton>
 						</Grid>
