@@ -2,7 +2,9 @@ import React from 'react';
 import logo from '../assets/icons/LogoWeeclik.svg';
 // import logoCommercant from '../assets/icons/users.svg';
 import { Link } from 'react-router-dom';
-import { AppBar, Tooltip, /*Container,*/ Box, Button, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, makeStyles, withStyles } from '@material-ui/core';
+import { AppBar, Tooltip, Container, Box, Button, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, withStyles } from '@material-ui/core';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
 import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRounded';
 import DehazeRoundedIcon from '@material-ui/icons/DehazeRounded';
@@ -10,6 +12,22 @@ import grey from '@material-ui/core/colors/grey';
 import { connect } from 'react-redux';
 import { userActions } from '../redux/actions';
 import defaultProfile from '../assets/icons/defaultUser.svg'
+
+// Colors
+import red from '@material-ui/core/colors/red';
+
+const theme = createMuiTheme({
+	palette: {
+		primary: red
+	},
+	typography: {
+		button: {
+            textTransform: 'none',
+			fontWeight: '900',
+            fontSize: '17px',
+		}
+	}
+})
 
 const LightTooltip = withStyles(theme => ({
     tooltip: {
@@ -58,6 +76,18 @@ const useStyles = makeStyles(theme => ({
         fontWeight: 'bold',
         "&:hover": {
             backgroundColor: "rgba(255, 255, 255, 0.1)"
+        }
+    },
+    linkButton: {
+        margin: theme.spacing(1),
+        color: "#000",
+        textDecoration: 'none',
+        // fontSize: 15,
+        fontWeight: 'bold',
+        "&:hover": {
+            color: '#000',
+            backgroundColor: "none",
+            textDecoration: 'none',
         }
     },
     linkMenu: {
@@ -126,94 +156,32 @@ function Navigation(props) {
 
     return (
         <div className={classes.rootNav}>
-            <AppBar color="inherit" position="fixed" elevation={0}>
-                {
-                    !localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
-                    (<Toolbar>
-                        <LightTooltip title="Accueil">
-                            <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-                                <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
-                                    <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
-                                </Grid>
-                                <Typography style={{ float: 'left', width: '50%', fontWeight: 'bold', color: grey[500] }} variant="h5">Weeclik</Typography>
-                            </Link>
-                        </LightTooltip>
-                        <div className={classes.grow}/>
-                        <div style={{ marginLeft: "auto" }}>
-                            <div>
-                                <div className={classes.sectionDesktop}>
-                                    <a className="btn-solid-lg" href="/login" style={{ marginRight: '5px' }}>Connexion</a>
-                                    <a className="btn-solid-lg"  href="/register" style={{ marginRight: '5px' }}>Inscription</a>
-                                </div>
-                                <div className={classes.sectionMobile}>
-                                    <IconButton
-                                        aria-label="show more"
-                                        aria-controls={mobileMenuId}
-                                        aria-haspopup="true"
-                                        onClick={handleMobileMenuOpen}
-                                        color="inherit"
-                                        style={{outline: 'none'}}
-                                    >
-                                        <DehazeRoundedIcon style={{ color: 'black' }} />
-                                    </IconButton>
-                                </div>
-                            </div>
-                        </div>
-                    </Toolbar>) :
-                    (<Toolbar>
-                        <LightTooltip title="Accueil">
-                            <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-                                <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
-                                    <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
-                                </Grid>
-                                <Typography style={{ float: 'left', width: '50%', fontWeight: 'bold', color: grey[500] }} variant="h5">Weeclik</Typography>
-                            </Link>
-                        </LightTooltip>
-                        <div className={classes.grow}/>
-                        <div className={classes.sectionDesktop}>
+            <ThemeProvider theme={theme}>
+                <AppBar color="inherit" position="absolute" elevation={0}>
+                    {
+                        !localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
+                        (<Container maxWidth={'xl'}><Toolbar>
                             <LightTooltip title="Accueil">
-                                <Button
-                                    component={Link}
-                                    to='/'
-                                    aria-label="Go to accueil page"
-                                    aria-haspopup="true"
-                                    className={classes.button}
-                                >Accueil</Button>
+                                <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                                    <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
+                                        <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
+                                    </Grid>
+                                    <Typography style={{ float: 'left', width: '50%', fontWeight: 'bold', color: grey[500] }} variant="h5">Weeclik</Typography>
+                                </Link>
                             </LightTooltip>
-                            <LightTooltip title="Mon profil">
-                                <Button
-                                    component={Link}
-                                    to='/user'
-                                    aria-label="Go to profile page"
-                                    aria-haspopup="true"
-                                    className={classes.button}
-                                    // startIcon={<Avatar 
-                                    //                 src={localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
-                                    //                     JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).profilePictureURL :
-                                    //                     defaultProfile}
-                                    //                 alt="Weeclik Logo"
-                                    //                 style={{ width: '24px', height: '24px'}} />}
-                                >Mon profil</Button>
-                            </LightTooltip>
-                            <Box mx={9}/>
-                            <LightTooltip title="Se déconnecter">
-                                <IconButton
-                                    edge="end"
-                                    aria-label="Se déconnecter"
-                                    onClick={disconnect}
-                                    style={{outline: 'none', width: '55px'}}>
-                                    <PowerSettingsNewRoundedIcon/>
-                                </IconButton>
-                            </LightTooltip>
-                        </div>
-                        <div style={{ marginLeft: "auto" }}>
+                            <div className={classes.grow}/>
+                            <div style={{ marginLeft: "auto" }}>
                                 <div>
+                                    <div className={classes.sectionDesktop}>
+                                        <Typography><a href="/login" className={classes.linkButton} style={{ marginRight: '20px' }}>Connexion</a></Typography>
+                                        <Typography><a href="/register" className={classes.linkButton} style={{ marginRight: '5px' }}>Inscription</a></Typography>
+                                    </div>
                                     <div className={classes.sectionMobile}>
                                         <IconButton
                                             aria-label="show more"
                                             aria-controls={mobileMenuId}
                                             aria-haspopup="true"
-                                            onClick={handleProfileMenuOpen}
+                                            onClick={handleMobileMenuOpen}
                                             color="inherit"
                                             style={{outline: 'none'}}
                                         >
@@ -221,12 +189,75 @@ function Navigation(props) {
                                         </IconButton>
                                     </div>
                                 </div>
-                        </div>
-                            
-                    </Toolbar>)
-                }
-            </AppBar>
-
+                            </div>
+                        </Toolbar></Container>) :
+                        (<Toolbar>
+                            <LightTooltip title="Accueil">
+                                <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                                    <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
+                                        <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
+                                    </Grid>
+                                    <Typography style={{ float: 'left', width: '50%', fontWeight: 'bold', color: grey[500] }} variant="h5">Weeclik</Typography>
+                                </Link>
+                            </LightTooltip>
+                            <div className={classes.grow}/>
+                            <div className={classes.sectionDesktop}>
+                                <LightTooltip title="Accueil">
+                                    <Button
+                                        component={Link}
+                                        to='/'
+                                        aria-label="Go to accueil page"
+                                        aria-haspopup="true"
+                                        className={classes.button}
+                                    >Accueil</Button>
+                                </LightTooltip>
+                                <LightTooltip title="Mon profil">
+                                    <Button
+                                        component={Link}
+                                        to='/user'
+                                        aria-label="Go to profile page"
+                                        aria-haspopup="true"
+                                        className={classes.button}
+                                        // startIcon={<Avatar 
+                                        //                 src={localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
+                                        //                     JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).profilePictureURL :
+                                        //                     defaultProfile}
+                                        //                 alt="Weeclik Logo"
+                                        //                 style={{ width: '24px', height: '24px'}} />}
+                                    >Mon profil</Button>
+                                </LightTooltip>
+                                <Box mx={9}/>
+                                <LightTooltip title="Se déconnecter">
+                                    <IconButton
+                                        edge="end"
+                                        aria-label="Se déconnecter"
+                                        onClick={disconnect}
+                                        style={{outline: 'none', width: '55px'}}>
+                                        <PowerSettingsNewRoundedIcon/>
+                                    </IconButton>
+                                </LightTooltip>
+                            </div>
+                            <div style={{ marginLeft: "auto" }}>
+                                    <div>
+                                        <div className={classes.sectionMobile}>
+                                            <IconButton
+                                                aria-label="show more"
+                                                aria-controls={mobileMenuId}
+                                                aria-haspopup="true"
+                                                onClick={handleProfileMenuOpen}
+                                                color="inherit"
+                                                style={{outline: 'none'}}
+                                            >
+                                                <DehazeRoundedIcon style={{ color: 'black' }} />
+                                            </IconButton>
+                                        </div>
+                                    </div>
+                            </div>
+                                
+                        </Toolbar>)
+                    }
+                </AppBar>
+            </ThemeProvider>
 
 
 

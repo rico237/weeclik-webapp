@@ -16,7 +16,6 @@ import {
     DialogContent,
     DialogActions,
     CircularProgress,
-    Box,
     Card} from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
@@ -29,7 +28,6 @@ import { Player } from 'video-react';
 import DeleteIcon from '@material-ui/icons/Delete';
 // import Add from '@material-ui/icons/Add';
 import Info from '@material-ui/icons/Info';
-import Payment from '@material-ui/icons/Payment';
 
 import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
 import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
@@ -37,10 +35,11 @@ import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
 import CallRoundedIcon from '@material-ui/icons/CallRounded';
 
-import { Copyright } from '../copyright/Copyright';
-
 //#region COLOR
 import grey from '@material-ui/core/colors/grey';
+import Picture from './components/commerceComponent/Picture';
+import Footer from '../footer/Footer';
+// import ShowInfoCommerce from './components/commerceComponent/ShowInfoCommerce';
 //#endregion
 
 
@@ -59,15 +58,15 @@ const root2 = {
     padding: theme.spacing(5),
 }
 
-const paper = {
-    padding: theme.spacing(3),
-    // marginTop: theme.spacing(4),
-    // marginBottom: theme.spacing(4),
-    // margin: '25px'
-}
+// const paper = {
+//     padding: theme.spacing(3),
+//     // marginTop: theme.spacing(4),
+//     // marginBottom: theme.spacing(4),
+//     // margin: '25px'
+// }
 
-// const styleButton1 = {
-//     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+// const styleButton2 = {
+//     background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
 //     border: 0,
 //     borderRadius: 3,
 //     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
@@ -76,27 +75,19 @@ const paper = {
 //     padding: '0 30px',
 //     marginTop: '15px',
 //     marginBottom: '15px',
-//     outline: 'none'
+//     outline: 'none',
+//     fontSize: '18px'
 // }
-
-const styleButton2 = {
-    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
-    border: 0,
-    borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-    marginTop: '15px',
-    marginBottom: '15px',
-    outline: 'none',
-    fontSize: '18px'
-}
 //#endregion
 
 class AboutCommerce extends Component {
     constructor(props) {
         super(props);
+
+        this.infoRef = React.createRef();
+        this.imageRef = React.createRef();
+        this.movieRef = React.createRef();
+        this.payementRef = React.createRef();
 
         this.state = {
             commerceId: this.props.location.state.id,
@@ -505,6 +496,7 @@ class AboutCommerce extends Component {
 
     getUrlCommercePicture = async () => {
         const listPicture = await this.getPicturesCommerce();
+        console.log(listPicture)
         this.setState({
             listImg : listPicture
         }, () => {
@@ -705,31 +697,54 @@ class AboutCommerce extends Component {
 
     render() {
         return (
-            <Container component="main" maxWidth="md" style={{ color: "#000" }}>
-                <CssBaseline/>
-                <div style={root}>
-                    <Grid
-                        container
-                        spacing={1}
-                        direction="row"
-                        justify="center">
-                        <Grid item xs={12} sm={4} className="Weeclik-App-Info-Commerce2" style={paper}>
-                            <Paper elevation={0} style={root2}>
-                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
-                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Modifier le commerce</Button>
-                                {
-                                    this.state.commerce.statutCommerce !== "En ligne"?
-                                    (<div>
-                                        <Typography component="p" style={{color:"#000"}}>Payer pour mettre votre commerce en ligne</Typography>
-                                        <Button fullWidth onClick={() => { this.goToPay(this.state.commerceId) }} style={styleButton2} startIcon={<Payment />}>Payer 329.99 €</Button>
-                                    </div>):
-                                    (<div></div>)
-
-                                }
-                                
-                            </Paper>
-                        </Grid>
-                        <Grid item xs={12} sm={8} className="Weeclik-App-Info-Commerce2" style={paper}>
+            <div>
+                {/* <ShowInfoCommerce/> */}
+                <div style={{position: 'relative', height: '400px'}}>
+                    <div style={{position: 'absolute', zIndex: -1}}>
+                        <Picture
+                            commerceId={this.state.commerceId}
+                            commerceName={this.state.commerce.nomCommerce}
+                            commerceCategory={this.state.commerce.currencyCategory}
+                            commerceNbShare={this.state.commerce.nombrePartages}
+                        />
+                    </div>
+                    {/* <div style={{background: "#FFF", position: 'absolute', top: '70%', left: '50%', padding: '.8em 1.2em', transform: 'translate(-50%, -50%)'}}>
+                        <Card elevation={0}>
+                            <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
+                            <Typography color="textSecondary">{this.state.commerce.currencyCategory}</Typography>
+                            <Typography style={{color: this.state.colorStatus, margin: '10px 0'}}>
+                                {this.state.commerce.statutCommerce}{' '}
+                                <IconButton onClick={() => { this.handleOpenInfo() }} aria-label="delete" style={{ color: "gray", outline: 'none'}} size="small">
+                                    <Info fontSize="small" />
+                                </IconButton>
+                            </Typography>
+                            <h6 style={{color:"#000"}}>
+                                <RoomRoundedIcon style={{ color: "gray"}}/>
+                                {" : " + this.state.commerce.adresse}
+                            </h6>
+                        </Card>
+                    </div> */}
+                </div>
+                <div style={{paddingTop: '100px'}}>
+                    <Paper elevation={0} style={{borderRadius: 0}}>
+                        <center>
+                            <Grid container spacing={3}>
+                                <Grid item xs={2}><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none' }}>Mes commerces</Button></Grid>
+                                <Grid item xs={2}><Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid>
+                                <Grid item xs={2}><Button onClick={() => {window.scrollTo(0, this.infoRef.current.offsetTop)}} style={{ outline: 'none' }}>Informations</Button></Grid>
+                                <Grid item xs={2}><Button onClick={() => {window.scrollTo(0, this.imageRef.current.offsetTop)}} style={{ outline: 'none' }}>Images</Button></Grid>
+                                <Grid item xs={2}><Button onClick={() => {window.scrollTo(0, this.infoRef.current.offsetTop)}} style={{ outline: 'none' }}>Vidéo</Button></Grid>
+                                <Grid item xs={2}><Button onClick={() => {window.scrollTo(0, this.infoRef.current.offsetTop)}} style={{ outline: 'none' }}>Payer</Button></Grid>
+                            </Grid>
+                        </center>
+                    </Paper>
+                </div>
+                <div ref={this.infoRef} style={{margin:'10px'}}></div>
+                {/* Les informations */}
+                <div>
+                    <Container maxWidth={'md'}>
+                        <Typography variant="h4" component="h5">Les informations sur le commerce</Typography>
+                        <Paper elevation={0} style={{borderRadius: 0}}>
                             <Card elevation={0} style={root2}>
                                 <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
                                 <h6 style={{color: this.state.colorStatus, margin: '10px 0'}}>
@@ -760,229 +775,274 @@ class AboutCommerce extends Component {
                                     {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
                                 </h5>
                             </Card>
-
-                            <div style={{margin:'10px'}}></div>
-
-                            <Paper elevation={0} style={root2}>
-                                <Grid
-                                    container
-                                    justify="space-between"
-                                    alignItems="center">
-                                    <Grid item xs={12}>
-                                        <Typography variant="h5" component="h3" style={{color:"#000"}}>Images du commerce</Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        {
-                                            this.state.listImg.length < 3 ?
-                                            (<div>
-                                                <input
-                                                    id="icon-input-file-img"
-                                                    type="file"
-                                                    onChange={this.onUploadImage}
-                                                    style={{ display: 'None' }}
-                                                    accept="image/*"
-                                                    multiple/>
-                                                <label htmlFor="icon-input-file-img">
-                                                    <Button variant="outlined" color="primary" size="small" component="span">
-                                                        Ajouter des images
-                                                    </Button>
-                                                </label>
-                                            </div>):
-                                            (<div></div>)
-                                        }
-                                    </Grid>
-                                    <Grid item xs={6}>
-                                        {
-                                            this.state.listImg.length > 0 ?
-                                            (<Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Tout supprimer</Button>):
-                                            (<div></div>)
-                                        }
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        {
-                                            this.state.listImg.length > 0 ?
-                                            (<GridList cellHeight={250} cols={3} style={{ height: '450' }}>
-                                                {this.state.listImg && [...this.state.listImg].map((object, index) => (
-                                                    <div key={index}>
-                                                        <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
-                                                            <img
-                                                                src={object.url}
-                                                                style={{width: '200px', height: '200px', objectFit: 'cover'}}
-                                                            />
-                                                        </div>
-                                                        <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
-                                                            <DeleteIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </div>
-                                                ))}
-                                            </GridList>):
-                                            (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas d'images"}</Typography>)
-                                        }
-                                    </Grid>
+                        </Paper>
+                    </Container>
+                </div>
+                <div style={{margin:'10px'}}></div>
+                {/* La description */}
+                <div>
+                    <Container maxWidth={'md'}>
+                        <Paper elevation={0} style={root2}>
+                            <Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography>
+                            <Grid item x={12}>
+                                <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
+                            </Grid>
+                        </Paper>
+                    </Container>
+                </div>
+                <div style={{margin:'10px'}}></div>
+                {/* La promotion */}
+                <div>
+                    <Container maxWidth={'md'}>
+                        <Paper elevation={0} style={root2}>
+                            <Grid
+                                container
+                                alignItems="center">
+                                <Grid item xs={12}>
+                                    <Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography>
                                 </Grid>
-                            </Paper>
-
-                            <div style={{margin:'10px'}}></div>
-
-                            <Paper elevation={0} style={root2}>
-                                <Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography>
-                                <Grid item x={12}>
-                                    <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
-                                </Grid>
-                            </Paper>
-
-                            <div style={{margin:'10px'}}></div>
-
-                            <Paper elevation={0} style={root2}>
-                                <Grid
-                                    container
-                                    alignItems="center">
-                                    <Grid item xs={12}>
-                                        <Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        {
-                                            this.state.commerce.promotion ?
-                                            (<Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>):
-                                            (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas de promotions en cours"}</Typography>)
-                                        }
-                                    </Grid>
-                                </Grid>
-                                
-                                
-                            </Paper>
-
-                            <div style={{margin:'10px'}}></div>
-
-                            <Paper elevation={0} style={root2}>
-                                <Grid
-                                    container
-                                    justify="space-between"
-                                    alignItems="center">
-                                        <Grid item xs={12}>
-                                            <Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography>
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            {
-                                                this.state.movieURL[0] ?
-                                                (<div></div>) :
-                                                (<div>
-                                                    <input
-                                                        id="icon-input-file-video"
-                                                        type="file"
-                                                        onChange={this.onUploadVideo}
-                                                        style={{ display: 'None' }}
-                                                        accept="video/mp4,video/x-m4v,video/*"/>
-                                                    <label htmlFor="icon-input-file-video">
-                                                        <Button variant="outlined" color="primary" size="small" component="span">
-                                                            Ajouter une vidéo
-                                                        </Button>
-                                                    </label>
-                                                </div>)
-                                            }
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            {
-                                                this.state.movieURL[0] ?
-                                                (<Button onClick={() => { this.deleteMovieCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Supprimer la vidéo</Button>) : (<div></div>)
-                                            }
-                                            
-                                        </Grid>
-                                        
-                                </Grid>
-                                
                                 <Grid item xs={12}>
                                     {
-                                        this.state.movieURL[0] ?
-                                        (<Player
-                                            playsInline
-                                            src={this.state.movieURL[0]}
-                                        />) :
-                                        (<center>
-                                            <Typography variant="h3" style={{color: grey[300]}}>Pas de vidéo</Typography>
-
-                                        </center>)
+                                        this.state.commerce.promotion ?
+                                        (<Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>):
+                                        (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas de promotions en cours"}</Typography>)
                                     }
                                 </Grid>
-                            </Paper>
-                        </Grid>
-                    </Grid>
+                            </Grid>
+                        </Paper>
+                    </Container>
                 </div>
-
+                {/* Les images */}
+                <div ref={this.imageRef} style={{margin:'10px'}}></div>
                 <div>
-                    <Dialog
-                        open={this.state.openPopupVideoDelete}
-                        onClose={this.handleCloseDeleteVideo}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                        style={{ minHeight: "600px"}}
-                        maxWidth={"md"}
-                    >
-                        <DialogTitle id="alert-dialog-title" style={{
-                            width: "100px",
-                            height: "100px",
-                            display: 'block',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                        }}><CircularProgress color="secondary" /></DialogTitle>
-                    </Dialog>
+                    <Container maxWidth={'md'}>
+                        <Typography variant="h4" component="h5">La galerie</Typography>
+                        <Paper elevation={0} style={root2}>
+                            <Grid
+                                container
+                                justify="space-between"
+                                alignItems="center">
+                                <Grid item xs={12}>
+                                    <Typography variant="h5" component="h3" style={{color:"#000"}}>Images du commerce</Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
+                                </Grid>
+                                <Grid item xs={6}>
+                                    {
+                                        this.state.listImg.length < 3 ?
+                                        (<div>
+                                            <input
+                                                id="icon-input-file-img"
+                                                type="file"
+                                                onChange={this.onUploadImage}
+                                                style={{ display: 'None' }}
+                                                accept="image/*"
+                                                multiple/>
+                                            <label htmlFor="icon-input-file-img">
+                                                <Button variant="outlined" color="primary" size="small" component="span">
+                                                    Ajouter des images
+                                                </Button>
+                                            </label>
+                                        </div>):
+                                        (<div></div>)
+                                    }
+                                </Grid>
+                                <Grid item xs={6}>
+                                    {
+                                        this.state.listImg.length > 0 ?
+                                        (<Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Tout supprimer</Button>):
+                                        (<div></div>)
+                                    }
+                                </Grid>
+                                <Grid item xs={12}>
+                                    {
+                                        this.state.listImg.length > 0 ?
+                                        (<GridList cellHeight={250} cols={3} style={{ height: '450' }}>
+                                            {this.state.listImg && [...this.state.listImg].map((object, index) => (
+                                                <div key={index}>
+                                                    <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                                        <img
+                                                            src={object.url}
+                                                            style={{width: '200px', height: '200px', objectFit: 'cover'}}
+                                                        />
+                                                    </div>
+                                                    <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
+                                                        <DeleteIcon fontSize="small" />
+                                                    </IconButton>
+                                                </div>
+                                            ))}
+                                        </GridList>):
+                                        (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas d'images"}</Typography>)
+                                    }
+                                </Grid>
+                            </Grid>
+                        </Paper>
+                    </Container>
                 </div>
-
+                <div ref={this.movieRef} style={{margin:'10px'}}></div>
+                {/* La promotion */}
                 <div>
-                    <Dialog
-                        open={this.state.openPopupVideoAdd}
-                        onClose={this.handleCloseAddVideo}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                        style={{ minHeight: "600px"}}
-                        maxWidth={"md"}
-                    >
-                        <DialogTitle id="alert-dialog-title" style={{
-                            width: "100px",
-                            height: "100px",
-                            display: 'block',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            alignItems: 'center'
-                        }}><CircularProgress /></DialogTitle>
-                    </Dialog>
-                </div>
-
-                <div>
-                    <Dialog
-                        open={this.state.openInfo}
-                        onClose={this.handleCloseInfo}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                        style={{ minHeight: "600px"}}
-                        // fullWidth={true}
-                        maxWidth={"sm"}
-                    >
-                        <DialogTitle id="alert-dialog-title">A propos du status</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                {/* {this.state.commerce.statutCommerce}{' '} */}
+                    <Container maxWidth={'md'}>
+                        <Paper elevation={0} style={root2}>
+                            <Grid
+                                container
+                                justify="space-between"
+                                alignItems="center">
+                                    <Grid item xs={12}>
+                                        <Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography>
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        {
+                                            this.state.movieURL[0] ?
+                                            (<div></div>) :
+                                            (<div>
+                                                <input
+                                                    id="icon-input-file-video"
+                                                    type="file"
+                                                    onChange={this.onUploadVideo}
+                                                    style={{ display: 'None' }}
+                                                    accept="video/mp4,video/x-m4v,video/*"/>
+                                                <label htmlFor="icon-input-file-video">
+                                                    <Button variant="outlined" color="primary" size="small" component="span">
+                                                        Ajouter une vidéo
+                                                    </Button>
+                                                </label>
+                                            </div>)
+                                        }
+                                    </Grid>
+                                    <Grid item xs={6}>
+                                        {
+                                            this.state.movieURL[0] ?
+                                            (<Button onClick={() => { this.deleteMovieCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Supprimer la vidéo</Button>) : (<div></div>)
+                                        }
+                                        
+                                    </Grid>
+                                    
+                            </Grid>
+                                        
+                            <Grid item xs={12}>
                                 {
-                                    this.state.commerce.statutCommerce === 'En ligne' ?
-                                    (<p>Votre commerce est en ligne et visible de tous, prêt à être partagé</p>) :
-                                    (<p>Votre commerce est toujours sur Weeclik mais invisible de tout le monde car il y a surement eu une erreur dans le paiement ou que lʼabonnement nʼest plus valable</p>)
-                                }
-                                
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleCloseInfo} color="primary" autoFocus style={{outline: 'none'}}>Ok</Button>
-                        </DialogActions>
-                    </Dialog>
-                </div>
+                                    this.state.movieURL[0] ?
+                                    (<Player
+                                        playsInline
+                                        src={this.state.movieURL[0]}
+                                    />) :
+                                    (<center>
+                                        <Typography variant="h3" style={{color: grey[300]}}>Pas de vidéo</Typography>
 
-                <Box mt={8}>
-                    <Copyright/>
-                </Box>
-            </Container>
+                                    </center>)
+                                }
+                            </Grid>
+                        </Paper>
+                    </Container>
+                </div>
+                
+                
+                <div style={root}>
+                    <Container component="main" maxWidth="md" style={{ color: "#000" }}>
+                        <CssBaseline/>
+                        
+                        {/* <div style={root}>
+                            <Grid
+                                container
+                                spacing={1}
+                                direction="row"
+                                justify="center">
+                                <Grid item xs={12} sm={4} className="Weeclik-App-Info-Commerce2" style={paper}>
+                                    <Paper elevation={0} style={root2}>
+                                        <Button fullWidth variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
+                                        <Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Modifier le commerce</Button>
+                                        {
+                                            this.state.commerce.statutCommerce !== "En ligne"?
+                                            (<div>
+                                                <Typography component="p" style={{color:"#000"}}>Payer pour mettre votre commerce en ligne</Typography>
+                                                <Button fullWidth onClick={() => { this.goToPay(this.state.commerceId) }} style={styleButton2} startIcon={<Payment />}>Payer 329.99 €</Button>
+                                            </div>):
+                                            (<div></div>)
+
+                                        }
+                                        
+                                    </Paper>
+                                </Grid>
+                                <Grid item xs={12} sm={8} className="Weeclik-App-Info-Commerce2" style={paper}>
+                                    <div style={{margin:'10px'}}></div>
+                                </Grid>
+                            </Grid>
+                        </div> */}
+
+                        <div>
+                            <Dialog
+                                open={this.state.openPopupVideoDelete}
+                                onClose={this.handleCloseDeleteVideo}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                                style={{ minHeight: "600px"}}
+                                maxWidth={"md"}
+                            >
+                                <DialogTitle id="alert-dialog-title" style={{
+                                    width: "100px",
+                                    height: "100px",
+                                    display: 'block',
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                }}><CircularProgress color="secondary" /></DialogTitle>
+                            </Dialog>
+                        </div>
+
+                        <div>
+                            <Dialog
+                                open={this.state.openPopupVideoAdd}
+                                onClose={this.handleCloseAddVideo}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                                style={{ minHeight: "600px"}}
+                                maxWidth={"md"}
+                            >
+                                <DialogTitle id="alert-dialog-title" style={{
+                                    width: "100px",
+                                    height: "100px",
+                                    display: 'block',
+                                    marginLeft: 'auto',
+                                    marginRight: 'auto',
+                                    alignItems: 'center'
+                                }}><CircularProgress /></DialogTitle>
+                            </Dialog>
+                        </div>
+
+                        <div>
+                            <Dialog
+                                open={this.state.openInfo}
+                                onClose={this.handleCloseInfo}
+                                aria-labelledby="alert-dialog-title"
+                                aria-describedby="alert-dialog-description"
+                                style={{ minHeight: "600px"}}
+                                // fullWidth={true}
+                                maxWidth={"sm"}
+                            >
+                                <DialogTitle id="alert-dialog-title">A propos du status</DialogTitle>
+                                <DialogContent>
+                                    <DialogContentText id="alert-dialog-description">
+                                        {/* {this.state.commerce.statutCommerce}{' '} */}
+                                        {
+                                            this.state.commerce.statutCommerce === 'En ligne' ?
+                                            (<p>Votre commerce est en ligne et visible de tous, prêt à être partagé</p>) :
+                                            (<p>Votre commerce est toujours sur Weeclik mais invisible de tout le monde car il y a surement eu une erreur dans le paiement ou que lʼabonnement nʼest plus valable</p>)
+                                        }
+                                        
+                                    </DialogContentText>
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={this.handleCloseInfo} color="primary" autoFocus style={{outline: 'none'}}>Ok</Button>
+                                </DialogActions>
+                            </Dialog>
+                        </div>
+
+                        
+                    </Container>
+                </div>
+                <Footer/>
+            </div>
         );
     }
 }

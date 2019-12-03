@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { CssBaseline, Avatar, Grid, TextField, Typography, Paper } from '@material-ui/core';
-import { Footer } from '../footer/Footer';
+import Footer from '../footer/Footer';
 
 
 const theme = createMuiTheme({
@@ -32,8 +32,8 @@ const paper = {
 const avatar = {
     margin: theme.spacing(5),
     borderRadius: 0,
-    width: 160,
-    height: 160
+    width: 100,
+    height: 100
 }
 
 const form = {
@@ -151,7 +151,7 @@ class LoginPage extends Component {
 
                             <Grid container justify="flex-end">
                                 <Grid item xs>
-                                    <Link to="/forgot" style={{color: "#00F", padding: "10px", fontSize: "15px"}}>{"Informations de compte oubliées ?"}</Link>
+                                    <Link to="/forgot" style={{color: "#00F", padding: "10px", fontSize: "15px", textDecoration: 'none'}}>{"Informations de compte oubliées ?"}</Link>
                                 </Grid>
                             </Grid>
                         </form>

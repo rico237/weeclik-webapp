@@ -9,7 +9,7 @@ import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import { Footer } from '../footer/Footer';
+import Footer from '../footer/Footer';
 
 const theme = createMuiTheme({
     spacing: 4,

@@ -268,7 +268,7 @@ class HomePage extends Component {
                         <div className="container">
                             <div className="row">
                                 <div className="col-lg-12">
-                                    <p className="p-small">Copyright {new Date().getFullYear()} - Weeclik ©</p>
+                                    <p className="p-small">© {new Date().getFullYear()} Weeclik.</p>
                                 </div>
                             </div>
                         </div>

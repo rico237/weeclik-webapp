@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { Avatar, Typography, Grid, TextField, Paper } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
+import Footer from '../footer/Footer';
 
 
 const theme = createMuiTheme({
@@ -13,7 +14,7 @@ const theme = createMuiTheme({
 
 const root = {
     // marginTop: theme.spacing(8),
-    marginTop: '70px',
+    margin: '80px 0',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -102,7 +103,7 @@ class ForgotPage extends Component {
         const { username, alertMsg, sec } = this.state;
 
         return (
-            <div component="main" maxWidth="sm" className="App-header2">
+            <div component="main" className="App-header2">
                 <Paper style={root}>
                     <div style={paper}>
                         <Avatar alt="Logo" src={logo} style={avatar}/>
@@ -145,6 +146,7 @@ class ForgotPage extends Component {
                         }
                     </div>
                 </Paper>
+                <Footer/>
             </div>
         );
     }

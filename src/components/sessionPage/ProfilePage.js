@@ -10,7 +10,7 @@ import { createMuiTheme, withStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import CommercePicture from './CommercePicture';
 
-import { Footer } from '../footer/Footer';
+import Footer from '../footer/Footer';
 
 import AppStore from '../../assets/icons/app-store-badge.png';
 import GooglePlay from '../../assets/icons/google-play-badge.png';
@@ -302,7 +302,7 @@ class ProfilePage extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{background: '#000'}}>
                 <header className="App-header-profile">
                     <div style={{height: '100vh', margin: '0px', padding: '0px'}}>
                         <Grid container spacing={2} style={{height: '100vh'}}>
@@ -444,27 +444,29 @@ class ProfilePage extends Component {
                                             <Card style={card}>
                                                 <CardContent style={content}>
                                                     <Grid container spacing={1}>
-                                                        <Grid item xs={8}>
-                                                            <Typography style={heading} variant="h6" gutterBottom>
+                                                        <Grid item xs={12}>
+                                                            <Typography variant="h6" gutterBottom style={{
+                                                                fontWeight: '900',
+                                                                color: '#FFF',
+                                                                letterSpacing: 0.5,
+                                                                textAlign: 'justify'}}>
                                                                 Pour son lancement l'ajout d'un commerce sur Weeclik est à un tarif préférenciel de 329.99 €
                                                             </Typography>
                                                         </Grid>
-                                                        <Grid item xs={4}>
-                                                            <img alt="Ambassador" src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
-                                                        </Grid>
                                                     </Grid>
+                                                    <Button
+                                                        variant="contained"
+                                                        component={Link}
+                                                        to="/createcommerce"
+                                                        style={{
+                                                            background: '#1EB0F8',
+                                                            border: 0,
+                                                            boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
+                                                            color: 'white',
+                                                        }}
+                                                    >Nouveau commerce</Button>
                                                 </CardContent>
-                                                <Button
-                                                    variant="contained"
-                                                    component={Link}
-                                                    to="/createcommerce"
-                                                    style={{
-                                                        background: '#1EB0F8',
-                                                        border: 0,
-                                                        boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-                                                        color: 'white',
-                                                    }}
-                                                >Nouveau commerce</Button>
+                                                
                                             </Card>
                                         </Grid>
 

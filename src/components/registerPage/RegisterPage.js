@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Container, CssBaseline, Avatar, Typography, Grid, TextField } from '@material-ui/core';
-import { Footer } from '../footer/Footer';
+import Footer from '../footer/Footer';
 
 
 const theme = createMuiTheme({
@@ -23,8 +23,8 @@ const paper = {
 const avatar = {
     margin: theme.spacing(5),
     borderRadius: 0,
-    width: 160,
-    height: 160
+    width: 100,
+    height: 100
 }
 
 const form = {
@@ -125,7 +125,7 @@ class RegisterPage extends Component {
         const { user, alertMsg/*, submitted*/ } = this.state;
 
         return (
-            <div>
+            <div component="main" className="App-header2">
                 <Container component="main" maxWidth="xs">
                     <CssBaseline/>
                     <div style={paper}>
