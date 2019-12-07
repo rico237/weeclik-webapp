@@ -10,6 +10,7 @@ class CheckoutForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isClick: false,
             complete: false,
             price: '329.99 €'
         };
@@ -22,6 +23,7 @@ class CheckoutForm extends Component {
      */
     async submit(ev) {
         ev.preventDefault();
+        this.setState({isClick: true})
         // TODO: Insert real name
         let token = await this.props.stripe.createToken({name: "Name"});
         let response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/charge`, {
@@ -50,7 +52,13 @@ class CheckoutForm extends Component {
                         Détails de la carte
                         <CardElement />
                     </label>
-                    <button className="btn-solid-lg" onClick={this.submit} style={{outline: 'none', width: '100%', marginBottom: '50px'}}>Payer {this.state.price}</button>
+                    {
+                        this.state.isClick ? (
+                            <button disabled className="btn-solid-lg" onClick={this.submit} style={{outline: 'none', width: '100%', marginBottom: '50px'}}>{'attendre'}</button>
+                        ) : (
+                            <button className="btn-solid-lg" onClick={this.submit} style={{outline: 'none', width: '100%', marginBottom: '50px'}}>Payer {this.state.price}</button>
+                        )
+                    }
                 </div>
                 <div>
                     <p style={{ color: '#6B7C93'}}>Payer <span className="price">{this.state.price}</span>, pour rendre votre commerce visible</p>

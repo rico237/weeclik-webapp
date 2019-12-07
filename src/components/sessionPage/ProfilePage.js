@@ -46,6 +46,17 @@ const card = {
       'linear-gradient(34deg, rgba(55,16,83,1) 0%, rgba(162,73,190,1) 29%, rgba(33,16,83,1) 92%)',
 }
 
+const card1 = {
+    width: '100%',
+    borderRadius: theme.spacing(2), // 16px
+    transition: '0.3s',
+    boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
+    position: 'relative',
+    overflow: 'initial',
+    display: 'flex',
+    flexDirection: 'column',
+}
+
 const media = {
     flexShrink: 0,
     width: '50%',
@@ -302,8 +313,8 @@ class ProfilePage extends Component {
 
     render() {
         return (
-            <div style={{background: '#000'}}>
-                <header className="App-header-profile">
+            <div style={{background: '#000', height: '100%'}}>
+                <header className="App-header-profile" style={{minHeight: '100%', height: '100%'}}>
                     <div style={{height: '100vh', margin: '0px', padding: '0px'}}>
                         <Grid container spacing={2} style={{height: '100vh'}}>
                             <Grid item xs={12} sm={3} style={{backgroundImage: `linear-gradient(rgba(246, 247, 250, 0.1), rgba(255, 255, 255, 0.5))`}}>
@@ -441,15 +452,14 @@ class ProfilePage extends Component {
                                 <Container component="main" maxWidth="md" style={{height: '100vh', paddingBottom: '300px'}}>
                                     <Grid container spacing={2}>
                                         <Grid item xs={12} sm={6}>
-                                            <Card style={card}>
+                                            <Card style={card1}>
                                                 <CardContent style={content}>
                                                     <Grid container spacing={1}>
                                                         <Grid item xs={12}>
                                                             <Typography variant="h6" gutterBottom style={{
                                                                 fontWeight: '900',
-                                                                color: '#FFF',
-                                                                letterSpacing: 0.5,
-                                                                textAlign: 'justify'}}>
+                                                                color: '#000',
+                                                                letterSpacing: 0.5}}>
                                                                 Pour son lancement l'ajout d'un commerce sur Weeclik est à un tarif préférenciel de 329.99 €
                                                             </Typography>
                                                         </Grid>
@@ -464,7 +474,7 @@ class ProfilePage extends Component {
                                                             boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
                                                             color: 'white',
                                                         }}
-                                                    >Nouveau commerce</Button>
+                                                    >Créer un nouveau commerce</Button>
                                                 </CardContent>
                                                 
                                             </Card>
@@ -496,7 +506,7 @@ class ProfilePage extends Component {
                                         noWrap
                                         style={{ marginTop: '20px', flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5,  }}>Mes commerces</Typography>
 
-                                    <Grid container direction="row-reverse" spacing={5}>
+                                    <Grid container direction="row-reverse" spacing={5} style={{height: '100vh'}}>
                                         <Container component="main" maxWidth="md">
                                             <Grid container spacing={2} style={{ marginTop: '25px' }}>
                                                 {this.state.commerceList.map((elt, index) => (

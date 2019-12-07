@@ -8,7 +8,6 @@ import {
     Button, Grid,
     Dialog,
     DialogTitle,
-    GridList,
     Paper,
     Typography,
     IconButton,
@@ -16,7 +15,10 @@ import {
     DialogContent,
     DialogActions,
     CircularProgress,
-    Card} from '@material-ui/core';
+    Card,
+    Tooltip,
+    Box,
+    withStyles} from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -29,6 +31,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import Add from '@material-ui/icons/Add';
 import Info from '@material-ui/icons/Info';
 
+import AddPhotoAlternateRoundedIcon from '@material-ui/icons/AddPhotoAlternateRounded';
 import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
 import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
@@ -37,8 +40,11 @@ import CallRoundedIcon from '@material-ui/icons/CallRounded';
 
 //#region COLOR
 import grey from '@material-ui/core/colors/grey';
-import Picture from './components/commerceComponent/Picture';
+import blue from '@material-ui/core/colors/blue';
+import red from '@material-ui/core/colors/red';
+// import Picture from './components/commerceComponent/Picture';
 import Footer from '../footer/Footer';
+// import HUE from '@material-ui/core/colors/HUE';
 // import ShowInfoCommerce from './components/commerceComponent/ShowInfoCommerce';
 //#endregion
 
@@ -57,6 +63,15 @@ const root = {
 const root2 = {
     padding: theme.spacing(5),
 }
+
+const LightTooltip = withStyles(theme => ({
+    tooltip: {
+        backgroundColor: theme.palette.common.white,
+        color: 'rgba(0, 0, 0, 0.87)',
+        boxShadow: theme.shadows[1],
+        fontSize: 11,
+    },
+}))(Tooltip);
 
 // const paper = {
 //     padding: theme.spacing(3),
@@ -128,7 +143,7 @@ class AboutCommerce extends Component {
             idPic2: '',
             idPic3: '',
             nbImageUpload: 0,
-            colorStatus: '#F00'
+            colorStatus: red[400]
         };
 
         this.handleValidate = this.handleValidate.bind(this);
@@ -216,40 +231,30 @@ class AboutCommerce extends Component {
                     switch (_statusCommerce) {
                         case 0:
                             _statusCommerce = "Hors ligne - en attente de paiement"
-                            this.setState({colorStatus: '#F00'});
+                            this.setState({colorStatus: red[400]});
                             break;
                         case 1:
                             _statusCommerce = "En ligne"
-                            this.setState({colorStatus: '#00F'});
+                            this.setState({colorStatus: blue[500]});
                             break;
                         case 2:
                             _statusCommerce = "Hors ligne - paiement annulé"
-                            this.setState({colorStatus: '#F00'});
+                            this.setState({colorStatus: red[400]});
                             break;
                         case 3:
                             _statusCommerce = "Erreur lors du paiement ou du renouvellement"
-                            this.setState({colorStatus: '#F00'});
+                            this.setState({colorStatus: red[400]});
                             break;
                         case 4:
                             _statusCommerce = ""
-                            this.setState({colorStatus: '#F00'});
+                            this.setState({colorStatus: red[400]});
                             break;
                     
                         default:
                             _statusCommerce = "Statut inconnu"
-                            this.setState({colorStatus: '#F00'});
+                            this.setState({colorStatus: red[400]});
                             break;
                     }
-
-
-                    // commerce: {
-                    //     ville: '',
-                    //     bp: '',
-                    //     owner: '',
-                    //     position: '',
-                    //     mail: '',
-                    //     id: ''
-                    // },
 
                     this.setState(prevState => ({
                         commerce: {
@@ -445,12 +450,10 @@ class AboutCommerce extends Component {
 
             
             file.save().then((file) => {
-                // console.log("@@@@@@@@@@@@@@@@@>"+JSON.stringify(file, null, 2));
                 Commerce_video.set("nameVideo", movie.name);
                 Commerce_video.set("video", file);
                 Commerce_video.set("leCommerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
                 Commerce_video.save().then((Commerce_video) => {
-                    // console.log("#################>"+JSON.stringify(Commerce_video, null, 2));
                     this.handleCloseAddVideo();
                     this.setState({ alertMsg: 'Vidéo sauvegardé', sec2: 0 });
                     clearInterval(this.intervalId);
@@ -698,52 +701,24 @@ class AboutCommerce extends Component {
     render() {
         return (
             <div>
-                {/* <ShowInfoCommerce/> */}
-                <div style={{position: 'relative', height: '400px'}}>
-                    <div style={{position: 'absolute', zIndex: -1}}>
-                        <Picture
-                            commerceId={this.state.commerceId}
-                            commerceName={this.state.commerce.nomCommerce}
-                            commerceCategory={this.state.commerce.currencyCategory}
-                            commerceNbShare={this.state.commerce.nombrePartages}
-                        />
-                    </div>
-                    {/* <div style={{background: "#FFF", position: 'absolute', top: '70%', left: '50%', padding: '.8em 1.2em', transform: 'translate(-50%, -50%)'}}>
-                        <Card elevation={0}>
-                            <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
-                            <Typography color="textSecondary">{this.state.commerce.currencyCategory}</Typography>
-                            <Typography style={{color: this.state.colorStatus, margin: '10px 0'}}>
-                                {this.state.commerce.statutCommerce}{' '}
-                                <IconButton onClick={() => { this.handleOpenInfo() }} aria-label="delete" style={{ color: "gray", outline: 'none'}} size="small">
-                                    <Info fontSize="small" />
-                                </IconButton>
-                            </Typography>
-                            <h6 style={{color:"#000"}}>
-                                <RoomRoundedIcon style={{ color: "gray"}}/>
-                                {" : " + this.state.commerce.adresse}
-                            </h6>
-                        </Card>
-                    </div> */}
-                </div>
-                <div style={{paddingTop: '100px'}}>
-                    <Paper elevation={0} style={{borderRadius: 0}}>
-                        <center>
-                            <Grid container spacing={3}>
-                                <Grid item xs={2}><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none' }}>Mes commerces</Button></Grid>
-                                <Grid item xs={2}><Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid>
-                                <Grid item xs={2}><Button onClick={() => {window.scrollTo(0, this.infoRef.current.offsetTop)}} style={{ outline: 'none' }}>Informations</Button></Grid>
-                                <Grid item xs={2}><Button onClick={() => {window.scrollTo(0, this.imageRef.current.offsetTop)}} style={{ outline: 'none' }}>Images</Button></Grid>
-                                <Grid item xs={2}><Button onClick={() => {window.scrollTo(0, this.infoRef.current.offsetTop)}} style={{ outline: 'none' }}>Vidéo</Button></Grid>
-                                <Grid item xs={2}><Button onClick={() => {window.scrollTo(0, this.infoRef.current.offsetTop)}} style={{ outline: 'none' }}>Payer</Button></Grid>
-                            </Grid>
-                        </center>
-                    </Paper>
+                <div style={{paddingTop: '70px'}}>
+                    <Container maxWidth={'lg'}>
+                        <Paper elevation={0} style={{borderRadius: 0}}>
+                            <center>
+                                <Grid container spacing={3}>
+                                    <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none' }}>Mes commerces</Button></Grid>
+                                    <Grid item xs><Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid>
+                                    <Grid item xs><Button onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none' }}>Payer 329.99 €</Button></Grid>
+                                </Grid>
+                            </center>
+                        </Paper>
+                    </Container>
                 </div>
                 <div ref={this.infoRef} style={{margin:'10px'}}></div>
                 {/* Les informations */}
+                <Box my={3}/>
                 <div>
-                    <Container maxWidth={'md'}>
-                        <Typography variant="h4" component="h5">Les informations sur le commerce</Typography>
+                    <Container maxWidth={'lg'}>
                         <Paper elevation={0} style={{borderRadius: 0}}>
                             <Card elevation={0} style={root2}>
                                 <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
@@ -764,11 +739,11 @@ class AboutCommerce extends Component {
                                 </h6>
                                 <h6 style={{color:"#000"}}>
                                     <EmailRoundedIcon/>
-                                    {" : "}<a href={"http://"+this.state.commerce.mail} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.mail}</a>
+                                    {" : "}<a href={"http://"+this.state.commerce.mail} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.mail}</a>
                                 </h6>
                                 <h6 style={{color:"#000"}}>
                                     <LanguageRoundedIcon/>
-                                    {" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
+                                    {" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.siteWeb}</a>
                                 </h6>
                                 <h5 style={{color:"#000", paddingTop: '50px'}}>
                                     <FavoriteBorderRoundedIcon style={{color:"#F00"}}/>
@@ -779,21 +754,9 @@ class AboutCommerce extends Component {
                     </Container>
                 </div>
                 <div style={{margin:'10px'}}></div>
-                {/* La description */}
-                <div>
-                    <Container maxWidth={'md'}>
-                        <Paper elevation={0} style={root2}>
-                            <Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography>
-                            <Grid item x={12}>
-                                <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
-                            </Grid>
-                        </Paper>
-                    </Container>
-                </div>
-                <div style={{margin:'10px'}}></div>
                 {/* La promotion */}
                 <div>
-                    <Container maxWidth={'md'}>
+                    <Container maxWidth={'lg'}>
                         <Paper elevation={0} style={root2}>
                             <Grid
                                 container
@@ -815,64 +778,88 @@ class AboutCommerce extends Component {
                 {/* Les images */}
                 <div ref={this.imageRef} style={{margin:'10px'}}></div>
                 <div>
-                    <Container maxWidth={'md'}>
-                        <Typography variant="h4" component="h5">La galerie</Typography>
+                    <Container maxWidth={'lg'}>
                         <Paper elevation={0} style={root2}>
                             <Grid
                                 container
                                 justify="space-between"
                                 alignItems="center">
                                 <Grid item xs={12}>
-                                    <Typography variant="h5" component="h3" style={{color:"#000"}}>Images du commerce</Typography>
+                                    <Grid container justify="space-between">
+                                        <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Images du commerce</Typography></Grid>
+                                        <Grid item>
+                                            <Grid container justify="space-between">
+                                                <Grid item xs={6}>
+                                                    {
+                                                        this.state.listImg.length < 3 ?
+                                                        (<div>
+                                                            <input
+                                                                id="icon-input-file-img"
+                                                                type="file"
+                                                                onChange={this.onUploadImage}
+                                                                style={{ display: 'None' }}
+                                                                accept="image/*"
+                                                                multiple/>
+                                                            <label htmlFor="icon-input-file-img">
+                                                                <LightTooltip title="Ajouter des images">
+                                                                    <IconButton aria-label="add" color="primary" style={{outline: 'none'}}>
+                                                                        <AddPhotoAlternateRoundedIcon />
+                                                                    </IconButton>
+                                                                </LightTooltip>
+                                                                {/* <LightTooltip title="Ajouter des images">
+                                                                    <Button variant="outlined" color="primary" size="small" component="span">
+                                                                        Ajouter des images
+                                                                    </Button>
+                                                                </LightTooltip> */}
+                                                            </label>
+                                                        </div>):
+                                                        (<div></div>)
+                                                    }
+                                                </Grid>
+                                                <Grid item xs={6}>
+                                                    {
+                                                        this.state.listImg.length > 0 ?
+                                                        (<LightTooltip title="Tout supprimer">
+                                                            <IconButton onClick={() => { this.deleteAllPictureCommerce() } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
+                                                                <DeleteIcon />
+                                                            </IconButton>
+                                                        </LightTooltip>):
+                                                        (null)
+                                                    }
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
+                                    <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
                                 </Grid>
-                                <Grid item xs={6}>
-                                    {
-                                        this.state.listImg.length < 3 ?
-                                        (<div>
-                                            <input
-                                                id="icon-input-file-img"
-                                                type="file"
-                                                onChange={this.onUploadImage}
-                                                style={{ display: 'None' }}
-                                                accept="image/*"
-                                                multiple/>
-                                            <label htmlFor="icon-input-file-img">
-                                                <Button variant="outlined" color="primary" size="small" component="span">
-                                                    Ajouter des images
-                                                </Button>
-                                            </label>
-                                        </div>):
-                                        (<div></div>)
-                                    }
-                                </Grid>
-                                <Grid item xs={6}>
-                                    {
-                                        this.state.listImg.length > 0 ?
-                                        (<Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Tout supprimer</Button>):
-                                        (<div></div>)
-                                    }
-                                </Grid>
+                                
                                 <Grid item xs={12}>
                                     {
                                         this.state.listImg.length > 0 ?
-                                        (<GridList cellHeight={250} cols={3} style={{ height: '450' }}>
+                                        (<Grid
+                                            container
+                                            direction="row"
+                                            justify="center"
+                                            alignItems="center"
+                                            spacing={2}>
                                             {this.state.listImg && [...this.state.listImg].map((object, index) => (
-                                                <div key={index}>
-                                                    <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
-                                                        <img
-                                                            src={object.url}
-                                                            style={{width: '200px', height: '200px', objectFit: 'cover'}}
-                                                        />
+                                                <Grid key={index} item xs>
+                                                    <div>
+                                                        <div style={{height: 250, maxWidth: '100%', overflow: 'hidden'}}>
+                                                            <img
+                                                                src={object.url}
+                                                                style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                                                            />
+                                                        </div>
+                                                        <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
+                                                            <DeleteIcon fontSize="small" />
+                                                        </IconButton>
                                                     </div>
-                                                    <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
-                                                        <DeleteIcon fontSize="small" />
-                                                    </IconButton>
-                                                </div>
+                                                </Grid>
                                             ))}
-                                        </GridList>):
+                                        </Grid>):
                                         (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas d'images"}</Typography>)
                                     }
                                 </Grid>
@@ -883,7 +870,7 @@ class AboutCommerce extends Component {
                 <div ref={this.movieRef} style={{margin:'10px'}}></div>
                 {/* La promotion */}
                 <div>
-                    <Container maxWidth={'md'}>
+                    <Container maxWidth={'lg'}>
                         <Paper elevation={0} style={root2}>
                             <Grid
                                 container
@@ -937,10 +924,22 @@ class AboutCommerce extends Component {
                         </Paper>
                     </Container>
                 </div>
+                <div style={{margin:'10px'}}></div>
+                {/* La description */}
+                <div>
+                    <Container maxWidth={'lg'}>
+                        <Paper elevation={0} style={root2}>
+                            <Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography>
+                            <Grid item x={12}>
+                                <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
+                            </Grid>
+                        </Paper>
+                    </Container>
+                </div>
                 
                 
                 <div style={root}>
-                    <Container component="main" maxWidth="md" style={{ color: "#000" }}>
+                    <Container component="main"  maxWidth={'lg'} style={{ color: "#000" }}>
                         <CssBaseline/>
                         
                         {/* <div style={root}>

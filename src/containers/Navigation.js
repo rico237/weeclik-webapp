@@ -112,6 +112,7 @@ const useStyles = makeStyles(theme => ({
         }
     },
     sectionDesktop: {
+        width: '100%',
         display: 'none',
         [theme.breakpoints.up('sm')]: {
             display: 'flex',
@@ -207,34 +208,44 @@ function Navigation(props) {
                                     <Typography className={classes.nameTitle} variant="h5">{'Weeclik'}</Typography>
                                 </Link>
                             </LightTooltip>
-                            <div className={classes.grow}/>
+                            {/* <div className={classes.grow}/> */}
                             <div className={classes.sectionDesktop}>
-                                <LightTooltip title="Accueil">
-                                    <button
-                                        aria-label="Go to accueil page"
-                                        aria-haspopup="true"
-                                        className={classes.button}
-                                        onClick={() => window.location.href="/"}
-                                        style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Accueil</button>
-                                </LightTooltip>
-                                <LightTooltip title="Mon profil">
-                                    <button
-                                        aria-label="Go to profile page"
-                                        aria-haspopup="true"
-                                        className={classes.button}
-                                        onClick={() => window.location.href="/user"}
-                                        style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Mon profil</button>
-                                </LightTooltip>
-                                <Box mx={9}/>
-                                <LightTooltip title="Se déconnecter">
-                                    <IconButton
-                                        edge="end"
-                                        aria-label="Se déconnecter"
-                                        onClick={disconnect}
-                                        style={{outline: 'none', width: '55px'}}>
-                                        <PowerSettingsNewRoundedIcon/>
-                                    </IconButton>
-                                </LightTooltip>
+                                <Box mx={2}/>
+                                <Grid
+                                    container
+                                    justify="space-between"
+                                >
+                                    <Grid item>
+                                        <LightTooltip title="Accueil">
+                                            <button
+                                                aria-label="Go to accueil page"
+                                                aria-haspopup="true"
+                                                className={classes.button}
+                                                onClick={() => window.location.href="/"}
+                                                style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Accueil</button>
+                                        </LightTooltip>
+                                        <LightTooltip title="Mon profil">
+                                            <button
+                                                aria-label="Go to profile page"
+                                                aria-haspopup="true"
+                                                className={classes.button}
+                                                onClick={() => window.location.href="/user"}
+                                                style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Mon profil</button>
+                                        </LightTooltip>
+                                    </Grid>
+                                    <Grid item>
+                                        <LightTooltip title="Se déconnecter">
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="Se déconnecter"
+                                                onClick={disconnect}
+                                                style={{outline: 'none'}}>
+                                                <PowerSettingsNewRoundedIcon/>
+                                            </IconButton>
+                                        </LightTooltip>
+                                    </Grid>
+                                </Grid>
+                                
                             </div>
                             <div style={{ marginLeft: "auto" }}>
                                     <div>

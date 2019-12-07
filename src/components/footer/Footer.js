@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         color: 'grey',
-        backgroundColor: '#000',
+		backgroundColor: '#000',
     },
     chip: {
         marginRight: '8px',
