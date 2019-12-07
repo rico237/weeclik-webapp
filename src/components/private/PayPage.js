@@ -60,6 +60,8 @@ class PayPage extends Component {
     }
 
     render() {
+        // console.log("id Commerce "+this.props.location.state.id);
+        
         if (this.state.complete) return <h1>Purchase Complete</h1>
         
         return (
@@ -100,7 +102,7 @@ class PayPage extends Component {
                                 <StripeProvider apiKey="pk_test_9OkMxuPwf69ObxaAqfOMih5M00m24msfT0">
                                     <div className="example">
                                         <Elements>
-                                            <CheckoutForm/>
+                                            <CheckoutForm _idCommerce={this.props.location.state.id}/>
                                         </Elements>
                                     </div>
                                 </StripeProvider>

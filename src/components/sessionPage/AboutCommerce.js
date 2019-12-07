@@ -499,7 +499,7 @@ class AboutCommerce extends Component {
 
     getUrlCommercePicture = async () => {
         const listPicture = await this.getPicturesCommerce();
-        console.log(listPicture)
+        // console.log(listPicture)
         this.setState({
             listImg : listPicture
         }, () => {

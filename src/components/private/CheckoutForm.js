@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Parse from 'parse';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import './style-stripe.css'
 
@@ -15,6 +16,22 @@ class CheckoutForm extends Component {
             price: '329.99 €'
         };
         this.submit = this.submit.bind(this);
+        this.updateStatusCommerce = this.updateStatusCommerce.bind(this);
+    }
+
+    updateStatusCommerce(ID) {
+
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = ID;
+        instanceCommerce.set("statutCommerce", 1);
+        instanceCommerce.set("brouillon", false);
+        instanceCommerce.save()
+        .then((commerceUpdate) => {
+            this.setState({complete: true})
+        }, (error) => {
+            console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+        })
     }
 
     /**
@@ -32,14 +49,16 @@ class CheckoutForm extends Component {
             body: JSON.stringify(token)
         });
         if (response.ok) {
-            this.setState({complete: true})
+            // TODO : Changer l'état du paiement sur le serveur
+            this.updateStatusCommerce(this.props._idCommerce)
         }
     }
 
     
 
     render() {
-        if (this.state.complete) return <h1>Purchase Complete</h1>
+        // console.log("+++++++>ID "+this.props._idCommerce)
+        if (this.state.complete) return <h1>Paiement Validé</h1>
         
         return (
             <div>
