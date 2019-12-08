@@ -14,6 +14,7 @@ class CheckoutForm extends Component {
         this.state = {
             isClick: false,
             complete: false,
+            noValid: false,
             price: '329.99 €'
         };
         this.submit = this.submit.bind(this);
@@ -51,6 +52,8 @@ class CheckoutForm extends Component {
         });
         if (response.ok) {
             this.updateStatusCommerce(this.props._idCommerce)
+        } else {
+            this.setState({noValid: true})
         }
     }
 
@@ -61,6 +64,8 @@ class CheckoutForm extends Component {
             pathname: '/aboutcommerce',
             state: { id: this.props._idCommerce }
         }} />;//<h1>Paiement Validé</h1>
+
+        if (this.state.noValid) return <h1>Paiement refusé</h1>
         
         return (
             <div>

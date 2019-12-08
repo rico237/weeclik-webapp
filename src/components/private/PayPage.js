@@ -104,7 +104,7 @@ class PayPage extends Component {
                                     </div>
                                 </StripeProvider>
 
-                                <Button fullWidth onClick={() => this.goToBack()} variant="outlined" size="small" color="secondary" style={{outline: 'none'}}>Non merci</Button>
+                                <Button fullWidth onClick={() => this.goToBack()} variant="outlined" size="small" color="secondary" style={{outline: 'none'}}>Annuler</Button>
                             </div>
                         </Grid>
                     </Grid>
