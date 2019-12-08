@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
+import { Redirect } from 'react-router-dom';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import './style-stripe.css'
 
@@ -49,7 +50,6 @@ class CheckoutForm extends Component {
             body: JSON.stringify(token)
         });
         if (response.ok) {
-            // TODO : Changer l'état du paiement sur le serveur
             this.updateStatusCommerce(this.props._idCommerce)
         }
     }
@@ -57,8 +57,7 @@ class CheckoutForm extends Component {
     
 
     render() {
-        // console.log("+++++++>ID "+this.props._idCommerce)
-        if (this.state.complete) return <h1>Paiement Validé</h1>
+        if (this.state.complete) return <Redirect back />;//<h1>Paiement Validé</h1>
         
         return (
             <div>

@@ -82,14 +82,11 @@ class PayPage extends Component {
                                     Pour son lancement l'ajout d'un commerce sur Weeclik est à un tarif préférenciel de 329.99 €
                                 </div>
                                 <div style={{ margin: '15px', textAlign: 'justify' }}>
-                                    {/* <Typography variant="p" style={{ marginTop: '15px', textAlign: 'justify' }}> */}
-                                        Votre paiement sera débité de votre compte. L'abonnement vous permet d'obtenir un commerce sur le réseau Weeclik pour une durée d'un an, sans renouvellement automatique.
-                                        Le rachat de cet abonnement pour un commerce existant rajoute un an à sa période de visibilité sur le réseau Weeclik.
+                                    Votre paiement sera débité de votre compte. L'abonnement vous permet d'obtenir un commerce sur le réseau Weeclik pour une durée d'un an, sans renouvellement automatique.
+                                    Le rachat de cet abonnement pour un commerce existant rajoute un an à sa période de visibilité sur le réseau Weeclik.
 
-                                        En vous abonnant, vous acceptez nos <Link href={'_blank'}>Conditions générales</Link> et <Link href={'_blank'}>Politique de Confidentialité</Link>.
-                                    {/* </Typography> */}
+                                    En vous abonnant, vous acceptez nos <Link href={'_blank'}>Conditions générales</Link> et <Link href={'_blank'}>Politique de Confidentialité</Link>.
                                 </div>
-                                {/* <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{"Ajouter une description sur les prix"}</Typography> */}
                             </center>
                         </Grid>
                         <Grid item xs={12} sm={6}>

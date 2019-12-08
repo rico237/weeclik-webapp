@@ -693,8 +693,14 @@ class AboutCommerce extends Component {
                                 <center>
                                     <Grid container spacing={3}>
                                         <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none' }}>Mes commerces</Button></Grid>
-                                        <Grid item xs><Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid>
-                                        <Grid item xs><Button onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none' }}>Payer 329.99 €</Button></Grid>
+                                        <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid>
+                                        {
+                                            this.state.commerce.statutCommerce !== "En ligne" ? (
+                                                <Grid item xs><Button onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none' }}>Payer 329.99 €</Button></Grid>
+                                            ) : (
+                                                null
+                                            )
+                                        }
                                     </Grid>
                                 </center>
                             </Paper>
