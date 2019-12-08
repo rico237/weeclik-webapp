@@ -306,7 +306,7 @@ class CreateCommerce extends Component {
         }
 
         return (
-            <div style={{backgroundImage: `linear-gradient(rgba(29, 177, 248, 0.5), rgba(255, 255, 255, 0.5)), url("${BGImage}")`, backgroundRepeat: 'repeat', objectFit: 'cover', height: '100%'}}>
+            <div style={{backgroundImage: `linear-gradient(rgba(29, 177, 248, 0.5), rgba(255, 255, 255, 0.5)), url("${BGImage}")`, backgroundSize: 'cover', objectFit: 'cover', height: '100%'}}>
                 <Container component="main" maxWidth="sm" style={{background: "white", paddingBottom: '50px'}}>
                     <CssBaseline/>
                     <div style={root}>

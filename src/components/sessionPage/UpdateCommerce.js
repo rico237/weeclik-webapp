@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import { Container, CssBaseline, Button, TextField, MenuItem, FormControlLabel, Checkbox, Grid } from '@material-ui/core';
+import { Container, Typography, Button, TextField, MenuItem, FormControlLabel, Checkbox, Grid } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
+import addCommercePicture from '../../assets/icons/addCommercePicture.png';
 
 const theme = createMuiTheme({
     spacing: 4,
@@ -201,14 +202,11 @@ class UpdateCommerce extends Component {
 
         return (
             <Container component="main" maxWidth="sm">
-                <CssBaseline/>
                 <div style={root}>
                     <form onSubmit={this.updateCommerce}>
                         <Grid container spacing={2}>
                             <Grid item xs={12}>
                                 <TextField
-                                    // required
-                                    className={"classes.textField"}
                                     fullWidth
                                     onChange={this.handleChange}
                                     value={this.state.commerce.nomCommerce}
@@ -220,6 +218,79 @@ class UpdateCommerce extends Component {
                                 />
                             </Grid>
                             <Grid item xs={12}>
+                                <Typography
+                                    variant="h5"
+                                    color="inherit"
+                                    noWrap
+                                    style={{ flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5 }}>Photos du commerce</Typography>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                    <input
+                                        id="icon-input-file-img1"
+                                        type="file"
+                                        accept="image/*"
+                                        style={{ display: 'None' }}
+                                        onChange={this.handleChangePicture1}
+                                    />
+                                    <label htmlFor="icon-input-file-img1">
+                                        <img
+                                            alt="select1"
+                                            src={
+                                                this.state.imgPreview1?
+                                                this.state.imgPreview1 :
+                                                addCommercePicture
+                                            }
+                                            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                        />
+                                    </label>
+                                </div>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                    <input
+                                        id="icon-input-file-img2"
+                                        type="file"
+                                        accept="image/*"
+                                        style={{ display: 'None' }}
+                                        onChange={this.handleChangePicture2}
+                                    />
+                                    <label htmlFor="icon-input-file-img2">
+                                        <img
+                                            alt="select2"
+                                            src={
+                                                this.state.imgPreview2?
+                                                this.state.imgPreview2 :
+                                                addCommercePicture
+                                            }
+                                            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                        />
+                                    </label>
+                                </div>
+                            </Grid>
+                            <Grid item xs={4}>
+                                <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
+                                    <input
+                                        id="icon-input-file-img3"
+                                        type="file"
+                                        accept="image/*"
+                                        style={{ display: 'None' }}
+                                        onChange={this.handleChangePicture3}
+                                    />
+                                    <label htmlFor="icon-input-file-img3">
+                                        <img
+                                            alt="select3"
+                                            src={
+                                                this.state.imgPreview3?
+                                                this.state.imgPreview3 :
+                                                addCommercePicture
+                                            }
+                                            style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
+                                        />
+                                    </label>
+                                </div>
+                            </Grid>
+                            <Grid item xs={12}>
                                 <TextField
                                     select
                                     fullWidth
@@ -227,8 +298,6 @@ class UpdateCommerce extends Component {
                                     name="currencyCategory"
                                     value={this.state.commerce.currencyCategory}
                                     onChange={this.handleChange}
-                                    // required
-                                    className={"classes.textField2"}
                                     label="Catégorie"
                                 >   
                                     <MenuItem value=""><em>Aucune</em></MenuItem>
@@ -258,8 +327,6 @@ class UpdateCommerce extends Component {
                             {/* Informations du commerce */}
                             <Grid item xs={12}>
                                 <TextField
-                                    // required
-                                    className={"classes.textField"}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
                                     value={this.state.commerce.adresse}
@@ -272,8 +339,6 @@ class UpdateCommerce extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    // required
-                                    className={"classes.textField"}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
                                     value={this.state.commerce.tel}
@@ -286,8 +351,6 @@ class UpdateCommerce extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    // required
-                                    className={"classes.textField"}
                                     fullWidth
                                     onChange={this.handleChange.bind(this)}
                                     value={this.state.commerce.siteWeb}
@@ -301,8 +364,6 @@ class UpdateCommerce extends Component {
                             <Grid item xs={12}>
                                 {/* Description de votre commerce */}
                                 <TextField
-                                    // required
-                                    className={"classes.textField"}
                                     multiline
                                     fullWidth
                                     rows="4"
@@ -317,7 +378,6 @@ class UpdateCommerce extends Component {
                             </Grid>
                             <Grid item xs={12}>
                                 <TextField
-                                    // required
                                     multiline
                                     fullWidth
                                     rows="4"

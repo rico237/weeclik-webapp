@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Link } from 'react-router-dom';
-import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, Badge, Tooltip, CardActions,
+import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, /*Badge, */Tooltip, CardActions,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
@@ -43,7 +43,7 @@ const card = {
     display: 'flex',
     flexDirection: 'column',
     background:
-      'linear-gradient(34deg, rgba(55,16,83,1) 0%, rgba(162,73,190,1) 29%, rgba(33,16,83,1) 92%)',
+    'linear-gradient(34deg, rgba(1,137,210,1) 0%, rgba(0,87,155,1) 29%, rgba(3,156,229,1) 92%)',
 }
 
 const card1 = {
@@ -77,61 +77,61 @@ const LightTooltip = withStyles(theme => ({
     },
 }))(Tooltip);
 
-const StyledBadgeRed = withStyles(theme => ({
-    badge: {
-        backgroundColor: '#F00',
-        width: 15,
-        height: 15,
-        boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-        '&::after': {
-            position: 'absolute',
-            top: 0, left: 0,
-            width: '100%', height: '100%',
-            borderRadius: '50%',
-            animation: '$ripple 1.2s infinite ease-in-out',
-            border: '1px solid #F00',
-            content: '""',
-        },
-    },
-    '@keyframes ripple': {
-        '0%': {
-            transform: 'scale(.8)',
-            opacity: 1,
-        },
-        '100%': {
-            transform: 'scale(2.4)',
-            opacity: 0,
-        },
-    }
-}))(Badge)
+// const StyledBadgeRed = withStyles(theme => ({
+//     badge: {
+//         backgroundColor: '#F00',
+//         width: 15,
+//         height: 15,
+//         boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+//         '&::after': {
+//             position: 'absolute',
+//             top: 0, left: 0,
+//             width: '100%', height: '100%',
+//             borderRadius: '50%',
+//             animation: '$ripple 1.2s infinite ease-in-out',
+//             border: '1px solid #F00',
+//             content: '""',
+//         },
+//     },
+//     '@keyframes ripple': {
+//         '0%': {
+//             transform: 'scale(.8)',
+//             opacity: 1,
+//         },
+//         '100%': {
+//             transform: 'scale(2.4)',
+//             opacity: 0,
+//         },
+//     }
+// }))(Badge)
 
-const StyledBadgeGreen = withStyles(theme => ({
-    badge: {
-        backgroundColor: '#44b700',
-        width: 15,
-        height: 15,
-        boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
-        '&::after': {
-            position: 'absolute',
-            top: 0, left: 0,
-            width: '100%', height: '100%',
-            borderRadius: '50%',
-            animation: '$ripple 1.2s infinite ease-in-out',
-            border: '1px solid #44b700',
-            content: '""',
-        },
-    },
-    '@keyframes ripple': {
-        '0%': {
-            transform: 'scale(.8)',
-            opacity: 1,
-        },
-        '100%': {
-            transform: 'scale(2.4)',
-            opacity: 0,
-        },
-    }
-}))(Badge)
+// const StyledBadgeGreen = withStyles(theme => ({
+//     badge: {
+//         backgroundColor: '#44b700',
+//         width: 15,
+//         height: 15,
+//         boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+//         '&::after': {
+//             position: 'absolute',
+//             top: 0, left: 0,
+//             width: '100%', height: '100%',
+//             borderRadius: '50%',
+//             animation: '$ripple 1.2s infinite ease-in-out',
+//             border: '1px solid #44b700',
+//             content: '""',
+//         },
+//     },
+//     '@keyframes ripple': {
+//         '0%': {
+//             transform: 'scale(.8)',
+//             opacity: 1,
+//         },
+//         '100%': {
+//             transform: 'scale(2.4)',
+//             opacity: 0,
+//         },
+//     }
+// }))(Badge)
 //#endregion
 
 
@@ -386,7 +386,7 @@ class ProfilePage extends Component {
                                                             title={this.state.user.name}
                                                             subheader={this.state.user.email}
                                                         />
-                                                        {
+                                                        {/* {
                                                             this.props.user.emailVerified ?
                                                             (<CardHeader
                                                                 subheader= {
@@ -416,7 +416,7 @@ class ProfilePage extends Component {
                                                                                 Mail pas confirmé
                                                                         </StyledBadgeRed>
                                                                     </LightTooltip>}/>)
-                                                        }
+                                                        } */}
                                                     </center>
                                                 </div>
                                             </Grid>

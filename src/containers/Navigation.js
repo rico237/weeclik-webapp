@@ -213,7 +213,7 @@ function Navigation(props) {
                                 <Box mx={2}/>
                                 <Grid
                                     container
-                                    justify="space-between"
+                                    justify="flex-end"
                                 >
                                     <Grid item>
                                         <LightTooltip title="Accueil">

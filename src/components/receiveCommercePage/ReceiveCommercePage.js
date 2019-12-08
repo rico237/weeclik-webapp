@@ -5,10 +5,13 @@ import { Container, CssBaseline, Grid, Paper, Typography, Card, CardContent, Car
 import { createMuiTheme } from '@material-ui/core/styles';
 import CommercePicture from './CommercePicture';
 
+import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
 import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
 import CallRoundedIcon from '@material-ui/icons/CallRounded';
+
+import grey from '@material-ui/core/colors/grey';
 
 import "../../../node_modules/video-react/dist/video-react.css";
 
@@ -20,7 +23,7 @@ const theme = createMuiTheme({
 
 const root = {
     flexGrow: 1,
-    paddingTop: '40px',
+    // paddingTop: '40px',
 }
 
 const root2 = {
@@ -51,7 +54,7 @@ const card = {
     paddingLeft: 8,
     paddingRight: 8,
     background:
-      'linear-gradient(34deg, rgba(55,16,83,1) 0%, rgba(162,73,190,1) 29%, rgba(33,16,83,1) 92%)',
+      'linear-gradient(34deg, rgba(1,137,210,1) 0%, rgba(0,87,155,1) 29%, rgba(3,156,229,1) 92%)',
 }
 
 const media = {
@@ -65,13 +68,6 @@ const content = {
 
 }
 
-const overline = {
-    lineHeight: 2,
-    color: '#ffffff',
-    fontWeight: 'bold',
-    fontSize: '0.625rem',
-    opacity: 0.7,
-}
 //#endregion
 
 
@@ -286,77 +282,97 @@ class ReceiveCommercePage extends Component {
     render() {
 
         return (
-            <Container component="main" maxWidth="md" style={{ color: "#000" }}>
-                <CssBaseline/>
-                {this.props.match.params.commerceId}
-                <div style={root}>
+            <div style={{marginTop: '50px'}}>
+                <CommercePicture
+                    commerceId={this.props.match.params.commerceId}
+                    commerceName={this.state.commerce.nomCommerce}
+                    commerceCategory={this.state.commerce.currencyCategory}
+                    commerceNbShare={this.state.commerce.nombrePartages}/>
+                <Container component="main" maxWidth="md" style={{ color: "#000" }}>
+                    <CssBaseline/>
+                    <div style={root}>
+                        <Grid
+                            container
+                            spacing={1}
+                            direction="row"
+                            justify="center">
+                            <Grid item xs={12} className="Weeclik-App-Info-Commerce2" style={paper}>
+                                <div style={{margin:'10px'}}></div>
 
-                    <CommercePicture
-                        commerceId={this.props.match.params.commerceId}
-                        commerceName={this.state.commerce.nomCommerce}
-                        commerceCategory={this.state.commerce.currencyCategory}
-                        commerceNbShare={this.state.commerce.nombrePartages}/>
-                    <Grid
-                        container
-                        spacing={1}
-                        direction="row"
-                        justify="center">
-                        <Grid item xs={12} className="Weeclik-App-Info-Commerce2" style={paper}>
-                            <div style={{margin:'10px'}}></div>
-
-                            <Card style={card}>
-                                <CardContent style={content}>
-                                    <Typography style={heading} variant="h6" gutterBottom>
-                                        Promotions
-                                    </Typography>
-                                    <Grid container spacing={1}>
-                                        <Grid item xs={8}>
-                                            <Typography style={overline} variant="overline">
-                                                Promotions Blab bla bla
-                                            </Typography>
+                                {this.state.commerce.promotion ? (<Card style={card}>
+                                    <CardContent style={content}>
+                                        <Grid container spacing={1}>
+                                            <Grid item xs={8}>
+                                                <Typography style={heading} variant="h6" gutterBottom>{this.state.commerce.promotion}</Typography>
+                                            </Grid>
+                                            <Grid item xs={4}>
+                                                <img src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={4}>
-                                            <img src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
-                                        </Grid>
-                                    </Grid>
-                                </CardContent>
-                            </Card>
+                                    </CardContent>
+                                </Card>) : (null)}
 
-                            <div style={{margin:'10px'}}></div>
+                                <div style={{margin:'10px'}}></div>
 
-                            <Paper elevation={0} style={root2}>
-                                <h6 style={{color:"#000"}}>
-                                    <RoomRoundedIcon/>
-                                    {" : " + this.state.commerce.adresse}
-                                </h6>
-                                <h6 style={{color:"#000"}}>
-                                    <CallRoundedIcon/>
-                                    {" : " + this.state.commerce.tel}
-                                </h6>
-                                <h6 style={{color:"#000"}}>
-                                    <EmailRoundedIcon/>
-                                    {" : "}<a href={"http://"+this.state.commerce.mail} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.mail}</a>
-                                </h6>
-                                <h6 style={{color:"#000"}}>
-                                    <LanguageRoundedIcon/>
-                                    {" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
-                                </h6>
-                            </Paper>
-                            
-                            <div style={{margin:'10px'}}></div>
+                                <Paper elevation={0} style={root2}>
+                                <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
+                                    {this.state.commerce.adresse ? (
+                                            <h6 style={{color:"#000"}}>
+                                                <RoomRoundedIcon/>{" : " + this.state.commerce.adresse}
+                                            </h6>
+                                        ) : (
+                                            <h6 style={{color: grey[500]}}>
+                                                <RoomRoundedIcon/>{" : Aucune adresse trouvé"}
+                                            </h6>
+                                        )}
+                                    {this.state.commerce.tel ? (
+                                            <h6 style={{color:"#000"}}>
+                                                <CallRoundedIcon/>{" : " + this.state.commerce.tel}
+                                            </h6>
+                                        ) : (
+                                            <h6 style={{color: grey[500]}}>
+                                                <CallRoundedIcon/>{" : Aucun numéro de téléphone trouvé"}
+                                            </h6>
+                                        )}
+                                    {this.state.commerce.mail ? (
+                                            <h6 style={{color:"#000"}}>
+                                                <EmailRoundedIcon/>{" : " + this.state.commerce.mail}
+                                            </h6>
+                                        ) : (
+                                            <h6 style={{color: grey[500]}}>
+                                                <EmailRoundedIcon/>{" : Aucun mail trouvé"}
+                                            </h6>
+                                        )}
+                                    {this.state.commerce.siteWeb ? (
+                                            <h6 style={{color:"#000"}}>
+                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
+                                            </h6>
+                                        ) : (
+                                            <h6 style={{color: grey[500]}}>
+                                                <LanguageRoundedIcon/>{" : Aucun site web trouvé"}
+                                            </h6>
+                                        )}
+                                    <h5 style={{color:"#000", paddingTop: '20px'}}>
+                                        <FavoriteBorderRoundedIcon style={{color:"#F00"}}/>
+                                        {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
+                                    </h5>
+                                </Paper>
+                                
+                                <div style={{margin:'10px'}}></div>
 
-                            <CardHeader
-                                style={{ background: '#FFF', borderRadius: 16, padding: 16, fontWeight: 'bold',
-                                fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
-                            }}
-                                title="Description"
-                                subheader={this.state.commerce.description}
-                            />
+                                <CardHeader
+                                    style={{ background: '#FFF', borderRadius: 16, padding: 16, fontWeight: 'bold',
+                                    fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
+                                }}
+                                    title="Description"
+                                    subheader={this.state.commerce.description}
+                                />
 
+                            </Grid>
                         </Grid>
-                    </Grid>
-                </div>
-            </Container>
+                    </div>
+                </Container>
+            </div>
         );
     }
 }

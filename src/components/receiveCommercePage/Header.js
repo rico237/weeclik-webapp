@@ -3,7 +3,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 
-import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
+// import FavoriteRoundedIcon from '@material-ui/icons/FavoriteRounded';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -67,7 +67,7 @@ function Header(commerceParams) {
                                     alt={"Image "+index}
                                 />
                             ) : null}
-                            <div style={{
+                            {/* <div style={{
                                 font: 'bold 24px/45px Helvetica, Sans-Serif',
                                 letterSpacing: '-1px',
                                 background: 'rgba(0, 0, 0, 0.3)',
@@ -87,7 +87,7 @@ function Header(commerceParams) {
                                         marginBottom: '8px',
                                         marginTop: '70px'}}>{commerceParams.nbShare}{' '} <FavoriteRoundedIcon/></p>
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                     ))
                 }

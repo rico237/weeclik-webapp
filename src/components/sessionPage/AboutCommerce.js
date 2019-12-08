@@ -27,8 +27,6 @@ import { Redirect } from 'react-router-dom';
 
 import "../../../node_modules/video-react/dist/video-react.css";
 import { Player } from 'video-react';
-import DeleteIcon from '@material-ui/icons/Delete';
-// import Add from '@material-ui/icons/Add';
 import Info from '@material-ui/icons/Info';
 
 import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
@@ -38,6 +36,7 @@ import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
 import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
 import CallRoundedIcon from '@material-ui/icons/CallRounded';
+import EditRoundedIcon from '@material-ui/icons/EditRounded';
 
 //#region COLOR
 import grey from '@material-ui/core/colors/grey';
@@ -715,7 +714,12 @@ class AboutCommerce extends Component {
                         <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={{borderRadius: 0}}>
                                 <Card elevation={0} style={root2}>
-                                    <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
+                                    <Grid container justify="space-between">
+                                        <Grid item><Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography></Grid>
+                                        <Grid item>
+                                            <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                        </Grid>
+                                    </Grid>
                                     <h6 style={{color: this.state.colorStatus, margin: '10px 0'}}>
                                         {this.state.commerce.statutCommerce}{' '}
                                         <IconButton onClick={() => { this.handleOpenInfo() }} aria-label="delete" style={{ color: "gray", outline: 'none'}} size="small">
@@ -759,12 +763,15 @@ class AboutCommerce extends Component {
                     <div>
                         <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
+                                <Grid container justify="space-between">
+                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography></Grid>
+                                    <Grid item>
+                                        <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                    </Grid>
+                                </Grid>
                                 <Grid
                                     container
                                     alignItems="center">
-                                    <Grid item xs={12}>
-                                        <Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography>
-                                    </Grid>
                                     <Grid item xs={12}>
                                         {
                                             this.state.commerce.promotion ?
@@ -781,6 +788,12 @@ class AboutCommerce extends Component {
                     <div>
                         <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
+                                <Grid container justify="space-between">
+                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Photos du commerce</Typography></Grid>
+                                    <Grid item>
+                                        <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                    </Grid>
+                                </Grid>
                                 <Grid
                                     container
                                     justify="space-between"
@@ -874,6 +887,12 @@ class AboutCommerce extends Component {
                     <div>
                         <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
+                                <Grid container justify="space-between">
+                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography></Grid>
+                                    <Grid item>
+                                        <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                    </Grid>
+                                </Grid>
                                 <Grid
                                     container
                                     justify="space-between"
@@ -926,15 +945,18 @@ class AboutCommerce extends Component {
                             </Paper>
                         </Container>
                     </div>
-                    <div style={{margin:'10px'}}></div>
                     {/* La description */}
-                    <div>
+                    <div style={{margin:'10px'}}>
                         <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
-                                <Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography>
-                                <Grid item x={12}>
-                                    <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
+                                <Grid container justify="space-between">
+                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography></Grid>
+                                    <Grid item>
+                                        <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                    </Grid>
                                 </Grid>
+                                
+                                <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
                             </Paper>
                         </Container>
                     </div>
