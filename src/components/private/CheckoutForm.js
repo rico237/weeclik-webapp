@@ -57,7 +57,10 @@ class CheckoutForm extends Component {
     
 
     render() {
-        if (this.state.complete) return <Redirect back />;//<h1>Paiement Validé</h1>
+        if (this.state.complete) return <Redirect to={{
+            pathname: '/aboutcommerce',
+            state: { id: this.props._idCommerce }
+        }} />;//<h1>Paiement Validé</h1>
         
         return (
             <div>
