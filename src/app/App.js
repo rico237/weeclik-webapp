@@ -16,6 +16,7 @@ import PayPage from '../components/private/PayPage';
 
 import '../css/App.css';
 import Navigation from '../containers/Navigation';
+import ErrorBoundary from '../containers/ErrorBoundary';
 
 class App extends Component {
 
@@ -38,21 +39,23 @@ class App extends Component {
 				}}
 			>
 				<Router history={history}>
-					<Navigation/>
-					<Switch>
-						<Route exact path='/' component={HomePage}/>
-						<Route exact path="/forgot" component={ForgotPage}/>
-						<ProtectedSigninRoute path="/login" component={LoginPage}/>
-						<ProtectedSignupRoute path="/register" component={RegisterPage}/>
-						<PrivateRoute path="/user" component={ProfilePage}/>
-						<PrivateRoute path="/createcom" component={CreateCom}/>
-						<PrivateRoute path="/createcommerce" component={CreateCommerce}/>
-						<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
-						<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>
-						<PrivateRoute path="/pay" component={PayPage}/>
-						<Route path='/commerce/:commerceId' component={ReceiveCommercePage}/>
-						<Route path="/*" component={Page404} />
-					</Switch>
+					<ErrorBoundary>
+						<Navigation/>
+						<Switch>
+							<Route exact path='/' component={HomePage}/>
+							<Route exact path="/forgot" component={ForgotPage}/>
+							<ProtectedSigninRoute path="/login" component={LoginPage}/>
+							<ProtectedSignupRoute path="/register" component={RegisterPage}/>
+							<PrivateRoute path="/user" component={ProfilePage}/>
+							<PrivateRoute path="/createcom" component={CreateCom}/>
+							<PrivateRoute path="/createcommerce" component={CreateCommerce}/>
+							<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
+							<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>
+							<PrivateRoute path="/pay" component={PayPage}/>
+							<Route path='/commerce/:commerceId' component={ReceiveCommercePage}/>
+							<Route path="/*" component={Page404} />
+						</Switch>
+					</ErrorBoundary>
 				</Router>
 			</div>
 		);

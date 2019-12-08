@@ -186,15 +186,10 @@ class UpdateCommerce extends Component {
 
 
     componentDidMount() {
-        // this.props.getUserInfo();
-        // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
         this.getCommerceData();
     }
 
     render() {
-        // const { user } = this.props;className="App-header"
-        // console.log(this.state.commerce);
-
         if (this.state.isCreate) {
             return (
                 <Redirect to={{

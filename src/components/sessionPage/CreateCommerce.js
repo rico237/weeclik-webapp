@@ -42,39 +42,41 @@ class CreateCommerce extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            commerce: {
-                nomCommerce: '',
-                adresse: '',
-                ville: '',
-                bp: '',
-                siteWeb: '',
-                tel: '',
-                description: '',
-                statutCommerce: '',
-                nombrePartages: 0,
-                promotions: '',
-                owner: '',
-                position: '',
-                mail: '',
-                currencyCategory: '',
-            },
-            imgPreview1: null,
-            imgPreview1a: null,
-            imgPreview2: null,
-            imgPreview2a: null,
-            imgPreview3: null,
-            imgPreview3a: null,
-            nbImageUpload: 0,
+        try {
+            this.state = {
+                commerce: {
+                    nomCommerce: '',
+                    adresse: '',
+                    ville: '',
+                    bp: '',
+                    siteWeb: '',
+                    tel: '',
+                    description: '',
+                    statutCommerce: '',
+                    nombrePartages: 0,
+                    promotions: '',
+                    owner: '',
+                    position: '',
+                    mail: '',
+                    currencyCategory: '',
+                },
+                imgPreview1: null,
+                imgPreview1a: null,
+                imgPreview2: null,
+                imgPreview2a: null,
+                imgPreview3: null,
+                imgPreview3a: null,
+                nbImageUpload: 0,
 
-            id: '',
+                id: '',
 
-            validate: false,
+                validate: false,
 
-            submitted: false,
+                submitted: false,
 
-            isCreate: false
-        };
+                isCreate: false
+            };
+        } catch(error) {}
 
         this.handleValidate = this.handleValidate.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -288,8 +290,9 @@ class CreateCommerce extends Component {
 
 
     componentDidMount() {
-        this.getAllCommerces();
-        console.log(this.props.user.email);
+        try {
+            this.getAllCommerces();
+        } catch (error) {}
     }
 
     render() {
