@@ -31,7 +31,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 // import Add from '@material-ui/icons/Add';
 import Info from '@material-ui/icons/Info';
 
-import AddPhotoAlternateRoundedIcon from '@material-ui/icons/AddPhotoAlternateRounded';
+import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
+import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
 import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
 import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
@@ -40,6 +41,7 @@ import CallRoundedIcon from '@material-ui/icons/CallRounded';
 
 //#region COLOR
 import grey from '@material-ui/core/colors/grey';
+import green from '@material-ui/core/colors/green';
 import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 // import Picture from './components/commerceComponent/Picture';
@@ -216,7 +218,7 @@ class AboutCommerce extends Component {
                             break;
                         case 1:
                             _statusCommerce = "En ligne"
-                            this.setState({colorStatus: blue[500]});
+                            this.setState({colorStatus: green[500]});
                             break;
                         case 2:
                             _statusCommerce = "Hors ligne - paiement annulé"
@@ -696,7 +698,7 @@ class AboutCommerce extends Component {
                                         <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid>
                                         {
                                             this.state.commerce.statutCommerce !== "En ligne" ? (
-                                                <Grid item xs><Button onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none' }}>Payer 329.99 €</Button></Grid>
+                                                <Grid item xs><Button variant="contained" color="primary" onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none' }}>Payer 329.99 €</Button></Grid>
                                             ) : (
                                                 null
                                             )
@@ -733,11 +735,18 @@ class AboutCommerce extends Component {
                                         <EmailRoundedIcon/>
                                         {" : "}<a href={"http://"+this.state.commerce.mail} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.mail}</a>
                                     </h6>
-                                    <h6 style={{color:"#000"}}>
-                                        <LanguageRoundedIcon/>
-                                        {" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.siteWeb}</a>
-                                    </h6>
-                                    <h5 style={{color:"#000", paddingTop: '50px'}}>
+                                    {
+                                        this.state.commerce.siteWeb ? (
+                                            <h6 style={{color:"#000"}}>
+                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.siteWeb}</a>
+                                            </h6>
+                                        ) : (
+                                            <h6 style={{color: grey[500]}}>
+                                                <LanguageRoundedIcon/>{" : Aucun site web"}
+                                            </h6>
+                                        )
+                                    }
+                                    <h5 style={{color:"#000", paddingTop: '20px'}}>
                                         <FavoriteBorderRoundedIcon style={{color:"#F00"}}/>
                                         {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
                                     </h5>
@@ -778,7 +787,7 @@ class AboutCommerce extends Component {
                                     alignItems="center">
                                     <Grid item xs={12}>
                                         <Grid container justify="space-between">
-                                            <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Images du commerce</Typography></Grid>
+                                            <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Photos du commerce</Typography></Grid>
                                             <Grid item>
                                                 <Grid container justify="space-between">
                                                     <Grid item xs={6}>
@@ -794,8 +803,9 @@ class AboutCommerce extends Component {
                                                                     multiple/>
                                                                 <label htmlFor="icon-input-file-img">
                                                                     <LightTooltip title="Ajouter des images">
-                                                                        <IconButton aria-label="add" color="primary" style={{outline: 'none'}}>
-                                                                            <AddPhotoAlternateRoundedIcon />
+                                                                        <IconButton aria-label="upload picture" component="span" color="primary" style={{outline: 'none'}}>
+                                                                            <AddAPhotoRoundedIcon />
+                                                                            {/* <AddPhotoAlternateRoundedIcon /> */}
                                                                         </IconButton>
                                                                     </LightTooltip>
                                                                     {/* <LightTooltip title="Ajouter des images">
@@ -813,7 +823,7 @@ class AboutCommerce extends Component {
                                                             this.state.listImg.length > 0 ?
                                                             (<LightTooltip title="Tout supprimer">
                                                                 <IconButton onClick={() => { this.deleteAllPictureCommerce() } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
-                                                                    <DeleteIcon />
+                                                                    <DeleteForeverRoundedIcon />
                                                                 </IconButton>
                                                             </LightTooltip>):
                                                             (null)
@@ -838,7 +848,7 @@ class AboutCommerce extends Component {
                                                 spacing={2}>
                                                 {this.state.listImg && [...this.state.listImg].map((object, index) => (
                                                     <Grid key={index} item xs>
-                                                        <div>
+                                                        <center>
                                                             <div style={{height: 250, maxWidth: '100%', overflow: 'hidden'}}>
                                                                 <img
                                                                     src={object.url}
@@ -846,9 +856,9 @@ class AboutCommerce extends Component {
                                                                 />
                                                             </div>
                                                             <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
-                                                                <DeleteIcon fontSize="small" />
+                                                                <DeleteForeverRoundedIcon fontSize="default" />
                                                             </IconButton>
-                                                        </div>
+                                                        </center>
                                                     </Grid>
                                                 ))}
                                             </Grid>):
@@ -934,34 +944,6 @@ class AboutCommerce extends Component {
                         <Container component="main"  maxWidth={'lg'} style={{ color: "#000" }}>
                             <CssBaseline/>
                             
-                            {/* <div style={root}>
-                                <Grid
-                                    container
-                                    spacing={1}
-                                    direction="row"
-                                    justify="center">
-                                    <Grid item xs={12} sm={4} className="Weeclik-App-Info-Commerce2" style={paper}>
-                                        <Paper elevation={0} style={root2}>
-                                            <Button fullWidth variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
-                                            <Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Modifier le commerce</Button>
-                                            {
-                                                this.state.commerce.statutCommerce !== "En ligne"?
-                                                (<div>
-                                                    <Typography component="p" style={{color:"#000"}}>Payer pour mettre votre commerce en ligne</Typography>
-                                                    <Button fullWidth onClick={() => { this.goToPay(this.state.commerceId) }} style={styleButton2} startIcon={<Payment />}>Payer 329.99 €</Button>
-                                                </div>):
-                                                (<div></div>)
-
-                                            }
-                                            
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item xs={12} sm={8} className="Weeclik-App-Info-Commerce2" style={paper}>
-                                        <div style={{margin:'10px'}}></div>
-                                    </Grid>
-                                </Grid>
-                            </div> */}
-
                             <div>
                                 <Dialog
                                     open={this.state.openPopupVideoDelete}
