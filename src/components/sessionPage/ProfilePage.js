@@ -57,13 +57,6 @@ const card1 = {
     flexDirection: 'column',
 }
 
-const media = {
-    flexShrink: 0,
-    width: '50%',
-    float: 'right',
-    // marginRight: 'auto',
-}
-
 const content = {
 
 }
@@ -313,8 +306,8 @@ class ProfilePage extends Component {
 
     render() {
         return (
-            <div style={{background: '#000', height: '100%'}}>
-                <header className="App-header-profile" style={{minHeight: '100%', height: '100%'}}>
+            <div style={{background: '#F8F9FC', height: '100%'}}>
+                <Container className="App-header-profile" style={{minHeight: '100%', height: '100%'}}>
                     <div style={{height: '100vh', margin: '0px', padding: '0px'}}>
                         <Grid container spacing={2} style={{height: '100vh'}}>
                             <Grid item xs={12} sm={3} style={{backgroundImage: `linear-gradient(rgba(246, 247, 250, 0.1), rgba(255, 255, 255, 0.5))`}}>
@@ -424,7 +417,7 @@ class ProfilePage extends Component {
                                     </Card>)
                                 }
 
-                                <Card style={{ color:"#000", margin: '10px', backgroundImage: `linear-gradient(rgba(29, 177, 248, 0.5), rgba(255, 255, 255, 0.5)), url("https://jkkm.info/ui/images/awards/victory.png")` }}>
+                                <Card style={{ color:"#000", margin: '10px' }}>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">
                                             Télécharger Weeclik le réseau de confiance humain
@@ -484,13 +477,10 @@ class ProfilePage extends Component {
                                             <Card style={card}>
                                                 <CardContent style={content}>
                                                     <Grid container spacing={1}>
-                                                        <Grid item xs={8}>
+                                                        <Grid item xs>
                                                             <Typography style={heading} variant="h6" gutterBottom>
                                                             Devenir ambassadeur et ambassadrice du seul réseau de confiance humain
                                                             </Typography>
-                                                        </Grid>
-                                                        <Grid item xs={4}>
-                                                            <img alt="Ambassador" src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
                                                         </Grid>
                                                     </Grid>
                                                 </CardContent>
@@ -550,7 +540,7 @@ class ProfilePage extends Component {
                             </Grid>
                         </Grid>
                     </div>
-                </header>
+                </Container>
                 <Footer/>
             </div>
         );

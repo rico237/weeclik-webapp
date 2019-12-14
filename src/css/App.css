@@ -17,8 +17,23 @@
 	color: white;
 }
 
+.content {
+	min-height: 100%;
+}
+
+.content-inside {
+	padding: 20px;
+	padding-bottom: 50px;
+}
+
+.footer {
+	/* height: 50px; */
+	z-index: 0;
+	margin-top: -50px;
+}
+
 .App-header-profile {
-	background-color: #F8F9FC;
+	/* background-color: #F8F9FC; */
 	min-height: 100vh;
 	padding-top: 70px;
 	padding-bottom: 200px;

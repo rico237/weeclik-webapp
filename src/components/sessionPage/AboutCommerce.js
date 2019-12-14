@@ -31,7 +31,7 @@ import Info from '@material-ui/icons/Info';
 
 import NoImage from '../../assets/images/no-image.png';
 
-import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
+import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
 import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
@@ -486,7 +486,6 @@ class AboutCommerce extends Component {
         .then(responseSnapshot => {
             responseSnapshot.forEach((elt) => {
                 commercePicture.push({ id: elt.id, url: elt.get("photo").url(), default: false });
-                console.log("ID ORIGINAL : "+elt.id)
             });
             for (let i = responseSnapshot.length; i < 3; i++) {
                 var uuid = this.getUUID();
@@ -722,7 +721,6 @@ class AboutCommerce extends Component {
     updateTheDescription(event) {
         event.preventDefault();
         const _state_commerce = this.state.commerce;
-        console.log("--->"+_state_commerce.description)
         // if (_state_commerce.promotion !== "") {
             const ParseCommerce = Parse.Object.extend("Commerce");
             const instanceCommerce = new ParseCommerce();
@@ -779,7 +777,7 @@ class AboutCommerce extends Component {
                             <Paper elevation={0} style={{borderRadius: 0}}>
                                 <center>
                                     <Grid container spacing={3}>
-                                        <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none' }}>Mes commerces</Button></Grid>
+                                        <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none',color: "#2096F3" }}>Mes commerces</Button></Grid>
                                         {/* <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid> */}
                                         {
                                             this.state.commerce.statutCommerce !== "En ligne" ? (
@@ -803,7 +801,7 @@ class AboutCommerce extends Component {
                                     <Grid container justify="space-between">
                                         <Grid item><Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography></Grid>
                                         <Grid item>
-                                            <Button onClick={() => {this.setState({canUpdateInfo: true})}} variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                            <Button onClick={() => {this.setState({canUpdateInfo: true})}} variant="text" color="primary" size="small" style={{outline: 'none', color: "#2096F3"}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
                                         </Grid>
                                     </Grid>
                                     {
@@ -950,7 +948,7 @@ class AboutCommerce extends Component {
                                 <Grid container justify="space-between">
                                     <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography></Grid>
                                     <Grid item>
-                                        <Button onClick={() => {this.setState({canUpdatePromo: true})}} variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                        <Button onClick={() => {this.setState({canUpdatePromo: true})}} variant="text" color="primary" size="small" style={{outline: 'none', color: "#2096F3"}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
                                     </Grid>
                                 </Grid>
                                 {
@@ -996,12 +994,6 @@ class AboutCommerce extends Component {
                     <div>
                         <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
-                                {/* <Grid container justify="space-between">
-                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Photos du commerce</Typography></Grid>
-                                    <Grid item>
-                                        <Button variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Ajouter des images</Button>
-                                    </Grid>
-                                </Grid> */}
                                 <Grid
                                     container
                                     justify="space-between"
@@ -1024,8 +1016,8 @@ class AboutCommerce extends Component {
                                                                     multiple/>
                                                                 <label htmlFor="icon-input-file-img">
                                                                     <LightTooltip title="Ajouter des images">
-                                                                        <IconButton aria-label="upload picture" component="span" color="primary" style={{outline: 'none'}}>
-                                                                            <AddAPhotoRoundedIcon />
+                                                                        <IconButton aria-label="upload picture" component="span" color="primary" style={{outline: 'none', color: "#2096F3"}}>
+                                                                            <AddCircleRoundedIcon />
                                                                             {/* <AddPhotoAlternateRoundedIcon /> */}
                                                                         </IconButton>
                                                                     </LightTooltip>
@@ -1111,42 +1103,33 @@ class AboutCommerce extends Component {
                                 <Grid container justify="space-between">
                                     <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography></Grid>
                                     <Grid item>
-                                        <Button variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
-                                    </Grid>
-                                </Grid>
-                                <Grid
-                                    container
-                                    justify="space-between"
-                                    alignItems="center">
-                                        <Grid item xs={12}>
-                                            <Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography>
+                                        <Grid container>
+                                            <Grid item spacing={2}>
+                                                {
+                                                    this.state.movieURL[0] ?
+                                                    (<div></div>) :
+                                                    (<div>
+                                                        <input
+                                                            id="icon-input-file-video"
+                                                            type="file"
+                                                            onChange={this.onUploadVideo}
+                                                            style={{ display: 'None' }}
+                                                            accept="video/mp4,video/x-m4v,video/*"/>
+                                                        <label htmlFor="icon-input-file-video">
+                                                            <Button variant="text" color="primary" size="small" component="span" style={{ outline: 'none', color: "#2096F3"}} startIcon={<AddCircleRoundedIcon/>}>Ajouter une vidéo</Button>
+                                                        </label>
+                                                    </div>)
+                                                }
+                                            </Grid>
+                                            <Grid item xs>
+                                                {
+                                                    this.state.movieURL[0] ?
+                                                    (<Button onClick={() => { this.deleteMovieCommerce() }} variant="text" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}} startIcon={<DeleteForeverRoundedIcon/>}>Supprimer la vidéo</Button>) : (<div></div>)
+                                                }                        
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={6}>
-                                            {
-                                                this.state.movieURL[0] ?
-                                                (<div></div>) :
-                                                (<div>
-                                                    <input
-                                                        id="icon-input-file-video"
-                                                        type="file"
-                                                        onChange={this.onUploadVideo}
-                                                        style={{ display: 'None' }}
-                                                        accept="video/mp4,video/x-m4v,video/*"/>
-                                                    <label htmlFor="icon-input-file-video">
-                                                        <Button variant="outlined" color="primary" size="small" component="span">
-                                                            Ajouter une vidéo
-                                                        </Button>
-                                                    </label>
-                                                </div>)
-                                            }
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            {
-                                                this.state.movieURL[0] ?
-                                                (<Button onClick={() => { this.deleteMovieCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Supprimer la vidéo</Button>) : (<div></div>)
-                                            }
                                             
-                                        </Grid>
+                                    </Grid>
                                         
                                 </Grid>
                                             
@@ -1173,7 +1156,7 @@ class AboutCommerce extends Component {
                                 <Grid container justify="space-between">
                                     <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography></Grid>
                                     <Grid item>
-                                        <Button onClick={() => {this.setState({canUpdateDescription: true})}} variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                        <Button onClick={() => {this.setState({canUpdateDescription: true})}} variant="text" color="primary" size="small" style={{outline: 'none', color: "#2096F3"}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
                                     </Grid>
                                 </Grid>
                                 {
@@ -1219,13 +1202,14 @@ class AboutCommerce extends Component {
                                     style={{ minHeight: "600px"}}
                                     maxWidth={"md"}
                                 >
-                                    <DialogTitle id="alert-dialog-title" style={{
-                                        width: "100px",
-                                        height: "100px",
-                                        display: 'block',
-                                        marginLeft: 'auto',
-                                        marginRight: 'auto',
-                                    }}><CircularProgress color="secondary" /></DialogTitle>
+                                    <DialogContent>
+                                        <center>
+                                            <DialogContentText id="alert-dialog-description">
+                                                <p>N'actualisez pas la page et ne sélectionnez pas Précédent. Si vous procédez ainsi, vous annulez la demande</p>
+                                            </DialogContentText>
+                                            <CircularProgress color="secondary" />
+                                        </center>
+                                    </DialogContent>
                                 </Dialog>
                             </div>
 
@@ -1238,14 +1222,14 @@ class AboutCommerce extends Component {
                                     style={{ minHeight: "600px"}}
                                     maxWidth={"md"}
                                 >
-                                    <DialogTitle id="alert-dialog-title" style={{
-                                        width: "100px",
-                                        height: "100px",
-                                        display: 'block',
-                                        marginLeft: 'auto',
-                                        marginRight: 'auto',
-                                        alignItems: 'center'
-                                    }}><CircularProgress /></DialogTitle>
+                                    <DialogContent>
+                                        <center>
+                                            <DialogContentText id="alert-dialog-description">
+                                                <p>Ajout d'une nouvelle vidéo. Cette étape peut prendre plusieurs minutes. N'actualisez pas la page et ne sélectionnez pas Précédent. Si vous procédez ainsi, vous annulez la demande</p>
+                                            </DialogContentText>
+                                            <CircularProgress color="secondary" />
+                                        </center>
+                                    </DialogContent>
                                 </Dialog>
                             </div>
 
