@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Link } from 'react-router-dom';
-import { Avatar, Grid, Container, IconButton, Paper, Typography, Button, CardHeader, Card, CardContent, /*Badge, */Tooltip, CardActions, CardMedia,
+import { Avatar, Grid, Container, IconButton, Typography, Button, CardHeader, Card, CardContent, /*Badge, */Tooltip, CardActions,
 } from '@material-ui/core';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
