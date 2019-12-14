@@ -13,6 +13,7 @@ import defaultProfile from '../assets/icons/defaultUser.svg'
 
 // Colors
 import red from '@material-ui/core/colors/red';
+import grey from '@material-ui/core/colors/grey';
 
 const theme = createMuiTheme({
 	palette: {
@@ -57,7 +58,7 @@ const useStyles = makeStyles(theme => ({
         fontFamily: 'Rubik, sans-serif',
         fontWeight: 'bold',
         fontSize: '25px',
-        color: '#1EB0F8',
+        color: grey[500],
         filter: 'brightness(1)'
     },
     title: {

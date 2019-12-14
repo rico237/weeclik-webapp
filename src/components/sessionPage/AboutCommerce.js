@@ -124,6 +124,9 @@ class AboutCommerce extends Component {
                 idPic1: '',
                 idPic2: '',
                 idPic3: '',
+                canUpdateInfo: false,
+                canUpdatePromo: false,
+                canUpdateDescription: false,
                 nbImageUpload: 0,
                 colorStatus: red[400]
             };
@@ -139,6 +142,10 @@ class AboutCommerce extends Component {
         this.changePicture3 = this.changePicture3.bind(this);
 
         this.onUploadImage = this.onUploadImage.bind(this);
+
+        this.updateTheInfo = this.updateTheInfo.bind(this);
+        this.updateThePromo = this.updateThePromo.bind(this);
+        this.updateTheDescription = this.updateTheDescription.bind(this);
     }
 
     handleOpenInfo = () => {
@@ -334,7 +341,6 @@ class AboutCommerce extends Component {
         }
     }
     //#endregion
-
 
     //#region UPLOAD_IMAGE
     uploadImageToServer(img, n, n_max) {
@@ -649,8 +655,75 @@ class AboutCommerce extends Component {
     }
     //#endregion
 
+    //#region UPDATE_COMMERCE
+    updateTheInfo(event) {
+        event.preventDefault();
 
+        const _state_commerce = this.state.commerce;
+        let addr = "";
+        if (_state_commerce !== "") {
+            addr = _state_commerce.adresse;
+        } else if (_state_commerce.adresse !== "") {
+            addr = _state_commerce.adresse;
+        }
 
+        if (_state_commerce.nomCommerce !== "" &&
+            _state_commerce.currencyCategory !== "" &&
+            _state_commerce.tel !== "" && addr !== "") {
+            const ParseCommerce = Parse.Object.extend("Commerce");
+            const instanceCommerce = new ParseCommerce();
+            instanceCommerce.id = this.state.commerceId;
+            instanceCommerce.set("nomCommerce", _state_commerce.nomCommerce);
+            instanceCommerce.set("siteWeb", _state_commerce.siteWeb);
+            instanceCommerce.set("adresse", addr);
+            instanceCommerce.set("typeCommerce", _state_commerce.currencyCategory);
+            instanceCommerce.set("mail", _state_commerce.mail);
+            instanceCommerce.set("tel", _state_commerce.tel);
+            instanceCommerce.save()
+            .then((newCommerce) => {
+                this.setState({canUpdateInfo: false})
+            }, (error) => {
+                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+            })
+        }
+    }
+
+    updateThePromo(event) {
+        event.preventDefault();
+        const _state_commerce = this.state.commerce;
+
+        // if (_state_commerce.promotion !== "") {
+            const ParseCommerce = Parse.Object.extend("Commerce");
+            const instanceCommerce = new ParseCommerce();
+            instanceCommerce.id = this.state.commerceId;
+            instanceCommerce.set("promotions", _state_commerce.promotion)
+            instanceCommerce.save()
+            .then((newCommerce) => {
+                this.setState({canUpdatePromo: false})
+            }, (error) => {
+                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+            })
+        // }
+    }
+
+    updateTheDescription(event) {
+        event.preventDefault();
+        const _state_commerce = this.state.commerce;
+        console.log("--->"+_state_commerce.description)
+        // if (_state_commerce.promotion !== "") {
+            const ParseCommerce = Parse.Object.extend("Commerce");
+            const instanceCommerce = new ParseCommerce();
+            instanceCommerce.id = this.state.commerceId;
+            instanceCommerce.set("description", _state_commerce.description)
+            instanceCommerce.save()
+            .then((newCommerce) => {
+                this.setState({canUpdateDescription: false})
+            }, (error) => {
+                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+            })
+        // }
+    }
+    //#endregion
 
     goToBack = () => {
         this.props.history.goBack();
@@ -694,7 +767,7 @@ class AboutCommerce extends Component {
                                 <center>
                                     <Grid container spacing={3}>
                                         <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none' }}>Mes commerces</Button></Grid>
-                                        <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid>
+                                        {/* <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid> */}
                                         {
                                             this.state.commerce.statutCommerce !== "En ligne" ? (
                                                 <Grid item xs><Button variant="contained" color="primary" onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none' }}>Payer 329.99 €</Button></Grid>
@@ -717,43 +790,141 @@ class AboutCommerce extends Component {
                                     <Grid container justify="space-between">
                                         <Grid item><Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography></Grid>
                                         <Grid item>
-                                            <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                            <Button onClick={() => {this.setState({canUpdateInfo: true})}} variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
                                         </Grid>
                                     </Grid>
-                                    <h6 style={{color: this.state.colorStatus, margin: '10px 0'}}>
-                                        {this.state.commerce.statutCommerce}{' '}
-                                        <IconButton onClick={() => { this.handleOpenInfo() }} aria-label="delete" style={{ color: "gray", outline: 'none'}} size="small">
-                                            <Info fontSize="small" />
-                                        </IconButton>
-                                    </h6>
-                                    <h6 style={{color:"#000"}}>Type : {this.state.commerce.currencyCategory}</h6>
-                                    <h6 style={{color:"#000"}}>
-                                        <RoomRoundedIcon/>
-                                        {" : " + this.state.commerce.adresse}
-                                    </h6>
-                                    <h6 style={{color:"#000"}}>
-                                        <CallRoundedIcon/>
-                                        {" : " + this.state.commerce.tel}
-                                    </h6>
-                                    <h6 style={{color:"#000"}}>
-                                        <EmailRoundedIcon/>
-                                        {" : "}<a href={"http://"+this.state.commerce.mail} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.mail}</a>
-                                    </h6>
                                     {
-                                        this.state.commerce.siteWeb ? (
-                                            <h6 style={{color:"#000"}}>
-                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.siteWeb}</a>
-                                            </h6>
+                                        this.state.canUpdateInfo ? (
+                                            <div>
+                                                <form onSubmit={this.updateTheInfo} /*style={{width:'500px'}}*/>
+                                                    <Grid container spacing={2}>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Nom du commerce</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.nomCommerce}
+                                                                name="nomCommerce"
+                                                                id="outlined-name"
+                                                                // variant="filled"
+                                                                // InputProps={{disableUnderline: true}}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Cathégorie</label>
+                                                            <select
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                name="currencyCategory"
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.currencyCategory}>
+                                                                    <option value="">--Aucune--</option>
+                                                                    <option value="Alimentaire">Alimentaire</option>
+                                                                    <option value="Artisanat">Artisanat</option>
+                                                                    <option value="Bâtiment">Bâtiment</option>
+                                                                    <option value="Bien-être">Bien-être</option>
+                                                                    <option value="Décoration">Décoration</option>
+                                                                    <option value="Dépannage">Dépannage</option>
+                                                                    <option value="Evènement">Evènement</option>
+                                                                    <option value="E-commerce">E-commerce</option>
+                                                                    <option value="Fabricant">Fabricant</option>
+                                                                    <option value="Garagiste">Garagiste</option>
+                                                                    <option value="Hôtellerie">Hôtellerie</option>
+                                                                    <option value="Humanitaire">Humanitaire</option>
+                                                                    <option value="Immobilier">Immobilier</option>
+                                                                    <option value="Informatique">Informatique</option>
+                                                                    <option value="Nautisme">Nautisme</option>
+                                                                    <option value="Restauration">Restauration</option>
+                                                                    <option value="Textile">Textile</option>
+                                                                    <option value="Transport">Transport</option>
+                                                                    <option value="Tourisme">Tourisme</option>
+                                                                    <option value="Santé">Santé</option>
+                                                                    <option value="Autre">Autre</option>
+                                                            </select>
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Adresse</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.adresse}
+                                                                name="adresse"
+                                                                id="outlined-name"
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Numéro de téléphone</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.tel}
+                                                                name="tel"
+                                                                id="outlined-name"
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Adresse mail</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.mail}
+                                                                name="mail"
+                                                                id="outlined-name"
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Site web</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.siteWeb}
+                                                                name="siteWeb"
+                                                                id="outlined-name"
+                                                            />
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Button variant="contained" color="primary" type="submit">valider</Button>
+                                                    <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateInfo: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                                </form>
+                                            </div>
                                         ) : (
-                                            <h6 style={{color: grey[500]}}>
-                                                <LanguageRoundedIcon/>{" : Aucun site web"}
-                                            </h6>
+                                            <div>
+                                                <h6 style={{color: this.state.colorStatus, margin: '10px 0'}}>
+                                                    {this.state.commerce.statutCommerce}{' '}
+                                                    <IconButton onClick={() => { this.handleOpenInfo() }} aria-label="delete" style={{ color: "gray", outline: 'none'}} size="small">
+                                                        <Info fontSize="small" />
+                                                    </IconButton>
+                                                </h6>
+                                                <h6 style={{color:"#000"}}>Type : {this.state.commerce.currencyCategory}</h6>
+                                                <h6 style={{color:"#000"}}>
+                                                    <RoomRoundedIcon/>
+                                                    {" : " + this.state.commerce.adresse}
+                                                </h6>
+                                                <h6 style={{color:"#000"}}>
+                                                    <CallRoundedIcon/>
+                                                    {" : " + this.state.commerce.tel}
+                                                </h6>
+                                                <h6 style={{color:"#000"}}>
+                                                    <EmailRoundedIcon/>
+                                                    {" : "}<a href={"http://"+this.state.commerce.mail} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.mail}</a>
+                                                </h6>
+                                                {
+                                                    this.state.commerce.siteWeb ? (
+                                                        <h6 style={{color:"#000"}}>
+                                                            <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.siteWeb}</a>
+                                                        </h6>
+                                                    ) : (
+                                                        <h6 style={{color: grey[500]}}>
+                                                            <LanguageRoundedIcon/>{" : Aucun site web"}
+                                                        </h6>
+                                                    )
+                                                }
+                                                <h5 style={{color:"#000", paddingTop: '20px'}}>
+                                                    <FavoriteBorderRoundedIcon style={{color:"#F00"}}/>
+                                                    {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
+                                                </h5>
+                                            </div>
                                         )
                                     }
-                                    <h5 style={{color:"#000", paddingTop: '20px'}}>
-                                        <FavoriteBorderRoundedIcon style={{color:"#F00"}}/>
-                                        {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
-                                    </h5>
                                 </Card>
                             </Paper>
                         </Container>
@@ -766,20 +937,44 @@ class AboutCommerce extends Component {
                                 <Grid container justify="space-between">
                                     <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography></Grid>
                                     <Grid item>
-                                        <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                        <Button onClick={() => {this.setState({canUpdatePromo: true})}} variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
                                     </Grid>
                                 </Grid>
-                                <Grid
-                                    container
-                                    alignItems="center">
-                                    <Grid item xs={12}>
-                                        {
-                                            this.state.commerce.promotion ?
-                                            (<Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>):
-                                            (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas de promotions en cours"}</Typography>)
-                                        }
-                                    </Grid>
-                                </Grid>
+                                {
+                                    this.state.canUpdatePromo ? (
+                                        <div>
+                                            <form onSubmit={this.updateThePromo}>
+                                                <Grid container spacing={2}>
+                                                    <Grid item xs={12}>
+                                                        <label>Ajouter des promotions</label>
+                                                        <textarea
+                                                            style={{margin: '-5px 0 10px 0',width:'100%', outline: 'none'}}
+                                                            onChange={this.handleChange}
+                                                            value={this.state.commerce.promotion}
+                                                            rows="5"
+                                                            name="promotion"
+                                                            id="outlined-name"
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                                <Button variant="contained" color="primary" type="submit">valider</Button>
+                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdatePromo: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                            </form>
+                                        </div>
+                                    ) : (
+                                        <Grid
+                                            container
+                                            alignItems="center">
+                                            <Grid item xs={12}>
+                                                {
+                                                    this.state.commerce.promotion ?
+                                                    (<Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>):
+                                                    (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas de promotions en cours"}</Typography>)
+                                                }
+                                            </Grid>
+                                        </Grid>
+                                    )
+                                }
                             </Paper>
                         </Container>
                     </div>
@@ -791,7 +986,7 @@ class AboutCommerce extends Component {
                                 <Grid container justify="space-between">
                                     <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Photos du commerce</Typography></Grid>
                                     <Grid item>
-                                        <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                        <Button variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
                                     </Grid>
                                 </Grid>
                                 <Grid
@@ -883,14 +1078,14 @@ class AboutCommerce extends Component {
                         </Container>
                     </div>
                     <div ref={this.movieRef} style={{margin:'10px'}}></div>
-                    {/* La promotion */}
+                    {/* La video */}
                     <div>
                         <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
                                 <Grid container justify="space-between">
                                     <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography></Grid>
                                     <Grid item>
-                                        <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                        <Button variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
                                     </Grid>
                                 </Grid>
                                 <Grid
@@ -938,25 +1133,48 @@ class AboutCommerce extends Component {
                                         />) :
                                         (<center>
                                             <Typography variant="h3" style={{color: grey[300]}}>Pas de vidéo</Typography>
-
                                         </center>)
                                     }
                                 </Grid>
                             </Paper>
                         </Container>
                     </div>
+                    <div ref={this.movieRef} style={{margin:'10px'}}></div>
                     {/* La description */}
-                    <div style={{margin:'10px'}}>
+                    <div>
                         <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
                                 <Grid container justify="space-between">
                                     <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography></Grid>
                                     <Grid item>
-                                        <Button variant="text" color="primary" size="small" startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                        <Button onClick={() => {this.setState({canUpdateDescription: true})}} variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
                                     </Grid>
                                 </Grid>
-                                
-                                <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
+                                {
+                                    this.state.canUpdateDescription ? (
+                                        <div>
+                                            <form onSubmit={this.updateTheDescription}>
+                                                <Grid container spacing={2}>
+                                                    <Grid item xs={12}>
+                                                        <label>La description de votre commerce</label>
+                                                        <textarea
+                                                            style={{margin: '-5px 0 10px 0',width:'100%', outline: 'none'}}
+                                                            onChange={this.handleChange}
+                                                            value={this.state.commerce.description}
+                                                            rows="5"
+                                                            name="description"
+                                                            id="outlined-name"
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                                <Button variant="contained" color="primary" type="submit">valider</Button>
+                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateDescription: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                            </form>
+                                        </div>
+                                    ) : (
+                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
+                                    )
+                                }
                             </Paper>
                         </Container>
                     </div>
