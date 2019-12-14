@@ -29,6 +29,8 @@ import "../../../node_modules/video-react/dist/video-react.css";
 import { Player } from 'video-react';
 import Info from '@material-ui/icons/Info';
 
+import NoImage from '../../assets/images/no-image.png';
+
 import AddAPhotoRoundedIcon from '@material-ui/icons/AddAPhotoRounded';
 import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
 import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
@@ -197,6 +199,13 @@ class AboutCommerce extends Component {
             id: _id,
             isCreate: !state.isCreate
         }));
+    }
+
+    getUUID() {
+        return 'xxyxx'.replace(/[xy]/g, (c) => {
+            var rand = Math.random() * 16 | 0, v = c === 'x' ? rand : (rand && (0x3 || 0x8));
+            return v.toString(16);
+        });
     }
 
     getCommerceData() {
@@ -476,8 +485,13 @@ class AboutCommerce extends Component {
         queryCommercePhoto.find()
         .then(responseSnapshot => {
             responseSnapshot.forEach((elt) => {
-                commercePicture.push({ id: elt.id, url : elt.get("photo").url()});
+                commercePicture.push({ id: elt.id, url: elt.get("photo").url(), default: false });
+                console.log("ID ORIGINAL : "+elt.id)
             });
+            for (let i = responseSnapshot.length; i < 3; i++) {
+                var uuid = this.getUUID();
+                commercePicture.push({ id: uuid, url: NoImage, default: true })
+            }
         });
         
         return new Promise(resolve => {
@@ -487,7 +501,6 @@ class AboutCommerce extends Component {
 
     getUrlCommercePicture = async () => {
         const listPicture = await this.getPicturesCommerce();
-        // console.log(listPicture)
         this.setState({
             listImg : listPicture
         }, () => {
@@ -983,12 +996,12 @@ class AboutCommerce extends Component {
                     <div>
                         <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
-                                <Grid container justify="space-between">
+                                {/* <Grid container justify="space-between">
                                     <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Photos du commerce</Typography></Grid>
                                     <Grid item>
-                                        <Button variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                        <Button variant="text" color="primary" size="small" style={{outline: 'none'}} startIcon={<EditRoundedIcon/>}>Ajouter des images</Button>
                                     </Grid>
-                                </Grid>
+                                </Grid> */}
                                 <Grid
                                     container
                                     justify="space-between"
@@ -1000,7 +1013,7 @@ class AboutCommerce extends Component {
                                                 <Grid container justify="space-between">
                                                     <Grid item xs={6}>
                                                         {
-                                                            this.state.listImg.length < 3 ?
+                                                            this.state.listImg.filter((obj) => obj.default === false).length < 3 ?
                                                             (<div>
                                                                 <input
                                                                     id="icon-input-file-img"
@@ -1030,7 +1043,7 @@ class AboutCommerce extends Component {
                                                         {
                                                             this.state.listImg.length > 0 ?
                                                             (<LightTooltip title="Tout supprimer">
-                                                                <IconButton onClick={() => { this.deleteAllPictureCommerce() } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
+                                                                <IconButton onClick={() => { this.deleteAllPictureCommerce() } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none', color: "#2096F3"}}>
                                                                     <DeleteForeverRoundedIcon />
                                                                 </IconButton>
                                                             </LightTooltip>):
@@ -1042,7 +1055,16 @@ class AboutCommerce extends Component {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
+                                        {
+                                            this.state.listImg.filter((obj) => obj.default === false).length < 1 ? (
+                                                <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
+                                            ) : (
+                                                <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter {this.state.listImg.filter((obj) => obj.default === true).length}
+                                                {" "}{this.state.listImg.filter((obj) => obj.default === true).length <= 1 ? ("image") : ("images")} de votre établissement</Typography>
+                                            )
+                                        }
+                                        {/* <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
+                                        <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter {this.state.listImg.length} images de votre établissement</Typography> */}
                                     </Grid>
                                     
                                     <Grid item xs={12}>
@@ -1063,9 +1085,13 @@ class AboutCommerce extends Component {
                                                                     style={{width: '100%', height: '100%', objectFit: 'cover'}}
                                                                 />
                                                             </div>
-                                                            <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
-                                                                <DeleteForeverRoundedIcon fontSize="default" />
-                                                            </IconButton>
+                                                            {
+                                                                (!object.default) ? (
+                                                                    <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none', color: "#2096F3"}}>
+                                                                        <DeleteForeverRoundedIcon fontSize="default" />
+                                                                    </IconButton>
+                                                                ) : (<div style={{margin: '50px'}}></div>)
+                                                            }
                                                         </center>
                                                     </Grid>
                                                 ))}
