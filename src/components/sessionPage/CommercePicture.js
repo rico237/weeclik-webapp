@@ -87,8 +87,8 @@ class CommercePicture extends React.Component {
             <div>
                 {
                     this.state.listImg.length > 0 ?
-                    (<img style={{width: 128, height: 128, objectFit: 'cover'}} src={this.state.listImg[0]} alt={this.props.title} />) :
-                    (<img style={{width: 128, height: 128, objectFit: 'cover'}} src={this.props.imgCategory} alt={this.props.title} />)
+                    (<img style={{width: '100%', height: 128, objectFit: 'cover'}} src={this.state.listImg[0]} alt={this.props.title} />) :
+                    (<img style={{width: '100%', height: 128, objectFit: 'cover'}} src={this.props.imgCategory} alt={this.props.title} />)
                 }
             </div>
         )

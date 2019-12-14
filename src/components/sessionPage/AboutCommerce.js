@@ -777,7 +777,10 @@ class AboutCommerce extends Component {
                             <Paper elevation={0} style={{borderRadius: 0}}>
                                 <center>
                                     <Grid container spacing={3}>
-                                        <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none',color: "#2096F3" }}>Mes commerces</Button></Grid>
+                                        <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none',color: "#2096F3", textTransform: 'none',
+                                                                                        // fontSize: 15,
+                                                                                        // fontWeight: 700,
+                                                                                        borderRadius: 100 }}>Mes commerces</Button></Grid>
                                         {/* <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid> */}
                                         {
                                             this.state.commerce.statutCommerce !== "En ligne" ? (
