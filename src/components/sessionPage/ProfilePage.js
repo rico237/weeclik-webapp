@@ -278,7 +278,13 @@ class ProfilePage extends Component {
         if (currentUser) {
             currentUser.fetch().then((snapshot) => {
                 var name = snapshot.get('name');
-                var PICTURE = snapshot.get('profilePictureURL');
+                // console.log(snapshot.get("profilPicFile")._url);
+                var PICTURE = null
+                if (snapshot.get("profilPicFile")._url) {
+                    PICTURE = snapshot.get("profilPicFile")._url;
+                } else {
+                    PICTURE = snapshot.get('profilePictureURL');
+                }
                 var username = snapshot.getUsername();
                 var mail = snapshot.getEmail();
 

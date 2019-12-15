@@ -11,7 +11,7 @@ export function authentication(state = initialState, action) {
                 user: action.user
             };
         case userConstants.LOGIN_SUCCESS:
-                // console.log(`------->${JSON.stringify(action, null, 2)}`);
+                console.log(`------->${JSON.stringify(action.user, null, 2)}`);
             return {
                 token: action.user.sessionToken,
                 userId: action.user.objectId,

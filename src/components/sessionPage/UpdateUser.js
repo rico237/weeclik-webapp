@@ -226,7 +226,7 @@ class UpdateUser extends Component {
 
     _uploadPicture(img, currentUser) {
         // var currentUser = Parse.User.current();
-        var file = new Parse.File("imageProfileName.jpg", { base64: img });
+        var file = new Parse.File("imgProfileName.jpg", { base64: img });
         if (currentUser) {
             file.save().then((_file) => {
                 currentUser.set("profilPicFile", file);
@@ -277,7 +277,12 @@ class UpdateUser extends Component {
         if (currentUser) {
             currentUser.fetch().then((snapshot) => {
                 var name = snapshot.get('name');
-                var PICTURE = snapshot.get('profilePictureURL');
+                var PICTURE = null
+                if (snapshot.get("profilPicFile")._url) {
+                    PICTURE = snapshot.get("profilPicFile")._url;
+                } else {
+                    PICTURE = snapshot.get('profilePictureURL');
+                }
                 var username = snapshot.getUsername();
                 var mail = snapshot.getEmail();
 
