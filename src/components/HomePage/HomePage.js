@@ -103,7 +103,7 @@ class HomePage extends Component {
                                             <p>Intégrez le réseau de partage Weeclik et profitez de promotions exclusives avec vos commerçants de confiance.</p>
                                             {/* <Button variant="contained" component={Link} to="/login" className="btn-solid-lg page-scroll">Connexion</Button> */}
                                             <a className="btn-solid-lg" onClick={() => {this.handleOpen()}}>DEVENIR AMBASSADEUR OU AMBASSADRICE</a>
-                                            {/* <a className="btn-solid-lg page-scroll" href="fake_url" target="_blank" rel="noopener noreferrer">Devenir ambassadrise/ ambassadeure</a> */}
+                                            {/* <a className="btn-solid-lg page-scroll" href="#" target="_blank" rel="noopener noreferrer">Devenir ambassadrise/ ambassadeure</a> */}
                                         {/* </div> */}
                                     </div> 
                                     <div className="col-lg-6">
@@ -238,7 +238,7 @@ class HomePage extends Component {
                                         <ul className="list-unstyled li-space-lg">
                                             <li className="media">
                                                 <i className="fas fa-square"></i>
-                                                <div className="media-body">Lire nos <a className="turquoise" href="fake_url">Termes &amp; Conditions</a>, <a className="turquoise" href="fake_url">Politique de vie privée</a></div>
+                                                <div className="media-body">Lire nos <a className="turquoise" href="#">Termes &amp; Conditions</a>, <a className="turquoise" href="#">Politique de vie privée</a></div>
                                             </li>
                                         </ul>
                                     </div>

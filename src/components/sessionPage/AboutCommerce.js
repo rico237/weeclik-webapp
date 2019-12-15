@@ -779,7 +779,7 @@ class AboutCommerce extends Component {
                                         <Grid item><Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce} - {this.state.commerce.currencyCategory}</Typography></Grid>
                                         
                                         {
-                                            this.state.commerce.statutCommerce !== "En lign" ? (
+                                            this.state.commerce.statutCommerce !== "En ligne" ? (
                                                 <Grid item xs><Button variant="contained" color="primary" onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none', float: 'right', marginRight: '30px' }}>Mettre en ligne</Button></Grid>
                                             ) : (
                                                 null

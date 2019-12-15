@@ -217,14 +217,12 @@ function Navigation(props) {
                                     justify="flex-end"
                                 >
                                     <Grid item>
-                                        <LightTooltip title="Mes commerces">
                                             <button
                                                 aria-label="Go to mes commerces page"
                                                 aria-haspopup="true"
                                                 className={classes.button}
                                                 onClick={() => window.location.href="/user"}
                                                 style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Mes commerces</button>
-                                        </LightTooltip>
                                     </Grid>
                                     <Grid item>
                                         <LightTooltip title="Se déconnecter">

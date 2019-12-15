@@ -28,7 +28,7 @@ const root = {
 
 const root2 = {
     padding: theme.spacing(5),
-    borderRadius: 16,
+    borderRadius: 5,
 }
 
 const paper = {
@@ -39,6 +39,7 @@ const heading = {
     fontWeight: '900',
     color: '#FFF',
     letterSpacing: 0.5,
+    paddingBottom: '20px',
 }
 
 const card = {
@@ -302,11 +303,9 @@ class ReceiveCommercePage extends Component {
                                 {this.state.commerce.promotion ? (<Card style={card}>
                                     <CardContent style={content}>
                                         <Grid container spacing={1}>
-                                            <Grid item xs={8}>
-                                                <Typography style={heading} variant="h6" gutterBottom>{this.state.commerce.promotion}</Typography>
-                                            </Grid>
-                                            <Grid item xs={4}>
-                                                <img src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
+                                            <Grid item>
+                                                <Typography style={heading} variant="h6" gutterBottom>Promotion</Typography>
+                                                <p style={{color: 'white'}}>{this.state.commerce.promotion}</p>
                                             </Grid>
                                         </Grid>
                                     </CardContent>
@@ -336,11 +335,13 @@ class ReceiveCommercePage extends Component {
                                         )}
                                     {this.state.commerce.mail ? (
                                             <h6 style={{color:"#000"}}>
-                                                <EmailRoundedIcon/>{" : " + this.state.commerce.mail}
+                                                <EmailRoundedIcon/>
+                                                {" : "}<a href={"mailto:"+this.state.commerce.mail} target={"_blank"} style={{color: '#00F', textTransform: 'lowercase'}}>{this.state.commerce.mail}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>
-                                                <EmailRoundedIcon/>{" : Aucun mail trouvé"}
+                                                <EmailRoundedIcon/>
+                                                {" : Aucun mail trouvé"}
                                             </h6>
                                         )}
                                     {this.state.commerce.siteWeb ? (
@@ -361,8 +362,8 @@ class ReceiveCommercePage extends Component {
                                 <div style={{margin:'10px'}}></div>
 
                                 <CardHeader
-                                    style={{ background: '#FFF', borderRadius: 16, padding: 16, fontWeight: 'bold',
-                                    fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
+                                    style={{ background: '#FFF', borderRadius: 5, padding: 16, fontWeight: 'bold',
+                                    fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)', paddingTop: '20px'}
                                 }}
                                     title="Description"
                                     subheader={this.state.commerce.description}

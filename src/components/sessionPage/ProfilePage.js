@@ -426,7 +426,7 @@ class ProfilePage extends Component {
                                 <Card style={{ color:"#000", margin: '10px' }}>
                                     <CardContent>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            Télécharger Weeclik le réseau de confiance humain
+                                            Télécharger Weeclik
                                         </Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">
                                             Profitez de promotions diverses et variées, faites partis d'un réseau de commerçants de confiance.

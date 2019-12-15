@@ -533,13 +533,13 @@ class CreateCommerce extends Component {
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <label style={{ fontSize: '14px' }}>
+                                    <label style={{ fontSize: '14px', color: 'black', paddingBottom: '20px' }}>
                                         {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
                                         <a style={{ color: 'blue', textDecoration: 'none' }} href="#">Conditions générales</a>{'... '}
                                     </label>
                                 </Grid>
                             </Grid>
-                            <Grid item style={{paddingBottom: '70px'}}>
+                            <Grid item style={{paddingBottom: '50px'}}>
                                 <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={{margin: '4px', outline: 'none', borderRadius: '2rem', padding: '12px 60px'}}>Annuler</Button>
 
                                 <input
