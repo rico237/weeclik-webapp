@@ -9,22 +9,19 @@ const useStyles = makeStyles(theme => ({
     root: {
         width: '100%',
         flexGrow: 1,
-        background: 'linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5)'
+        background: '#000'
     },
     header: {
         display: 'flex',
         alignItems: 'center',
         height: 50,
-        paddingLeft: theme.spacing(4)
+        paddingLeft: theme.spacing(4),
     },
     img: {
-        display:'block',
-        width: '50%',
         height: 400,
-        maxWidth: 800,
-        marginRight : 'auto',
-        marginLeft: 'auto',
+        maxWidth: '100%',
         overflow: 'hidden',
+        width: '100%',
         background: '#34495e',
         objectFit: 'cover',
         objectPosition: 'right top'
