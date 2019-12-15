@@ -10,6 +10,15 @@ import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 
 
+const getBase64 = (file) => {
+    return new Promise((resolve,reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+        reader.readAsDataURL(file);
+    });
+}
+
 class UpdateUser extends Component {
     constructor(props) {
         super(props);
@@ -37,6 +46,7 @@ class UpdateUser extends Component {
         this.changeMyInfo = this.changeMyInfo.bind(this);
         this.changeMyPassword = this.changeMyPassword.bind(this);
         this.changePicture = this.changePicture.bind(this);
+        this.handleSavePictureInLocal = this.handleSavePictureInLocal.bind(this);
         this.handleChangePass = this.handleChangePass.bind(this);
     }
 
@@ -95,6 +105,9 @@ class UpdateUser extends Component {
     changeMyInfo(event) {
         var currentUser = Parse.User.current();
         if (currentUser) {
+            // Je mets à jour l'image de profile
+            this._uploadPicture(localStorage.getItem("imageProfile"), currentUser);
+            
             currentUser.setEmail(this.state.user.email);
             currentUser.setUsername(this.state.user.email);
             currentUser.set('name', this.state.user.name);
@@ -194,6 +207,33 @@ class UpdateUser extends Component {
                     clearInterval(this.intervalId);
                 }, 3000);
             }
+        }
+    }
+
+    /**
+     * Sauvegarde en local de l'image de profile en attende du clique sur enregistrer
+     * @param {*} event 
+     */
+    handleSavePictureInLocal(event) {
+        const file = event.target.files[0];
+        getBase64(file).then((base64) => {
+            localStorage["imageProfile"] = base64;
+        })
+        this.setState({
+            imgPreview: URL.createObjectURL(file),
+        })
+    }
+
+    _uploadPicture(img, currentUser) {
+        // var currentUser = Parse.User.current();
+        var file = new Parse.File("imageProfileName.jpg", { base64: img });
+        if (currentUser) {
+            file.save().then((_file) => {
+                currentUser.set("profilPicFile", file);
+                currentUser.save().then((snapshot) => {
+                    localStorage.removeItem("imageProfile");
+                })
+            })
         }
     }
 
@@ -305,7 +345,7 @@ class UpdateUser extends Component {
                                                             accept="image/*"
                                                             type="file"
                                                             style={{ display: 'None' }}
-                                                            onChange={this.changePicture} />
+                                                            onChange={this.handleSavePictureInLocal} />
                                                         <div style={{ width: '50px', height: '50px', border: 'solid #FFFFFF', background: '#E2E2E2', margin: '10px', outline: 'none', borderRadius: '50%' }}>
                                                             <label htmlFor="icon-input-file">
                                                                 <img
@@ -353,7 +393,7 @@ class UpdateUser extends Component {
                                         </Box>
                                     </Box>
                                     
-                                    <Grid item xs={12} style={{ background: "#E2E2E2", margin: '0px 10px', padding: '10px', color: 'black', fontWeight: 'bold' }}>Mes informations</Grid>
+                                    {/* <Grid item xs={12} style={{ background: "#E2E2E2", margin: '0px 10px', padding: '10px', color: 'black', fontWeight: 'bold' }}>Mes informations</Grid> */}
                                     
                                     <Grid item xs={12} style={{ margin: '0px 10px', padding: '10px 0', background: "#FFF", height: '100%', overflow: 'auto' }}>
                                         <form onSubmit={this.changeMyInfo}>
