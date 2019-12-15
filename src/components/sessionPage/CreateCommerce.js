@@ -535,22 +535,22 @@ class CreateCommerce extends Component {
                                 <Grid item xs={12}>
                                     <label style={{ fontSize: '14px' }}>
                                         {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
-                                        <a style={{ color: 'blue', textDecoration: 'none' }} href="fake_url">Conditions générales</a>{'... '}
+                                        <a style={{ color: 'blue', textDecoration: 'none' }} href="#">Conditions générales</a>{'... '}
                                     </label>
                                 </Grid>
                             </Grid>
+                            <Grid item style={{paddingBottom: '70px'}}>
+                                <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={{margin: '4px', outline: 'none', borderRadius: '2rem', padding: '12px 60px'}}>Annuler</Button>
 
-                            <input
-                                className="btn-solid-lg"
-                                type="submit"
-                                variant="contained"
-                                color="primary"
-                                value="Créer mon commerce"
-                                style={button}
-                            />
-
-                            {/* <Button variant="contained" color="primary" type="submit" className={"buttonSubmit"} style={button}>Ajouter mon commerce</Button> */}
-                            <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={button}>Annuler</Button>
+                                <input
+                                    className="btn-solid-lg"
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    value="Créer mon commerce"
+                                    style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
+                                />
+                            </Grid>
                         </form>
                     </div>
                 </Container>

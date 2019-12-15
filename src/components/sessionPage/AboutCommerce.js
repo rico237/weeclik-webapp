@@ -768,29 +768,7 @@ class AboutCommerce extends Component {
         try {
             return (
                 <div>
-                    <div style={{paddingTop: '70px'}}>
-                        <Container maxWidth={'lg'}>
-                            <Paper elevation={0} style={{borderRadius: 0}}>
-                                <center>
-                                    <Grid container spacing={3}>
-                                        <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none',color: "#2096F3", textTransform: 'none',
-                                                                                        // fontSize: 15,
-                                                                                        // fontWeight: 700,
-                                                                                        borderRadius: 100 }}>Mes commerces</Button></Grid>
-                                        {/* <Grid item xs><Button variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none' }}>Modifier le commerce</Button></Grid> */}
-                                        {
-                                            this.state.commerce.statutCommerce !== "En ligne" ? (
-                                                <Grid item xs><Button variant="contained" color="primary" onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none' }}>Payer 329.99 €</Button></Grid>
-                                            ) : (
-                                                null
-                                            )
-                                        }
-                                    </Grid>
-                                </center>
-                            </Paper>
-                        </Container>
-                    </div>
-                    <div ref={this.infoRef} style={{margin:'10px'}}></div>
+                    <div ref={this.infoRef} style={{margin:'10px', paddingTop: '70px'}}></div>
                     {/* Les informations */}
                     <Box my={3}/>
                     <div>
@@ -798,7 +776,16 @@ class AboutCommerce extends Component {
                             <Paper elevation={0} style={{borderRadius: 0}}>
                                 <Card elevation={0} style={root2}>
                                     <Grid container justify="space-between">
-                                        <Grid item><Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography></Grid>
+                                        <Grid item><Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce} - {this.state.commerce.currencyCategory}</Typography></Grid>
+                                        
+                                        {
+                                            this.state.commerce.statutCommerce !== "En lign" ? (
+                                                <Grid item xs><Button variant="contained" color="primary" onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none', float: 'right', marginRight: '30px' }}>Mettre en ligne</Button></Grid>
+                                            ) : (
+                                                null
+                                            )
+                                        }
+                                        
                                         <Grid item>
                                             <Button onClick={() => {this.setState({canUpdateInfo: true})}} variant="text" color="primary" size="small" style={{outline: 'none', color: "#2096F3"}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
                                         </Grid>
@@ -898,13 +885,13 @@ class AboutCommerce extends Component {
                                             </div>
                                         ) : (
                                             <div>
-                                                <h6 style={{color: this.state.colorStatus, margin: '10px 0'}}>
+                                                <h6 style={{color: this.state.colorStatus, margin: '10px 0', paddingTop: '20px'}}>
                                                     {this.state.commerce.statutCommerce}{' '}
                                                     <IconButton onClick={() => { this.handleOpenInfo() }} aria-label="delete" style={{ color: "gray", outline: 'none'}} size="small">
                                                         <Info fontSize="small" />
                                                     </IconButton>
                                                 </h6>
-                                                <h6 style={{color:"#000"}}>Type : {this.state.commerce.currencyCategory}</h6>
+                                                {/* <h6 style={{color:"#000"}}>{this.state.commerce.currencyCategory}</h6> */}
                                                 <h6 style={{color:"#000"}}>
                                                     <RoomRoundedIcon/>
                                                     {" : " + this.state.commerce.adresse}
@@ -915,12 +902,12 @@ class AboutCommerce extends Component {
                                                 </h6>
                                                 <h6 style={{color:"#000"}}>
                                                     <EmailRoundedIcon/>
-                                                    {" : "}<a href={"http://"+this.state.commerce.mail} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.mail}</a>
+                                                    {" : "}<a href={"mailto:"+this.state.commerce.mail} target={"_blank"} style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.mail}</a>
                                                 </h6>
                                                 {
                                                     this.state.commerce.siteWeb ? (
                                                         <h6 style={{color:"#000"}}>
-                                                            <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: blue[500]}}>{this.state.commerce.siteWeb}</a>
+                                                            <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.siteWeb}</a>
                                                         </h6>
                                                     ) : (
                                                         <h6 style={{color: grey[500]}}>
@@ -983,6 +970,45 @@ class AboutCommerce extends Component {
                                                 }
                                             </Grid>
                                         </Grid>
+                                    )
+                                }
+                            </Paper>
+                        </Container>
+                    </div>
+                    <div ref={this.movieRef} style={{margin:'10px'}}></div>
+                    {/* La description */}
+                    <div>
+                        <Container maxWidth={'lg'}>
+                            <Paper elevation={0} style={root2}>
+                                <Grid container justify="space-between">
+                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography></Grid>
+                                    <Grid item>
+                                        <Button onClick={() => {this.setState({canUpdateDescription: true})}} variant="text" color="primary" size="small" style={{outline: 'none', color: "#2096F3"}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                    </Grid>
+                                </Grid>
+                                {
+                                    this.state.canUpdateDescription ? (
+                                        <div>
+                                            <form onSubmit={this.updateTheDescription}>
+                                                <Grid container spacing={2}>
+                                                    <Grid item xs={12}>
+                                                        <label>La description de votre commerce</label>
+                                                        <textarea
+                                                            style={{margin: '-5px 0 10px 0',width:'100%', outline: 'none'}}
+                                                            onChange={this.handleChange}
+                                                            value={this.state.commerce.description}
+                                                            rows="5"
+                                                            name="description"
+                                                            id="outlined-name"
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                                <Button variant="contained" color="primary" type="submit">valider</Button>
+                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateDescription: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                            </form>
+                                        </div>
+                                    ) : (
+                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
                                     )
                                 }
                             </Paper>
@@ -1051,7 +1077,7 @@ class AboutCommerce extends Component {
                                                 <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
                                             ) : (
                                                 <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter {this.state.listImg.filter((obj) => obj.default === true).length}
-                                                {" "}{this.state.listImg.filter((obj) => obj.default === true).length <= 1 ? ("image") : ("images")} de votre établissement</Typography>
+                                                {" "}{this.state.listImg.filter((obj) => obj.default === true).length <= 1 ? ("image") : ("images")} à votre établissement</Typography>
                                             )
                                         }
                                         {/* <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
@@ -1148,45 +1174,6 @@ class AboutCommerce extends Component {
                         </Container>
                     </div>
                     <div ref={this.movieRef} style={{margin:'10px'}}></div>
-                    {/* La description */}
-                    <div>
-                        <Container maxWidth={'lg'}>
-                            <Paper elevation={0} style={root2}>
-                                <Grid container justify="space-between">
-                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography></Grid>
-                                    <Grid item>
-                                        <Button onClick={() => {this.setState({canUpdateDescription: true})}} variant="text" color="primary" size="small" style={{outline: 'none', color: "#2096F3"}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
-                                    </Grid>
-                                </Grid>
-                                {
-                                    this.state.canUpdateDescription ? (
-                                        <div>
-                                            <form onSubmit={this.updateTheDescription}>
-                                                <Grid container spacing={2}>
-                                                    <Grid item xs={12}>
-                                                        <label>La description de votre commerce</label>
-                                                        <textarea
-                                                            style={{margin: '-5px 0 10px 0',width:'100%', outline: 'none'}}
-                                                            onChange={this.handleChange}
-                                                            value={this.state.commerce.description}
-                                                            rows="5"
-                                                            name="description"
-                                                            id="outlined-name"
-                                                        />
-                                                    </Grid>
-                                                </Grid>
-                                                <Button variant="contained" color="primary" type="submit">valider</Button>
-                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateDescription: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
-                                            </form>
-                                        </div>
-                                    ) : (
-                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
-                                    )
-                                }
-                            </Paper>
-                        </Container>
-                    </div>
-                    
                     
                     <div style={root}>
                         <Container component="main"  maxWidth={'lg'} style={{ color: "#000" }}>

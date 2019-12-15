@@ -1,6 +1,7 @@
 import React from 'react';
 // import { Typography, Divider, Grid, IconButton, Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { Container } from '@material-ui/core';
 
 // import Logo_Instagram from '../../assets/icons/instagram.svg';
 // import Logo_Facebook from '../../assets/icons/facebook.svg';
@@ -49,7 +50,7 @@ export default function Footer() {
     return (
 		<div className={classes.root}>
 			<div className="footer">
-                        <div className="container">
+				<Container maxWidth={'lg'} style={{paddingLeft: '55px', paddingRight: '55px'}}>
                             <div className="row">
                                 <div className="col-md-4">
                                     <div className="footer-col" style={{textAlign: 'justify'}}>
@@ -64,7 +65,7 @@ export default function Footer() {
                                         <ul className="list-unstyled li-space-lg">
                                             <li className="media">
                                                 <i className="fas fa-square"></i>
-                                                <div className="media-body">Lire nos <a className="turquoise" href="fake_url">Termes &amp; Conditions</a>, <a className="turquoise" href="fake_url">Politique de vie privée</a></div>
+                                                <div className="media-body">Lire nos <a className="turquoise" href="#">Termes &amp; Conditions</a>, <a className="turquoise" href="#">Politique de vie privée</a></div>
                                             </li>
                                         </ul>
                                     </div>
@@ -87,7 +88,7 @@ export default function Footer() {
                                     </div> 
                                 </div>
                             </div>
-                        </div>
+                        </Container>
                     </div>
 
                     <div className="copyright">

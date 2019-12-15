@@ -217,21 +217,13 @@ function Navigation(props) {
                                     justify="flex-end"
                                 >
                                     <Grid item>
-                                        <LightTooltip title="Accueil">
+                                        <LightTooltip title="Mes commerces">
                                             <button
-                                                aria-label="Go to accueil page"
-                                                aria-haspopup="true"
-                                                className={classes.button}
-                                                onClick={() => window.location.href="/"}
-                                                style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Accueil</button>
-                                        </LightTooltip>
-                                        <LightTooltip title="Mon profil">
-                                            <button
-                                                aria-label="Go to profile page"
+                                                aria-label="Go to mes commerces page"
                                                 aria-haspopup="true"
                                                 className={classes.button}
                                                 onClick={() => window.location.href="/user"}
-                                                style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Mon profil</button>
+                                                style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Mes commerces</button>
                                         </LightTooltip>
                                     </Grid>
                                     <Grid item>
