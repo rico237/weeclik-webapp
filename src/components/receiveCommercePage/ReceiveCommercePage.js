@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Container, CssBaseline, Grid, Paper, Typography, Card, CardContent, CardHeader } from '@material-ui/core';
+import { Container, CssBaseline, Grid, Paper, Typography, Card, CardContent } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import CommercePicture from './CommercePicture';
 
@@ -43,7 +43,6 @@ const heading = {
 
 const card = {
     width: '100%',
-    // maxWidth: 500,
     borderRadius: theme.spacing(2), // 16px
     transition: '0.3s',
     boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
@@ -54,7 +53,7 @@ const card = {
     paddingLeft: 8,
     paddingRight: 8,
     background:
-      'linear-gradient(34deg, rgba(1,137,210,1) 0%, rgba(0,87,155,1) 29%, rgba(3,156,229,1) 92%)',
+        'linear-gradient(34deg, rgba(1,137,210,1) 0%, rgba(0,87,155,1) 29%, rgba(3,156,229,1) 92%)',
 }
 
 const media = {
@@ -124,7 +123,7 @@ class ReceiveCommercePage extends Component {
     }
 
     handleValidate(event) {
-        this.setState({validate: event.target.checked});
+        this.setState({ validate: event.target.checked });
     }
 
     handleSubmit(event) {
@@ -174,7 +173,7 @@ class ReceiveCommercePage extends Component {
                         case 4:
                             _statusCommerce = ""
                             break;
-                    
+
                         default:
                             _statusCommerce = "Statut inconnu"
                             break;
@@ -212,15 +211,15 @@ class ReceiveCommercePage extends Component {
         const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
         const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
 
-        queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: this.state.commerceId}));
+        queryCommercePhoto.equalTo("commerce", new ParseCommerce({ id: this.state.commerceId }));
 
         queryCommercePhoto.find()
-        .then(responseSnapshot => {
-            responseSnapshot.forEach((elt) => {
-                commercePicture.push(elt.get("photo").url());
+            .then(responseSnapshot => {
+                responseSnapshot.forEach((elt) => {
+                    commercePicture.push(elt.get("photo").url());
+                });
             });
-        });
-        
+
         return new Promise(resolve => {
             setTimeout(() => resolve(commercePicture), 300)
         });
@@ -229,7 +228,7 @@ class ReceiveCommercePage extends Component {
     getUrlCommercePicture = async () => {
         const listPicture = await this.getPicturesCommerce();
         this.setState({
-            listImg : listPicture
+            listImg: listPicture
         })
     }
 
@@ -241,14 +240,14 @@ class ReceiveCommercePage extends Component {
         const ParseCommerceVideo = Parse.Object.extend("Commerce_Videos");
         const queryCommerceVideo = new Parse.Query(ParseCommerceVideo);
 
-        queryCommerceVideo.equalTo("leCommerce", new ParseCommerce({id: this.state.commerceId}));
+        queryCommerceVideo.equalTo("leCommerce", new ParseCommerce({ id: this.state.commerceId }));
 
         queryCommerceVideo.find()
-        .then(responseSnapshot => {
-            responseSnapshot.forEach((elt) => {
-                movie.push(elt.get("video").url());
+            .then(responseSnapshot => {
+                responseSnapshot.forEach((elt) => {
+                    movie.push(elt.get("video").url());
+                });
             });
-        });
 
         return new Promise(resolve => {
             setTimeout(() => resolve(movie), 400)
@@ -279,17 +278,43 @@ class ReceiveCommercePage extends Component {
         this.getCommerceData();
     }
 
+
+
     render() {
 
+        const mainDivStyle = {
+            marginTop: '50px',
+            background: 'linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5)'
+        };
+
+        const divNameCommerce = {
+            color: "#000",
+            textAlign: 'center',
+            margin: 10,
+            fontWeight: 600
+        }
+
+        const divTitleDescription = {
+            color: "#000",
+            margin: 10
+        }
+
+        const divContentDescription = {
+            color: 'rgba(0, 0, 0, 0.54)',
+            fontSize: '1rem',
+            lineHeight: '1.5em'
+        
+        }
+
         return (
-            <div style={{marginTop: '50px'}}>
+            <div style={mainDivStyle}>
                 <CommercePicture
                     commerceId={this.props.match.params.commerceId}
                     commerceName={this.state.commerce.nomCommerce}
                     commerceCategory={this.state.commerce.currencyCategory}
-                    commerceNbShare={this.state.commerce.nombrePartages}/>
+                    commerceNbShare={this.state.commerce.nombrePartages} />
                 <Container component="main" maxWidth="md" style={{ color: "#000" }}>
-                    <CssBaseline/>
+                    <CssBaseline />
                     <div style={root}>
                         <Grid
                             container
@@ -297,7 +322,7 @@ class ReceiveCommercePage extends Component {
                             direction="row"
                             justify="center">
                             <Grid item xs={12} className="Weeclik-App-Info-Commerce2" style={paper}>
-                                <div style={{margin:'10px'}}></div>
+                                <div style={{ margin: '10px' }}></div>
 
                                 {this.state.commerce.promotion ? (<Card style={card}>
                                     <CardContent style={content}>
@@ -306,67 +331,68 @@ class ReceiveCommercePage extends Component {
                                                 <Typography style={heading} variant="h6" gutterBottom>{this.state.commerce.promotion}</Typography>
                                             </Grid>
                                             <Grid item xs={4}>
-                                                <img src={'https://jkkm.info/ui/images/awards/victory.png'} style={media}/>
+                                                <img src={'https://jkkm.info/ui/images/awards/victory.png'} style={media} />
                                             </Grid>
                                         </Grid>
                                     </CardContent>
                                 </Card>) : (null)}
 
-                                <div style={{margin:'10px'}}></div>
+                                <div style={{ margin: '10px' }}></div>
 
                                 <Paper elevation={0} style={root2}>
-                                <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
+                                    <Typography variant="h4" component="h3" style={divNameCommerce}>{this.state.commerce.nomCommerce}</Typography>
+
+                                    <h5 style={{ color: "#000"}}>
+                                        <FavoriteBorderRoundedIcon style={{ color: "#F00" }} />
+                                        {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
+                                    </h5>
                                     {this.state.commerce.adresse ? (
-                                            <h6 style={{color:"#000"}}>
-                                                <RoomRoundedIcon/>{" : " + this.state.commerce.adresse}
-                                            </h6>
-                                        ) : (
-                                            <h6 style={{color: grey[500]}}>
-                                                <RoomRoundedIcon/>{" : Aucune adresse trouvé"}
+                                        <h6 style={{ color: "#000" }}>
+                                            <RoomRoundedIcon />{" : " + this.state.commerce.adresse}
+                                        </h6>
+                                    ) : (
+                                            <h6 style={{ color: grey[500] }}>
+                                                <RoomRoundedIcon />{" : Aucune adresse trouvé"}
                                             </h6>
                                         )}
                                     {this.state.commerce.tel ? (
-                                            <h6 style={{color:"#000"}}>
-                                                <CallRoundedIcon/>{" : " + this.state.commerce.tel}
-                                            </h6>
-                                        ) : (
-                                            <h6 style={{color: grey[500]}}>
-                                                <CallRoundedIcon/>{" : Aucun numéro de téléphone trouvé"}
+                                        <h6 style={{ color: "#000" }}>
+                                            <CallRoundedIcon />{" : " + this.state.commerce.tel}
+                                        </h6>
+                                    ) : (
+                                            <h6 style={{ color: grey[500] }}>
+                                                <CallRoundedIcon />{" : Aucun numéro de téléphone trouvé"}
                                             </h6>
                                         )}
                                     {this.state.commerce.mail ? (
-                                            <h6 style={{color:"#000"}}>
-                                                <EmailRoundedIcon/>{" : " + this.state.commerce.mail}
-                                            </h6>
-                                        ) : (
-                                            <h6 style={{color: grey[500]}}>
-                                                <EmailRoundedIcon/>{" : Aucun mail trouvé"}
+                                        <h6 style={{ color: "#000" }}>
+                                            <EmailRoundedIcon />{" : " + this.state.commerce.mail}
+                                        </h6>
+                                    ) : (
+                                            <h6 style={{ color: grey[500] }}>
+                                                <EmailRoundedIcon />{" : Aucun mail trouvé"}
                                             </h6>
                                         )}
                                     {this.state.commerce.siteWeb ? (
-                                            <h6 style={{color:"#000"}}>
-                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
-                                            </h6>
-                                        ) : (
-                                            <h6 style={{color: grey[500]}}>
-                                                <LanguageRoundedIcon/>{" : Aucun site web trouvé"}
+                                        <h6 style={{ color: "#000" }}>
+                                            <LanguageRoundedIcon />{" : "}<a href={"http://" + this.state.commerce.siteWeb} target={"_blank"} style={{ color: '#00F' }}>{this.state.commerce.siteWeb}</a>
+                                        </h6>
+                                    ) : (
+                                            <h6 style={{ color: grey[500] }}>
+                                                <LanguageRoundedIcon />{" : Aucun site web trouvé"}
                                             </h6>
                                         )}
-                                    <h5 style={{color:"#000", paddingTop: '20px'}}>
-                                        <FavoriteBorderRoundedIcon style={{color:"#F00"}}/>
-                                        {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
-                                    </h5>
                                 </Paper>
-                                
-                                <div style={{margin:'10px'}}></div>
 
-                                <CardHeader
-                                    style={{ background: '#FFF', borderRadius: 16, padding: 16, fontWeight: 'bold',
-                                    fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
-                                }}
-                                    title="Description"
-                                    subheader={this.state.commerce.description}
-                                />
+                                <div style={{ margin: '10px' }}></div>
+
+                                <Paper elevation={0} style={root2}>
+                                    <Typography variant="h5" component="h4" style={divTitleDescription}>Description</Typography>
+                                    <div style={divContentDescription} >{this.state.commerce.description}</div>
+                                    
+                                </Paper>
+
+
 
                             </Grid>
                         </Grid>
