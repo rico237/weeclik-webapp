@@ -1,18 +1,41 @@
 import React from 'react';
 import logo from '../assets/icons/LogoWeeclik.svg';
-import logoCommercant from '../assets/icons/users.svg';
 import { Link } from 'react-router-dom';
-import { AppBar, Container, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import { AppBar, Tooltip, Container, Box, Toolbar, Grid, Avatar, IconButton, Menu, MenuItem, ListItemIcon, Typography, withStyles } from '@material-ui/core';
+import { makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 import PowerSettingsNewIcon from '@material-ui/icons/PowerSettingsNew';
-import grey from '@material-ui/core/colors/grey';
-import MoreIcon from '@material-ui/icons/MoreVert';
-import { makeStyles } from '@material-ui/core/styles';
+import PowerSettingsNewRoundedIcon from '@material-ui/icons/PowerSettingsNewRounded';
+import DehazeRoundedIcon from '@material-ui/icons/DehazeRounded';
 import { connect } from 'react-redux';
 import { userActions } from '../redux/actions';
 import defaultProfile from '../assets/icons/defaultUser.svg'
 
+// Colors
+import red from '@material-ui/core/colors/red';
+import grey from '@material-ui/core/colors/grey';
 
+const theme = createMuiTheme({
+	palette: {
+		primary: red
+	},
+	typography: {
+		button: {
+            textTransform: 'none',
+			fontWeight: '900',
+            fontSize: '17px',
+		}
+	}
+})
+
+const LightTooltip = withStyles(theme => ({
+    tooltip: {
+        backgroundColor: theme.palette.common.white,
+        color: 'rgba(0, 0, 0, 0.87)',
+        boxShadow: theme.shadows[1],
+        fontSize: 11,
+    },
+}))(Tooltip);
 
 const useStyles = makeStyles(theme => ({
     popup: {
@@ -30,6 +53,14 @@ const useStyles = makeStyles(theme => ({
     menuButton: {
         marginRight: theme.spacing(2),
     },
+    nameTitle: {
+        float: 'left',
+        fontFamily: 'Rubik, sans-serif',
+        fontWeight: 'bold',
+        fontSize: '25px',
+        color: grey[500],
+        filter: 'brightness(1)'
+    },
     title: {
         flexGrow: 1,
     },
@@ -41,6 +72,31 @@ const useStyles = makeStyles(theme => ({
     icon: {
         // margin: theme.spacing(1),
         fontSize: 30,
+    },
+    grow: {
+        flexGrow: 1,
+    },
+    button: {
+        margin: theme.spacing(2, 4),
+        color: "#141C58",
+        fontSize: 15,
+        fontWeight: 'bold',
+        "&:hover": {
+            backgroundColor: "rgba(255, 255, 255, 0.1)",
+            color: 'none'
+        }
+    },
+    linkButton: {
+        margin: theme.spacing(1),
+        color: "#000",
+        textDecoration: 'none',
+        // fontSize: 15,
+        fontWeight: 'bold',
+        "&:hover": {
+            color: '#000',
+            backgroundColor: "none",
+            textDecoration: 'none',
+        }
     },
     linkMenu: {
         display: 'flex',
@@ -57,6 +113,7 @@ const useStyles = makeStyles(theme => ({
         }
     },
     sectionDesktop: {
+        width: '100%',
         display: 'none',
         [theme.breakpoints.up('sm')]: {
             display: 'flex',
@@ -108,34 +165,25 @@ function Navigation(props) {
 
     return (
         <div className={classes.rootNav}>
-            <AppBar color="inherit" position="fixed" elevation={0}>
-                <Container fixed>
-                    <Toolbar>
-                        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
-                            <Grid edge="start" style={{ float: 'left', width: '50%' }} color="inherit" aria-label="Menu">
-                                <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
-                            </Grid>
-                            <Typography style={{ float: 'left', width: '50%', color: grey[500] }} variant="h5">Weeclik</Typography>
-                        </Link>
-                        <div style={{ marginLeft: "auto" }}>
-                            {
-                                localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
-                                <IconButton
-                                    edge="end"
-                                    aria-label="show more info about user"
-                                    aria-controls={menuId}
-                                    aria-haspopup="true"
-                                    // aria-owns={this.state.open ? 'simple-menu' : null}
-                                    onClick={handleProfileMenuOpen}
-                                    style={{outline: 'none'}}
-                                >
-                                    <AccountCircle/>
-                                </IconButton> : 
-                                    
+            <ThemeProvider theme={theme}>
+                <AppBar color="inherit" position="absolute" elevation={0}>
+                    {
+                        !localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`) ?
+                        (<Container maxWidth={'lg'}><Toolbar>
+                            <LightTooltip title="Accueil">
+                                <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                                    <Grid edge="start" style={{ float: 'left', padding: '10px' }} color="inherit" aria-label="Menu">
+                                        <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
+                                    </Grid>
+                                    <Typography className={classes.nameTitle} variant="h5">{'Weeclik'}</Typography>
+                                </Link>
+                            </LightTooltip>
+                            <div className={classes.grow}/>
+                            <div style={{ marginLeft: "auto" }}>
                                 <div>
                                     <div className={classes.sectionDesktop}>
-                                        <a className="btn-solid-lg" href="/login" style={{ marginRight: '5px' }}>Connexion</a>
-                                        <a className="btn-solid-lg"  href="/register" style={{ marginRight: '5px' }}>Inscription</a>
+                                        <Typography><a href="/login" className={classes.linkButton} style={{ marginRight: '20px' }}>Connexion</a></Typography>
+                                        <Typography><a href="/register" className={classes.linkButton} style={{ marginRight: '5px' }}>Inscription</a></Typography>
                                     </div>
                                     <div className={classes.sectionMobile}>
                                         <IconButton
@@ -144,18 +192,73 @@ function Navigation(props) {
                                             aria-haspopup="true"
                                             onClick={handleMobileMenuOpen}
                                             color="inherit"
+                                            style={{outline: 'none'}}
                                         >
-                                            <MoreIcon style={{ color: 'black' }} />
+                                            <DehazeRoundedIcon style={{ color: 'black' }} />
                                         </IconButton>
                                     </div>
                                 </div>
-                            }
-                        </div>
-                        
-                    </Toolbar>
-                </Container>
-            </AppBar>
-
+                            </div>
+                        </Toolbar></Container>) :
+                        (<Container maxWidth={'lg'}><Toolbar>
+                            <LightTooltip title="Accueil">
+                                <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+                                    <Grid edge="start" style={{ float: 'left', padding: '10px' }} color="inherit" aria-label="Menu">
+                                        <Avatar src={logo} alt="Weeclik Logo" style={{ borderRadius: 0 }} />
+                                    </Grid>
+                                    <Typography className={classes.nameTitle} variant="h5">{'Weeclik'}</Typography>
+                                </Link>
+                            </LightTooltip>
+                            {/* <div className={classes.grow}/> */}
+                            <div className={classes.sectionDesktop}>
+                                <Box mx={2}/>
+                                <Grid
+                                    container
+                                    justify="flex-end"
+                                >
+                                    <Grid item>
+                                            <button
+                                                aria-label="Go to mes commerces page"
+                                                aria-haspopup="true"
+                                                className={classes.button}
+                                                onClick={() => window.location.href="/user"}
+                                                style={{padding: '0', border: 'none', background: 'none', outline: 'none'}}>Mes commerces</button>
+                                    </Grid>
+                                    <Grid item>
+                                        <LightTooltip title="Se déconnecter">
+                                            <IconButton
+                                                edge="end"
+                                                aria-label="Se déconnecter"
+                                                onClick={disconnect}
+                                                style={{outline: 'none'}}>
+                                                <PowerSettingsNewRoundedIcon/>
+                                            </IconButton>
+                                        </LightTooltip>
+                                    </Grid>
+                                </Grid>
+                                
+                            </div>
+                            <div style={{ marginLeft: "auto" }}>
+                                    <div>
+                                        <div className={classes.sectionMobile}>
+                                            <IconButton
+                                                aria-label="show more"
+                                                aria-controls={mobileMenuId}
+                                                aria-haspopup="true"
+                                                onClick={handleProfileMenuOpen}
+                                                color="inherit"
+                                                style={{outline: 'none'}}
+                                            >
+                                                <DehazeRoundedIcon style={{ color: 'black' }} />
+                                            </IconButton>
+                                        </div>
+                                    </div>
+                            </div>
+                                
+                        </Toolbar></Container>)
+                    }
+                </AppBar>
+            </ThemeProvider>
 
 
 
@@ -201,14 +304,6 @@ function Navigation(props) {
                         <Typography variant="inherit" className={classes.typographyStyle}>Mon profil</Typography>
                     </Link>
                 </MenuItem>
-                <MenuItem onClick={handleMenuClose}>
-                    <Link to="/commerces" className={classes.linkMenu}>
-                        <ListItemIcon>
-                            <Avatar src={logoCommercant} alt="Commerce Logo" />
-                        </ListItemIcon>
-                        <Typography variant="inherit" className={classes.typographyStyle}>Mes commerces</Typography>
-                    </Link>
-                </MenuItem>
                 <MenuItem onClick={disconnect}>
                     <ListItemIcon><PowerSettingsNewIcon/></ListItemIcon>
                     <Typography variant="inherit">Se déconnecter</Typography>
@@ -231,5 +326,3 @@ const actionCreators = {
 }
 
 export default connect(mapState, actionCreators) (Navigation);
-
-// export default Navigation;

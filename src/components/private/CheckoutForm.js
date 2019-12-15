@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Parse from 'parse';
+import { Redirect } from 'react-router-dom';
 import { CardElement, injectStripe } from 'react-stripe-elements';
 import './style-stripe.css'
 
@@ -10,10 +12,28 @@ class CheckoutForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            isClick: false,
             complete: false,
+            noValid: false,
             price: '329.99 €'
         };
         this.submit = this.submit.bind(this);
+        this.updateStatusCommerce = this.updateStatusCommerce.bind(this);
+    }
+
+    updateStatusCommerce(ID) {
+
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = ID;
+        instanceCommerce.set("statutCommerce", 1);
+        instanceCommerce.set("brouillon", false);
+        instanceCommerce.save()
+        .then((commerceUpdate) => {
+            this.setState({complete: true})
+        }, (error) => {
+            console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+        })
     }
 
     /**
@@ -21,23 +41,31 @@ class CheckoutForm extends Component {
      * @param {*} ev 
      */
     async submit(ev) {
-        // User clicked submit
-        let { token } = await this.props.stripe.createToken({name: "Name"});
-        let response = await fetch(`${process.env.REACT_APP_SERVER_URL}/charge`, {
+        ev.preventDefault();
+        this.setState({isClick: true})
+        // TODO: Insert real name
+        let token = await this.props.stripe.createToken({name: "Name"});
+        let response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/charge`, {
             method: "POST",
-            headers: {"Content-Type": "text/plain"},
-            body: token
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(token)
         });
-
-        if (response.ok) this.setState({complete: true})
-        // console.log(response);
-        
+        if (response.ok) {
+            this.updateStatusCommerce(this.props._idCommerce)
+        } else {
+            this.setState({noValid: true})
+        }
     }
 
     
 
     render() {
-        if (this.state.complete) return <h1>Purchase Complete</h1>
+        if (this.state.complete) return <Redirect to={{
+            pathname: '/aboutcommerce',
+            state: { id: this.props._idCommerce }
+        }} />;//<h1>Paiement Validé</h1>
+
+        if (this.state.noValid) return <h1>Paiement refusé</h1>
         
         return (
             <div>
@@ -50,7 +78,13 @@ class CheckoutForm extends Component {
                         Détails de la carte
                         <CardElement />
                     </label>
-                    <button className="button-pay" onClick={this.submit} style={{outline: 'none'}}>Payer {this.state.price}</button>
+                    {
+                        this.state.isClick ? (
+                            <button disabled className="btn-solid-lg" onClick={this.submit} style={{outline: 'none', width: '100%', marginBottom: '50px'}}>{'attendre'}</button>
+                        ) : (
+                            <button className="btn-solid-lg" onClick={this.submit} style={{outline: 'none', width: '100%', marginBottom: '50px'}}>Payer {this.state.price}</button>
+                        )
+                    }
                 </div>
                 <div>
                     <p style={{ color: '#6B7C93'}}>Payer <span className="price">{this.state.price}</span>, pour rendre votre commerce visible</p>

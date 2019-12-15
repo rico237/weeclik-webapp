@@ -18,11 +18,11 @@ label {
 
 input, .StripeElement {
     display: block;
-    margin: 10px 0 20px 0;
+    margin: 10px 0 10px 0;
     min-width: 200px;
-    padding: 10px 14px;
+    padding: 10px 10px;
     font-size: 1em;
-    font-family: 'Source Code Pro', monospace;
+    /* font-family: 'Source Code Pro', monospace; */
     box-shadow:
         rgba(50, 50, 93, 0.14902) 0px 1px 3px,
         rgba(0, 0, 0, 0.0196078) 0px 1px 0px;
@@ -49,7 +49,7 @@ input[type="text"] {
 .button-pay {
     display: block;
     width: 100%;
-    background-color: #6772E5;
+    background-color: #1DAFF8;
     border-radius: 2px;
     font-weight: 600;
     color: #FFF;

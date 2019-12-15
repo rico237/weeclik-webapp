@@ -4,17 +4,26 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-import { Container, CssBaseline, Avatar, Grid, TextField, Box, Typography } from '@material-ui/core';
-import { Copyright } from '../copyright/Copyright';
+import { Avatar, Grid, TextField, Typography, Paper } from '@material-ui/core';
+import Footer from '../footer/Footer';
 
 
 const theme = createMuiTheme({
     spacing: 4,
 });
 
+const root = {
+    // marginTop: theme.spacing(8),
+    marginTop: '70px',
+    marginBottom: '100px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: '30px'
+}
+
 const paper = {
-    marginTop: theme.spacing(8),
-    paddingTop: '70px',
+    margin: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -23,8 +32,8 @@ const paper = {
 const avatar = {
     margin: theme.spacing(5),
     borderRadius: 0,
-    width: 160,
-    height: 160
+    width: 100,
+    height: 100
 }
 
 const form = {
@@ -89,67 +98,65 @@ class LoginPage extends Component {
         const { username, password, alertMsg } = this.state;
 
         return (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline/>
-                <div style={paper}>
-                    <Avatar alt="Logo" src={logo} style={avatar}/>
-                    <form style={form} noValidate>
-                        <Grid container spacing={2}>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="username"
-                                    fullWidth
-                                    required
-                                    variant="outlined"
-                                    type="email"
-                                    name="username"
-                                    label="Adresse e-mail"
-                                    value={username}
-                                    onChange={this.handleChange}/>
+            <div component="main" className="App-header2">
+                <Paper style={root}>
+                    <div style={paper}>
+                        <Avatar alt="Logo" src={logo} style={avatar}/>
+                        <form style={form} noValidate>
+                            <Grid container spacing={2}>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="username"
+                                        fullWidth
+                                        required
+                                        variant="outlined"
+                                        type="email"
+                                        name="username"
+                                        label="Adresse e-mail"
+                                        value={username}
+                                        onChange={this.handleChange}/>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        id="password"
+                                        fullWidth
+                                        required
+                                        variant="outlined"
+                                        type="password"
+                                        name="password"
+                                        label="Mot de passe"
+                                        value={password}
+                                        onChange={this.handleChange}/>
+                                </Grid>
+                                
                             </Grid>
-                            <Grid item xs={12}>
-                                <TextField
-                                    id="password"
-                                    fullWidth
-                                    required
-                                    variant="outlined"
-                                    type="password"
-                                    name="password"
-                                    label="Mot de passe"
-                                    value={password}
-                                    onChange={this.handleChange}/>
-                            </Grid>
+                            {
+                                msg ?
+                                <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{msg}</Typography> :
+                                <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
+                            }
+                                
                             
-                        </Grid>
-                        {
-                            msg ?
-                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{msg}</Typography> :
-                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
-                        }
-                            
-                        
-        
-                        <input
-                            className="btn-solid-lg"
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            style={submit}
-                            value="S'identifier"
-                            onClick={this.handleSubmit}/>
+            
+                            <input
+                                className="btn-solid-lg"
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                                style={submit}
+                                value="S'identifier"
+                                onClick={this.handleSubmit}/>
 
-                        <Grid container justify="flex-end">
-                            <Grid item xs>
-                                <Link to="/forgot" style={{color: "#00F"}}>{"Informations de compte oubliées ?"}</Link>
+                            <Grid container justify="flex-end">
+                                <Grid item xs>
+                                    <Link to="/forgot" style={{color: "#00F", padding: "10px", fontSize: "15px", textDecoration: 'none'}}>{"Informations de compte oubliées ?"}</Link>
+                                </Grid>
                             </Grid>
-                        </Grid>
-                    </form>
-                </div>
-                <Box mt={8}>
-                    <Copyright/>
-                </Box>
-            </Container>
+                        </form>
+                    </div>
+                </Paper>
+                <Footer/>
+            </div>
         );
     }
 }

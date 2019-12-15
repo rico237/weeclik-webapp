@@ -8,7 +8,6 @@ import {
     Button, Grid,
     Dialog,
     DialogTitle,
-    GridList,
     Paper,
     Typography,
     IconButton,
@@ -16,25 +15,40 @@ import {
     DialogContent,
     DialogActions,
     CircularProgress,
-    Box} from '@material-ui/core';
+    Card,
+    Tooltip,
+    Box,
+    withStyles} from '@material-ui/core';
 import imageCompression from 'browser-image-compression';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
-
+import { Redirect } from 'react-router-dom';
 
 import "../../../node_modules/video-react/dist/video-react.css";
 import { Player } from 'video-react';
-import DeleteIcon from '@material-ui/icons/Delete';
-// import Add from '@material-ui/icons/Add';
 import Info from '@material-ui/icons/Info';
-import Payment from '@material-ui/icons/Payment';
 
-import ModalImage from "react-modal-image";
-import { Copyright } from '../copyright/Copyright';
+import NoImage from '../../assets/images/no-image.png';
+
+import AddCircleRoundedIcon from '@material-ui/icons/AddCircleRounded';
+import DeleteForeverRoundedIcon from '@material-ui/icons/DeleteForeverRounded';
+import FavoriteBorderRoundedIcon from '@material-ui/icons/FavoriteBorderRounded';
+import LanguageRoundedIcon from '@material-ui/icons/LanguageRounded';
+import EmailRoundedIcon from '@material-ui/icons/EmailRounded';
+import RoomRoundedIcon from '@material-ui/icons/RoomRounded';
+import CallRoundedIcon from '@material-ui/icons/CallRounded';
+import EditRoundedIcon from '@material-ui/icons/EditRounded';
 
 //#region COLOR
 import grey from '@material-ui/core/colors/grey';
+import green from '@material-ui/core/colors/green';
+import blue from '@material-ui/core/colors/blue';
+import red from '@material-ui/core/colors/red';
+// import Picture from './components/commerceComponent/Picture';
+import Footer from '../footer/Footer';
+// import HUE from '@material-ui/core/colors/HUE';
+// import ShowInfoCommerce from './components/commerceComponent/ShowInfoCommerce';
 //#endregion
 
 
@@ -53,87 +67,74 @@ const root2 = {
     padding: theme.spacing(5),
 }
 
-const paper = {
-    padding: theme.spacing(3),
-    // marginTop: theme.spacing(4),
-    // marginBottom: theme.spacing(4),
-    // margin: '25px'
-}
-
-// const styleButton1 = {
-//     background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
-//     border: 0,
-//     borderRadius: 3,
-//     boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-//     color: 'white',
-//     height: 48,
-//     padding: '0 30px',
-//     marginTop: '15px',
-//     marginBottom: '15px',
-//     outline: 'none'
-// }
-
-const styleButton2 = {
-    background: 'linear-gradient(45deg, #2196F3 30%, #21CBF3 90%)',
-    border: 0,
-    borderRadius: 3,
-    boxShadow: '0 3px 5px 2px rgba(255, 105, 135, .3)',
-    color: 'white',
-    height: 48,
-    padding: '0 30px',
-    marginTop: '15px',
-    marginBottom: '15px',
-    outline: 'none',
-    fontSize: '18px'
-}
+const LightTooltip = withStyles(theme => ({
+    tooltip: {
+        backgroundColor: theme.palette.common.white,
+        color: 'rgba(0, 0, 0, 0.87)',
+        boxShadow: theme.shadows[1],
+        fontSize: 11,
+    },
+}))(Tooltip);
 //#endregion
 
 class AboutCommerce extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            commerceId: this.props.location.state.id,
-            currentUser: Parse.User.current(),
-            commerce: {
-                nomCommerce: '',
-                adresse: '',
-                ville: '',
-                bp: '',
-                siteWeb: '',
-                tel: '',
-                description: '',
-                statutCommerce: '',
-                nombrePartages: 0,
-                owner: '',
-                position: '',
-                mail: '',
-                currencyCategory: '',
-                promotion: '',
-                id: ''
-            },
-            file: [],
-            imgs: null,
-            listImg: [],
-            movieURL: [],
-            validate: false,
-            submitted: false,
-            openPopupVideoDelete: false,
-            openPopupVideoAdd: false,
-            openInfo: false,
-            alertMsg: '',
-            sec: 3,
-            sec2: 0,
-            imgPreview1: null,
-            imgPreview2: null,
-            imgPreview3: null,
-            idPic1: '',
-            idPic2: '',
-            idPic3: '',
-            nbImageUpload: 0,
-            colorStatus: '#F00'
-        };
+        this.infoRef = React.createRef();
+        this.imageRef = React.createRef();
+        this.movieRef = React.createRef();
+        this.payementRef = React.createRef();
 
+        try {
+            this.state = {
+                error: null,
+                commerceId: this.props.location.state.id,
+                currentUser: Parse.User.current(),
+                commerce: {
+                    nomCommerce: '',
+                    adresse: '',
+                    ville: '',
+                    bp: '',
+                    siteWeb: '',
+                    tel: '',
+                    description: '',
+                    statutCommerce: '',
+                    nombrePartages: 0,
+                    owner: '',
+                    position: '',
+                    mail: '',
+                    currencyCategory: '',
+                    promotion: '',
+                    id: ''
+                },
+                file: [],
+                imgs: null,
+                listImg: [],
+                movieURL: [],
+                validate: false,
+                submitted: false,
+                openPopupVideoDelete: false,
+                openPopupVideoAdd: false,
+                openInfo: false,
+                alertMsg: '',
+                sec: 3,
+                sec2: 0,
+                imgPreview1: null,
+                imgPreview2: null,
+                imgPreview3: null,
+                idPic1: '',
+                idPic2: '',
+                idPic3: '',
+                canUpdateInfo: false,
+                canUpdatePromo: false,
+                canUpdateDescription: false,
+                nbImageUpload: 0,
+                colorStatus: red[400]
+            };
+        } catch (error) {
+                
+        }
         this.handleValidate = this.handleValidate.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -143,6 +144,10 @@ class AboutCommerce extends Component {
         this.changePicture3 = this.changePicture3.bind(this);
 
         this.onUploadImage = this.onUploadImage.bind(this);
+
+        this.updateTheInfo = this.updateTheInfo.bind(this);
+        this.updateThePromo = this.updateThePromo.bind(this);
+        this.updateTheDescription = this.updateTheDescription.bind(this);
     }
 
     handleOpenInfo = () => {
@@ -196,11 +201,16 @@ class AboutCommerce extends Component {
         }));
     }
 
+    getUUID() {
+        return 'xxyxx'.replace(/[xy]/g, (c) => {
+            var rand = Math.random() * 16 | 0, v = c === 'x' ? rand : (rand && (0x3 || 0x8));
+            return v.toString(16);
+        });
+    }
+
     getCommerceData() {
         const ParseCommerce = Parse.Object.extend("Commerce");
         const queryCommerce = new Parse.Query(ParseCommerce);
-
-        // queryCommerce.equalTo("owner", Parse.User.current());
 
         queryCommerce.get(this.state.commerceId)
             .then((snapshotObject) => {
@@ -211,6 +221,7 @@ class AboutCommerce extends Component {
                     var _typeCommerce = fetchedCommerce.get('typeCommerce');
                     var _addr = fetchedCommerce.get('adresse');
                     var _tel = fetchedCommerce.get('tel');
+                    var _mail = fetchedCommerce.get('mail');
                     var _siteWeb = fetchedCommerce.get('siteWeb');
                     var _description = fetchedCommerce.get('description');
                     var _promotions = fetchedCommerce.get('promotions');
@@ -218,40 +229,26 @@ class AboutCommerce extends Component {
                     switch (_statusCommerce) {
                         case 0:
                             _statusCommerce = "Hors ligne - en attente de paiement"
-                            this.setState({colorStatus: '#F00'});
+                            this.setState({colorStatus: red[400]});
                             break;
                         case 1:
                             _statusCommerce = "En ligne"
-                            this.setState({colorStatus: '#00F'});
+                            this.setState({colorStatus: green[500]});
                             break;
                         case 2:
                             _statusCommerce = "Hors ligne - paiement annulé"
-                            this.setState({colorStatus: '#F00'});
+                            this.setState({colorStatus: red[400]});
                             break;
                         case 3:
                             _statusCommerce = "Erreur lors du paiement ou du renouvellement"
-                            this.setState({colorStatus: '#F00'});
-                            break;
-                        case 4:
-                            _statusCommerce = ""
-                            this.setState({colorStatus: '#F00'});
+                            this.setState({colorStatus: red[400]});
                             break;
                     
                         default:
                             _statusCommerce = "Statut inconnu"
-                            this.setState({colorStatus: '#F00'});
+                            this.setState({colorStatus: red[400]});
                             break;
                     }
-
-
-                    // commerce: {
-                    //     ville: '',
-                    //     bp: '',
-                    //     owner: '',
-                    //     position: '',
-                    //     mail: '',
-                    //     id: ''
-                    // },
 
                     this.setState(prevState => ({
                         commerce: {
@@ -263,6 +260,7 @@ class AboutCommerce extends Component {
                             currencyCategory: _typeCommerce,
                             siteWeb: _siteWeb,
                             tel: _tel,
+                            mail: _mail,
                             adresse: _addr,
                             promotion: _promotions
                         }
@@ -348,7 +346,6 @@ class AboutCommerce extends Component {
         }
     }
     //#endregion
-
 
     //#region UPLOAD_IMAGE
     uploadImageToServer(img, n, n_max) {
@@ -446,12 +443,10 @@ class AboutCommerce extends Component {
 
             
             file.save().then((file) => {
-                // console.log("@@@@@@@@@@@@@@@@@>"+JSON.stringify(file, null, 2));
                 Commerce_video.set("nameVideo", movie.name);
                 Commerce_video.set("video", file);
                 Commerce_video.set("leCommerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
                 Commerce_video.save().then((Commerce_video) => {
-                    // console.log("#################>"+JSON.stringify(Commerce_video, null, 2));
                     this.handleCloseAddVideo();
                     this.setState({ alertMsg: 'Vidéo sauvegardé', sec2: 0 });
                     clearInterval(this.intervalId);
@@ -486,8 +481,12 @@ class AboutCommerce extends Component {
         queryCommercePhoto.find()
         .then(responseSnapshot => {
             responseSnapshot.forEach((elt) => {
-                commercePicture.push({ id: elt.id, url : elt.get("photo").url()});
+                commercePicture.push({ id: elt.id, url: elt.get("photo").url(), default: false });
             });
+            for (let i = responseSnapshot.length; i < 3; i++) {
+                var uuid = this.getUUID();
+                commercePicture.push({ id: uuid, url: NoImage, default: true })
+            }
         });
         
         return new Promise(resolve => {
@@ -664,8 +663,74 @@ class AboutCommerce extends Component {
     }
     //#endregion
 
+    //#region UPDATE_COMMERCE
+    updateTheInfo(event) {
+        event.preventDefault();
 
+        const _state_commerce = this.state.commerce;
+        let addr = "";
+        if (_state_commerce !== "") {
+            addr = _state_commerce.adresse;
+        } else if (_state_commerce.adresse !== "") {
+            addr = _state_commerce.adresse;
+        }
 
+        if (_state_commerce.nomCommerce !== "" &&
+            _state_commerce.currencyCategory !== "" &&
+            _state_commerce.tel !== "" && addr !== "") {
+            const ParseCommerce = Parse.Object.extend("Commerce");
+            const instanceCommerce = new ParseCommerce();
+            instanceCommerce.id = this.state.commerceId;
+            instanceCommerce.set("nomCommerce", _state_commerce.nomCommerce);
+            instanceCommerce.set("siteWeb", _state_commerce.siteWeb);
+            instanceCommerce.set("adresse", addr);
+            instanceCommerce.set("typeCommerce", _state_commerce.currencyCategory);
+            instanceCommerce.set("mail", _state_commerce.mail);
+            instanceCommerce.set("tel", _state_commerce.tel);
+            instanceCommerce.save()
+            .then((newCommerce) => {
+                this.setState({canUpdateInfo: false})
+            }, (error) => {
+                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+            })
+        }
+    }
+
+    updateThePromo(event) {
+        event.preventDefault();
+        const _state_commerce = this.state.commerce;
+
+        // if (_state_commerce.promotion !== "") {
+            const ParseCommerce = Parse.Object.extend("Commerce");
+            const instanceCommerce = new ParseCommerce();
+            instanceCommerce.id = this.state.commerceId;
+            instanceCommerce.set("promotions", _state_commerce.promotion)
+            instanceCommerce.save()
+            .then((newCommerce) => {
+                this.setState({canUpdatePromo: false})
+            }, (error) => {
+                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+            })
+        // }
+    }
+
+    updateTheDescription(event) {
+        event.preventDefault();
+        const _state_commerce = this.state.commerce;
+        // if (_state_commerce.promotion !== "") {
+            const ParseCommerce = Parse.Object.extend("Commerce");
+            const instanceCommerce = new ParseCommerce();
+            instanceCommerce.id = this.state.commerceId;
+            instanceCommerce.set("description", _state_commerce.description)
+            instanceCommerce.save()
+            .then((newCommerce) => {
+                this.setState({canUpdateDescription: false})
+            }, (error) => {
+                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+            })
+        // }
+    }
+    //#endregion
 
     goToBack = () => {
         this.props.history.goBack();
@@ -690,215 +755,409 @@ class AboutCommerce extends Component {
 
 
     componentDidMount() {
-        // this.props.getUserInfo();
-        // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
-        this.getCommerceData();
-        this.getUrlCommercePicture();
-        this.getUrlCommerceMovie();
-        // console.log(`-----------> ${this.state.movieURL}`);
-        // console.log(`-----------> ${this.props.location.state.id}`);
+        try {
+            this.getCommerceData();
+            this.getUrlCommercePicture();
+            this.getUrlCommerceMovie();
+        } catch (error) {
+            this.setState({ error })
+        }
     }
 
     render() {
-        // const { user } = this.props;className="App-header"
-        // console.log(this.state.commerce);
-        // console.log(this.state.listImg);
-        // let columns = this.props.width === 'xs' || this.props.width === 'sm' ? 1 : 3;
-
-        return (
-            <Container component="main" maxWidth="md" style={{ color: "#000" }}>
-                <CssBaseline/>
-                <div style={root}>
-                    <Grid
-                        container
-                        spacing={1}
-                        direction="row"
-                        justify="center">
-                        <Grid item xs={12} sm={4} className="Weeclik-App-Info-Commerce2" style={paper}>
+        try {
+            return (
+                <div>
+                    <div ref={this.infoRef} style={{margin:'10px', paddingTop: '70px'}}></div>
+                    {/* Les informations */}
+                    <Box my={3}/>
+                    <div>
+                        <Container maxWidth={'lg'}>
+                            <Paper elevation={0} style={{borderRadius: 0}}>
+                                <Card elevation={0} style={root2}>
+                                    <Grid container justify="space-between">
+                                        <Grid item><Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce} - {this.state.commerce.currencyCategory}</Typography></Grid>
+                                        
+                                        {
+                                            this.state.commerce.statutCommerce !== "En ligne" ? (
+                                                <Grid item xs><Button variant="contained" color="primary" onClick={() => {this.goToPay(this.state.commerceId)}} style={{ outline: 'none', float: 'right', marginRight: '30px' }}>Mettre en ligne</Button></Grid>
+                                            ) : (
+                                                null
+                                            )
+                                        }
+                                        
+                                        <Grid item>
+                                            <Button onClick={() => {this.setState({canUpdateInfo: true})}} variant="text" color="primary" size="small" style={{outline: 'none', color: "#2096F3"}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                        </Grid>
+                                    </Grid>
+                                    {
+                                        this.state.canUpdateInfo ? (
+                                            <div>
+                                                <form onSubmit={this.updateTheInfo} /*style={{width:'500px'}}*/>
+                                                    <Grid container spacing={2}>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Nom du commerce</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.nomCommerce}
+                                                                name="nomCommerce"
+                                                                id="outlined-name"
+                                                                // variant="filled"
+                                                                // InputProps={{disableUnderline: true}}
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Cathégorie</label>
+                                                            <select
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                name="currencyCategory"
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.currencyCategory}>
+                                                                    <option value="">--Aucune--</option>
+                                                                    <option value="Alimentaire">Alimentaire</option>
+                                                                    <option value="Artisanat">Artisanat</option>
+                                                                    <option value="Bâtiment">Bâtiment</option>
+                                                                    <option value="Bien-être">Bien-être</option>
+                                                                    <option value="Décoration">Décoration</option>
+                                                                    <option value="Dépannage">Dépannage</option>
+                                                                    <option value="Evènement">Evènement</option>
+                                                                    <option value="E-commerce">E-commerce</option>
+                                                                    <option value="Fabricant">Fabricant</option>
+                                                                    <option value="Garagiste">Garagiste</option>
+                                                                    <option value="Hôtellerie">Hôtellerie</option>
+                                                                    <option value="Humanitaire">Humanitaire</option>
+                                                                    <option value="Immobilier">Immobilier</option>
+                                                                    <option value="Informatique">Informatique</option>
+                                                                    <option value="Nautisme">Nautisme</option>
+                                                                    <option value="Restauration">Restauration</option>
+                                                                    <option value="Textile">Textile</option>
+                                                                    <option value="Transport">Transport</option>
+                                                                    <option value="Tourisme">Tourisme</option>
+                                                                    <option value="Santé">Santé</option>
+                                                                    <option value="Autre">Autre</option>
+                                                            </select>
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Adresse</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.adresse}
+                                                                name="adresse"
+                                                                id="outlined-name"
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Numéro de téléphone</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.tel}
+                                                                name="tel"
+                                                                id="outlined-name"
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Adresse mail</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 -10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.mail}
+                                                                name="mail"
+                                                                id="outlined-name"
+                                                            />
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={6}>
+                                                            <label>Site web</label>
+                                                            <input
+                                                                style={{margin: '-10px 0 10px 0',width:'100%'}}
+                                                                onChange={this.handleChange}
+                                                                value={this.state.commerce.siteWeb}
+                                                                name="siteWeb"
+                                                                id="outlined-name"
+                                                            />
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Button variant="contained" color="primary" type="submit">valider</Button>
+                                                    <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateInfo: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                                </form>
+                                            </div>
+                                        ) : (
+                                            <div>
+                                                <h6 style={{color: this.state.colorStatus, margin: '10px 0', paddingTop: '20px'}}>
+                                                    {this.state.commerce.statutCommerce}{' '}
+                                                    <IconButton onClick={() => { this.handleOpenInfo() }} aria-label="delete" style={{ color: "gray", outline: 'none'}} size="small">
+                                                        <Info fontSize="small" />
+                                                    </IconButton>
+                                                </h6>
+                                                {/* <h6 style={{color:"#000"}}>{this.state.commerce.currencyCategory}</h6> */}
+                                                <h6 style={{color:"#000"}}>
+                                                    <RoomRoundedIcon/>
+                                                    {" : " + this.state.commerce.adresse}
+                                                </h6>
+                                                <h6 style={{color:"#000"}}>
+                                                    <CallRoundedIcon/>
+                                                    {" : " + this.state.commerce.tel}
+                                                </h6>
+                                                <h6 style={{color:"#000"}}>
+                                                    <EmailRoundedIcon/>
+                                                    {" : "}<a href={"mailto:"+this.state.commerce.mail} target={"_blank"} style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.mail}</a>
+                                                </h6>
+                                                {
+                                                    this.state.commerce.siteWeb ? (
+                                                        <h6 style={{color:"#000"}}>
+                                                            <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.siteWeb}</a>
+                                                        </h6>
+                                                    ) : (
+                                                        <h6 style={{color: grey[500]}}>
+                                                            <LanguageRoundedIcon/>{" : Aucun site web"}
+                                                        </h6>
+                                                    )
+                                                }
+                                                <h5 style={{color:"#000", paddingTop: '20px'}}>
+                                                    <FavoriteBorderRoundedIcon style={{color:"#F00"}}/>
+                                                    {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
+                                                </h5>
+                                            </div>
+                                        )
+                                    }
+                                </Card>
+                            </Paper>
+                        </Container>
+                    </div>
+                    <div style={{margin:'10px'}}></div>
+                    {/* La promotion */}
+                    <div>
+                        <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
-                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.goToBack() }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Mes commerces</Button>
-                                <Button fullWidth variant="outlined" color="primary" onClick={() => { this.getDetail(this.state.commerceId) }} style={{ outline: 'none', marginTop: '15px', marginBottom: '15px' }}>Modifier le commerce</Button>
-                                {/* <Typography component="p" style={{color:"#000"}}>TODO: un petit text resumé sur c'est quoi une promotion</Typography>
-                                <Button fullWidth onClick={() => { alert("Fonctionnalité en cours de Developpement") }} style={styleButton1}>Nouvelle promotion</Button> */}
+                                <Grid container justify="space-between">
+                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography></Grid>
+                                    <Grid item>
+                                        <Button onClick={() => {this.setState({canUpdatePromo: true})}} variant="text" color="primary" size="small" style={{outline: 'none', color: "#2096F3"}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                    </Grid>
+                                </Grid>
                                 {
-                                    this.state.commerce.statutCommerce !== "En ligne"?
-                                    (<div>
-                                        <Typography component="p" style={{color:"#000"}}>Payer pour mettre votre commerce en ligne</Typography>
-                                        <Button fullWidth onClick={() => { this.goToPay(this.state.commerceId) }} style={styleButton2} startIcon={<Payment />}>Payer 329.99 €</Button>
-                                    </div>):
-                                    (<div></div>)
-
+                                    this.state.canUpdatePromo ? (
+                                        <div>
+                                            <form onSubmit={this.updateThePromo}>
+                                                <Grid container spacing={2}>
+                                                    <Grid item xs={12}>
+                                                        <label>Ajouter des promotions</label>
+                                                        <textarea
+                                                            style={{margin: '-5px 0 10px 0',width:'100%', outline: 'none'}}
+                                                            onChange={this.handleChange}
+                                                            value={this.state.commerce.promotion}
+                                                            rows="5"
+                                                            name="promotion"
+                                                            id="outlined-name"
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                                <Button variant="contained" color="primary" type="submit">valider</Button>
+                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdatePromo: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                            </form>
+                                        </div>
+                                    ) : (
+                                        <Grid
+                                            container
+                                            alignItems="center">
+                                            <Grid item xs={12}>
+                                                {
+                                                    this.state.commerce.promotion ?
+                                                    (<Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>):
+                                                    (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas de promotions en cours"}</Typography>)
+                                                }
+                                            </Grid>
+                                        </Grid>
+                                    )
                                 }
-                                
                             </Paper>
-                        </Grid>
-                        <Grid item xs={12} sm={8} className="Weeclik-App-Info-Commerce2" style={paper}>
+                        </Container>
+                    </div>
+                    <div ref={this.movieRef} style={{margin:'10px'}}></div>
+                    {/* La description */}
+                    <div>
+                        <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
-                                <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
-                                <h6 style={{color: this.state.colorStatus, margin: '10px 0'}}>
-                                    {this.state.commerce.statutCommerce}{' '}
-                                    <IconButton onClick={() => { this.handleOpenInfo() }} aria-label="delete" style={{ color: "gray", outline: 'none'}} size="small">
-                                        <Info fontSize="small" />
-                                    </IconButton>
-                                </h6>
-                                <h6 style={{color:"#000"}}>Type : {this.state.commerce.currencyCategory}</h6>
-                                <h6 style={{color:"#000"}}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>	:
-                                    {" " + this.state.commerce.adresse}
-                                </h6>
-                                <h6 style={{color:"#000"}}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg> :
-                                    {" " + this.state.commerce.tel}
-                                </h6>
-                                <h6 style={{color:"#000"}}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zm6.93 6h-2.95c-.32-1.25-.78-2.45-1.38-3.56 1.84.63 3.37 1.91 4.33 3.56zM12 4.04c.83 1.2 1.48 2.53 1.91 3.96h-3.82c.43-1.43 1.08-2.76 1.91-3.96zM4.26 14C4.1 13.36 4 12.69 4 12s.1-1.36.26-2h3.38c-.08.66-.14 1.32-.14 2 0 .68.06 1.34.14 2H4.26zm.82 2h2.95c.32 1.25.78 2.45 1.38 3.56-1.84-.63-3.37-1.9-4.33-3.56zm2.95-8H5.08c.96-1.66 2.49-2.93 4.33-3.56C8.81 5.55 8.35 6.75 8.03 8zM12 19.96c-.83-1.2-1.48-2.53-1.91-3.96h3.82c-.43 1.43-1.08 2.76-1.91 3.96zM14.34 14H9.66c-.09-.66-.16-1.32-.16-2 0-.68.07-1.35.16-2h4.68c.09.65.16 1.32.16 2 0 .68-.07 1.34-.16 2zm.25 5.56c.6-1.11 1.06-2.31 1.38-3.56h2.95c-.96 1.65-2.49 2.93-4.33 3.56zM16.36 14c.08-.66.14-1.32.14-2 0-.68-.06-1.34-.14-2h3.38c.16.64.26 1.31.26 2s-.1 1.36-.26 2h-3.38z"/></svg> :
-                                    {" "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
-                                </h6>
-                                {/* <p>{this.state.commerce.promotion}</p>
-                                <p>{this.state.commerce.description}</p> */}
-                                <h5 style={{color:"#000", paddingTop: '50px'}}>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
-                                    {' '}{this.state.commerce.nombrePartages} {this.state.commerce.nombrePartages > 1 ? "Partages" : "Partage"}
-                                </h5>
+                                <Grid container justify="space-between">
+                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography></Grid>
+                                    <Grid item>
+                                        <Button onClick={() => {this.setState({canUpdateDescription: true})}} variant="text" color="primary" size="small" style={{outline: 'none', color: "#2096F3"}} startIcon={<EditRoundedIcon/>}>Modifier</Button>
+                                    </Grid>
+                                </Grid>
+                                {
+                                    this.state.canUpdateDescription ? (
+                                        <div>
+                                            <form onSubmit={this.updateTheDescription}>
+                                                <Grid container spacing={2}>
+                                                    <Grid item xs={12}>
+                                                        <label>La description de votre commerce</label>
+                                                        <textarea
+                                                            style={{margin: '-5px 0 10px 0',width:'100%', outline: 'none'}}
+                                                            onChange={this.handleChange}
+                                                            value={this.state.commerce.description}
+                                                            rows="5"
+                                                            name="description"
+                                                            id="outlined-name"
+                                                        />
+                                                    </Grid>
+                                                </Grid>
+                                                <Button variant="contained" color="primary" type="submit">valider</Button>
+                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateDescription: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                            </form>
+                                        </div>
+                                    ) : (
+                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
+                                    )
+                                }
                             </Paper>
-
-                            <div style={{margin:'10px'}}></div>
-
+                        </Container>
+                    </div>
+                    {/* Les images */}
+                    <div ref={this.imageRef} style={{margin:'10px'}}></div>
+                    <div>
+                        <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
                                 <Grid
                                     container
                                     justify="space-between"
                                     alignItems="center">
                                     <Grid item xs={12}>
-                                        <Typography variant="h5" component="h3" style={{color:"#000"}}>Images du commerce</Typography>
+                                        <Grid container justify="space-between">
+                                            <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Photos du commerce</Typography></Grid>
+                                            <Grid item>
+                                                <Grid container justify="space-between">
+                                                    <Grid item xs={6}>
+                                                        {
+                                                            this.state.listImg.filter((obj) => obj.default === false).length < 3 ?
+                                                            (<div>
+                                                                <input
+                                                                    id="icon-input-file-img"
+                                                                    type="file"
+                                                                    onChange={this.onUploadImage}
+                                                                    style={{ display: 'None' }}
+                                                                    accept="image/*"
+                                                                    multiple/>
+                                                                <label htmlFor="icon-input-file-img">
+                                                                    <LightTooltip title="Ajouter des images">
+                                                                        <IconButton aria-label="upload picture" component="span" color="primary" style={{outline: 'none', color: "#2096F3"}}>
+                                                                            <AddCircleRoundedIcon />
+                                                                            {/* <AddPhotoAlternateRoundedIcon /> */}
+                                                                        </IconButton>
+                                                                    </LightTooltip>
+                                                                    {/* <LightTooltip title="Ajouter des images">
+                                                                        <Button variant="outlined" color="primary" size="small" component="span">
+                                                                            Ajouter des images
+                                                                        </Button>
+                                                                    </LightTooltip> */}
+                                                                </label>
+                                                            </div>):
+                                                            (<div></div>)
+                                                        }
+                                                    </Grid>
+                                                    <Grid item xs={6}>
+                                                        {
+                                                            this.state.listImg.length > 0 ?
+                                                            (<LightTooltip title="Tout supprimer">
+                                                                <IconButton onClick={() => { this.deleteAllPictureCommerce() } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none', color: "#2096F3"}}>
+                                                                    <DeleteForeverRoundedIcon />
+                                                                </IconButton>
+                                                            </LightTooltip>):
+                                                            (null)
+                                                        }
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                        </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>Vous pouvez ajouter au maximum 3 Images de présentation de votre établissement</Typography>
-                                    </Grid>
-                                    <Grid item xs={6}>
                                         {
-                                            this.state.listImg.length < 3 ?
-                                            (<div>
-                                                <input
-                                                    id="icon-input-file-img"
-                                                    type="file"
-                                                    onChange={this.onUploadImage}
-                                                    style={{ display: 'None' }}
-                                                    accept="image/*"
-                                                    multiple/>
-                                                <label htmlFor="icon-input-file-img">
-                                                    <Button variant="outlined" color="primary" size="small" component="span">
-                                                        Ajouter des images
-                                                    </Button>
-                                                </label>
-                                            </div>):
-                                            (<div></div>)
+                                            this.state.listImg.filter((obj) => obj.default === false).length < 1 ? (
+                                                <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
+                                            ) : (
+                                                <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter {this.state.listImg.filter((obj) => obj.default === true).length}
+                                                {" "}{this.state.listImg.filter((obj) => obj.default === true).length <= 1 ? ("image") : ("images")} à votre établissement</Typography>
+                                            )
                                         }
+                                        {/* <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
+                                        <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter {this.state.listImg.length} images de votre établissement</Typography> */}
                                     </Grid>
-                                    <Grid item xs={6}>
-                                        {
-                                            this.state.listImg.length > 0 ?
-                                            (<Button onClick={() => { this.deleteAllPictureCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Tout supprimer</Button>):
-                                            (<div></div>)
-                                        }
-                                    </Grid>
+                                    
                                     <Grid item xs={12}>
                                         {
                                             this.state.listImg.length > 0 ?
-                                            (<GridList cellHeight={250} cols={3} style={{ height: '450' }}>
+                                            (<Grid
+                                                container
+                                                direction="row"
+                                                justify="center"
+                                                alignItems="center"
+                                                spacing={2}>
                                                 {this.state.listImg && [...this.state.listImg].map((object, index) => (
-                                                    <div key={index}>
-                                                        <div style={{height: 160, maxWidth: '100%', overflow: 'hidden'}}>
-                                                            <ModalImage
-                                                                small={object.url}
-                                                                large={object.url}
-                                                                hideDownload="false"
-                                                                hideZoom="false"
-                                                                style={{width: '100%'}}
-                                                            />
-                                                        </div>
-                                                        <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none'}}>
-                                                            <DeleteIcon fontSize="small" />
-                                                        </IconButton>
-                                                    </div>
+                                                    <Grid key={index} item xs>
+                                                        <center>
+                                                            <div style={{height: 250, maxWidth: '100%', overflow: 'hidden'}}>
+                                                                <img
+                                                                    src={object.url}
+                                                                    style={{width: '100%', height: '100%', objectFit: 'cover'}}
+                                                                />
+                                                            </div>
+                                                            {
+                                                                (!object.default) ? (
+                                                                    <IconButton onClick={() => { this.deletePictureCommerceById(object.id) } } aria-label="delete" color="secondary" size="medium" style={{outline: 'none', color: "#2096F3"}}>
+                                                                        <DeleteForeverRoundedIcon fontSize="default" />
+                                                                    </IconButton>
+                                                                ) : (<div style={{margin: '50px'}}></div>)
+                                                            }
+                                                        </center>
+                                                    </Grid>
                                                 ))}
-                                            </GridList>):
+                                            </Grid>):
                                             (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas d'images"}</Typography>)
                                         }
                                     </Grid>
                                 </Grid>
                             </Paper>
-
-                            <div style={{margin:'10px'}}></div>
-
+                        </Container>
+                    </div>
+                    <div ref={this.movieRef} style={{margin:'10px'}}></div>
+                    {/* La video */}
+                    <div>
+                        <Container maxWidth={'lg'}>
                             <Paper elevation={0} style={root2}>
-                                <Typography variant="h5" component="h3" style={{color:"#000"}}>Description de votre commerce</Typography>
-                                <Grid item x={12}>
-                                    <Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.description}</Typography>
-                                </Grid>
-                            </Paper>
-
-                            <div style={{margin:'10px'}}></div>
-
-                            <Paper elevation={0} style={root2}>
-                                <Grid
-                                    container
-                                    alignItems="center">
-                                    <Grid item xs={12}>
-                                        <Typography variant="h5" component="h3" style={{color:"#000"}}>Mes promotions</Typography>
-                                    </Grid>
-                                    <Grid item xs={12}>
-                                        {
-                                            this.state.commerce.promotion ?
-                                            (<Typography variant="body1" style={{color:"#000", fontSize: '100'}}>{this.state.commerce.promotion}</Typography>):
-                                            (<Typography variant="h3" style={{color: grey[300], textAlign: 'center'}}>{"Pas de promotions en cours"}</Typography>)
-                                        }
-                                        {/* <Button color="secondary" size="small">Ajouter promotion</Button> */}
-                                    </Grid>
-                                </Grid>
-                                
-                                
-                            </Paper>
-
-                            <div style={{margin:'10px'}}></div>
-
-                            <Paper elevation={0} style={root2}>
-                                <Grid
-                                    container
-                                    justify="space-between"
-                                    alignItems="center">
-                                        <Grid item xs={12}>
-                                            <Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography>
+                                <Grid container justify="space-between">
+                                    <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography></Grid>
+                                    <Grid item>
+                                        <Grid container>
+                                            <Grid item spacing={2}>
+                                                {
+                                                    this.state.movieURL[0] ?
+                                                    (<div></div>) :
+                                                    (<div>
+                                                        <input
+                                                            id="icon-input-file-video"
+                                                            type="file"
+                                                            onChange={this.onUploadVideo}
+                                                            style={{ display: 'None' }}
+                                                            accept="video/mp4,video/x-m4v,video/*"/>
+                                                        <label htmlFor="icon-input-file-video">
+                                                            <Button variant="text" color="primary" size="small" component="span" style={{ outline: 'none', color: "#2096F3"}} startIcon={<AddCircleRoundedIcon/>}>Ajouter une vidéo</Button>
+                                                        </label>
+                                                    </div>)
+                                                }
+                                            </Grid>
+                                            <Grid item xs>
+                                                {
+                                                    this.state.movieURL[0] ?
+                                                    (<Button onClick={() => { this.deleteMovieCommerce() }} variant="text" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}} startIcon={<DeleteForeverRoundedIcon/>}>Supprimer la vidéo</Button>) : (<div></div>)
+                                                }                        
+                                            </Grid>
                                         </Grid>
-                                        <Grid item xs={6}>
-                                            {
-                                                this.state.movieURL[0] ?
-                                                (<div></div>) :
-                                                (<div>
-                                                    <input
-                                                        id="icon-input-file-video"
-                                                        type="file"
-                                                        onChange={this.onUploadVideo}
-                                                        style={{ display: 'None' }}
-                                                        accept="video/mp4,video/x-m4v,video/*"/>
-                                                    <label htmlFor="icon-input-file-video">
-                                                        <Button variant="outlined" color="primary" size="small" component="span">
-                                                            Ajouter une vidéo
-                                                        </Button>
-                                                    </label>
-                                                </div>)
-                                            }
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            {
-                                                this.state.movieURL[0] ?
-                                                (<Button onClick={() => { this.deleteMovieCommerce() }} variant="outlined" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}}>Supprimer la vidéo</Button>) : (<div></div>)
-                                            }
                                             
-                                        </Grid>
+                                    </Grid>
                                         
                                 </Grid>
-                                
+                                            
                                 <Grid item xs={12}>
                                     {
                                         this.state.movieURL[0] ?
@@ -908,91 +1167,93 @@ class AboutCommerce extends Component {
                                         />) :
                                         (<center>
                                             <Typography variant="h3" style={{color: grey[300]}}>Pas de vidéo</Typography>
-
                                         </center>)
                                     }
                                 </Grid>
                             </Paper>
-                        </Grid>
-                    </Grid>
-                </div>
+                        </Container>
+                    </div>
+                    <div ref={this.movieRef} style={{margin:'10px'}}></div>
+                    
+                    <div style={root}>
+                        <Container component="main"  maxWidth={'lg'} style={{ color: "#000" }}>
+                            <CssBaseline/>
+                            
+                            <div>
+                                <Dialog
+                                    open={this.state.openPopupVideoDelete}
+                                    onClose={this.handleCloseDeleteVideo}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                                    style={{ minHeight: "600px"}}
+                                    maxWidth={"md"}
+                                >
+                                    <DialogContent>
+                                        <center>
+                                            <DialogContentText id="alert-dialog-description">
+                                                <p>N'actualisez pas la page et ne sélectionnez pas Précédent. Si vous procédez ainsi, vous annulez la demande</p>
+                                            </DialogContentText>
+                                            <CircularProgress color="secondary" />
+                                        </center>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
 
-                <div>
-                    <Dialog
-                        open={this.state.openPopupVideoDelete}
-                        onClose={this.handleCloseDeleteVideo}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                        style={{ minHeight: "600px"}}
-                        // fullWidth={true}
-                        maxWidth={"md"}
-                    >
-                        {/* <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec}{' ...'}</DialogTitle> */}
-                        <DialogTitle id="alert-dialog-title" style={{
-                            width: "100px",
-                            height: "100px",
-                            display: 'block',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                        }}><CircularProgress color="secondary" /></DialogTitle>
-                    </Dialog>
-                </div>
+                            <div>
+                                <Dialog
+                                    open={this.state.openPopupVideoAdd}
+                                    onClose={this.handleCloseAddVideo}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                                    style={{ minHeight: "600px"}}
+                                    maxWidth={"md"}
+                                >
+                                    <DialogContent>
+                                        <center>
+                                            <DialogContentText id="alert-dialog-description">
+                                                <p>Ajout d'une nouvelle vidéo. Cette étape peut prendre plusieurs minutes. N'actualisez pas la page et ne sélectionnez pas Précédent. Si vous procédez ainsi, vous annulez la demande</p>
+                                            </DialogContentText>
+                                            <CircularProgress color="secondary" />
+                                        </center>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
 
-                <div>
-                    <Dialog
-                        open={this.state.openPopupVideoAdd}
-                        onClose={this.handleCloseAddVideo}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                        style={{ minHeight: "600px"}}
-                        // fullWidth={true}
-                        maxWidth={"md"}
-                    >
-                        {/* <DialogTitle id="alert-dialog-title">{this.state.alertMsg}{' '}{this.state.sec2}{' ...'}</DialogTitle> */}
-                        <DialogTitle id="alert-dialog-title" style={{
-                            width: "100px",
-                            height: "100px",
-                            display: 'block',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            alignItems: 'center'
-                        }}><CircularProgress /></DialogTitle>
-                    </Dialog>
-                </div>
+                            <div>
+                                <Dialog
+                                    open={this.state.openInfo}
+                                    onClose={this.handleCloseInfo}
+                                    aria-labelledby="alert-dialog-title"
+                                    aria-describedby="alert-dialog-description"
+                                    style={{ minHeight: "600px"}}
+                                    // fullWidth={true}
+                                    maxWidth={"sm"}
+                                >
+                                    <DialogTitle id="alert-dialog-title">A propos du statut</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText id="alert-dialog-description">
+                                            {/* {this.state.commerce.statutCommerce}{' '} */}
+                                            {
+                                                this.state.commerce.statutCommerce === 'En ligne' ?
+                                                (<p>Votre commerce est en ligne et visible de tous, prêt à être partagé</p>) :
+                                                (<p>Votre commerce est toujours sur Weeclik mais invisible de tout le monde car il y a surement eu une erreur dans le paiement ou que lʼabonnement nʼest plus valable</p>)
+                                            }
+                                            
+                                        </DialogContentText>
+                                    </DialogContent>
+                                    <DialogActions>
+                                        <Button onClick={this.handleCloseInfo} color="primary" autoFocus style={{outline: 'none'}}>Ok</Button>
+                                    </DialogActions>
+                                </Dialog>
+                            </div>
 
-                <div>
-                    <Dialog
-                        open={this.state.openInfo}
-                        onClose={this.handleCloseInfo}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                        style={{ minHeight: "600px"}}
-                        // fullWidth={true}
-                        maxWidth={"sm"}
-                    >
-                        <DialogTitle id="alert-dialog-title">A propos du status</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText id="alert-dialog-description">
-                                {/* {this.state.commerce.statutCommerce}{' '} */}
-                                {
-                                    this.state.commerce.statutCommerce === 'En ligne' ?
-                                    (<p>Votre commerce est en ligne et visible de tous, prêt à être partagé</p>) :
-                                    (<p>Votre commerce est toujours sur Weeclik mais invisible de tout le monde car il y a surement eu une erreur dans le paiement ou que lʼabonnement nʼest plus valable</p>)
-                                }
-                                
-                            </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={this.handleCloseInfo} color="primary" autoFocus style={{outline: 'none'}}>Ok</Button>
-                        </DialogActions>
-                    </Dialog>
+                            
+                        </Container>
+                    </div>
+                    <Footer/>
                 </div>
-
-                <Box mt={8}>
-                    <Copyright/>
-                </Box>
-            </Container>
-        );
+            );
+        } catch (error) { return <Redirect to='/error'/> }
     }
 }
 

@@ -3,17 +3,27 @@ import Parse from 'parse';
 import logo from '../../assets/icons/LogoWeeclik.svg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-import { Container, CssBaseline, Avatar, Typography, Grid, TextField } from '@material-ui/core';
+import { Avatar, Typography, Grid, TextField, Paper } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
+import Footer from '../footer/Footer';
 
 
 const theme = createMuiTheme({
     spacing: 4,
 });
 
+const root = {
+    // marginTop: theme.spacing(8),
+    margin: '80px 0',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    borderRadius: '30px'
+}
+
 const paper = {
-    marginTop: theme.spacing(8),
-    paddingTop: '70px',
+    margin: theme.spacing(8),
+    // paddingTop: '70px',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -93,56 +103,51 @@ class ForgotPage extends Component {
         const { username, alertMsg, sec } = this.state;
 
         return (
-            <Container component="main" maxWidth="xs">
-                <CssBaseline/>
-                {
-                    
-                    
-                    
-                }
-                <div style={paper}>
-                    <Avatar alt="Logo" src={logo} style={avatar}/>
-                    {
-                        alertMsg ?
-                        <div>
-                            <Typography variant="h6" style={{textAlign: "center"}}>{`Un mail a été envoyé à l'adresse suivante ${username}`}</Typography>
-                            <Typography component="p" style={{textAlign: "center"}}>{`${sec} ...`}</Typography>
-                        </div> :
-                        <div>
-                            <Typography component="h1" variant="h5" style={{color: "#000"}}>Mot de passe oublié</Typography>
-                            <Typography>Merci de saisir l'adresse mail associé à votre compte.</Typography>
-                            <form style={form}>
-                                <Grid container spacing={2}>
-                                    <Grid item xs={12}>
-                                        <TextField
-                                            id="username"
-                                            fullWidth
-                                            required
-                                            variant="outlined"
-                                            type="email"
-                                            name="username"
-                                            label="Adresse e-mail"
-                                            value={username}
-                                            onChange={this.handleChange}/>
+            <div component="main" className="App-header2">
+                <Paper style={root}>
+                    <div style={paper}>
+                        <Avatar alt="Logo" src={logo} style={avatar}/>
+                        {
+                            alertMsg ?
+                            <div>
+                                <Typography variant="h6" style={{textAlign: "center"}}>{`Un mail a été envoyé à l'adresse suivante ${username}`}</Typography>
+                                <Typography component="p" style={{textAlign: "center"}}>{`${sec} ...`}</Typography>
+                            </div> :
+                            <div>
+                                <Typography component="h1" variant="h5" style={{color: "#000"}}>Mot de passe oublié</Typography>
+                                <Typography>Merci de saisir l'adresse mail associé à votre compte.</Typography>
+                                <form style={form}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12}>
+                                            <TextField
+                                                id="username"
+                                                fullWidth
+                                                required
+                                                variant="outlined"
+                                                type="email"
+                                                name="username"
+                                                label="Adresse e-mail"
+                                                value={username}
+                                                onChange={this.handleChange}/>
+                                        </Grid>
                                     </Grid>
-                                </Grid>
 
-                                <input
-                                    className="btn-solid-lg"
-                                    type="submit"
-                                    fullWidth
-                                    variant="contained"
-                                    color="primary"
-                                    style={submit}
-                                    value="Envoyer le mail"
-                                    onClick={this.sendNewPassword}/>
-                            </form>
-                        </div>
-                    }
-                </div>
-            </Container>
-            // <Link className="App-link" to="/login">Send</Link>
-            // <Link className="App-link" to="/">Home</Link>
+                                    <input
+                                        className="btn-solid-lg"
+                                        type="submit"
+                                        // fullWidth
+                                        variant="contained"
+                                        color="primary"
+                                        style={submit}
+                                        value="Envoyer le mail"
+                                        onClick={this.sendNewPassword}/>
+                                </form>
+                            </div>
+                        }
+                    </div>
+                </Paper>
+                <Footer/>
+            </div>
         );
     }
 }

@@ -1,12 +1,133 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { Component } from 'react';
 import Parse from 'parse';
-import { Avatar, Dialog, DialogTitle, DialogContent, DialogActions, Grid, Container, Typography, IconButton } from '@material-ui/core';
-import { Button } from '@material-ui/core';
-import defaultProfile from '../../assets/icons/defaultUser.svg'
-import AddImg from '../../assets/images/addImage.svg'
+import { Link } from 'react-router-dom';
+import { Avatar, Grid, Container, IconButton, Typography, Button, CardHeader, Card, CardContent, /*Badge, */Tooltip, CardActions,
+} from '@material-ui/core';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
+import { createMuiTheme, withStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
+import CommercePicture from './CommercePicture';
+
+import Footer from '../footer/Footer';
+
+import AppStore from '../../assets/icons/app-store-badge.png';
+import GooglePlay from '../../assets/icons/google-play-badge.png';
+import NoImage from '../../assets/images/no-image.png';
+import NoProfile from '../../assets/images/no-profile.jpg';
+
+import green from '@material-ui/core/colors/green';
+import red from '@material-ui/core/colors/red';
+
+import { UpdateUser } from './UpdateUser';
+
+
+
+
+//#region THEME
+const theme = createMuiTheme({
+    spacing: 4,
+});
+
+const heading = {
+    fontWeight: '900',
+    color: '#FFF',
+    letterSpacing: 0.5,
+}
+
+const card = {
+    width: '100%',
+    borderRadius: theme.spacing(2), // 16px
+    transition: '0.3s',
+    boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
+    position: 'relative',
+    overflow: 'initial',
+    display: 'flex',
+    flexDirection: 'column',
+    background: 'rgb(30, 176, 248)'
+}
+
+const card1 = {
+    width: '100%',
+    borderRadius: theme.spacing(2), // 16px
+    transition: '0.3s',
+    boxShadow: '0px 14px 80px rgba(34, 35, 58, 0.2)',
+    position: 'relative',
+    overflow: 'initial',
+    display: 'flex',
+    flexDirection: 'column',
+}
+
+const content = {
+
+}
+
+const LightTooltip = withStyles(theme => ({
+    tooltip: {
+        backgroundColor: theme.palette.common.white,
+        color: 'rgba(0, 0, 0, 0.87)',
+        boxShadow: theme.shadows[1],
+        fontSize: 11,
+    },
+}))(Tooltip);
+
+// const StyledBadgeRed = withStyles(theme => ({
+//     badge: {
+//         backgroundColor: '#F00',
+//         width: 15,
+//         height: 15,
+//         boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+//         '&::after': {
+//             position: 'absolute',
+//             top: 0, left: 0,
+//             width: '100%', height: '100%',
+//             borderRadius: '50%',
+//             animation: '$ripple 1.2s infinite ease-in-out',
+//             border: '1px solid #F00',
+//             content: '""',
+//         },
+//     },
+//     '@keyframes ripple': {
+//         '0%': {
+//             transform: 'scale(.8)',
+//             opacity: 1,
+//         },
+//         '100%': {
+//             transform: 'scale(2.4)',
+//             opacity: 0,
+//         },
+//     }
+// }))(Badge)
+
+// const StyledBadgeGreen = withStyles(theme => ({
+//     badge: {
+//         backgroundColor: '#44b700',
+//         width: 15,
+//         height: 15,
+//         boxShadow: `0 0 0 2px ${theme.palette.background.paper}`,
+//         '&::after': {
+//             position: 'absolute',
+//             top: 0, left: 0,
+//             width: '100%', height: '100%',
+//             borderRadius: '50%',
+//             animation: '$ripple 1.2s infinite ease-in-out',
+//             border: '1px solid #44b700',
+//             content: '""',
+//         },
+//     },
+//     '@keyframes ripple': {
+//         '0%': {
+//             transform: 'scale(.8)',
+//             opacity: 1,
+//         },
+//         '100%': {
+//             transform: 'scale(2.4)',
+//             opacity: 0,
+//         },
+//     }
+// }))(Badge)
+//#endregion
 
 
 class ProfilePage extends Component {
@@ -21,23 +142,12 @@ class ProfilePage extends Component {
                 email: ''
             },
             alertMsg: '',
-            lastPassword: '',
-            newPassword: '',
-            newPassword2: '',
-            nbPersonneParraine: 0,
+            colorStatus: 'textSecondary',
+            commerceList: [],
             nbCommerce: 0,
             open: false,
-            openUpdatePicture: false,
-            openAmbassador: false,
-            openUpdatePass: false,
-            imgPreview: null,
-            sec: 3
+            modifyUserProfile: false
         };
-
-        this.changeMyInfo = this.changeMyInfo.bind(this);
-        this.changeMyPassword = this.changeMyPassword.bind(this);
-        this.changePicture = this.changePicture.bind(this);
-        this.handleChangePass = this.handleChangePass.bind(this);
     }
 
     handleChangeName(value) {
@@ -47,10 +157,6 @@ class ProfilePage extends Component {
                 name: value   // update the value of specific key
             }
         }))
-    }
-
-    handleChangePass(event) {
-        this.setState({ [event.target.name]: event.target.value })
     }
 
     handleChangeMail(value) {
@@ -70,133 +176,100 @@ class ProfilePage extends Component {
         this.setState({ open: false });
     }
 
-    handleOpen = () => {
-        this.setState({ openAmbassador: true });
-    }
+    getThumbnailCommerce = (idCommerce) => {
+        let commercePicture = '';
 
-    handleClose = () => {
-        this.setState({ openAmbassador: false });
-    }
+        const ParseCommerce = Parse.Object.extend("Commerce");
 
-    handleOpenUpdatePass = () => {
-        this.setState({ openUpdatePass: true });
-    }
+        const ParseCommercePhoto = Parse.Object.extend("Commerce_Photos");
+        const queryCommercePhoto = new Parse.Query(ParseCommercePhoto);
 
-    handleCloseUpdatePass = () => {
-        this.setState({ openUpdatePass: false });
-    }
+        queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: idCommerce}));
 
-    handleOpenUpdatePicture = () => {
-        this.setState({ openUpdatePicture: true });
-    }
-
-    handleCloseUpdatePicture = () => {
-        this.setState({ openUpdatePicture: false });
-    }
-
-    changeMyInfo(event) {
-        var currentUser = Parse.User.current();
-        if (currentUser) {
-            currentUser.setEmail(this.state.user.email);
-            currentUser.set('name', this.state.user.name);
-            currentUser.save()
-                .then((user) => {
-                    // console.log(user);
-                    this.setState({ alertMsg: "Le profile a été modifié avec succès" });
-                    var counter = 3;
-
-                    this.intervalId = setInterval(() => {
-                        counter--;
-                        if (counter === -1) {
-                            clearInterval(this.intervalId);
-                            this.handleCloseUpdateProfile();
-                            this.setState({
-                                alertMsg: '',
-                                sec: 3
-                            });
-                            window.location.reload();
-                        } else {
-                            this.setState({ sec: counter })
-                        }
-                    }, 1000);
-                }, (error) => {
-                    console.error(error);
-                });
-            
-        } else {
-            
-        }
-        event.preventDefault();
-    }
-
-    changeMyPassword(event) {
-        event.preventDefault();
-        var currentUser = Parse.User.current();
-        if (currentUser) {
-            if (this.state.lastPassword && this.state.newPassword && this.state.newPassword2) {
-                if (this.state.newPassword === this.state.newPassword2) {
-                    // console.log(`Mot de passe identique`);
-                    currentUser.setPassword(this.state.newPassword);
-                    currentUser.save()
-                        .then((user) => {
-                            this.setState({ alertMsg: "Mot de passe à été changé avec succès" });
-                            this.intervalId = setInterval(() => {
-                                this.handleCloseUpdatePass();
-                                clearInterval(this.intervalId);
-                                this.setState({
-                                    alertMsg: '',
-                                    lastPassword: '',
-                                    newPassword: '',
-                                    newPassword2: ''
-                                });
-                            }, 3000);
-                        }, (error) => {
-                            console.error(error);
-                        })
-                } else {
-                    this.setState({ alertMsg: "Mot de passe pas identique" });
-                    // console.error(`Mot de passe pas identique`);
-                }
-                // console.log(`Last: ${this.state.lastPassword} - New: ${this.state.newPassword} - New2: ${this.state.newPassword2}`);
-            }
-        } else {
-            
-        }
-    }
-
-    changePicture(event) {
-        var currentUser = Parse.User.current();
-
-        var file = new Parse.File("image", event.target.files[0]);
-        if (currentUser) {
-            this.setState({
-                imgPreview: URL.createObjectURL(event.target.files[0])
+        queryCommercePhoto.find()
+        .then(responseSnapshot => {
+            responseSnapshot.forEach((elt) => {
+                commercePicture = elt.get("photo").url();
+                // commercePicture.push({ id: elt.id, url : elt.get("photo").url()});
             });
-            file.save().then(function() {
-                currentUser.set('profilePictureURL', file.url());
-                currentUser.save()
-                    .then((user) => {
-                        // this.setState({ alertMsg: "Votre photo à été mise à jour" });
-                        // this.intervalId = setInterval(() => {
-                        //     this.handleCloseUpdatePicture();
-                        //     this.setState({
-                        //         alertMsg: '',
-                        //     })
-                        // }, 3000);
-                        window.location.reload();
-                    }, (error) => {
-                        console.error(error);
+        });
+        
+        return new Promise(resolve => {
+            setTimeout(() => resolve(commercePicture), 300)
+        });
+    }
+
+    getUrlCommercePicture = async (idCommerce) => {
+        const listPicture = await this.getThumbnailCommerce(idCommerce);
+        return listPicture;
+    }
+
+    getAllCommerces() {
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const queryCommerce = new Parse.Query(ParseCommerce);
+
+        queryCommerce.equalTo("owner", Parse.User.current());
+
+        let newCommerces = [];
+        
+
+        queryCommerce.find()
+            .then(snapshot => {
+                snapshot.forEach((elt) => {
+                    var _status;
+                    var _color;
+
+                    switch (elt.get("statutCommerce")) {
+                        case 0:
+                            _status = "Hors ligne - en attente de paiement"
+                            _color = red[400]
+                            break;
+                        case 1:
+                            _status = "En ligne"
+                            _color = green[500]
+                            break;
+                        case 2:
+                            _status = "Hors ligne - paiement annulé"
+                            _color = red[400]
+                            break;
+                        case 3:
+                            _status = "Erreur lors du paiement ou du renouvellement"
+                            _color = red[400]
+                            break;
+                        case 4:
+                            _status = ""
+                            break;
+                    
+                        default:
+                            _status = "Statut inconnu"
+                            break;
+                    }
+
+                    newCommerces.push({
+                        "id": elt.id,
+                        "name": elt.get("nomCommerce"),
+                        "status": _status,
+                        "imgCategory": NoImage,
+                        "description": elt.get("description"),
+                        "nbPartage": elt.get("nombrePartages"),
+                        "colorStatus": _color
                     });
-            }, (error) => {
+                });
+
+                this.setState({
+                    commerceList: newCommerces,
+                });
+            })
+            .catch(error => {
                 console.error(error);
             });
-        } else {
-            
-        }
     }
 
-    getNbCommerce = () => {
-        return 1;
+    goToDetail = (_id) => {
+        this.props.history.push({
+            pathname: '/aboutcommerce',
+            state: { id: _id }
+        })
     }
 
     getUserPicture() {
@@ -204,14 +277,20 @@ class ProfilePage extends Component {
         if (currentUser) {
             currentUser.fetch().then((snapshot) => {
                 var name = snapshot.get('name');
-                var PICTURE = snapshot.get('profilePictureURL');
+                // console.log(snapshot.get("profilPicFile")._url);
+                var PICTURE = null
+                if (snapshot.get("profilPicFile")._url) {
+                    PICTURE = snapshot.get("profilPicFile")._url;
+                } else {
+                    PICTURE = snapshot.get('profilePictureURL');
+                }
                 var username = snapshot.getUsername();
                 var mail = snapshot.getEmail();
 
                 if (!PICTURE) {
-                    PICTURE = {defaultProfile}
+                    PICTURE = {NoProfile}
                 }
-                // console.log("%%%%%zahdu%%% " +JSON.stringify(snapshot, null, 2));
+
                 this.setState(prevState => ({
                     user: {
                         ...prevState.user,
@@ -229,250 +308,264 @@ class ProfilePage extends Component {
 
 
     componentDidMount() {
-        // this.props.getUserInfo();
-        // const id = JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`));
         this.getUserPicture();
+        this.getAllCommerces();
     }
 
     render() {
-
-        // const opts = {
-        //     // height: '100%',
-        //     width: '100%',
-        //     playerVars: { // https://developers.google.com/youtube/player_parameters
-        //         autoplay: 1
-        //     }
-        // }
-
-        // const { user } = this.props;
-        const { alertMsg, sec } = this.state;
         return (
-            <div>
-                <header className="App-header-profile">
-                    <Container maxWidth="sm">
-                        <Grid
-                            container
-                            direction="row"
-                            justify="center"
-                            alignItems="center"
-                            spacing={2}>
-                            <Grid item xs={12}>
+            <div style={{background: '#F8F9FC', height: '100%'}}>
+                <Container className="App-header-profile" style={{minHeight: '100%', height: '100%'}}>
+                    <div style={{height: '100vh', margin: '0px', padding: '0px'}}>
+                        <Grid container spacing={1} style={{height: '100vh'}}>
+                            <Grid item xs={12} sm={3}>
+                                {/**
+                                 * COMPONENT GET USER PROFILE
+                                 */}
                                 {
-                                    this.state.user.picture ?
-                                    <Avatar
-                                        alt="Image de profile"
-                                        src={this.state.user.picture}
-                                        style={{
-                                            margin: 10,
-                                            width: 150,
-                                            height: 150,
-                                            display: 'block',
-                                            marginLeft: 'auto',
-                                            marginRight: 'auto',
-                                        }}
-                                    />
-                                    : <Avatar
-                                        alt="Image de profile par defaut"
-                                        src={defaultProfile}
-                                        style={{
-                                            margin: 10,
-                                            width: 150,
-                                            height: 150,
-                                            display: 'block',
-                                            marginLeft: 'auto',
-                                            marginRight: 'auto',
-                                        }}
-                                    />
+                                    this.state.modifyUserProfile ?
+                                    (<Card style={{ margin: '0 10px' }}>
+                                        <UpdateUser/>
+                                        {/* <Button onClick={() => {this.setState({modifyUserProfile: false});console.log("Bye")}}>Valider</Button> */}
+                                    </Card>) :
+                                    (<Card style={{ margin: '0 10px' }}>
+                                        <CardHeader
+                                            action={
+                                                <LightTooltip title="Modifier mon profil.">
+                                                    <IconButton
+                                                        aria-label="edit"
+                                                        onClick={() => {this.setState({modifyUserProfile: true});}}
+                                                        style={{outline: 'none'}}
+                                                    >
+                                                        <EditIcon />
+                                                    </IconButton>
+                                                </LightTooltip>
+                                            }
+                                        />
+                                        <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
+                                                            
+                                            <Grid item xs={12}>
+                                                <div>
+                                                    {
+                                                        this.state.user.picture.length > 2 ?
+                                                        (<div><Avatar
+                                                            alt="Image profil"
+                                                            src={this.state.user.picture}
+                                                            style={{
+                                                                margin: 10,
+                                                                width: 150,
+                                                                height: 150,
+                                                                display: 'block',
+                                                                marginLeft: 'auto',
+                                                                marginRight: 'auto',
+                                                                border: 'solid #1EB0F8',
+                                                                marginBottom: '10px'
+                                                            }}
+                                                        /></div>) :
+                                                        (<Avatar
+                                                            alt="Image de profil par defaut"
+                                                            src={NoProfile}
+                                                            style={{
+                                                                margin: 10,
+                                                                width: 150,
+                                                                height: 150,
+                                                                display: 'block',
+                                                                marginLeft: 'auto',
+                                                                marginRight: 'auto',
+                                                                border: 'solid #DA5456',
+                                                                marginBottom: '10px'
+                                                            }}
+                                                        />)
+                                                    }
+                                                    <center style={{color: "black", padding: "auto 0px"}}>
+                                                        <CardHeader
+                                                            style={{ fontWeight: 'bold',
+                                                                fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
+                                                            }}
+                                                            title={this.state.user.name}
+                                                            subheader={this.state.user.email}
+                                                        />
+                                                        {/* {
+                                                            this.props.user.emailVerified ?
+                                                            (<CardHeader
+                                                                subheader= {
+                                                                    <LightTooltip placement="top" title="Votre email a été confirmé.">
+                                                                        <StyledBadgeGreen
+                                                                            overlap="circle"
+                                                                            anchorOrigin={{
+                                                                                vertical: 'top',
+                                                                                horizontal: 'left',
+                                                                            }}
+                                                                            variant="dot"
+                                                                            style={{paddingBottom: '60px', paddingLeft: '40px'}}>
+                                                                                Mail confirmé
+                                                                        </StyledBadgeGreen>
+                                                                    </LightTooltip>}/>) :
+                                                            (<CardHeader
+                                                                subheader= {
+                                                                    <LightTooltip placement="top" title="Votre email n'a pas été confirmé. Un mail a été envoyé pour que vous puissiez le confirmer. Il se peut que ce mail soit mis dans les courriers indésirables. Après confirmation veuillez vous reconnecter.">
+                                                                        <StyledBadgeRed
+                                                                            overlap="circle"
+                                                                            anchorOrigin={{
+                                                                                vertical: 'top',
+                                                                                horizontal: 'left',
+                                                                            }}
+                                                                            variant="dot"
+                                                                            style={{paddingBottom: '60px', paddingLeft: '40px'}}>
+                                                                                Mail pas confirmé
+                                                                        </StyledBadgeRed>
+                                                                    </LightTooltip>}/>)
+                                                        } */}
+                                                    </center>
+                                                </div>
+                                            </Grid>
+                                        </Grid>
+                                    </Card>)
                                 }
-                                <Button
-                                    onClick={() => {this.handleOpenUpdatePicture()}}
-                                    variant="contained"
-                                    size="small"
-                                    color="primary"
-                                    style={{
-                                    display: 'block',
-                                    marginLeft: 'auto',
-                                    marginRight: 'auto',
-                                    outline: 'none',
-                                    marginBottom: '30px'
-                                }}>Modifier</Button>
-                                
-                                <Grid item xs={12} style={{ margin: '0px 10px', padding: '10px 10px', background: "#FFF", height: '100%', overflow: 'auto' }}>
-                                    <div style={{ float: "left" }}>
-                                        <h5 style={{color:"#000"}}>
-                                            {this.state.user.name}
-                                        </h5>
-                                        <h5 style={{color:"grey"}}>
-                                            {this.state.user.email}
-                                        </h5>
-                                    </div>
-                                    <div style={{ float: "right" }}>
-                                        <IconButton
-                                            aria-label="edit"
-                                            onClick={() => {this.handleOpenUpdateProfile()}}
-                                            style={{ margin: '10px', outline: 'none' }}
-                                        >
-                                            <EditIcon />
-                                        </IconButton>
-                                    </div>
-                                </Grid>
-                                <Grid item xs={12}>
-                                    {/* <Button variant="contained" size="small" style={{ margin: '10px', outline: 'none' }} color="primary" onClick={() => {this.handleOpenUpdateProfile()}}>Modifier vos informations</Button> */}
-                                    <Button variant="outlined" size="small" style={{ margin: '10px', outline: 'none' }} color="secondary" onClick={() => {this.handleOpenUpdatePass()}}>Changer de mot de passe</Button>
-                                </Grid>
+
+                                <Card style={{ color:"#000", margin: '10px' }}>
+                                    <CardContent>
+                                        <Typography gutterBottom variant="h5" component="h2">
+                                            Télécharger Weeclik
+                                        </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            Profitez de promotions diverses et variées, faites partis d'un réseau de commerçants de confiance.
+                                        </Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <img alt="App Store" onClick={() => window.open("https://apps.apple.com/us/app/weeclik/id1082731862?l=fr")} src={AppStore} style={{ width: "50%"}}/>
+                                        <img alt="Google Play" onClick={() => window.open("https://play.google.com/store/apps/details?id=cantum.weeclik")} src={GooglePlay} style={{ width: "50%"}}/>
+                                    </CardActions>
+                                </Card>
+
+
+
+
+
+
+                            </Grid>
+                            <Grid item xs={12} sm={9} style={{background: '#F8F9FC', height: '100vh', paddingBottom: '100px'}}>
+                                {/**
+                                 * COMPONENT GET ALL COMMERCE
+                                 */}
+                                <Container component="main" maxWidth="md" style={{height: '100vh', paddingBottom: '300px'}}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} sm={6}>
+                                            <Card style={card1}>
+                                                <CardContent style={content}>
+                                                    <Grid container spacing={1}>
+                                                        <Grid item xs={12}>
+                                                            <Typography variant="h6" gutterBottom style={{
+                                                                fontWeight: '900',
+                                                                color: '#000',
+                                                                letterSpacing: 0.5}}>
+                                                                Pour son lancement l'ajout d'un commerce sur Weeclik est à un tarif préférenciel de 329.99 €
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                    <Button
+                                                        variant="contained"
+                                                        component={Link}
+                                                        to="/createcommerce"
+                                                        style={{
+                                                            background: '#1EB0F8',
+                                                            border: 0,
+                                                            boxShadow: '0 3px 5px 2px rgba(30, 176, 248, .3)',
+                                                            color: 'white',
+                                                            textTransform: 'none',
+                                                            fontSize: 15,
+                                                            fontWeight: 700,
+                                                            borderRadius: 100
+                                                        }}
+                                                    >Créer un nouveau commerce</Button>
+                                                </CardContent>
+                                                
+                                            </Card>
+                                        </Grid>
+
+                                        <Grid item xs={12} sm={6}>
+                                            <Card style={card}>
+                                                <CardContent style={content}>
+                                                    <Grid container spacing={1}>
+                                                        <Grid item xs>
+                                                            <Typography style={heading} variant="h6" gutterBottom>
+                                                            Devenir ambassadeur et ambassadrice du seul réseau de confiance humain
+                                                            </Typography>
+                                                        </Grid>
+                                                    </Grid>
+                                                </CardContent>
+                                            </Card>
+                                        </Grid>
+
+
+                                    </Grid>
+
+                                    <Typography
+                                        variant="h5"
+                                        color="inherit"
+                                        noWrap
+                                        style={{ marginTop: '20px', flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5,  }}>Mes commerces</Typography>
+
+                                    <Grid container direction="row-reverse" spacing={5} style={{height: '100vh'}}>
+                                        <Container component="main" maxWidth="md">
+                                            <Grid container spacing={2} style={{ marginTop: '25px' }}>
+                                                {this.state.commerceList.map((elt, index) => (
+                                                    <Grid key={index} item xs={12} sm={6}>
+                                                        <div style={{ flexGrow: 1 }}>
+                                                            <Card style={{ padding: '0px' }}>
+                                                                <Grid container direction="row" justify="center" alignItems="flex-start">
+                                                                    <Grid item xs={12} sm={12} md={4}>
+                                                                        <CommercePicture
+                                                                            commerceId={elt.id}
+                                                                            imgCategory={elt.imgCategory}
+                                                                            title={elt.name}
+                                                                        />
+                                                                    </Grid>
+                                                                    <Grid item xs={12} sm={12} md={8}>
+                                                                        <CardContent style={{margin: "-12px 0 0 -8px", maxHeight: 128}}>
+                                                                            <Grid container direction="column" spacing={1}>
+                                                                                <Grid item xs>
+                                                                                    <Typography gutterBottom variant="subtitle1">{elt.name}</Typography>
+                                                                                    <Typography variant="body2" style={{color: elt.colorStatus}}>{elt.status}</Typography>
+                                                                                </Grid>
+                                                                                <Grid item xs>
+                                                                                    <Grid container direction="row" justify="space-between" alignItems="flex-start">
+                                                                                        <Grid item xs>
+                                                                                            <h5 style={{color:"#000"}}>
+                                                                                                {elt.nbPartage} {' '}
+                                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
+                                                                                            </h5>
+                                                                                        </Grid>
+                                                                                        <Grid item xs>
+                                                                                            <Button variant="outlined" color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`}
+                                                                                                style={{
+                                                                                                    outline: 'none',
+                                                                                                    textTransform: 'none',
+                                                                                                    // fontSize: 15,
+                                                                                                    // fontWeight: 700,
+                                                                                                    borderRadius: 100
+                                                                                                }}>Plus de détail</Button>
+                                                                                        </Grid>
+                                                                                    </Grid>
+                                                                                </Grid>
+                                                                            </Grid>
+                                                                        </CardContent>
+                                                                    </Grid>
+                                                                </Grid>
+                                                            </Card>
+                                                        </div>
+                                                    </Grid>
+                                                ))}
+                                            </Grid>
+
+                                        </Container>
+                                    </Grid>
+                                </Container>
                             </Grid>
                         </Grid>
-                        
-                    </Container>
-
-
-                    <div>
-                        <Dialog
-                            open={this.state.openUpdatePass}
-                            onClose={this.handleCloseUpdatePass}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Changer mon mot de passe"}</DialogTitle>
-                            <DialogContent>
-                                <div id="alert-dialog-description" style={{ minWidth: "500px"}}>
-                                    <form onSubmit={this.changeMyPassword}>
-                                        <fieldset>
-                                            <div className="form-group">
-                                                <label htmlFor="lastInput">Ancien mot de passe</label>
-                                                <input
-                                                    name="lastPassword"
-                                                    type="password"
-                                                    id="lastInput"
-                                                    className="form-control"
-                                                    value={this.state.lastPassword}
-                                                    onChange={this.handleChangePass}
-                                                    placeholder={"Ancien mot de passe"}/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="newInput">Nouveau mot de passe</label>
-                                                <input
-                                                    name="newPassword"
-                                                    type="password"
-                                                    id="newInput"
-                                                    className="form-control"
-                                                    value={this.state.newPassword}
-                                                    onChange={this.handleChangePass}
-                                                    placeholder={"Nouveau mot de passe"}/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="newInput2">Confirmation du mot de passe</label>
-                                                <input
-                                                    name="newPassword2"
-                                                    type="password"
-                                                    id="newInput2"
-                                                    className="form-control"
-                                                    value={this.state.newPassword2}
-                                                    onChange={this.handleChangePass}
-                                                    placeholder={"Confirmation du mot de passe"}/>
-                                            </div>
-                                            <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
-                                            <input type="submit" className="btn btn-primary btn-sm" value="Réinitialiser le mot de passe"/>
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </DialogContent>
-                            <DialogActions>
-                                {/* <Button onClick={this.handleCloseUpdatePass} color="secondary" style={{outline: 'none'}}>Annuler la modification du mot de passe</Button> */}
-                            </DialogActions>
-                        </Dialog>
                     </div>
-
-
-
-                    <div>
-                        <Dialog
-                            open={this.state.open}
-                            onClose={this.handleCloseUpdateProfile}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Modifier votre profil"}</DialogTitle>
-                            <DialogContent>
-                                <div id="alert-dialog-description" style={{ minWidth: "500px"}}>
-                                    <form onSubmit={this.changeMyInfo}>
-                                        <fieldset>
-                                            <div className="form-group">
-                                                <label htmlFor="nameInput">Nom complet</label>
-                                                <input
-                                                    type="text"
-                                                    id="nameInput"
-                                                    className="form-control"
-                                                    value={this.state.user.name}
-                                                    onChange={e => this.handleChangeName(e.target.value)}
-                                                    placeholder={this.state.user.name}/>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="emailInput">Mail</label>
-                                                <input
-                                                    type="email"
-                                                    id="emailInput"
-                                                    className="form-control"
-                                                    value={this.state.user.email}
-                                                    onChange={e => this.handleChangeMail(e.target.value)}
-                                                    placeholder={this.state.user.email}/>
-                                            </div>
-                                            {
-                                                alertMsg ?
-                                                <div>
-                                                    <Typography variant="h6" style={{color: '#F00', textAlign: "center"}}>{alertMsg}</Typography>
-                                                    <Typography component="p" style={{textAlign: "center"}}>{`${sec} ...`}</Typography>
-                                                </div> :
-                                                <div></div>
-                                            }
-                                            <input type="submit" className="btn btn-primary btn-sm" value="Valider"/>
-                                        </fieldset>
-                                    </form>
-                                </div>
-                            </DialogContent>
-                            <DialogActions>
-                                {/* <Button onClick={this.handleCloseUpdateProfile} color="secondary" style={{outline: 'none'}}>Annuler</Button> */}
-                            </DialogActions>
-                        </Dialog>
-                    </div>
-
-
-                    <div>
-                        <Dialog
-                            open={this.state.openUpdatePicture}
-                            onClose={this.handleCloseUpdatePicture}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                        >
-                            <DialogTitle id="alert-dialog-title">{"Modifier votre photo de profil"}</DialogTitle>
-                            <DialogContent>
-                                <div id="alert-dialog-description" style={{ minWidth: "500px"}}>
-                                    <center>
-                                        <input
-                                            id="icon-input-file"
-                                            accept="image/*"
-                                            type="file"
-                                            style={{ display: 'None' }}
-                                            onChange={this.changePicture} />
-                                        <div style={{width: 200}}>
-                                            <label htmlFor="icon-input-file">
-                                                <img
-                                                    src={this.state.imgPreview ? this.state.imgPreview : AddImg}
-                                                    className="rounded"
-                                                    alt="Default profile"
-                                                    style={{ width: '200px' }}/>
-                                            </label>
-                                        </div>
-                                    </center>
-                                    <Typography variant="h5">Cliquer sur l'image en haut pour changer votre image de profil</Typography>
-                                </div>
-                            </DialogContent>
-                            {/* <DialogActions>
-                                <Button onClick={this.handleCloseUpdateProfile} color="secondary" style={{outline: 'none'}}>Annuler</Button>
-                            </DialogActions> */}
-                        </Dialog>
-                    </div>
-                </header>
+                </Container>
+                <Footer/>
             </div>
         );
     }
