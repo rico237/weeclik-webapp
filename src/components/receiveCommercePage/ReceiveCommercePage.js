@@ -54,8 +54,7 @@ const card = {
     flexDirection: 'column',
     paddingLeft: 8,
     paddingRight: 8,
-    background:
-      'linear-gradient(34deg, rgba(1,137,210,1) 0%, rgba(0,87,155,1) 29%, rgba(3,156,229,1) 92%)',
+    background: 'rgb(30, 176, 248)',
 }
 
 const media = {
