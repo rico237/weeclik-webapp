@@ -243,10 +243,6 @@ class AboutCommerce extends Component {
                             _statusCommerce = "Erreur lors du paiement ou du renouvellement"
                             this.setState({colorStatus: red[400]});
                             break;
-                        case 4:
-                            _statusCommerce = ""
-                            this.setState({colorStatus: red[400]});
-                            break;
                     
                         default:
                             _statusCommerce = "Statut inconnu"
@@ -1246,7 +1242,7 @@ class AboutCommerce extends Component {
                                     // fullWidth={true}
                                     maxWidth={"sm"}
                                 >
-                                    <DialogTitle id="alert-dialog-title">A propos du status</DialogTitle>
+                                    <DialogTitle id="alert-dialog-title">A propos du statut</DialogTitle>
                                     <DialogContent>
                                         <DialogContentText id="alert-dialog-description">
                                             {/* {this.state.commerce.statutCommerce}{' '} */}
