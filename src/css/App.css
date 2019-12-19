@@ -1,5 +1,6 @@
 .App {
 	text-align: center;
+	background-color: #F8F9FC;
 }
 
 .App-logo {
@@ -33,10 +34,11 @@
 }
 
 .App-header-profile {
-	/* background-color: #F8F9FC; */
+	background-color: #F8F9FC;
 	min-height: 100vh;
 	padding-top: 70px;
 	padding-bottom: 200px;
+	/* margin-bottom: 100px; */
 	/* display: flex; */
 	flex-direction: column;
 	/* align-items: center; */
