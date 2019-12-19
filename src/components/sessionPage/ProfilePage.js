@@ -314,258 +314,151 @@ class ProfilePage extends Component {
 
     render() {
         return (
-            <div style={{background: '#F8F9FC', height: '100%'}}>
-                <Container className="App-header-profile" style={{minHeight: '100%', height: '100%'}}>
-                    <div style={{height: '100vh', margin: '0px', padding: '0px'}}>
-                        <Grid container spacing={1} style={{height: '100vh'}}>
-                            <Grid item xs={12} sm={3}>
-                                {/**
-                                 * COMPONENT GET USER PROFILE
-                                 */}
-                                {
-                                    this.state.modifyUserProfile ?
-                                    (<Card style={{ margin: '0 10px' }}>
-                                        <UpdateUser/>
-                                        {/* <Button onClick={() => {this.setState({modifyUserProfile: false});console.log("Bye")}}>Valider</Button> */}
-                                    </Card>) :
-                                    (<Card style={{ margin: '0 10px' }}>
-                                        <CardHeader
-                                            action={
-                                                <LightTooltip title="Modifier mon profil.">
-                                                    <IconButton
-                                                        aria-label="edit"
-                                                        onClick={() => {this.setState({modifyUserProfile: true});}}
-                                                        style={{outline: 'none'}}
-                                                    >
-                                                        <EditIcon />
-                                                    </IconButton>
-                                                </LightTooltip>
-                                            }
-                                        />
-                                        <Grid container direction="row" justify="center" alignItems="center" spacing={2}>
-                                                            
-                                            <Grid item xs={12}>
-                                                <div>
-                                                    {
-                                                        this.state.user.picture.length > 2 ?
-                                                        (<div><Avatar
-                                                            alt="Image profil"
-                                                            src={this.state.user.picture}
-                                                            style={{
-                                                                margin: 10,
-                                                                width: 150,
-                                                                height: 150,
-                                                                display: 'block',
-                                                                marginLeft: 'auto',
-                                                                marginRight: 'auto',
-                                                                border: 'solid #1EB0F8',
-                                                                marginBottom: '10px'
-                                                            }}
-                                                        /></div>) :
-                                                        (<Avatar
-                                                            alt="Image de profil par defaut"
-                                                            src={NoProfile}
-                                                            style={{
-                                                                margin: 10,
-                                                                width: 150,
-                                                                height: 150,
-                                                                display: 'block',
-                                                                marginLeft: 'auto',
-                                                                marginRight: 'auto',
-                                                                border: 'solid #DA5456',
-                                                                marginBottom: '10px'
-                                                            }}
-                                                        />)
-                                                    }
-                                                    <center style={{color: "black", padding: "auto 0px"}}>
-                                                        <CardHeader
-                                                            style={{ fontWeight: 'bold',
-                                                                fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}
-                                                            }}
-                                                            title={this.state.user.name}
-                                                            subheader={this.state.user.email}
-                                                        />
-                                                        {/* {
-                                                            this.props.user.emailVerified ?
-                                                            (<CardHeader
-                                                                subheader= {
-                                                                    <LightTooltip placement="top" title="Votre email a été confirmé.">
-                                                                        <StyledBadgeGreen
-                                                                            overlap="circle"
-                                                                            anchorOrigin={{
-                                                                                vertical: 'top',
-                                                                                horizontal: 'left',
-                                                                            }}
-                                                                            variant="dot"
-                                                                            style={{paddingBottom: '60px', paddingLeft: '40px'}}>
-                                                                                Mail confirmé
-                                                                        </StyledBadgeGreen>
-                                                                    </LightTooltip>}/>) :
-                                                            (<CardHeader
-                                                                subheader= {
-                                                                    <LightTooltip placement="top" title="Votre email n'a pas été confirmé. Un mail a été envoyé pour que vous puissiez le confirmer. Il se peut que ce mail soit mis dans les courriers indésirables. Après confirmation veuillez vous reconnecter.">
-                                                                        <StyledBadgeRed
-                                                                            overlap="circle"
-                                                                            anchorOrigin={{
-                                                                                vertical: 'top',
-                                                                                horizontal: 'left',
-                                                                            }}
-                                                                            variant="dot"
-                                                                            style={{paddingBottom: '60px', paddingLeft: '40px'}}>
-                                                                                Mail pas confirmé
-                                                                        </StyledBadgeRed>
-                                                                    </LightTooltip>}/>)
-                                                        } */}
-                                                    </center>
-                                                </div>
-                                            </Grid>
+            <div style={{height: '100vh'}}>
+                <Container style={{paddingTop: '70px'}}>
+                    <Grid container spacing={1} style={{height: '100vh'}}>
+                        <Grid item xs={12} sm={3}>
+                            {/**
+                             * COMPONENT GET USER PROFILE
+                             */}
+                            {
+                                this.state.modifyUserProfile ?
+                                (<Card style={{ margin: '0 10px' }}><UpdateUser/></Card>) :
+                                (<Card style={{ margin: '0 10px' }}>
+                                    <CardHeader
+                                        action={
+                                            <LightTooltip title="Modifier mon profil.">
+                                                <IconButton
+                                                    aria-label="edit"
+                                                    onClick={() => {this.setState({modifyUserProfile: true});}}
+                                                    style={{outline: 'none'}}
+                                                >
+                                                    <EditIcon />
+                                                </IconButton>
+                                            </LightTooltip>
+                                        }
+                                    />
+                                    <Grid container direction="row" justify="center" alignItems="center" spacing={2}>                        
+                                        <Grid item xs={12}>
+                                            <div>
+                                                {
+                                                    this.state.user.picture.length > 2 ?
+                                                    (<div>
+                                                    <Avatar
+                                                        alt="Image profil"
+                                                        src={this.state.user.picture}
+                                                        style={{margin: 10,width: 150,height: 150,display: 'block',marginLeft: 'auto',marginRight: 'auto',border: 'solid #1EB0F8',marginBottom: '10px'}}/></div>) :
+                                                    (<Avatar
+                                                        alt="Image de profil par defaut"
+                                                        src={NoProfile}
+                                                        style={{margin: 10,width: 150,height: 150,display: 'block',marginLeft: 'auto',marginRight: 'auto',border: 'solid #DA5456',marginBottom: '10px'}}/>)
+                                                }
+                                                <center style={{color: "black", padding: "auto 0px"}}>
+                                                    <CardHeader
+                                                        style={{ fontWeight: 'bold',fontSize: '1.5rem', subheader: {color: 'rgba(255, 255, 255, 0.76)',}}}
+                                                        title={this.state.user.name}
+                                                        subheader={this.state.user.email}/>
+                                                </center>
+                                            </div>
                                         </Grid>
-                                    </Card>)
-                                }
-
-                                <Card style={{ color:"#000", margin: '10px' }}>
-                                    <CardContent>
-                                        <Typography gutterBottom variant="h5" component="h2">
-                                            Télécharger Weeclik
-                                        </Typography>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            Profitez de promotions diverses et variées, faites partis d'un réseau de commerçants de confiance.
-                                        </Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <img alt="App Store" onClick={() => window.open("https://apps.apple.com/us/app/weeclik/id1082731862?l=fr")} src={AppStore} style={{ width: "50%"}}/>
-                                        <img alt="Google Play" onClick={() => window.open("https://play.google.com/store/apps/details?id=cantum.weeclik")} src={GooglePlay} style={{ width: "50%"}}/>
-                                    </CardActions>
-                                </Card>
+                                    </Grid>
+                                </Card>)
+                            }
+                            <Card style={{ color:"#000", margin: '10px' }}>
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="h2">Télécharger Weeclik</Typography>
+                                    <Typography variant="body2" color="textSecondary" component="p">Profitez de promotions diverses et variées, faites partis d'un réseau de commerçants de confiance.</Typography>
+                                </CardContent>
+                                <CardActions>
+                                    <img alt="App Store" onClick={() => window.open("https://apps.apple.com/us/app/weeclik/id1082731862?l=fr")} src={AppStore} style={{ width: "50%"}}/>
+                                    <img alt="Google Play" onClick={() => window.open("https://play.google.com/store/apps/details?id=cantum.weeclik")} src={GooglePlay} style={{ width: "50%"}}/>
+                                </CardActions>
+                            </Card>
+                        </Grid>
 
 
 
 
 
 
-                            </Grid>
-                            <Grid item xs={12} sm={9} style={{background: '#F8F9FC', height: '100vh', paddingBottom: '100px'}}>
-                                {/**
-                                 * COMPONENT GET ALL COMMERCE
-                                 */}
-                                <Container component="main" maxWidth="md" style={{height: '100vh', paddingBottom: '300px'}}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={6}>
-                                            <Card style={card1}>
-                                                <CardContent style={content}>
-                                                    <Grid container spacing={1}>
-                                                        <Grid item xs={12}>
-                                                            <Typography variant="h6" gutterBottom style={{
-                                                                fontWeight: '900',
-                                                                color: '#000',
-                                                                letterSpacing: 0.5}}>
-                                                                Pour son lancement l'ajout d'un commerce sur Weeclik est à un tarif préférenciel de 329.99 €
-                                                            </Typography>
-                                                        </Grid>
+                        <Grid item xs={12} sm={9} style={{height: '100vh'}}>
+                            {/**
+                             * COMPONENT GET ALL COMMERCE
+                             */}
+                                <Grid container spacing={2}>
+                                    <Grid item xs={12} sm={6}>
+                                        <Card style={card1}>
+                                            <CardContent style={content}>
+                                                <Grid container spacing={1}>
+                                                    <Grid item xs={12}>
+                                                        <Typography variant="h6" gutterBottom style={{fontWeight: '900',color: '#000',letterSpacing: 0.5}}>
+                                                            Pour son lancement l'ajout d'un commerce sur Weeclik est à un tarif préférenciel de 329.99 €
+                                                        </Typography>
                                                     </Grid>
-                                                    <Button
-                                                        variant="contained"
-                                                        component={Link}
-                                                        to="/createcommerce"
-                                                        style={{
-                                                            background: '#1EB0F8',
-                                                            border: 0,
-                                                            boxShadow: '0 3px 5px 2px rgba(30, 176, 248, .3)',
-                                                            color: 'white',
-                                                            textTransform: 'none',
-                                                            fontSize: 15,
-                                                            fontWeight: 700,
-                                                            borderRadius: 100
-                                                        }}
-                                                    >Créer un nouveau commerce</Button>
-                                                </CardContent>
-                                                
-                                            </Card>
-                                        </Grid>
-
-                                        <Grid item xs={12} sm={6}>
-                                            <Card style={card}>
-                                                <CardContent style={content}>
-                                                    <Grid container spacing={1}>
-                                                        <Grid item xs>
-                                                            <Typography style={heading} variant="h6" gutterBottom>
-                                                            Devenir ambassadeur et ambassadrice du seul réseau de confiance humain
-                                                            </Typography>
-                                                        </Grid>
-                                                    </Grid>
-                                                </CardContent>
-                                            </Card>
-                                        </Grid>
-
-
+                                                </Grid>
+                                                <Button
+                                                    variant="contained"
+                                                    component={Link}
+                                                    to="/createcommerce"
+                                                    style={{background: '#1EB0F8',border: 0,boxShadow: '0 3px 5px 2px rgba(30, 176, 248, .3)',color: 'white',textTransform: 'none',fontSize: 15,fontWeight: 700,borderRadius: 100}}>Créer un nouveau commerce</Button>
+                                            </CardContent>   
+                                        </Card>
                                     </Grid>
 
-                                    <Typography
-                                        variant="h5"
-                                        color="inherit"
-                                        noWrap
-                                        style={{ marginTop: '20px', flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5,  }}>Mes commerces</Typography>
+                                    <Grid item xs={12} sm={6}>
+                                        <Card style={card}>
+                                            <CardContent style={content}>
+                                                <Grid container spacing={1}>
+                                                    <Grid item xs>
+                                                        <Typography style={heading} variant="h6" gutterBottom>Devenir ambassadeur et ambassadrice du seul réseau de confiance humain</Typography>
+                                                    </Grid>
+                                                </Grid>
+                                            </CardContent>
+                                        </Card>
+                                    </Grid>
+                                </Grid>
 
-                                    <Grid container direction="row-reverse" spacing={5} style={{height: '100vh'}}>
-                                        <Container component="main" maxWidth="md">
-                                            <Grid container spacing={2} style={{ marginTop: '25px' }}>
-                                                {this.state.commerceList.map((elt, index) => (
-                                                    <Grid key={index} item xs={12} sm={6}>
-                                                        <div style={{ flexGrow: 1 }}>
-                                                            <Card style={{ padding: '0px' }}>
-                                                                <Grid container direction="row" justify="center" alignItems="flex-start">
-                                                                    <Grid item xs={12} sm={12} md={4}>
-                                                                        <CommercePicture
-                                                                            commerceId={elt.id}
-                                                                            imgCategory={elt.imgCategory}
-                                                                            title={elt.name}
-                                                                        />
+                                <Typography variant="h5" color="inherit" noWrap style={{ marginTop: '20px', flexDirection: "column", color: "#141C58", fontWeight: '900', letterSpacing: 0.5,  }}>Mes commerces</Typography>
+
+                                <Grid container spacing={2} style={{ marginTop: '10px' }}>
+                                    {this.state.commerceList.map((elt, index) => (
+                                        <Grid key={index} item xs={12} sm={6}>
+                                            <div style={{ flexGrow: 1 }}>
+                                                <Card style={{ padding: '0px' }}>
+                                                    <Grid container direction="row" justify="center" alignItems="flex-start">
+                                                        <Grid item xs={12} sm={12} md={4}>
+                                                            <CommercePicture commerceId={elt.id} imgCategory={elt.imgCategory} title={elt.name}/>
+                                                        </Grid>
+                                                        <Grid item xs={12} sm={12} md={8}>
+                                                            <CardContent style={{margin: "-12px 0 0 -8px", maxHeight: 128}}>
+                                                                <Grid container direction="column" spacing={1}>
+                                                                    <Grid item xs>
+                                                                        <Typography gutterBottom variant="subtitle1">{elt.name}</Typography>
+                                                                        <Typography variant="body2" style={{color: elt.colorStatus}}>{elt.status}</Typography>
                                                                     </Grid>
-                                                                    <Grid item xs={12} sm={12} md={8}>
-                                                                        <CardContent style={{margin: "-12px 0 0 -8px", maxHeight: 128}}>
-                                                                            <Grid container direction="column" spacing={1}>
-                                                                                <Grid item xs>
-                                                                                    <Typography gutterBottom variant="subtitle1">{elt.name}</Typography>
-                                                                                    <Typography variant="body2" style={{color: elt.colorStatus}}>{elt.status}</Typography>
-                                                                                </Grid>
-                                                                                <Grid item xs>
-                                                                                    <Grid container direction="row" justify="space-between" alignItems="flex-start">
-                                                                                        <Grid item xs>
-                                                                                            <h5 style={{color:"#000"}}>
-                                                                                                {elt.nbPartage} {' '}
-                                                                                                <svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg>
-                                                                                            </h5>
-                                                                                        </Grid>
-                                                                                        <Grid item xs>
-                                                                                            <Button variant="outlined" color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`}
-                                                                                                style={{
-                                                                                                    outline: 'none',
-                                                                                                    textTransform: 'none',
-                                                                                                    // fontSize: 15,
-                                                                                                    // fontWeight: 700,
-                                                                                                    borderRadius: 100
-                                                                                                }}>Plus de détail</Button>
-                                                                                        </Grid>
-                                                                                    </Grid>
-                                                                                </Grid>
+                                                                    <Grid item xs>
+                                                                        <Grid container direction="row" justify="space-between" alignItems="flex-start">
+                                                                            <Grid item xs>
+                                                                                <h5 style={{color:"#000"}}>{elt.nbPartage} {' '}<svg xmlns="http://www.w3.org/2000/svg" fill="#F00" width="24" height="24" viewBox="0 0 24 24"><path d="M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z"/></svg></h5>
                                                                             </Grid>
-                                                                        </CardContent>
+                                                                            <Grid item xs>
+                                                                                <Button size="small" variant="outlined" color="primary" onClick={() => { this.goToDetail(elt.id) }} aria-label={`info about ${elt.title}`}
+                                                                                    style={{outline: 'none', textTransform: 'none', borderRadius: 100}}>Plus de détail</Button>
+                                                                            </Grid>
+                                                                        </Grid>
                                                                     </Grid>
                                                                 </Grid>
-                                                            </Card>
-                                                        </div>
+                                                            </CardContent>
+                                                        </Grid>
                                                     </Grid>
-                                                ))}
-                                            </Grid>
-
-                                        </Container>
-                                    </Grid>
-                                </Container>
-                            </Grid>
+                                                </Card>
+                                            </div>
+                                        </Grid>
+                                    ))}
+                                </Grid>
                         </Grid>
-                    </div>
+                    </Grid>
                 </Container>
-                <Footer/>
             </div>
         );
     }
