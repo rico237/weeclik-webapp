@@ -314,8 +314,8 @@ class ProfilePage extends Component {
 
     render() {
         return (
-            <div style={{background: "#F8F9FC", height: '100vh'}}>
-                <Container style={{background: "#F8F9FC", paddingTop: '70px'}}>
+            <div style={{height: '100vh'}}>
+                <Container style={{paddingTop: '70px'}}>
                     <Grid container spacing={1} style={{height: '100vh'}}>
                         <Grid item xs={12} sm={3}>
                             {/**
