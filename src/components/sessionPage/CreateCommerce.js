@@ -243,6 +243,11 @@ class CreateCommerce extends Component {
                 const ParseCommerce = Parse.Object.extend("Commerce");
                 const newCommerce   = new ParseCommerce();
                 const point         = new Parse.GeoPoint({latitude: 0.0, longitude: 0.0});
+                const acl           = new Parse.ACL();
+                acl.setPublicReadAccess(true);
+                acl.setRoleWriteAccess("admin", true);
+                acl.setWriteAccess(currentUser.id, true);
+                ParseCommerce.setACL(acl);
 
                 newCommerce.save({
                     "nomCommerce": _state_commerce.nomCommerce,
@@ -256,7 +261,8 @@ class CreateCommerce extends Component {
                     "mail": this.props.user.email,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
                     "tel": _state_commerce.tel,
                     "description": _state_commerce.description,
-                    "promotions": _state_commerce.promotions
+                    "promotions": _state_commerce.promotions,
+                    "brouillon": true
                 })
                 .then((newCommerce) => {
                     var localStore = "";
@@ -278,8 +284,7 @@ class CreateCommerce extends Component {
                 })
                 
         } else {
-            console.error("Veillez remplir tout le formulaire");
-            
+            console.error("Veuillez remplir tout le formulaire");
         }
         
     }
