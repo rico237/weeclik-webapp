@@ -532,6 +532,7 @@ class AboutCommerce extends Component {
 
     getUrlCommerceMovie = async () => {
         const movie = await this.getMovieCommerce();
+        // Re-ecriture du link pour le faire marcher sur Safari
         var newLink = movie.toString().replace(process.env.REACT_APP_SERVER_URL+"/files/"+process.env.REACT_APP_APP_ID+"/", 
         "https://firebasestorage.googleapis.com/v0/b/weeclik-1517332083996.appspot.com/o/baas_files%2F")+"?alt=media"
 
