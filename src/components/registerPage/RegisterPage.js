@@ -204,7 +204,7 @@ class RegisterPage extends Component {
                                     <Grid item xs={12}>
                                         <label style={{ fontSize: '14px' }}>
                                             {'En cliquant sur s\'enregistrer, vous acceptez nos '}
-                                            <a style={{ color: 'blue', textDecoration: 'none' }} href="#">Conditions générales</a>{'. '}
+                                            <a style={{ color: 'blue', textDecoration: 'none' }} href="_blank">Conditions générales</a>{'. '}
                                         </label>
                                     </Grid>
                                 </Grid>

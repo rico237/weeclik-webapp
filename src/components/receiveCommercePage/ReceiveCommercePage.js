@@ -57,12 +57,12 @@ const card = {
     background: 'rgb(30, 176, 248)',
 }
 
-const media = {
-    flexShrink: 0,
-    width: '50%',
-    float: 'right',
-    // marginRight: 'auto',
-}
+// const media = {
+//     flexShrink: 0,
+//     width: '50%',
+//     float: 'right',
+//     // marginRight: 'auto',
+// }
 
 const content = {
 

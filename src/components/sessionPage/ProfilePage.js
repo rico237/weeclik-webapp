@@ -10,8 +10,6 @@ import { createMuiTheme, withStyles } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
 import CommercePicture from './CommercePicture';
 
-import Footer from '../footer/Footer';
-
 import AppStore from '../../assets/icons/app-store-badge.png';
 import GooglePlay from '../../assets/icons/google-play-badge.png';
 import NoImage from '../../assets/images/no-image.png';
