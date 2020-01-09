@@ -6,7 +6,6 @@ import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Avatar, Grid, TextField, Typography, Paper } from '@material-ui/core';
 import Footer from '../footer/Footer';
-import FacebookLogin from 'react-facebook-login';
 
 
 const theme = createMuiTheme({
@@ -160,21 +159,6 @@ class LoginPage extends Component {
                                 </Grid>
                             </Grid>
                         </form>
-                        <div style={form}>
-                            <FacebookLogin
-                                appId="1773255456018247"
-                                // autoLoad={true}
-                                size="small"
-                                textButton="Se connecter avec Facebook"
-                                // icon="fa-facebook"
-                                disableMobileRedirect={true}
-                                isMobile={true}
-                                fields="name,email.picture"
-                                callback={this.responseFacebook}
-                                cssClass="btnFacebook"
-                            />
-                            
-                        </div>
                         
                     </div>
                 </Paper>
