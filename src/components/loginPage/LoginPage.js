@@ -6,6 +6,7 @@ import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Avatar, Grid, TextField, Typography, Paper } from '@material-ui/core';
 import Footer from '../footer/Footer';
+import FacebookLogin from 'react-facebook-login';
 
 
 const theme = createMuiTheme({
@@ -91,6 +92,11 @@ class LoginPage extends Component {
         }
     }
 
+    responseFacebook(response) {
+        // console.log("----->>>> "+response)
+        alert(JSON.stringify(response))
+    }
+
     render() {
 
         const { msg } = this.props;
@@ -153,6 +159,16 @@ class LoginPage extends Component {
                                 </Grid>
                             </Grid>
                         </form>
+
+                        <button className="btn-solid-lg"
+                            style={{marginTop: '20px',width: '100%'}}
+                        >azerty</button>
+                        <FacebookLogin
+                            appId="1773255456018247"
+                            // autoLoad={true}
+                            fields="name,email.picture"
+                            callback={this.responseFacebook}
+                        />
                     </div>
                 </Paper>
                 <Footer/>
