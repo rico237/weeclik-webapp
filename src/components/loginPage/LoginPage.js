@@ -165,9 +165,10 @@ class LoginPage extends Component {
                                 appId="1773255456018247"
                                 // autoLoad={true}
                                 size="small"
-                                textButton="S'identifier avec Facebook"
+                                textButton="Se connecter avec Facebook"
                                 // icon="fa-facebook"
                                 disableMobileRedirect={true}
+                                isMobile={true}
                                 fields="name,email.picture"
                                 callback={this.responseFacebook}
                                 cssClass="btnFacebook"
