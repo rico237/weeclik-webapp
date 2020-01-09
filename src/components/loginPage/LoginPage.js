@@ -40,6 +40,7 @@ const avatar = {
 const form = {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+    marginBottom: "10px",
 }
 
 const submit = {
@@ -159,16 +160,21 @@ class LoginPage extends Component {
                                 </Grid>
                             </Grid>
                         </form>
-
-                        <button className="btn-solid-lg"
-                            style={{marginTop: '20px',width: '100%'}}
-                        >azerty</button>
-                        <FacebookLogin
-                            appId="1773255456018247"
-                            // autoLoad={true}
-                            fields="name,email.picture"
-                            callback={this.responseFacebook}
-                        />
+                        <div style={form}>
+                            <FacebookLogin
+                                appId="1773255456018247"
+                                // autoLoad={true}
+                                size="small"
+                                textButton="S'identifier avec Facebook"
+                                // icon="fa-facebook"
+                                disableMobileRedirect={true}
+                                fields="name,email.picture"
+                                callback={this.responseFacebook}
+                                cssClass="btnFacebook"
+                            />
+                            
+                        </div>
+                        
                     </div>
                 </Paper>
                 <Footer/>
