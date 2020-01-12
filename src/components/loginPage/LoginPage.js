@@ -39,6 +39,7 @@ const avatar = {
 const form = {
     width: '100%', // Fix IE 11 issue.
     marginTop: theme.spacing(1),
+    marginBottom: "10px",
 }
 
 const submit = {
@@ -89,6 +90,11 @@ class LoginPage extends Component {
         if (!username && !password) {
             this.setState({ alertMsg: 'L\'adresse e-mail et le mot de passe sont incomplets' });
         }
+    }
+
+    responseFacebook(response) {
+        // console.log("----->>>> "+response)
+        alert(JSON.stringify(response))
     }
 
     render() {
@@ -153,6 +159,7 @@ class LoginPage extends Component {
                                 </Grid>
                             </Grid>
                         </form>
+                        
                     </div>
                 </Paper>
                 <Footer/>

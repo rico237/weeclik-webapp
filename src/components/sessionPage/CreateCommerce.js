@@ -7,23 +7,23 @@ import addCommercePicture from '../../assets/icons/addCommercePicture.png';
 import BGImage from '../../assets/images/download-background.jpg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-import { createMuiTheme } from '@material-ui/core/styles';
+// import { createMuiTheme } from '@material-ui/core/styles';
 
 import Footer from '../footer/Footer';
 
-const theme = createMuiTheme({
-    spacing: 4,
-});
+// const theme = createMuiTheme({
+//     spacing: 4,
+// });
 
 const root = {
     flexGrow: 1,
     paddingTop: '70px',
 }
 
-const button = {
-    margin: theme.spacing(1),
-    outline: 'none'
-}
+// const button = {
+//     margin: theme.spacing(1),
+//     outline: 'none'
+// }
 
 
 
@@ -540,7 +540,7 @@ class CreateCommerce extends Component {
                                 <Grid item xs={12}>
                                     <label style={{ fontSize: '14px', color: 'black', paddingBottom: '20px' }}>
                                         {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
-                                        <a style={{ color: 'blue', textDecoration: 'none' }} href="#">Conditions générales</a>{'... '}
+                                        <a style={{ color: 'blue', textDecoration: 'none' }} href="_blank">Conditions générales</a>{'... '}
                                     </label>
                                 </Grid>
                             </Grid>

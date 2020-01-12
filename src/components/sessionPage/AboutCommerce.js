@@ -26,7 +26,7 @@ import { createMuiTheme } from '@material-ui/core/styles';
 import { Redirect } from 'react-router-dom';
 
 import "../../../node_modules/video-react/dist/video-react.css";
-import { Player } from 'video-react';
+import { Player, ControlBar } from 'video-react';
 import Info from '@material-ui/icons/Info';
 
 import NoImage from '../../assets/images/no-image.png';
@@ -111,7 +111,7 @@ class AboutCommerce extends Component {
                 file: [],
                 imgs: null,
                 listImg: [],
-                movieURL: [],
+                movieURL: '',
                 validate: false,
                 submitted: false,
                 openPopupVideoDelete: false,
@@ -532,10 +532,15 @@ class AboutCommerce extends Component {
 
     getUrlCommerceMovie = async () => {
         const movie = await this.getMovieCommerce();
-        // console.log(`--fff-------> ${movie}`);
-        this.setState({
-            movieURL: movie
-        })
+        // Re-ecriture du link pour le faire marcher sur Safari
+        var newLink = movie.toString().replace(process.env.REACT_APP_SERVER_URL+"/files/"+process.env.REACT_APP_APP_ID+"/", 
+        "https://firebasestorage.googleapis.com/v0/b/weeclik-1517332083996.appspot.com/o/baas_files%2F")+"?alt=media"
+
+        if (newLink !== "?alt=media") {
+            this.setState({
+                movieURL: newLink
+            })
+        }
         // console.log(`--ggg-------> ${this.state.movieURL}`);
     }
     //#endregion
@@ -1129,9 +1134,9 @@ class AboutCommerce extends Component {
                                     <Grid item><Typography variant="h5" component="h3" style={{color:"#000"}}>Vidéo du commerce</Typography></Grid>
                                     <Grid item>
                                         <Grid container>
-                                            <Grid item spacing={2}>
+                                            <Grid item>
                                                 {
-                                                    this.state.movieURL[0] ?
+                                                    this.state.movieURL ?
                                                     (<div></div>) :
                                                     (<div>
                                                         <input
@@ -1148,7 +1153,7 @@ class AboutCommerce extends Component {
                                             </Grid>
                                             <Grid item xs>
                                                 {
-                                                    this.state.movieURL[0] ?
+                                                    this.state.movieURL ?
                                                     (<Button onClick={() => { this.deleteMovieCommerce() }} variant="text" color="secondary" size="small" style={{marginBottom:'10px', outline: 'none'}} startIcon={<DeleteForeverRoundedIcon/>}>Supprimer la vidéo</Button>) : (<div></div>)
                                                 }                        
                                             </Grid>
@@ -1160,11 +1165,13 @@ class AboutCommerce extends Component {
                                             
                                 <Grid item xs={12}>
                                     {
-                                        this.state.movieURL[0] ?
-                                        (<Player
-                                            playsInline
-                                            src={this.state.movieURL[0]}
-                                        />) :
+                                        this.state.movieURL ?
+                                        (<div>
+                                            <Player ref={(player) => { this.player = player }} style={{height: '200px'}}>
+                                                <source src={this.state.movieURL} />
+                                                <ControlBar autoHide={false} />
+                                            </Player>
+                                        </div>) :
                                         (<center>
                                             <Typography variant="h3" style={{color: grey[300]}}>Pas de vidéo</Typography>
                                         </center>)
@@ -1191,7 +1198,7 @@ class AboutCommerce extends Component {
                                     <DialogContent>
                                         <center>
                                             <DialogContentText id="alert-dialog-description">
-                                                <p>N'actualisez pas la page et ne sélectionnez pas Précédent. Si vous procédez ainsi, vous annulez la demande</p>
+                                                N'actualisez pas la page et ne sélectionnez pas Précédent. Si vous procédez ainsi, vous annulez la demande
                                             </DialogContentText>
                                             <CircularProgress color="secondary" />
                                         </center>
@@ -1211,7 +1218,7 @@ class AboutCommerce extends Component {
                                     <DialogContent>
                                         <center>
                                             <DialogContentText id="alert-dialog-description">
-                                                <p>Ajout d'une nouvelle vidéo. Cette étape peut prendre plusieurs minutes. N'actualisez pas la page et ne sélectionnez pas Précédent. Si vous procédez ainsi, vous annulez la demande</p>
+                                                Ajout d'une nouvelle vidéo. Cette étape peut prendre plusieurs minutes. N'actualisez pas la page et ne sélectionnez pas Précédent. Si vous procédez ainsi, vous annulez la demande
                                             </DialogContentText>
                                             <CircularProgress color="secondary" />
                                         </center>
