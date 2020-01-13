@@ -173,6 +173,24 @@ a.white {
 	transition: all 0.2s ease;
 }
 
+.btn-solid-lg-ambassador {
+	padding: 1.375rem 2.625rem 1.375rem 2.625rem;
+	border: 0.125rem solid #1DAFF8;
+	border-radius: 2rem;
+	background-color: #1DAFF8;
+	color: #fff;
+	font-size: 700;
+	text-decoration: none;
+	transition: all 0.2s ease;
+}
+
+.btn-solid-lg-ambassador:hover  {
+	background-color: transparent;
+	color: #1DAFF8;
+	text-decoration: none;
+	cursor: pointer;
+}
+
 .btn-solid-lg:hover {
 	background-color: transparent;
 	color: #1DAFF8;
