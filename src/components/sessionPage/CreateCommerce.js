@@ -7,23 +7,15 @@ import addCommercePicture from '../../assets/icons/addCommercePicture.png';
 import BGImage from '../../assets/images/download-background.jpg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
-// import { createMuiTheme } from '@material-ui/core/styles';
+
+import axios from "axios";
 
 import Footer from '../footer/Footer';
-
-// const theme = createMuiTheme({
-//     spacing: 4,
-// });
 
 const root = {
     flexGrow: 1,
     paddingTop: '70px',
 }
-
-// const button = {
-//     margin: theme.spacing(1),
-//     outline: 'none'
-// }
 
 
 
@@ -223,8 +215,23 @@ class CreateCommerce extends Component {
         }));
     }
 
+    initGeocode(adresse) {
+        axios.get("https://nominatim.openstreetmap.org/search?q="+adresse+"&format=json")
+        .then((res) => {
+            console.log(`${JSON.stringify(res.data, null, 2)}`);
+            var sizeOfObject = res.data.length;
+            for (var i = 0; i < sizeOfObject; i++) {
+                console.log(`---> Lat : ${JSON.stringify(res.data[i], null, 2)}`);
+                console.log(`---> Lat : ${res.data[i].lat}\n---> Lat : ${res.data[i].lon}`);
+            }
+        }, (error) => {
+            console.error(error);
+        })
+    }
+
     createNewCommerce(event) {
         event.preventDefault();
+        
 
         const _state_commerce = this.state.commerce;
         let addr = "";
@@ -239,49 +246,65 @@ class CreateCommerce extends Component {
             _state_commerce.currencyCategory !== "" &&
             _state_commerce.tel !== "" && addr !== "") {
 
-                const currentUser = Parse.User.current()
-                const ParseCommerce = Parse.Object.extend("Commerce");
-                const newCommerce   = new ParseCommerce();
-                const point         = new Parse.GeoPoint({latitude: 0.0, longitude: 0.0});
-                const acl           = new Parse.ACL();
-                acl.setPublicReadAccess(true);
-                acl.setRoleWriteAccess("admin", true);
-                acl.setWriteAccess(currentUser.id, true);
-                ParseCommerce.setACL(acl);
+                // START
+                axios.get("https://nominatim.openstreetmap.org/search?q="+addr+"&format=json")
+                .then((res) => {
+                    // console.log(`${JSON.stringify(res.data, null, 2)}`);
+                    var sizeOfObject = res.data.length;
+                    for (var i = 0; i < sizeOfObject; i++) {
+                        // console.log(`---> Lat : ${JSON.stringify(res.data[i], null, 2)}`);
+                        // console.log(`---> Lat : ${res.data[i].lat}\n---> Lat : ${res.data[i].lon}`);
 
-                newCommerce.save({
-                    "nomCommerce": _state_commerce.nomCommerce,
-                    "position": point,
-                    "siteWeb": _state_commerce.siteWeb,
-                    "statutCommerce": 0,
-                    "adresse": addr,
-                    "nombrePartages": 0,
-                    "owner": Parse.User.createWithoutData(currentUser.id),
-                    "typeCommerce": _state_commerce.currencyCategory,
-                    "mail": this.props.user.email,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
-                    "tel": _state_commerce.tel,
-                    "description": _state_commerce.description,
-                    "promotions": _state_commerce.promotions,
-                    "brouillon": true
-                })
-                .then((newCommerce) => {
-                    var localStore = "";
-                    if (this.state.imgPreview1) {
-                        localStore = "file1Base64";
-                        this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                        // __START
+                        const currentUser = Parse.User.current()
+                        const ParseCommerce = Parse.Object.extend("Commerce");
+                        const newCommerce   = new ParseCommerce();
+                        const point         = new Parse.GeoPoint({latitude: Number(res.data[i].lat), longitude: Number(res.data[i].lon)});
+                        const acl           = new Parse.ACL();
+                        acl.setPublicReadAccess(true);
+                        acl.setRoleWriteAccess("admin", true);
+                        acl.setWriteAccess(currentUser.id, true);
+                        newCommerce.setACL(acl);
+
+                        newCommerce.save({
+                            "nomCommerce": _state_commerce.nomCommerce,
+                            "position": point,
+                            "siteWeb": _state_commerce.siteWeb,
+                            "statutCommerce": 0,
+                            "adresse": addr,
+                            "nombrePartages": 0,
+                            "owner": Parse.User.createWithoutData(currentUser.id),
+                            "typeCommerce": _state_commerce.currencyCategory,
+                            "mail": this.props.user.email,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
+                            "tel": _state_commerce.tel,
+                            "description": _state_commerce.description,
+                            "promotions": _state_commerce.promotions,
+                            "brouillon": true
+                        })
+                        .then((newCommerce) => {
+                            var localStore = "";
+                            if (this.state.imgPreview1) {
+                                localStore = "file1Base64";
+                                this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                            }
+                            if (this.state.imgPreview2) {
+                                localStore = "file2Base64";
+                                this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                            }
+                            if (this.state.imgPreview3) {
+                                localStore = "file3Base64";
+                                this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                            }
+                            this.isCreate(newCommerce.id);
+                        }, (error) => {
+                            console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                        })
+                        // __END
                     }
-                    if (this.state.imgPreview2) {
-                        localStore = "file2Base64";
-                        this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
-                    }
-                    if (this.state.imgPreview3) {
-                        localStore = "file3Base64";
-                        this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
-                    }
-                    this.isCreate(newCommerce.id);
                 }, (error) => {
-                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                    console.error(error);
                 })
+                // END
                 
         } else {
             console.error("Veuillez remplir tout le formulaire");
@@ -295,6 +318,7 @@ class CreateCommerce extends Component {
 
 
     componentDidMount() {
+        // this.initGeocode("37 Prom. des Anglais, 06000 Nice");
         try {
             this.getAllCommerces();
         } catch (error) {}
