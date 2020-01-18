@@ -279,7 +279,8 @@ class CreateCommerce extends Component {
                             "tel": _state_commerce.tel,
                             "description": _state_commerce.description,
                             "promotions": _state_commerce.promotions,
-                            "brouillon": true
+                            "brouillon": true, 
+                            "createdFromProject": "ReactJS"
                         })
                         .then((newCommerce) => {
                             var localStore = "";
