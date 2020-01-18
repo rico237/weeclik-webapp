@@ -154,6 +154,7 @@ class ReceiveCommercePage extends Component {
                     var _typeCommerce = fetchedCommerce.get('typeCommerce');
                     var _addr = fetchedCommerce.get('adresse');
                     var _tel = fetchedCommerce.get('tel');
+                    var _mail = fetchedCommerce.get('mail');
                     var _siteWeb = fetchedCommerce.get('siteWeb');
                     var _description = fetchedCommerce.get('description');
                     var _promotions = fetchedCommerce.get('promotions');
@@ -190,6 +191,7 @@ class ReceiveCommercePage extends Component {
                             currencyCategory: _typeCommerce,
                             siteWeb: _siteWeb,
                             tel: _tel,
+                            mail: _mail,
                             adresse: _addr,
                             promotion: _promotions
                         }
@@ -313,7 +315,7 @@ class ReceiveCommercePage extends Component {
                                 <div style={{margin:'10px'}}></div>
 
                                 <Paper elevation={0} style={root2}>
-                                <Typography variant="h4" component="h3" style={{color:"#000"}}>{this.state.commerce.nomCommerce}</Typography>
+                                <Typography variant="h4" component="h3" style={{color:"#000", paddingBottom: '20px'}}>{this.state.commerce.nomCommerce}</Typography>
                                     {this.state.commerce.adresse ? (
                                             <h6 style={{color:"#000"}}>
                                                 <RoomRoundedIcon/>{" : " + this.state.commerce.adresse}
@@ -325,7 +327,8 @@ class ReceiveCommercePage extends Component {
                                         )}
                                     {this.state.commerce.tel ? (
                                             <h6 style={{color:"#000"}}>
-                                                <CallRoundedIcon/>{" : " + this.state.commerce.tel}
+                                                <CallRoundedIcon/>
+                                                {" : "}<a href={"tel:"+this.state.commerce.tel} target={"_blank"} style={{color: '#00F', textTransform: 'lowercase', textDecoration: 'none'}}>{this.state.commerce.tel}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>
@@ -335,7 +338,7 @@ class ReceiveCommercePage extends Component {
                                     {this.state.commerce.mail ? (
                                             <h6 style={{color:"#000"}}>
                                                 <EmailRoundedIcon/>
-                                                {" : "}<a href={"mailto:"+this.state.commerce.mail} target={"_blank"} style={{color: '#00F', textTransform: 'lowercase'}}>{this.state.commerce.mail}</a>
+                                                {" : "}<a href={"mailto:"+this.state.commerce.mail} target={"_blank"} style={{color: '#00F', textTransform: 'lowercase', textDecoration: 'none'}}>{this.state.commerce.mail}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>
@@ -345,7 +348,7 @@ class ReceiveCommercePage extends Component {
                                         )}
                                     {this.state.commerce.siteWeb ? (
                                             <h6 style={{color:"#000"}}>
-                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F'}}>{this.state.commerce.siteWeb}</a>
+                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F', textDecoration: 'none'}}>{this.state.commerce.siteWeb}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>
