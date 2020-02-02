@@ -104,7 +104,11 @@ class CreateCommerce extends Component {
     handleChangePicture1(event) {
         const file = event.target.files[0];
         getBase64(file).then((base64) => {
-            localStorage["file1Base64"] = base64;
+            // localStorage["file1Base64"] = base64;
+            try {
+                localStorage.setItem("file1Base64", base64);
+            } catch(error) {console.error("Unhandled Rejection (QuotaExceededError): The quota has been exceeded.");}
+            
         })
         this.setState({
             imgPreview1: URL.createObjectURL(file),
@@ -113,7 +117,9 @@ class CreateCommerce extends Component {
     handleChangePicture2(event) {
         const file = event.target.files[0];
         getBase64(file).then((base64) => {
-            localStorage["file2Base64"] = base64;
+            try {
+                localStorage.setItem("file2Base64", base64);
+            } catch(error) {console.error("Unhandled Rejection (QuotaExceededError): The quota has been exceeded.");}
         })
         this.setState({
             imgPreview2: URL.createObjectURL(file),
@@ -122,7 +128,9 @@ class CreateCommerce extends Component {
     handleChangePicture3(event) {
         const file = event.target.files[0];
         getBase64(file).then((base64) => {
-            localStorage["file3Base64"] = base64;
+            try {
+                localStorage.setItem("file3Base64", base64);
+            } catch(error) {console.error("Unhandled Rejection (QuotaExceededError): The quota has been exceeded.");}
         })
         this.setState({
             imgPreview3: URL.createObjectURL(file),
@@ -276,6 +284,7 @@ class CreateCommerce extends Component {
                             "adresse": addr,
                             "nombrePartages": 0,
                             "owner": Parse.User.createWithoutData(currentUser.id),
+                            "endSubscription": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                             "typeCommerce": _state_commerce.currencyCategory,
                             "mail": this.props.user.email,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
                             "tel": _state_commerce.tel,
