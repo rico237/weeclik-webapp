@@ -96,7 +96,7 @@ class PayPage extends Component {
                                 borderRadius: '5px',
                                 backgroundColor: '#F6F9FC'
                             }}>
-                                <StripeProvider apiKey="pk_test_9OkMxuPwf69ObxaAqfOMih5M00m24msfT0">
+                                <StripeProvider apiKey={this.state.stripePublicKey}>
                                     <div className="example">
                                         <Elements>
                                             <CheckoutForm _idCommerce={this.props.location.state.id}/>

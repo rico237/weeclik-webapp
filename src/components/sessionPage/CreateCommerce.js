@@ -36,6 +36,7 @@ class CreateCommerce extends Component {
 
         try {
             this.state = {
+                isClick: false,
                 commerce: {
                     nomCommerce: '',
                     adresse: '',
@@ -245,6 +246,7 @@ class CreateCommerce extends Component {
         if (_state_commerce.nomCommerce !== "" &&
             _state_commerce.currencyCategory !== "" &&
             _state_commerce.tel !== "" && addr !== "") {
+                this.setState({isClick: true});
 
                 // START
                 axios.get("https://nominatim.openstreetmap.org/search?q="+addr+"&format=json")
@@ -296,6 +298,7 @@ class CreateCommerce extends Component {
                                 localStore = "file3Base64";
                                 this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
                             }
+                            this.setState({isClick: false});
                             this.isCreate(newCommerce.id);
                         }, (error) => {
                             console.error(`Failed to create new object, with error code: ' + ${error.message}`);
@@ -303,6 +306,7 @@ class CreateCommerce extends Component {
                         // __END
                     }
                 }, (error) => {
+                    this.setState({isClick: false});
                     console.error(error);
                 })
                 // END
@@ -572,14 +576,28 @@ class CreateCommerce extends Component {
                             <Grid item style={{paddingBottom: '50px'}}>
                                 <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={{margin: '4px', outline: 'none', borderRadius: '2rem', padding: '12px 60px'}}>Annuler</Button>
 
-                                <input
-                                    className="btn-solid-lg"
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    value="Créer mon commerce"
-                                    style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
-                                />
+                                {
+                                    this.state.isClick ? (
+                                        <input
+                                            disabled
+                                            className="btn-solid-lg"
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            value="Créer mon commerce"
+                                            style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
+                                        />
+                                    ) : (
+                                        <input
+                                            className="btn-solid-lg"
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            value="Créer mon commerce"
+                                            style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
+                                        />
+                                    )
+                                }
                             </Grid>
                         </form>
                     </div>
