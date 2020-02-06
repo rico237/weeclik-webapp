@@ -36,6 +36,7 @@ class CreateCommerce extends Component {
 
         try {
             this.state = {
+                isClick: false,
                 commerce: {
                     nomCommerce: '',
                     adresse: '',
@@ -103,7 +104,11 @@ class CreateCommerce extends Component {
     handleChangePicture1(event) {
         const file = event.target.files[0];
         getBase64(file).then((base64) => {
-            localStorage["file1Base64"] = base64;
+            // localStorage["file1Base64"] = base64;
+            try {
+                localStorage.setItem("file1Base64", base64);
+            } catch(error) {console.error("Unhandled Rejection (QuotaExceededError): The quota has been exceeded.");}
+            
         })
         this.setState({
             imgPreview1: URL.createObjectURL(file),
@@ -112,7 +117,9 @@ class CreateCommerce extends Component {
     handleChangePicture2(event) {
         const file = event.target.files[0];
         getBase64(file).then((base64) => {
-            localStorage["file2Base64"] = base64;
+            try {
+                localStorage.setItem("file2Base64", base64);
+            } catch(error) {console.error("Unhandled Rejection (QuotaExceededError): The quota has been exceeded.");}
         })
         this.setState({
             imgPreview2: URL.createObjectURL(file),
@@ -121,7 +128,9 @@ class CreateCommerce extends Component {
     handleChangePicture3(event) {
         const file = event.target.files[0];
         getBase64(file).then((base64) => {
-            localStorage["file3Base64"] = base64;
+            try {
+                localStorage.setItem("file3Base64", base64);
+            } catch(error) {console.error("Unhandled Rejection (QuotaExceededError): The quota has been exceeded.");}
         })
         this.setState({
             imgPreview3: URL.createObjectURL(file),
@@ -245,6 +254,7 @@ class CreateCommerce extends Component {
         if (_state_commerce.nomCommerce !== "" &&
             _state_commerce.currencyCategory !== "" &&
             _state_commerce.tel !== "" && addr !== "") {
+                this.setState({isClick: true});
 
                 // START
                 axios.get("https://nominatim.openstreetmap.org/search?q="+addr+"&format=json")
@@ -274,6 +284,7 @@ class CreateCommerce extends Component {
                             "adresse": addr,
                             "nombrePartages": 0,
                             "owner": Parse.User.createWithoutData(currentUser.id),
+                            "endSubscription": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                             "typeCommerce": _state_commerce.currencyCategory,
                             "mail": this.props.user.email,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
                             "tel": _state_commerce.tel,
@@ -296,6 +307,7 @@ class CreateCommerce extends Component {
                                 localStore = "file3Base64";
                                 this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
                             }
+                            this.setState({isClick: false});
                             this.isCreate(newCommerce.id);
                         }, (error) => {
                             console.error(`Failed to create new object, with error code: ' + ${error.message}`);
@@ -303,6 +315,7 @@ class CreateCommerce extends Component {
                         // __END
                     }
                 }, (error) => {
+                    this.setState({isClick: false});
                     console.error(error);
                 })
                 // END
@@ -572,14 +585,28 @@ class CreateCommerce extends Component {
                             <Grid item style={{paddingBottom: '50px'}}>
                                 <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={{margin: '4px', outline: 'none', borderRadius: '2rem', padding: '12px 60px'}}>Annuler</Button>
 
-                                <input
-                                    className="btn-solid-lg"
-                                    type="submit"
-                                    variant="contained"
-                                    color="primary"
-                                    value="Créer mon commerce"
-                                    style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
-                                />
+                                {
+                                    this.state.isClick ? (
+                                        <input
+                                            disabled
+                                            className="btn-solid-lg"
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            value="Créer mon commerce"
+                                            style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
+                                        />
+                                    ) : (
+                                        <input
+                                            className="btn-solid-lg"
+                                            type="submit"
+                                            variant="contained"
+                                            color="primary"
+                                            value="Créer mon commerce"
+                                            style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
+                                        />
+                                    )
+                                }
                             </Grid>
                         </form>
                     </div>

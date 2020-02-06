@@ -149,6 +149,7 @@ class ReceiveCommercePage extends Component {
             .then((snapshotObject) => {
                 snapshotObject.fetch().then((fetchedCommerce) => {
                     var _name = fetchedCommerce.get('nomCommerce');
+                    var _geoloc = fetchedCommerce.get('position');
                     var _statusCommerce = fetchedCommerce.get('statutCommerce');
                     var _nbPartage = fetchedCommerce.get('nombrePartages');
                     var _typeCommerce = fetchedCommerce.get('typeCommerce');
@@ -193,7 +194,8 @@ class ReceiveCommercePage extends Component {
                             tel: _tel,
                             mail: _mail,
                             adresse: _addr,
-                            promotion: _promotions
+                            promotion: _promotions,
+                            position: _geoloc
                         }
                     }));
                 });
@@ -318,7 +320,8 @@ class ReceiveCommercePage extends Component {
                                 <Typography variant="h4" component="h3" style={{color:"#000", paddingBottom: '20px'}}>{this.state.commerce.nomCommerce}</Typography>
                                     {this.state.commerce.adresse ? (
                                             <h6 style={{color:"#000"}}>
-                                                <RoomRoundedIcon/>{" : " + this.state.commerce.adresse}
+                                                <RoomRoundedIcon/>
+                                    {" : "}<a href={"http://maps.google.com/?q="+this.state.commerce.position._latitude+","+this.state.commerce.position._longitude+""} target={"_blank"} style={{color: '#00F', textTransform: 'lowercase', textDecoration: 'none'}}>{this.state.commerce.adresse}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>
@@ -348,7 +351,7 @@ class ReceiveCommercePage extends Component {
                                         )}
                                     {this.state.commerce.siteWeb ? (
                                             <h6 style={{color:"#000"}}>
-                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F', textDecoration: 'none'}}>{this.state.commerce.siteWeb}</a>
+                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F', textDecoration: 'none'}}>{"Site web"}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>

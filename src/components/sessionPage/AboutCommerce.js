@@ -1166,12 +1166,12 @@ class AboutCommerce extends Component {
                                 <Grid item xs={12}>
                                     {
                                         this.state.movieURL ?
-                                        (<div>
-                                            <Player ref={(player) => { this.player = player }} style={{height: '200px'}}>
+                                        (<center>
+                                            <Player ref={(player) => { this.player = player }} style={{height: '200px'}} fluid={false} height={600}>
                                                 <source src={this.state.movieURL} />
                                                 <ControlBar autoHide={false} />
                                             </Player>
-                                        </div>) :
+                                        </center>) :
                                         (<center>
                                             <Typography variant="h3" style={{color: grey[300]}}>Pas de vidéo</Typography>
                                         </center>)
