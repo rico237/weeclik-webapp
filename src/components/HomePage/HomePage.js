@@ -130,7 +130,7 @@ class HomePage extends Component {
                         >
                             <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur et ambassadrice du seul réseau de confiance humain"}</DialogTitle>
                             <YouTube
-                                videoId="dWOpGZhz2h8"
+                                videoId="P43SCiwPSTo"
                                 opts={opts}
                                 onReady={this._onReady}
                                 style={{ margin: '5px' }}
