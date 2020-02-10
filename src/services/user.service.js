@@ -5,7 +5,8 @@ export const userService = {
     login,
     logout,
     register,
-    getUser
+    getUser,
+    loginFB
 };
 
 function register(user) {
@@ -23,6 +24,11 @@ function register(user) {
 function login(username, password) {
     // console.log(`[SERVICE] : login ${username}, ${password}`);
     const user = Parse.User.logIn(username, password);
+    return user.then(handleResponse);
+}
+
+function loginFB(/*userID, name, */email/*, picture*/) {
+    const user = Parse.FacebookUtils.logIn(email);
     return user.then(handleResponse);
 }
 

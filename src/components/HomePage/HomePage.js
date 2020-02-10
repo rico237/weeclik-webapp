@@ -138,15 +138,26 @@ class HomePage extends Component {
                         </Dialog>
                     </div>
 
-
-
-
                     <div className="basic-3">
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-lg-12">
 
                                     <h2 style={{textAlign:'center', paddingBottom:'1em'}}>Qui sommes nous ?</h2>
+
+                                        <div className="container">
+                                            <div className="row">
+                                                <div className="col-lg-12">
+                                                    <YouTube
+                                                        videoId="dWOpGZhz2h8"
+                                                        opts={opts}
+                                                        onReady={this._onReady}
+                                                        style={{ margin: '5px' }}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    
 
                                     <div className="container w3-grayscale">
                                         <div className="row">
