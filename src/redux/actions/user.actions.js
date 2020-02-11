@@ -8,7 +8,8 @@ export const userActions = {
     login,
     logout,
     getInfo,
-    register
+    register,
+    loginFB
 }
 
 /**
@@ -71,6 +72,35 @@ function login(username, password) {
     function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
     function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
     function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
+}
+
+function loginFB(/*userID, name, email, picture*/) {
+    console.log("------------");
+    // return dispatch => {
+    //     dispatch(request({ userID }));
+    //     userService.loginFB(userID, name, email, picture)
+    //         .then(
+    //             user => {
+    //                 dispatch(success(user));
+    //                 history.push('/user');
+    //                 // console.log(`[ACTION] : login ${JSON.stringify(user, null, 2)}`);
+    //             },
+    //             error => {
+    //                 // console.error(`[ACTION]> : bad login ${error.code}`);
+    //                 // if (error.code === 101) {
+    //                 //     // alert('L\'adresse e-mail ou mot de passe est invalide.');
+    //                 //     console.error(`[ACTION]> : bad login ${error.message}`);
+    //                 // }
+    //                 dispatch(failure(error));
+    //                 dispatch(alertActions.error(error));
+    //                 // console.error(`[ACTION]> : bad login ${error}`);
+    //             }
+    //         );
+    // };
+
+    // function request(user) { return { type: userConstants.LOGIN_REQUEST, user } }
+    // function success(user) { return { type: userConstants.LOGIN_SUCCESS, user } }
+    // function failure(error) { return { type: userConstants.LOGIN_FAILURE, error } }
 }
 
 function logout() {

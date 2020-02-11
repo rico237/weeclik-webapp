@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Parse from 'parse';
+import FacebookLogin from 'react-facebook-login';
 import logo from '../../assets/icons/LogoWeeclik.svg';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -60,7 +62,13 @@ class LoginPage extends Component {
             username: '',
             password: '',
             submitted: false,
-            alertMsg: ''
+            alertMsg: '',
+
+            isLoggedIn: false,
+            userID: '',
+            name: '',
+            email: '',
+            picture: ''
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -92,12 +100,64 @@ class LoginPage extends Component {
         }
     }
 
+    componentClicked = () => {
+        // console.log("CLIK")
+    }
+
     responseFacebook(response) {
-        // console.log("----->>>> "+response)
-        alert(JSON.stringify(response))
+        try {
+            Parse.FacebookUtils.logIn();
+            // null, {
+            //     success: function(user) {
+            //         if (!user.existed()) {
+            //             user.set('username', response.email)
+            //             user.set('email', response.email);
+            //             user.set('name', response.name);
+            //             user.set('profilePictureURL', response.picture.data.url);
+            //             user.set('isPro', true);
+
+            //             console.log('FB LOGIN BAD ');
+            //         } else {
+            //             console.log('FB LOGIN OK ' + user);
+            //         }
+            //     },
+            //     error: function(result, error) {
+            //         alert('Whoops Fb Login error, please try again');
+            //         console.log('FB LOGIN ERROR => ', error);
+            //     }
+            // });
+            // user.then(t => {
+            //     console.log("----->>>> "+JSON.stringify(t, null, 2));
+            // })
+        } catch (error) {
+            
+        }
+        // this.props.loginWith(/*response.userID, response.name, response.email, response.picture.data.url*/);
+        // this.setState({
+        //     isLoggedIn: true,
+        //     userID: response.userID,
+        //     name: response.name,
+        //     email: response.email,
+        //     picture: response.picture.data.url
+        // })
     }
 
     render() {
+
+        let fbContent;
+
+        if (this.state.isLoggedIn) {
+            fbContent = null;
+        } else {
+            fbContent = (<FacebookLogin
+                appId="1263383433872506"
+                autoLoad={false}
+                fields="name,email,picture"
+                textButton="Se connecter avec Facebook"
+                cssClass="facebook-style-btn"
+                onClick={this.componentClicked}
+                callback={this.responseFacebook} />);
+        }
 
         const { msg } = this.props;
         
@@ -108,6 +168,10 @@ class LoginPage extends Component {
                 <Paper style={root}>
                     <div style={paper}>
                         <Avatar alt="Logo" src={logo} style={avatar}/>
+
+        <div>{fbContent}</div>
+        <div style={{color: 'gray'}}>- ou -</div>
+
                         <form style={form} noValidate>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
