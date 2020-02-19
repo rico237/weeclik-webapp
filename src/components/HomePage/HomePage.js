@@ -3,7 +3,6 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { Dialog, DialogTitle } from '@material-ui/core';
-import YouTube from 'react-youtube';
 import Michel from '../../assets/images/team/michel.jpg';
 import Aziz from '../../assets/images/team/aziz.jpg';
 import Mohamed from '../../assets/images/team/mohamed.jpg';
@@ -13,10 +12,14 @@ import detail1 from './images/details-1-iphone.png';
 import ambassadeurPic from '../../assets/images/blur-businessman-cellphone-727x300.jpg';
 import download from './images/download.png';
 import headerIphone from './images/header-iphone.png';
+import { Player, ControlBar } from 'video-react';
 
 import './css/bootstrap.css';
 import './css/fontawesome-all.css';
 import './css/styles.css';
+
+const urlMovieAmbassadeur = "https://weeclik-server.herokuapp.com/parse/files/JVQZMCuNYvnecPWvWFDTZa8A/d65422f06592f1f3e4daaac82369f89f_weeclik_ambassadeur.mp4";
+const urlMovieDescription = "https://weeclik-server.herokuapp.com/parse/files/JVQZMCuNYvnecPWvWFDTZa8A/d6c44f3f966dc53911d961e0ddec5a66_weeclik_description.mp4"
 
 class HomePage extends Component {
     constructor(props) {
@@ -25,6 +28,12 @@ class HomePage extends Component {
         this.state = {
             open: false,
         };
+    }
+
+    getUrlCommerceMovie = (urlVideo) => {
+        // rewrite the link url to work on Safari
+        return urlVideo.replace(process.env.REACT_APP_SERVER_URL+"/files/"+process.env.REACT_APP_APP_ID+"/", 
+        "https://firebasestorage.googleapis.com/v0/b/weeclik-1517332083996.appspot.com/o/baas_files%2F")+"?alt=media"
     }
 
     handleOpen = () => {
@@ -41,15 +50,6 @@ class HomePage extends Component {
     }
 
     render() {
-        // navigator.geolocation.getCurrentPosition((position) => {console.log("----> "+position.coords.latitude+" "+position.coords.longitude)})
-
-        const opts = {
-            // height: '100%',
-            width: '100%',
-            playerVars: { // https://developers.google.com/youtube/player_parameters
-                autoplay: 0
-            }
-        }
 
         return (
             <Fragment>
@@ -128,13 +128,11 @@ class HomePage extends Component {
                             fullWidth={true}
                             maxWidth={"md"}
                         >
-                            <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur et ambassadrice du seul réseau de confiance humain"}</DialogTitle>
-                            <YouTube
-                                videoId="P43SCiwPSTo"
-                                opts={opts}
-                                onReady={this._onReady}
-                                style={{ margin: '5px' }}
-                            />
+                        <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur et ambassadrice du seul réseau de confiance humain"}</DialogTitle>
+                            <Player ref={(player) => { this.player = player }} style={{height: '200px'}} fluid={false} height={600}>
+                                <source src={this.getUrlCommerceMovie(urlMovieAmbassadeur)} />
+                                <ControlBar autoHide={false} />
+                            </Player>
                         </Dialog>
                     </div>
 
@@ -148,12 +146,10 @@ class HomePage extends Component {
                                         <div className="container">
                                             <div className="row">
                                                 <div className="col-lg-12">
-                                                    <YouTube
-                                                        videoId="dWOpGZhz2h8"
-                                                        opts={opts}
-                                                        onReady={this._onReady}
-                                                        style={{ margin: '5px' }}
-                                                    />
+                                                    <Player ref={(player) => { this.player = player }} style={{height: '200px'}} fluid={false} height={600}>
+                                                        <source src={this.getUrlCommerceMovie(urlMovieDescription)} />
+                                                        <ControlBar autoHide={false} />
+                                                    </Player>
                                                 </div>
                                             </div>
                                         </div>
