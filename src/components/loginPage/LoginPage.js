@@ -169,8 +169,8 @@ class LoginPage extends Component {
                     <div style={paper}>
                         <Avatar alt="Logo" src={logo} style={avatar}/>
 
-        <div>{fbContent}</div>
-        <div style={{color: 'gray'}}>- ou -</div>
+        {/* <div>{fbContent}</div>
+        <div style={{color: 'gray'}}>- ou -</div> */}
 
                         <form style={form} noValidate>
                             <Grid container spacing={2}>
