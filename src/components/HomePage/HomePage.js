@@ -10,6 +10,7 @@ import Herrick from '../../assets/images/team/herrick.jpg';
 import Grace from '../../assets/images/team/grace.jpg';
 import detail1 from './images/details-1-iphone.png';
 import ambassadeurPic from '../../assets/images/blur-businessman-cellphone-727x300.jpg';
+import previewWeeclik from '../../assets/images/weeclik_0.png';
 import download from './images/download.png';
 import headerIphone from './images/header-iphone.png';
 import { Player, ControlBar } from 'video-react';
@@ -18,8 +19,8 @@ import './css/bootstrap.css';
 import './css/fontawesome-all.css';
 import './css/styles.css';
 
-const urlMovieAmbassadeur = "https://weeclik-server.herokuapp.com/parse/files/JVQZMCuNYvnecPWvWFDTZa8A/d65422f06592f1f3e4daaac82369f89f_weeclik_ambassadeur.mp4";
-const urlMovieDescription = "https://weeclik-server.herokuapp.com/parse/files/JVQZMCuNYvnecPWvWFDTZa8A/d6c44f3f966dc53911d961e0ddec5a66_weeclik_description.mp4"
+const urlMovieAmbassadeur = process.env.REACT_APP_SERVER_URL+"/files/"+process.env.REACT_APP_APP_ID+"/d65422f06592f1f3e4daaac82369f89f_weeclik_ambassadeur.mp4";
+const urlMovieDescription = process.env.REACT_APP_SERVER_URL+"/files/"+process.env.REACT_APP_APP_ID+"/d6c44f3f966dc53911d961e0ddec5a66_weeclik_description.mp4"
 
 class HomePage extends Component {
     constructor(props) {
@@ -129,7 +130,7 @@ class HomePage extends Component {
                             maxWidth={"md"}
                         >
                         <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur et ambassadrice du seul réseau de confiance humain"}</DialogTitle>
-                            <Player ref={(player) => { this.player = player }} style={{height: '200px'}} fluid={false} height={600}>
+                            <Player ref={(player) => { this.player = player }} poster={previewWeeclik} style={{height: '200px'}} fluid={false} height={600}>
                                 <source src={this.getUrlCommerceMovie(urlMovieAmbassadeur)} />
                                 <ControlBar autoHide={false} />
                             </Player>
@@ -143,21 +144,26 @@ class HomePage extends Component {
 
                                     <h2 style={{textAlign:'center', paddingBottom:'1em'}}>Qui sommes nous ?</h2>
 
-                                        <div className="container">
-                                            <div className="row">
-                                                <div className="col-lg-12">
-                                                    <Player ref={(player) => { this.player = player }} style={{height: '200px'}} fluid={false} height={600}>
-                                                        <source src={this.getUrlCommerceMovie(urlMovieDescription)} />
-                                                        <ControlBar autoHide={false} />
+                                    <div className="container w3-grayscale">
+                                        <div className="row">
+                                            <div className="col-lg">
+                                                <center>
+                                                    <Player
+                                                        ref={(player) => { this.player = player }}
+                                                        poster={previewWeeclik}
+                                                        style={{height: '200px'}} fluid={false} height={600}>
+                                                            <source src={this.getUrlCommerceMovie(urlMovieDescription)} />
+                                                            <ControlBar autoHide={false} />
                                                     </Player>
-                                                </div>
+                                                </center>
                                             </div>
                                         </div>
+                                    </div>
                                     
 
                                     <div className="container w3-grayscale">
                                         <div className="row">
-                                            <div className="col-lg-2 offset-lg-1 offset-0 col-6" style={{marginTop:'16px'}}>
+                                            <div className="col-lg col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Aziz} alt="Aziz" style={{width:'100%'}}/>
                                                     <div className="w3-container" style={{ margin: '0 5px' }}>
@@ -166,7 +172,7 @@ class HomePage extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-2 col-6" style={{marginTop:'16px'}}>
+                                            <div className="col-lg col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Michel} alt="Michel" style={{width:'100%'}}/>
                                                     <div className="w3-container" style={{ margin: '0 5px' }}>
@@ -175,7 +181,7 @@ class HomePage extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-2 col-6" style={{marginTop:'16px'}}>
+                                            <div className="col-lg col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Herrick} alt="Mike" style={{width:'100%'}}/>
                                                     <div className="w3-container" style={{ margin: '0 5px' }}>
@@ -184,7 +190,7 @@ class HomePage extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-2 col-6" style={{marginTop:'16px'}}>
+                                            <div className="col-lg col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Mohamed} alt="Dan" style={{width:'100%'}}/>
                                                     <div className="w3-container" style={{ margin: '0 5px' }}>
@@ -193,7 +199,7 @@ class HomePage extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className="col-lg-2 col-6" style={{marginTop:'16px'}}>
+                                            <div className="col-lg col-6" style={{marginTop:'16px'}}>
                                                 <div className="w3-card">
                                                     <img src={Grace} alt="Dan" style={{width:'100%', objectFit: 'cover'}}/>
                                                     <div className="w3-container" style={{ margin: '0 5px' }}>
