@@ -130,7 +130,7 @@ class HomePage extends Component {
                             maxWidth={"md"}
                         >
                         <DialogTitle id="alert-dialog-title">{"Devenir ambassadeur et ambassadrice du seul réseau de confiance humain"}</DialogTitle>
-                            <Player ref={(player) => { this.player = player }} poster={previewWeeclik} style={{height: '200px'}} fluid={false} height={600}>
+                            <Player ref={(player) => { this.player = player }} poster={previewWeeclik}>
                                 <source src={this.getUrlCommerceMovie(urlMovieAmbassadeur)} />
                                 <ControlBar autoHide={false} />
                             </Player>
@@ -150,8 +150,7 @@ class HomePage extends Component {
                                                 <center>
                                                     <Player
                                                         ref={(player) => { this.player = player }}
-                                                        poster={previewWeeclik}
-                                                        style={{height: '200px'}} fluid={false} height={600}>
+                                                        poster={previewWeeclik}>
                                                             <source src={this.getUrlCommerceMovie(urlMovieDescription)} />
                                                             <ControlBar autoHide={false} />
                                                     </Player>
