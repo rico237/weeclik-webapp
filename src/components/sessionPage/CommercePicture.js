@@ -48,9 +48,9 @@ class CommercePicture extends React.Component {
 
 
     componentDidMount() {
-        setInterval(() => {
+        // setInterval(() => {
             this.getUrlCommercePicture();
-        }, 3000);
+        // }, 1000);
     }
 
 
