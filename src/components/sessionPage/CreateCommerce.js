@@ -164,60 +164,6 @@ class CreateCommerce extends Component {
     }
     //#endregion
 
-    getAllCommerces() {
-        const ParseCommerce = Parse.Object.extend("Commerce");
-        const queryCommerce = new Parse.Query(ParseCommerce);
-
-        queryCommerce.equalTo("owner", Parse.User.current());
-
-        let newCommerces = [];
-
-        queryCommerce.find()
-            .then(snapshot => {
-                snapshot.forEach((elt) => {
-                    var _status;
-
-                    switch (elt.get("statutCommerce")) {
-                        case 0:
-                            _status = "Hors ligne - en attente de paiement"
-                            break;
-                        case 1:
-                            _status = "En ligne"
-                            break;
-                        case 2:
-                            _status = "Hors ligne - paiement annulé"
-                            break;
-                        case 3:
-                            _status = "Erreur lors du paiement ou du renouvellement"
-                            break;
-                        case 4:
-                            _status = ""
-                            break;
-                    
-                        default:
-                            _status = "Statut inconnu"
-                            break;
-                    }
-
-                    newCommerces.push({
-                        "id": elt.id,
-                        "name": elt.get("nomCommerce"),
-                        "status": _status,
-                        "description": elt.get("description"),
-                        "promotions": elt.get("promotions"),
-                        "nbPartage": elt.get("nombrePartages")
-                    });
-                });
-
-                this.setState({
-                    commerceList: newCommerces,
-                });
-            })
-            .catch(error => {
-                console.error(error);
-            });
-    }
-
     isCreate(_id) {
         this.setState(state => ({
             id: _id,
@@ -255,25 +201,11 @@ class CreateCommerce extends Component {
         }
 
         if (_state_commerce.nomCommerce.length > 0 && _state_commerce.currencyCategory.length > 0 && _state_commerce.tel.length > 0 && (addr.length > 0 || addr !== undefined)) {
-                console.log(`{\n
-                    ${_state_commerce.nomCommerce} ++++ 
-                    ${_state_commerce.currencyCategory} ++++ 
-                    ${addr} ++++ 
-                    ${_state_commerce.tel} ++++ 
-                    ${_state_commerce.siteWeb} ++++ 
-                    ${_state_commerce.description} ++++ 
-                    ${_state_commerce.promotions} ++++ 
-                }`);
-                console.log("-------------------------");
-                
-                
                 // START
                 axios.get("https://nominatim.openstreetmap.org/search?q="+addr+"&format=json")
                 .then((res) => {
                     var sizeOfObject = res.data.length;
                     for (var i = 0; i < sizeOfObject; i++) {
-                        // console.log(`---> Lat : ${JSON.stringify(res.data[i], null, 2)}`);
-                        // console.log(`---> Lat : ${res.data[i].lat}\n---> Lat : ${res.data[i].lon}`);
 
                         // __START
                         const currentUser = Parse.User.current()
@@ -364,14 +296,6 @@ class CreateCommerce extends Component {
 
     goToBack = () => {
         this.props.history.goBack();
-    }
-
-
-    componentDidMount() {
-        // this.initGeocode("37 Prom. des Anglais, 06000 Nice");
-        try {
-            this.getAllCommerces();
-        } catch (error) {}
     }
 
     render() {
