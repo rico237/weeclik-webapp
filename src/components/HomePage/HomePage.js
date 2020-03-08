@@ -9,7 +9,7 @@ import Mohamed from '../../assets/images/team/mohamed.jpg';
 import Herrick from '../../assets/images/team/herrick.jpg';
 import Grace from '../../assets/images/team/grace.jpg';
 import detail1 from './images/details-1-iphone.png';
-import ambassadeurPic from '../../assets/images/blur-businessman-cellphone-727x300.jpg';
+import ambassadeurPic from '../../assets/images/image_proto.jpeg'; //blur-businessman-cellphone-727x300.jpg';
 import previewWeeclik from '../../assets/images/weeclik_0.png';
 import download from './images/download.png';
 import headerIphone from './images/header-iphone.png';

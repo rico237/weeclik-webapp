@@ -39,46 +39,18 @@ class CommercePicture extends React.Component {
 
     getUrlCommercePicture = async () => {
         const listPicture = await this.getPicturesCommerce();
+        // console.log(`>>>-------> ${listPicture}`);
         this.setState({
             listImg : listPicture
         })
-    }
-
-    getMovieCommerce = () => {
-        let movie = [];
-
-        const ParseCommerce = Parse.Object.extend("Commerce");
-
-        const ParseCommerceVideo = Parse.Object.extend("Commerce_Videos");
-        const queryCommerceVideo = new Parse.Query(ParseCommerceVideo);
-
-        queryCommerceVideo.equalTo("leCommerce", new ParseCommerce({id: this.state.commerceId}));
-
-        queryCommerceVideo.find()
-        .then(responseSnapshot => {
-            responseSnapshot.forEach((elt) => {
-                movie.push(elt.get("video").url());
-            });
-        });
-
-        return new Promise(resolve => {
-            setTimeout(() => resolve(movie), 400)
-        });
-    }
-
-    getUrlCommerceMovie = async () => {
-        const movie = await this.getMovieCommerce();
-        // console.log(`--fff-------> ${movie}`);
-        this.setState({
-            movieURL: movie
-        })
-        // console.log(`--ggg-------> ${this.state.movieURL}`);
     }
     //#endregion
 
 
     componentDidMount() {
-        this.getUrlCommercePicture();
+        setInterval(() => {
+            this.getUrlCommercePicture();
+        }, 3000);
     }
 
 
