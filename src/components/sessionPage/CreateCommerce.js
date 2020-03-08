@@ -2,11 +2,17 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
 import { Redirect } from 'react-router-dom';
-import { Container, CssBaseline, Button, TextField, MenuItem, Typography, Grid } from '@material-ui/core';
+import {
+    Dialog,
+    DialogContentText,
+    DialogContent,
+    CircularProgress,
+    Container, CssBaseline, Button, TextField, MenuItem, Typography, Grid } from '@material-ui/core';
 import addCommercePicture from '../../assets/icons/addCommercePicture.png';
 import BGImage from '../../assets/images/download-background.jpg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
+import { PopupMessage } from '../PopupMessage';
 
 import axios from "axios";
 
@@ -36,7 +42,6 @@ class CreateCommerce extends Component {
 
         try {
             this.state = {
-                isClick: false,
                 commerce: {
                     nomCommerce: '',
                     adresse: '',
@@ -60,24 +65,29 @@ class CreateCommerce extends Component {
                 imgPreview3: null,
                 imgPreview3a: null,
                 nbImageUpload: 0,
+                openPopupAddCommerce: false,
 
                 id: '',
 
-                validate: false,
+                isCreate: false,
 
-                submitted: false,
-
-                isCreate: false
+                codeRequiered: 0
             };
         } catch(error) {}
 
-        this.handleValidate = this.handleValidate.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
         this.createNewCommerce = this.createNewCommerce.bind(this);
         this.handleChangePicture1 = this.handleChangePicture1.bind(this);
         this.handleChangePicture2 = this.handleChangePicture2.bind(this);
         this.handleChangePicture3 = this.handleChangePicture3.bind(this);
+    }
+
+    handleOpenAddCommerce = () => {
+        this.setState({ openPopupAddCommerce: true });
+    }
+
+    handleCloseAddCommerce = () => {
+        this.setState({ openPopupAddCommerce: false });
     }
 
     handleChange(event) {
@@ -89,15 +99,6 @@ class CreateCommerce extends Component {
                 [name]: value
             }
         });
-    }
-
-    handleValidate(event) {
-        this.setState({validate: event.target.checked});
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-        this.setState({ submitted: true });
     }
 
     //#region UPLOAD_IMAGES
@@ -240,26 +241,35 @@ class CreateCommerce extends Component {
 
     createNewCommerce(event) {
         event.preventDefault();
+        this.handleOpenAddCommerce();
         
 
         const _state_commerce = this.state.commerce;
-        let addr = "";
-
-        if (_state_commerce !== "" && _state_commerce.ville !== "" && _state_commerce.bp !== "") {
+        
+        /**
+         * Gestion de l'adresse
+         */
+        var addr = "";
+        if (_state_commerce.adresse !== "" && _state_commerce.ville !== "" && _state_commerce.bp !== "") {
             addr = _state_commerce.adresse + ", " + _state_commerce.ville + " " + _state_commerce.bp;
-        } else if (_state_commerce.adresse !== "") {
-            addr = _state_commerce.adresse;
         }
 
-        if (_state_commerce.nomCommerce !== "" &&
-            _state_commerce.currencyCategory !== "" &&
-            _state_commerce.tel !== "" && addr !== "") {
-                this.setState({isClick: true});
-
+        if (_state_commerce.nomCommerce.length > 0 && _state_commerce.currencyCategory.length > 0 && _state_commerce.tel.length > 0 && (addr.length > 0 || addr !== undefined)) {
+                console.log(`{\n
+                    ${_state_commerce.nomCommerce} ++++ 
+                    ${_state_commerce.currencyCategory} ++++ 
+                    ${addr} ++++ 
+                    ${_state_commerce.tel} ++++ 
+                    ${_state_commerce.siteWeb} ++++ 
+                    ${_state_commerce.description} ++++ 
+                    ${_state_commerce.promotions} ++++ 
+                }`);
+                console.log("-------------------------");
+                
+                
                 // START
                 axios.get("https://nominatim.openstreetmap.org/search?q="+addr+"&format=json")
                 .then((res) => {
-                    // console.log(`${JSON.stringify(res.data, null, 2)}`);
                     var sizeOfObject = res.data.length;
                     for (var i = 0; i < sizeOfObject; i++) {
                         // console.log(`---> Lat : ${JSON.stringify(res.data[i], null, 2)}`);
@@ -307,7 +317,7 @@ class CreateCommerce extends Component {
                                 localStore = "file3Base64";
                                 this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
                             }
-                            this.setState({isClick: false});
+                            this.handleCloseAddCommerce();
                             this.isCreate(newCommerce.id);
                         }, (error) => {
                             console.error(`Failed to create new object, with error code: ' + ${error.message}`);
@@ -315,13 +325,39 @@ class CreateCommerce extends Component {
                         // __END
                     }
                 }, (error) => {
-                    this.setState({isClick: false});
                     console.error(error);
                 })
                 // END
                 
         } else {
             console.error("Veuillez remplir tout le formulaire");
+            if (_state_commerce.nomCommerce.length < 1) {
+                console.error("Veuillez remplir le nom de commerce");
+            }
+
+            if (_state_commerce.currencyCategory.length < 1) {
+                console.error("Veuillez remplir la categorie du commerce");
+            }
+
+            if (_state_commerce.adresse.length < 1) {
+                console.error("Veuillez remplir l'adresse'");
+            }
+
+            if (_state_commerce.bp.length < 1) {
+                console.error("Veuillez remplir le Code postal");
+            }
+
+            if (_state_commerce.ville.length < 1) {
+                console.error("Veuillez remplir la ville");
+            }
+
+            if (_state_commerce.tel.length < 1) {
+                console.error("Veuillez remplir le numero de tel");
+            }
+
+            if (_state_commerce.description.length < 1) {
+                console.error("Veuillez remplir la description");
+            }
         }
         
     }
@@ -347,26 +383,33 @@ class CreateCommerce extends Component {
                 }} />
             )
         }
+        const { nomCommerce, adresse, bp, ville, tel, description, currencyCategory } = this.state.commerce;
+        const isEnabled = nomCommerce.length > 0 && adresse.length > 0 && bp.length > 3 && ville.length > 0 && tel.length > 7 && description.length > 10 && currencyCategory.length > 0;
 
         return (
             <div style={{backgroundImage: `linear-gradient(rgba(29, 177, 248, 0.5), rgba(255, 255, 255, 0.5)), url("${BGImage}")`, backgroundSize: 'cover', objectFit: 'cover', height: '100%'}}>
                 <Container component="main" maxWidth="sm" style={{background: "white", paddingBottom: '50px'}}>
                     <CssBaseline/>
                     <div style={root}>
+                        {(() => {
+                            switch (this.state.codeRequiered) {
+                                case 1: return <PopupMessage open={true} message={"Veuillez entrer le nom de votre commerce"} bgColor="#F00" fgColor="#FFF"/>;
+                                default: return null;
+                            }
+                        })()}
+                        
                         <form onSubmit={this.createNewCommerce}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
+                                    <label style={{ fontSize: '14px', color: 'black' }}>
+                                        {'⚠️ Pour créer un nouveau commerce, veuillez à bien remplir tous les champs avec un * ensuite vous pouvez cliquer sur Créer mon commerce'}<br/>
+                                    </label>
+                                </Grid>
+                                <Grid item xs={12}>
                                     <TextField
-                                        required
-                                        className={"classes.textField"}
-                                        fullWidth
                                         onChange={this.handleChange}
-                                        name="nomCommerce"
-                                        id="outlined-name"
-                                        label="Nom du commerce"
-                                        placeholder="Nom du commerce"
-                                        margin="dense"
-                                        variant="outlined"
+                                        fullWidth name="nomCommerce" id="outlined-name" label="Nom du commerce" placeholder="Nom du commerce" margin="dense" variant="outlined"
+                                        helperText="* Veuillez ajouter un nom de commerce"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -444,16 +487,9 @@ class CreateCommerce extends Component {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        select
-                                        fullWidth
-                                        variant="outlined"
-                                        name="currencyCategory"
-                                        value={this.state.commerce.currencyCategory}
-                                        onChange={this.handleChange}
-                                        required
-                                        className={"classes.textField2"}
-                                        label="Catégorie"
-                                        helperText="Veuillez sélectionner une catégorie"
+                                        onChange={this.handleChange} value={this.state.commerce.currencyCategory}
+                                        select fullWidth variant="outlined" name="currencyCategory" label="Catégorie"
+                                        helperText="* Veuillez sélectionner une catégorie"
                                     >   
                                         <MenuItem value=""><em>Aucune</em></MenuItem>
                                         <MenuItem value="Alimentaire">Alimentaire</MenuItem>
@@ -482,102 +518,57 @@ class CreateCommerce extends Component {
                                 {/* Informations du commerce */}
                                 <Grid item xs={12}>
                                     <TextField
-                                        required
-                                        className={"classes.textField"}
-                                        fullWidth
                                         onChange={this.handleChange.bind(this)}
-                                        name="adresse"
-                                        id="outlined-name"
-                                        label="Adresse"
-                                        margin="dense"
-                                        variant="outlined"
+                                        placeholder="Adresse (N° rue, avenue, boulevard, ...)"
+                                        fullWidth name="adresse" id="outlined-name" label="Adresse" margin="dense" variant="outlined"
+                                        helperText="* Veuillez ajouter l'adresse de votre commerce (N° rue, avenue, boulevard, ...)"
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        required
-                                        className={"classes.textField4"}
-                                        fullWidth
                                         onChange={this.handleChange.bind(this)}
-                                        name="bp"
-                                        id="outlined-name"
-                                        label="Code postal"
-                                        margin="dense"
-                                        variant="outlined"
+                                        fullWidth name="bp" id="outlined-name" label="Code postal" margin="dense" variant="outlined"
+                                        helperText="* Veuillez ajouter le code postal"
                                     />
                                 </Grid>
                                 <Grid item xs={12} sm={6}>
                                     <TextField
-                                        required
-                                        className={"classes.textField3"}
-                                        fullWidth
                                         onChange={this.handleChange.bind(this)}
-                                        name="ville"
-                                        id="outlined-name"
-                                        label="Ville"
-                                        margin="dense"
-                                        variant="outlined"
+                                        fullWidth name="ville" id="outlined-name" label="Ville" margin="dense" variant="outlined"
+                                        helperText="* Veuillez ajouter la ville"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        required
-                                        className={"classes.textField"}
-                                        fullWidth
                                         onChange={this.handleChange.bind(this)}
-                                        name="tel"
-                                        id="outlined-name"
-                                        label="Numéro de téléphone"
-                                        margin="dense"
-                                        variant="outlined"
+                                        fullWidth name="tel" id="outlined-name" label="Numéro de téléphone" margin="dense" variant="outlined"
+                                        helperText="* Veuillez ajouter un numéro de téléphone"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        // required
-                                        className={"classes.textField"}
-                                        fullWidth
                                         onChange={this.handleChange.bind(this)}
-                                        name="siteWeb"
-                                        id="outlined-name"
-                                        label="Site web"
-                                        margin="dense"
-                                        variant="outlined"
+                                        fullWidth name="siteWeb" id="outlined-name" label="Site web" margin="dense" variant="outlined"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     {/* Description de votre commerce */}
                                     <TextField
-                                        required
-                                        className={"classes.textField"}
-                                        multiline
-                                        fullWidth
-                                        rows="4"
                                         onChange={this.handleChange.bind(this)}
-                                        name="description"
-                                        id="outlined-name"
-                                        label="Description du commerce"
-                                        margin="dense"
-                                        variant="outlined"
+                                        multiline fullWidth rows="4" name="description" id="outlined-name" label="Description du commerce" margin="dense" variant="outlined"
+                                        helperText="* Veuillez ajouter une description"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
-                                        // required
-                                        multiline
-                                        fullWidth
-                                        rows="4"
                                         onChange={this.handleChange.bind(this)}
-                                        name="promotions"
-                                        id="outlined-name"
-                                        label="Mes promotions"
-                                        margin="dense"
-                                        variant="outlined"
+                                        multiline fullWidth rows="4" name="promotions" id="outlined-name" label="Mes promotions" margin="dense" variant="outlined"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <label style={{ fontSize: '14px', color: 'black', paddingBottom: '20px' }}>
-                                        {'En cliquant sur ajouter mon commerce, vous acceptez nos '}
+                                        {'⚠️ Avant de créer un nouveau commerce, vérifiez que tous les champs avec un * sont bien remplis'}<br/>
+                                        {'En cliquant sur Créer mon commerce, vous acceptez nos '}
                                         <a style={{ color: 'blue', textDecoration: 'none' }} href="_blank">Conditions générales</a>{'... '}
                                     </label>
                                 </Grid>
@@ -585,30 +576,42 @@ class CreateCommerce extends Component {
                             <Grid item style={{paddingBottom: '50px'}}>
                                 <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={{margin: '4px', outline: 'none', borderRadius: '2rem', padding: '12px 60px'}}>Annuler</Button>
 
-                                {
-                                    this.state.isClick ? (
-                                        <input
-                                            disabled
-                                            className="btn-solid-lg"
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            value="Créer mon commerce"
-                                            style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
-                                        />
-                                    ) : (
-                                        <input
-                                            className="btn-solid-lg"
-                                            type="submit"
-                                            variant="contained"
-                                            color="primary"
-                                            value="Créer mon commerce"
-                                            style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
-                                        />
-                                    )
-                                }
+                                
+                                <input
+                                    disabled={!isEnabled}
+                                    className="btn-solid-lg"
+                                    type="submit"
+                                    variant="contained"
+                                    color="primary"
+                                    value="Créer mon commerce"
+                                    style={{margin: '4px', outline: 'none', borderRadius: '2rem', float: 'right'}}
+                                />
                             </Grid>
                         </form>
+                    </div>
+
+
+                    <div>
+                        <Dialog
+                            open={this.state.openPopupAddCommerce}
+                            // onClose={this.handleCloseAddCommerce}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                            style={{ minHeight: "600px"}}
+                            maxWidth={"md"}
+                        >
+                            <DialogContent>
+                                <center>
+                                    <DialogContentText id="alert-dialog-description">
+                                        Création d'un nouveau commerce. Cette étape peut prendre plusieurs minutes. N'actualisez pas la page et ne sélectionnez pas Précédent. Si vous procédez ainsi, vous annulez la demande
+                                    </DialogContentText>
+                                    <CircularProgress color="secondary" />
+                                </center>
+                            </DialogContent>
+                            {/* <DialogActions>
+                                <Button onClick={this.handleCloseAddCommerce} color="primary">Annuler</Button>
+                            </DialogActions> */}
+                        </Dialog>
                     </div>
                 </Container>
                 <Footer/>

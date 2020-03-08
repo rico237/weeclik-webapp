@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Parse from 'parse';
-import FacebookLogin from 'react-facebook-login';
+// import FacebookLogin from 'react-facebook-login';
 import logo from '../../assets/icons/LogoWeeclik.svg';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -144,20 +144,20 @@ class LoginPage extends Component {
 
     render() {
 
-        let fbContent;
+        // let fbContent;
 
-        if (this.state.isLoggedIn) {
-            fbContent = null;
-        } else {
-            fbContent = (<FacebookLogin
-                appId="1263383433872506"
-                autoLoad={false}
-                fields="name,email,picture"
-                textButton="Se connecter avec Facebook"
-                cssClass="facebook-style-btn"
-                onClick={this.componentClicked}
-                callback={this.responseFacebook} />);
-        }
+        // if (this.state.isLoggedIn) {
+        //     fbContent = null;
+        // } else {
+        //     fbContent = (<FacebookLogin
+        //         appId="1263383433872506"
+        //         autoLoad={false}
+        //         fields="name,email,picture"
+        //         textButton="Se connecter avec Facebook"
+        //         cssClass="facebook-style-btn"
+        //         onClick={this.componentClicked}
+        //         callback={this.responseFacebook} />);
+        // }
 
         const { msg } = this.props;
         
