@@ -25,23 +25,16 @@ const root = {
 
 
 
-const getBase64 = (file) => {
-    return new Promise((resolve,reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = error => reject(error);
-        reader.readAsDataURL(file);
-    });
-}
-
-
-
 class CreateCommerce extends Component {
     constructor(props) {
         super(props);
 
         try {
+            this.fileReader = new FileReader();
             this.state = {
+                _images1: null,
+                _images2: null,
+                _images3: null,
                 commerce: {
                     nomCommerce: '',
                     adresse: '',
@@ -58,13 +51,6 @@ class CreateCommerce extends Component {
                     mail: '',
                     currencyCategory: '',
                 },
-                imgPreview1: null,
-                imgPreview1a: null,
-                imgPreview2: null,
-                imgPreview2a: null,
-                imgPreview3: null,
-                imgPreview3a: null,
-                nbImageUpload: 0,
                 openPopupAddCommerce: false,
 
                 id: '',
@@ -76,10 +62,61 @@ class CreateCommerce extends Component {
         } catch(error) {}
 
         this.handleChange = this.handleChange.bind(this);
+        this.setImages1 = this.setImages1.bind(this);
+        this.setImages2 = this.setImages2.bind(this);
+        this.setImages3 = this.setImages3.bind(this);
         this.createNewCommerce = this.createNewCommerce.bind(this);
-        this.handleChangePicture1 = this.handleChangePicture1.bind(this);
-        this.handleChangePicture2 = this.handleChangePicture2.bind(this);
-        this.handleChangePicture3 = this.handleChangePicture3.bind(this);
+    }
+
+    setImages1 = (evt) => {
+        evt.preventDefault();
+        this.setState({ _images1: undefined });
+        const imageFile = evt.target.files;
+        const filesLength = imageFile.length;
+        for (var i = 0; i < filesLength; i++) {
+            let reader = new FileReader();
+            let file = imageFile[i];
+            reader.onloadend = () => {
+                this.setState({
+                    _images1: reader.result
+                })
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    setImages2 = (evt) => {
+        evt.preventDefault();
+        this.setState({ _images2: undefined });
+        const imageFile = evt.target.files;
+        const filesLength = imageFile.length;
+        for (var i = 0; i < filesLength; i++) {
+            let reader = new FileReader();
+            let file = imageFile[i];
+            reader.onloadend = () => {
+                this.setState({
+                    _images2: reader.result
+                })
+            }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    setImages3 = (evt) => {
+        evt.preventDefault();
+        this.setState({ _images3: undefined });
+        const imageFile = evt.target.files;
+        const filesLength = imageFile.length;
+        for (var i = 0; i < filesLength; i++) {
+            let reader = new FileReader();
+            let file = imageFile[i];
+            reader.onloadend = () => {
+                this.setState({
+                    _images3: reader.result
+                })
+            }
+            reader.readAsDataURL(file);
+        }
     }
 
     handleOpenAddCommerce = () => {
@@ -102,43 +139,11 @@ class CreateCommerce extends Component {
     }
 
     //#region UPLOAD_IMAGES
-    handleChangePicture1(event) {
-        const file = event.target.files[0];
-        getBase64(file).then((base64) => {
-            // localStorage["file1Base64"] = base64;
-            try {
-                localStorage.setItem("file1Base64", base64);
-            } catch(error) {console.error("Unhandled Rejection (QuotaExceededError): The quota has been exceeded.");}
-            
-        })
-        this.setState({
-            imgPreview1: URL.createObjectURL(file),
-        });
-    }
-    handleChangePicture2(event) {
-        const file = event.target.files[0];
-        getBase64(file).then((base64) => {
-            try {
-                localStorage.setItem("file2Base64", base64);
-            } catch(error) {console.error("Unhandled Rejection (QuotaExceededError): The quota has been exceeded.");}
-        })
-        this.setState({
-            imgPreview2: URL.createObjectURL(file),
-        });
-    }
-    handleChangePicture3(event) {
-        const file = event.target.files[0];
-        getBase64(file).then((base64) => {
-            try {
-                localStorage.setItem("file3Base64", base64);
-            } catch(error) {console.error("Unhandled Rejection (QuotaExceededError): The quota has been exceeded.");}
-        })
-        this.setState({
-            imgPreview3: URL.createObjectURL(file),
-        });
-    }
 
-    _uploadImageToSerServer(img, idCommerce, localStore) {
+    _uploadImageToSerServer(img, idCommerce) {
+        var res = img.slice(-10);
+        console.log(res+"_"+(new Date().getTime()).toString());
+
         var file = new Parse.File("img.name", { base64: img });
         var Commerce_Photos = new Parse.Object("Commerce_Photos");
         var ParseCommerce = Parse.Object.extend("Commerce");
@@ -153,8 +158,7 @@ class CreateCommerce extends Component {
                     instanceCommerce.id = idCommerce
                     instanceCommerce.set("thumbnailPrincipal", { "__type": "Pointer", "className": "Commerce_Photos", "objectId": snapshot.id });
                     instanceCommerce.save().then(() => {
-                        localStorage.removeItem(localStore)
-                        localStorage.removeItem("file11Base64")
+                        console.log("Image save");
                     }, (error) => {
                         console.error('Failed to update commerce');
                     })
@@ -171,53 +175,46 @@ class CreateCommerce extends Component {
         }));
     }
 
-    initGeocode(adresse) {
-        axios.get("https://nominatim.openstreetmap.org/search?q="+adresse+"&format=json")
-        .then((res) => {
-            console.log(`${JSON.stringify(res.data, null, 2)}`);
-            var sizeOfObject = res.data.length;
-            for (var i = 0; i < sizeOfObject; i++) {
-                console.log(`---> Lat : ${JSON.stringify(res.data[i], null, 2)}`);
-                console.log(`---> Lat : ${res.data[i].lat}\n---> Lat : ${res.data[i].lon}`);
-            }
-        }, (error) => {
-            console.error(error);
-        })
-    }
-
     createNewCommerce(event) {
         event.preventDefault();
-        this.handleOpenAddCommerce();
-        
-
-        const _state_commerce = this.state.commerce;
-        
-        /**
-         * Gestion de l'adresse
-         */
-        var addr = "";
-        if (_state_commerce.adresse !== "" && _state_commerce.ville !== "" && _state_commerce.bp !== "") {
-            addr = _state_commerce.adresse + ", " + _state_commerce.ville + " " + _state_commerce.bp;
+        if (this.state._images1) {
+            console.log(this.state._images1.slice(-10));
+        }
+        if (this.state._images2) {
+            console.log(this.state._images2.slice(-10));
+        }
+        if (this.state._images3) {
+            console.log(this.state._images3.slice(-10));
         }
 
-        if (_state_commerce.nomCommerce.length > 0 && _state_commerce.currencyCategory.length > 0 && _state_commerce.tel.length > 0 && (addr.length > 0 || addr !== undefined)) {
-                // START
-                axios.get("https://nominatim.openstreetmap.org/search?q="+addr+"&format=json")
-                .then((res) => {
-                    var sizeOfObject = res.data.length;
-                    for (var i = 0; i < sizeOfObject; i++) {
+        this.handleOpenAddCommerce();
+        
+        const _state_commerce = this.state.commerce;
+        
+        // Gestion de l'adresse 1-3 Avenue Notre Dame
+        var addr = _state_commerce.adresse + ", " + _state_commerce.ville + " " + _state_commerce.bp;
 
+        console.log(addr);
+
+        if (addr.length > 0 || addr !== undefined) {
+            // START
+            axios.get("https://nominatim.openstreetmap.org/search?q="+addr+"&format=json")
+            .then((res) => {
+                var sizeOfObject = res.data.length;
+
+                if (sizeOfObject > 0) {
+                    //for (var i = 0; i < sizeOfObject; i++) {
                         // __START
                         const currentUser = Parse.User.current()
                         const ParseCommerce = Parse.Object.extend("Commerce");
                         const newCommerce   = new ParseCommerce();
-                        const point         = new Parse.GeoPoint({latitude: Number(res.data[i].lat), longitude: Number(res.data[i].lon)});
+                        const point         = new Parse.GeoPoint({latitude: Number(res.data[0].lat), longitude: Number(res.data[0].lon)});
                         const acl           = new Parse.ACL();
                         acl.setPublicReadAccess(true);
                         acl.setRoleWriteAccess("admin", true);
                         acl.setWriteAccess(currentUser.id, true);
                         newCommerce.setACL(acl);
-
+    
                         newCommerce.save({
                             "nomCommerce": _state_commerce.nomCommerce,
                             "position": point,
@@ -235,32 +232,75 @@ class CreateCommerce extends Component {
                             "brouillon": true, 
                             "createdFromProject": "ReactJS"
                         })
-                        .then((newCommerce) => {
-                            var localStore = "";
-                            if (this.state.imgPreview1) {
-                                localStore = "file1Base64";
-                                this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                        .then((_newCommerce) => {
+                            if (this.state._images1) {
+                                this._uploadImageToSerServer(this.state._images1, _newCommerce.id)
                             }
-                            if (this.state.imgPreview2) {
-                                localStore = "file2Base64";
-                                this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                            if (this.state._images2) {
+                                this._uploadImageToSerServer(this.state._images2, _newCommerce.id)
                             }
-                            if (this.state.imgPreview3) {
-                                localStore = "file3Base64";
-                                this._uploadImageToSerServer(localStorage.getItem(localStore), newCommerce.id, localStore)
+                            if (this.state._images3) {
+                                this._uploadImageToSerServer(this.state._images3, _newCommerce.id)
                             }
                             this.handleCloseAddCommerce();
-                            this.isCreate(newCommerce.id);
+                            this.isCreate(_newCommerce.id);
                         }, (error) => {
                             console.error(`Failed to create new object, with error code: ' + ${error.message}`);
                         })
                         // __END
-                    }
-                }, (error) => {
-                    console.error(error);
-                })
-                // END
+                    //}
+                } else {
+                    // __START
+                    const currentUser   = Parse.User.current()
+                    const ParseCommerce = Parse.Object.extend("Commerce");
+                    const newCommerce   = new ParseCommerce();
+                    const point         = new Parse.GeoPoint({latitude: 0, longitude: 0});
+                    const acl           = new Parse.ACL();
+                    acl.setPublicReadAccess(true);
+                    acl.setRoleWriteAccess("admin", true);
+                    acl.setWriteAccess(currentUser.id, true);
+                    newCommerce.setACL(acl);
+    
+                    newCommerce.save({
+                        "nomCommerce": _state_commerce.nomCommerce,
+                        "position": point,
+                        "siteWeb": _state_commerce.siteWeb,
+                        "statutCommerce": 0,
+                        "adresse": addr,
+                        "nombrePartages": 0,
+                        "owner": Parse.User.createWithoutData(currentUser.id),
+                        "endSubscription": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+                        "typeCommerce": _state_commerce.currencyCategory,
+                        "mail": this.props.user.email,
+                        "tel": _state_commerce.tel,
+                        "description": _state_commerce.description,
+                        "promotions": _state_commerce.promotions,
+                        "brouillon": true, 
+                        "createdFromProject": "ReactJS"
+                    })
+                    .then((_newCommerce) => {
+                        // console.log(this.state.commerce);
+                        if (this.state._images1) {
+                            this._uploadImageToSerServer(this.state._images1, _newCommerce.id)
+                        }
+                        if (this.state._images2) {
+                            this._uploadImageToSerServer(this.state._images2, _newCommerce.id)
+                        }
+                        if (this.state._images3) {
+                            this._uploadImageToSerServer(this.state._images3, _newCommerce.id)
+                        }
+                        this.handleCloseAddCommerce();
+                        this.isCreate(_newCommerce.id);
+                    }, (error) => {
+                        console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                    });
+                    // __END
+                }
                 
+            }, (error) => {
+                console.error(error);
+            })
+            // END        
         } else {
             console.error("Veuillez remplir tout le formulaire");
             if (_state_commerce.nomCommerce.length < 1) {
@@ -291,7 +331,6 @@ class CreateCommerce extends Component {
                 console.error("Veuillez remplir la description");
             }
         }
-        
     }
 
     goToBack = () => {
@@ -308,7 +347,9 @@ class CreateCommerce extends Component {
             )
         }
         const { nomCommerce, adresse, bp, ville, tel, description, currencyCategory } = this.state.commerce;
-        const isEnabled = nomCommerce.length > 0 && adresse.length > 0 && bp.length > 3 && ville.length > 0 && tel.length > 7 && description.length > 10 && currencyCategory.length > 0;
+        const isEnabled = nomCommerce.length > 0 && adresse.length > 0 && bp.length > 0 && ville.length > 0 && tel.length > 0 && description.length > 0 && currencyCategory.length > 0;
+
+        let { _images1, _images2, _images3 } = this.state;
 
         return (
             <div style={{backgroundImage: `linear-gradient(rgba(29, 177, 248, 0.5), rgba(255, 255, 255, 0.5)), url("${BGImage}")`, backgroundSize: 'cover', objectFit: 'cover', height: '100%'}}>
@@ -325,14 +366,16 @@ class CreateCommerce extends Component {
                         <form onSubmit={this.createNewCommerce}>
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
-                                    <label style={{ fontSize: '14px', color: 'black' }}>
-                                        {'⚠️ Pour créer un nouveau commerce, veuillez à bien remplir tous les champs avec un * ensuite vous pouvez cliquer sur Créer mon commerce'}<br/>
+                                    <label style={{ fontSize: '16px', fontStyle: 'blod', color: 'black' }}>
+                                        {'⚠️ Pour créer un nouveau commerce, il est obligatoire de remplir tous les champs de couleur rouge.'}<br/>
                                     </label>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <TextField
+                                        color="primary"
                                         onChange={this.handleChange}
                                         fullWidth name="nomCommerce" id="outlined-name" label="Nom du commerce" placeholder="Nom du commerce" margin="dense" variant="outlined"
+                                        error={nomCommerce.length > 0 ? false : true}
                                         helperText="* Veuillez ajouter un nom de commerce"
                                     />
                                 </Grid>
@@ -350,14 +393,14 @@ class CreateCommerce extends Component {
                                             type="file"
                                             accept="image/*"
                                             style={{ display: 'None' }}
-                                            onChange={this.handleChangePicture1}
+                                            onChange={this.setImages1}
                                         />
                                         <label htmlFor="icon-input-file-img1">
                                             <img
                                                 alt="select1"
                                                 src={
-                                                    this.state.imgPreview1?
-                                                    this.state.imgPreview1 :
+                                                    _images1 ?
+                                                    _images1 :
                                                     addCommercePicture
                                                 }
                                                 style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
@@ -372,14 +415,14 @@ class CreateCommerce extends Component {
                                             type="file"
                                             accept="image/*"
                                             style={{ display: 'None' }}
-                                            onChange={this.handleChangePicture2}
+                                            onChange={this.setImages2}
                                         />
                                         <label htmlFor="icon-input-file-img2">
                                             <img
                                                 alt="select2"
                                                 src={
-                                                    this.state.imgPreview2?
-                                                    this.state.imgPreview2 :
+                                                    _images2 ?
+                                                    _images2 :
                                                     addCommercePicture
                                                 }
                                                 style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
@@ -394,14 +437,14 @@ class CreateCommerce extends Component {
                                             type="file"
                                             accept="image/*"
                                             style={{ display: 'None' }}
-                                            onChange={this.handleChangePicture3}
+                                            onChange={this.setImages3}
                                         />
                                         <label htmlFor="icon-input-file-img3">
                                             <img
                                                 alt="select3"
                                                 src={
-                                                    this.state.imgPreview3?
-                                                    this.state.imgPreview3 :
+                                                    _images3 ?
+                                                    _images3 :
                                                     addCommercePicture
                                                 }
                                                 style={{width: '100%', height: '100%', objectFit: 'cover', objectPosition: '50% 50%'}}
@@ -413,6 +456,7 @@ class CreateCommerce extends Component {
                                     <TextField
                                         onChange={this.handleChange} value={this.state.commerce.currencyCategory}
                                         select fullWidth variant="outlined" name="currencyCategory" label="Catégorie"
+                                        error={currencyCategory.length > 0 ? false : true}
                                         helperText="* Veuillez sélectionner une catégorie"
                                     >   
                                         <MenuItem value=""><em>Aucune</em></MenuItem>
@@ -445,6 +489,7 @@ class CreateCommerce extends Component {
                                         onChange={this.handleChange.bind(this)}
                                         placeholder="Adresse (N° rue, avenue, boulevard, ...)"
                                         fullWidth name="adresse" id="outlined-name" label="Adresse" margin="dense" variant="outlined"
+                                        error={adresse.length > 0 ? false : true}
                                         helperText="* Veuillez ajouter l'adresse de votre commerce (N° rue, avenue, boulevard, ...)"
                                     />
                                 </Grid>
@@ -452,6 +497,7 @@ class CreateCommerce extends Component {
                                     <TextField
                                         onChange={this.handleChange.bind(this)}
                                         fullWidth name="bp" id="outlined-name" label="Code postal" margin="dense" variant="outlined"
+                                        error={bp.length > 0 ? false : true}
                                         helperText="* Veuillez ajouter le code postal"
                                     />
                                 </Grid>
@@ -459,6 +505,7 @@ class CreateCommerce extends Component {
                                     <TextField
                                         onChange={this.handleChange.bind(this)}
                                         fullWidth name="ville" id="outlined-name" label="Ville" margin="dense" variant="outlined"
+                                        error={ville.length > 0 ? false : true}
                                         helperText="* Veuillez ajouter la ville"
                                     />
                                 </Grid>
@@ -466,6 +513,7 @@ class CreateCommerce extends Component {
                                     <TextField
                                         onChange={this.handleChange.bind(this)}
                                         fullWidth name="tel" id="outlined-name" label="Numéro de téléphone" margin="dense" variant="outlined"
+                                        error={tel.length > 0 ? false : true}
                                         helperText="* Veuillez ajouter un numéro de téléphone"
                                     />
                                 </Grid>
@@ -480,6 +528,7 @@ class CreateCommerce extends Component {
                                     <TextField
                                         onChange={this.handleChange.bind(this)}
                                         multiline fullWidth rows="4" name="description" id="outlined-name" label="Description du commerce" margin="dense" variant="outlined"
+                                        error={description.length > 0 ? false : true}
                                         helperText="* Veuillez ajouter une description"
                                     />
                                 </Grid>
@@ -491,7 +540,7 @@ class CreateCommerce extends Component {
                                 </Grid>
                                 <Grid item xs={12}>
                                     <label style={{ fontSize: '14px', color: 'black', paddingBottom: '20px' }}>
-                                        {'⚠️ Avant de créer un nouveau commerce, vérifiez que tous les champs avec un * sont bien remplis'}<br/>
+                                        {'⚠️ Avant de créer un nouveau commerce, vérifiez que tous les champs avec un * sont bien rempli'}<br/>
                                         {'En cliquant sur Créer mon commerce, vous acceptez nos '}
                                         <a style={{ color: 'blue', textDecoration: 'none' }} href="_blank">Conditions générales</a>{'... '}
                                     </label>
@@ -500,7 +549,6 @@ class CreateCommerce extends Component {
                             <Grid item style={{paddingBottom: '50px'}}>
                                 <Button variant="outlined" color="secondary" onClick={() => this.goToBack()} className={"buttonSubmit"} style={{margin: '4px', outline: 'none', borderRadius: '2rem', padding: '12px 60px'}}>Annuler</Button>
 
-                                
                                 <input
                                     disabled={!isEnabled}
                                     className="btn-solid-lg"
@@ -518,7 +566,6 @@ class CreateCommerce extends Component {
                     <div>
                         <Dialog
                             open={this.state.openPopupAddCommerce}
-                            // onClose={this.handleCloseAddCommerce}
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                             style={{ minHeight: "600px"}}
@@ -532,9 +579,6 @@ class CreateCommerce extends Component {
                                     <CircularProgress color="secondary" />
                                 </center>
                             </DialogContent>
-                            {/* <DialogActions>
-                                <Button onClick={this.handleCloseAddCommerce} color="primary">Annuler</Button>
-                            </DialogActions> */}
                         </Dialog>
                     </div>
                 </Container>
