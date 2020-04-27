@@ -194,7 +194,7 @@ class CreateCommerce extends Component {
         // Gestion de l'adresse 1-3 Avenue Notre Dame
         var addr = _state_commerce.adresse + ", " + _state_commerce.ville + " " + _state_commerce.bp;
 
-        console.log(addr);
+        // console.log(addr);
 
         if (addr.length > 0 || addr !== undefined) {
             // START
@@ -225,7 +225,7 @@ class CreateCommerce extends Component {
                             "owner": Parse.User.createWithoutData(currentUser.id),
                             "endSubscription": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                             "typeCommerce": _state_commerce.currencyCategory,
-                            "mail": this.props.user.email,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
+                            "mail": JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,//this.props.user.email,
                             "tel": _state_commerce.tel,
                             "description": _state_commerce.description,
                             "promotions": _state_commerce.promotions,
@@ -271,7 +271,7 @@ class CreateCommerce extends Component {
                         "owner": Parse.User.createWithoutData(currentUser.id),
                         "endSubscription": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                         "typeCommerce": _state_commerce.currencyCategory,
-                        "mail": this.props.user.email,
+                        "mail": JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,// this.props.user.email,
                         "tel": _state_commerce.tel,
                         "description": _state_commerce.description,
                         "promotions": _state_commerce.promotions,
