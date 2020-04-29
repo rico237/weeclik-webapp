@@ -349,11 +349,10 @@ class AboutCommerce extends Component {
 
     //#region UPLOAD_IMAGE
     uploadImageToServer(img, n, n_max) {
-        var file = new Parse.File(img.name, img);
+        var file = new Parse.File("img.name", img);
         var Commerce_Photos = new Parse.Object("Commerce_Photos");
         var ParseCommerce = Parse.Object.extend("Commerce");
         var currentUser = Parse.User.current();
-        
 
         if (currentUser) {
             file.save().then(() => {
@@ -391,6 +390,10 @@ class AboutCommerce extends Component {
         var taille = 0;
 
         if (event.target.files.length <= 3) {
+            // const obj = event.target.files[0];
+            // for (let key in obj) {
+            //     console.log(`${key} : ${obj[key]}`)
+            // }
             taille = event.target.files.length;
             for (let i = 0; i < taille; i++) {
                 var img = event.target.files[i];
@@ -416,12 +419,30 @@ class AboutCommerce extends Component {
     }
     //#endregion
 
+    getBase64 = (file) => {
+        return new Promise((resolve,reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                console.log(reader.result.size / 1024 / 1024 + " MB");
+                resolve(reader.result);
+            }
+            reader.onerror = error => reject(error);
+            reader.readAsDataURL(file);
+        });
+    }
+
     //#region UPLOAD_VIDEO
     uploadVideoToServer = (movie) => {
         this.setState({ alertMsg: 'Sauvegarde de la vidéo : ' });
         this.handleOpenAddVideo();
         
-        var file = new Parse.File(movie.name, movie);
+        var file = new Parse.File("movie.name", movie);
+/*        console.log(movie);
+        this.getBase64(file)
+
+        console.log(movie.size / 1024 / 1024 + " MB");
+        debugger;
+*/        
         var Commerce_video = new Parse.Object("Commerce_Videos");
 
         if (this.state.currentUser) {
@@ -907,12 +928,12 @@ class AboutCommerce extends Component {
                                                 </h6>
                                                 <h6 style={{color:"#000"}}>
                                                     <EmailRoundedIcon/>
-                                                    {" : "}<a href={"mailto:"+this.state.commerce.mail} target={"_blank"} style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.mail}</a>
+                                                    {" : "}<a href={"mailto:"+this.state.commerce.mail} target={"_blank"} rel="noopener noreferrer" style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.mail}</a>
                                                 </h6>
                                                 {
                                                     this.state.commerce.siteWeb ? (
                                                         <h6 style={{color:"#000"}}>
-                                                            <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.siteWeb}</a>
+                                                            <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} rel="noopener noreferrer" style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.siteWeb}</a>
                                                         </h6>
                                                     ) : (
                                                         <h6 style={{color: grey[500]}}>
@@ -1242,8 +1263,8 @@ class AboutCommerce extends Component {
                                             {/* {this.state.commerce.statutCommerce}{' '} */}
                                             {
                                                 this.state.commerce.statutCommerce === 'En ligne' ?
-                                                (<p>Votre commerce est en ligne et visible de tous, prêt à être partagé</p>) :
-                                                (<p>Votre commerce est toujours sur Weeclik mais invisible de tout le monde car il y a surement eu une erreur dans le paiement ou que lʼabonnement nʼest plus valable</p>)
+                                                ("Votre commerce est en ligne et visible de tous, prêt à être partagé") :
+                                                ("Votre commerce est toujours sur Weeclik mais invisible de tout le monde car il y a surement eu une erreur dans le paiement ou que lʼabonnement nʼest plus valable")
                                             }
                                             
                                         </DialogContentText>

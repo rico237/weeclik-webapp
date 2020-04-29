@@ -321,7 +321,7 @@ class ReceiveCommercePage extends Component {
                                     {this.state.commerce.adresse ? (
                                             <h6 style={{color:"#000"}}>
                                                 <RoomRoundedIcon/>
-                                    {" : "}<a href={"http://maps.google.com/?q="+this.state.commerce.position._latitude+","+this.state.commerce.position._longitude+""} target={"_blank"} style={{color: '#00F', textTransform: 'lowercase', textDecoration: 'none'}}>{this.state.commerce.adresse}</a>
+                                    {" : "}<a href={"http://maps.google.com/?q="+this.state.commerce.position._latitude+","+this.state.commerce.position._longitude+""} target={"_blank"} rel="noopener noreferrer" style={{color: '#00F', textTransform: 'lowercase', textDecoration: 'none'}}>{this.state.commerce.adresse}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>
@@ -331,7 +331,7 @@ class ReceiveCommercePage extends Component {
                                     {this.state.commerce.tel ? (
                                             <h6 style={{color:"#000"}}>
                                                 <CallRoundedIcon/>
-                                                {" : "}<a href={"tel:"+this.state.commerce.tel} target={"_blank"} style={{color: '#00F', textTransform: 'lowercase', textDecoration: 'none'}}>{this.state.commerce.tel}</a>
+                                                {" : "}<a href={"tel:"+this.state.commerce.tel} target={"_blank"} rel="noopener noreferrer" style={{color: '#00F', textTransform: 'lowercase', textDecoration: 'none'}}>{this.state.commerce.tel}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>
@@ -341,7 +341,7 @@ class ReceiveCommercePage extends Component {
                                     {this.state.commerce.mail ? (
                                             <h6 style={{color:"#000"}}>
                                                 <EmailRoundedIcon/>
-                                                {" : "}<a href={"mailto:"+this.state.commerce.mail} target={"_blank"} style={{color: '#00F', textTransform: 'lowercase', textDecoration: 'none'}}>{this.state.commerce.mail}</a>
+                                                {" : "}<a href={"mailto:"+this.state.commerce.mail} target={"_blank"} rel="noopener noreferrer" style={{color: '#00F', textTransform: 'lowercase', textDecoration: 'none'}}>{this.state.commerce.mail}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>
@@ -351,7 +351,7 @@ class ReceiveCommercePage extends Component {
                                         )}
                                     {this.state.commerce.siteWeb ? (
                                             <h6 style={{color:"#000"}}>
-                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} style={{color: '#00F', textDecoration: 'none'}}>{"Site web"}</a>
+                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} rel="noopener noreferrer" style={{color: '#00F', textDecoration: 'none'}}>{"Site web"}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>

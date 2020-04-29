@@ -194,7 +194,7 @@ class CreateCommerce extends Component {
         // Gestion de l'adresse 1-3 Avenue Notre Dame
         var addr = _state_commerce.adresse + ", " + _state_commerce.ville + " " + _state_commerce.bp;
 
-        console.log(addr);
+        // console.log(addr);
 
         if (addr.length > 0 || addr !== undefined) {
             // START
@@ -225,7 +225,7 @@ class CreateCommerce extends Component {
                             "owner": Parse.User.createWithoutData(currentUser.id),
                             "endSubscription": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                             "typeCommerce": _state_commerce.currencyCategory,
-                            "mail": this.props.user.email,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,
+                            "mail": JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,//this.props.user.email,
                             "tel": _state_commerce.tel,
                             "description": _state_commerce.description,
                             "promotions": _state_commerce.promotions,
@@ -271,7 +271,7 @@ class CreateCommerce extends Component {
                         "owner": Parse.User.createWithoutData(currentUser.id),
                         "endSubscription": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                         "typeCommerce": _state_commerce.currencyCategory,
-                        "mail": this.props.user.email,
+                        "mail": JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,// this.props.user.email,
                         "tel": _state_commerce.tel,
                         "description": _state_commerce.description,
                         "promotions": _state_commerce.promotions,
@@ -461,25 +461,19 @@ class CreateCommerce extends Component {
                                     >   
                                         <MenuItem value=""><em>Aucune</em></MenuItem>
                                         <MenuItem value="Alimentaire">Alimentaire</MenuItem>
-                                        <MenuItem value="Artisanat">Artisanat</MenuItem>
-                                        <MenuItem value="Bâtiment">Bâtiment</MenuItem>
-                                        <MenuItem value="Bien-être">Bien-être</MenuItem>
-                                        <MenuItem value="Décoration">Décoration</MenuItem>
-                                        <MenuItem value="Dépannage">Dépannage</MenuItem>
-                                        <MenuItem value="Evènement">Evènement</MenuItem>
-                                        <MenuItem value="E-commerce">E-commerce</MenuItem>
-                                        <MenuItem value="Fabricant">Fabricant</MenuItem>
-                                        <MenuItem value="Garagiste">Garagiste</MenuItem>
-                                        <MenuItem value="Hôtellerie">Hôtellerie</MenuItem>
-                                        <MenuItem value="Humanitaire">Humanitaire</MenuItem>
+                                        <MenuItem value="Automobile">Automobile</MenuItem>
+                                        <MenuItem value="Banque">Banque</MenuItem>
+                                        <MenuItem value="Bar/Pub">Bar/Pub</MenuItem>
+                                        <MenuItem value="Carreleur">Carreleur</MenuItem>
+                                        <MenuItem value="Coiffeur">Coiffeur</MenuItem>
+                                        <MenuItem value="Discothèque">Discothèque</MenuItem>
+                                        <MenuItem value="Habillement">Habillement</MenuItem>
+                                        <MenuItem value="Hôtel">Hôtel</MenuItem>
                                         <MenuItem value="Immobilier">Immobilier</MenuItem>
-                                        <MenuItem value="Informatique">Informatique</MenuItem>
-                                        <MenuItem value="Nautisme">Nautisme</MenuItem>
-                                        <MenuItem value="Restauration">Restauration</MenuItem>
-                                        <MenuItem value="Textile">Textile</MenuItem>
-                                        <MenuItem value="Transport">Transport</MenuItem>
-                                        <MenuItem value="Tourisme">Tourisme</MenuItem>
-                                        <MenuItem value="Santé">Santé</MenuItem>
+                                        <MenuItem value="Maçon">Maçon</MenuItem>
+                                        <MenuItem value="Peintre">Peintre</MenuItem>
+                                        <MenuItem value="Plombier">Plombier</MenuItem>
+                                        <MenuItem value="Restaurant">Restaurant</MenuItem>
                                         <MenuItem value="Autre">Autre</MenuItem>
                                     </TextField>
                                 </Grid>
