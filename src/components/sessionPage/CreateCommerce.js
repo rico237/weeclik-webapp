@@ -463,7 +463,7 @@ class CreateCommerce extends Component {
                                         <MenuItem value="Alimentaire">Alimentaire</MenuItem>
                                         <MenuItem value="Automobile">Automobile</MenuItem>
                                         <MenuItem value="Banque">Banque</MenuItem>
-                                        <MenuItem value="Bar / Pub">Bar / Pub</MenuItem>
+                                        <MenuItem value="Bar/Pub">Bar/Pub</MenuItem>
                                         <MenuItem value="Carreleur">Carreleur</MenuItem>
                                         <MenuItem value="Coiffeur">Coiffeur</MenuItem>
                                         <MenuItem value="Discothèque">Discothèque</MenuItem>
