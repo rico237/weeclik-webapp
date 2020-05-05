@@ -1063,8 +1063,7 @@ class AboutCommerce extends Component {
                                                                     type="file"
                                                                     onChange={this.onUploadImage}
                                                                     style={{ display: 'None' }}
-                                                                    accept="image/*"
-                                                                    multiple/>
+                                                                    accept="image/*"/>
                                                                 <label htmlFor="icon-input-file-img">
                                                                     <LightTooltip title="Ajouter des images">
                                                                         <IconButton aria-label="upload picture" component="span" color="primary" style={{outline: 'none', color: "#2096F3"}}>
