@@ -360,6 +360,9 @@ class AboutCommerce extends Component {
                 Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
                 Commerce_Photos.save().then((snapshot) => {
                     const instanceCommerce = new ParseCommerce();
+
+                    console.log("---------------")
+
                     if (n === 0) {
                         instanceCommerce.id = this.state.commerceId
                         instanceCommerce.set("thumbnailPrincipal", { "__type": "Pointer", "className": "Commerce_Photos", "objectId": snapshot.id });
@@ -373,8 +376,13 @@ class AboutCommerce extends Component {
                         nbImageUpload: this.state.nbImageUpload + 1
                     })
                     if (this.state.nbImageUpload === n_max) {
-                        window.location.reload();
-                    }
+                        this.setState({ alertMsg: "Attendre la fin du chargement de l'image vers le serveur" })
+                        this.handleOpenDeleteVideo();
+                        // window.location.reload();
+                        this.getUrlCommercePicture();
+                        this.handleCloseDeleteVideo();
+                    }    
+                    console.log("+++++++++++")
                 });
             }, (error) => {
                 console.error(error);
@@ -623,7 +631,8 @@ class AboutCommerce extends Component {
                     .then((elt) => {
                         // The object was deleted from the Parse Cloud.
                         this.setState({ alertMsg: 'Suppression de(s) photo(s) : ' })
-                        this.handleOpenDeleteVideo();
+                        this.getUrlCommercePicture()
+                        /*this.handleOpenDeleteVideo();
                         var counter = 3;
                         this.intervalId = setInterval(() => {
                             counter--;
@@ -638,7 +647,7 @@ class AboutCommerce extends Component {
                             } else {
                                 this.setState({ sec: counter })
                             }
-                        }, 1000);
+                        }, 1000);*/
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
@@ -660,15 +669,18 @@ class AboutCommerce extends Component {
                 // Suppression de la photo
                 elt.destroy()
                     .then((elt) => {
+                        // console.log("---->"+JSON.stringify(elt, null, 2))
                         // The object was deleted from the Parse Cloud.
                         this.setState({ alertMsg: 'Suppression de la photo : ' })
-                        this.handleOpenDeleteVideo();
-                        var counter = 3;
+                        this.getUrlCommercePicture()
+                        //window.location.reload();
+                    //    this.handleOpenDeleteVideo();
+                        /*var counter = 3;
                         this.intervalId = setInterval(() => {
                             counter--;
                             if (counter === -1) {
                                 clearInterval(this.intervalId);
-                                this.handleCloseDeleteVideo();
+                    //            this.handleCloseDeleteVideo();
                                 this.setState({
                                     alertMsg: '',
                                     sec: 3
@@ -678,7 +690,7 @@ class AboutCommerce extends Component {
                                 // console.log("--->"+counter);
                                 this.setState({ sec: counter })
                             }
-                        }, 1000);
+                        }, 1000);*/
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
@@ -1068,14 +1080,8 @@ class AboutCommerce extends Component {
                                                                     <LightTooltip title="Ajouter des images">
                                                                         <IconButton aria-label="upload picture" component="span" color="primary" style={{outline: 'none', color: "#2096F3"}}>
                                                                             <AddCircleRoundedIcon />
-                                                                            {/* <AddPhotoAlternateRoundedIcon /> */}
                                                                         </IconButton>
                                                                     </LightTooltip>
-                                                                    {/* <LightTooltip title="Ajouter des images">
-                                                                        <Button variant="outlined" color="primary" size="small" component="span">
-                                                                            Ajouter des images
-                                                                        </Button>
-                                                                    </LightTooltip> */}
                                                                 </label>
                                                             </div>):
                                                             (<div></div>)
