@@ -591,7 +591,8 @@ class AboutCommerce extends Component {
                     .then((elt) => {
                         // The object was deleted from the Parse Cloud.
                         this.setState({ alertMsg: 'Suppression de la vidéo : ' })
-                        this.handleOpenDeleteVideo();
+                        window.location.reload();
+                        /*this.handleOpenDeleteVideo();
                         var counter = 3;
                         this.intervalId = setInterval(() => {
                             counter--;
@@ -606,7 +607,7 @@ class AboutCommerce extends Component {
                             } else {
                                 this.setState({ sec: counter })
                             }
-                        }, 1000);
+                        }, 1000);*/
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
