@@ -26,11 +26,13 @@ class CommercePicture extends React.Component {
         queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: this.state.commerceId}));
 
         queryCommercePhoto.find()
-        .then(responseSnapshot => {
-            responseSnapshot.forEach((elt) => {
-                commercePicture.push(elt.get("photo").url());
+            .then(responseSnapshot => {
+                responseSnapshot.forEach((elt) => {
+                    // console.log(`>>> ${JSON.stringify(elt.get("photo"), null, 2)}`);
+                    commercePicture.push(elt.get("photo").url());
+                });
+                // console.log(`Taille ${commercePicture.length}`);
             });
-        });
         
         return new Promise(resolve => {
             setTimeout(() => resolve(commercePicture), 300)

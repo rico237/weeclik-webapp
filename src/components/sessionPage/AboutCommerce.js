@@ -532,19 +532,16 @@ class AboutCommerce extends Component {
     }
 
     getMovieCommerce = () => {
-        let movie = [];
-
+        let movie = "";
         const ParseCommerce = Parse.Object.extend("Commerce");
-
         const ParseCommerceVideo = Parse.Object.extend("Commerce_Videos");
         const queryCommerceVideo = new Parse.Query(ParseCommerceVideo);
-
         queryCommerceVideo.equalTo("leCommerce", new ParseCommerce({id: this.state.commerceId}));
-
         queryCommerceVideo.find()
         .then(responseSnapshot => {
             responseSnapshot.forEach((elt) => {
-                movie.push(elt.get("video").url());
+                // console.log(`--VIDEO-----> ${JSON.stringify(elt, null, 2)}`);
+                movie = elt.get("video").url();
             });
         });
 
@@ -555,16 +552,21 @@ class AboutCommerce extends Component {
 
     getUrlCommerceMovie = async () => {
         const movie = await this.getMovieCommerce();
-        // Re-ecriture du link pour le faire marcher sur Safari
-        var newLink = movie.toString().replace(process.env.REACT_APP_SERVER_URL+"/files/"+process.env.REACT_APP_APP_ID+"/", 
-        "https://firebasestorage.googleapis.com/v0/b/weeclik-1517332083996.appspot.com/o/baas_files%2F")+"?alt=media"
+        if (movie.length > 3) {
+            // Re-ecriture du link pour le faire marcher sur Safari
+            var newLink = movie.toString().replace(process.env.REACT_APP_SERVER_URL+"/files/"+process.env.REACT_APP_APP_ID+"/", 
+            "https://firebasestorage.googleapis.com/v0/b/weeclik-1517332083996.appspot.com/o/baas_files%2F")+"?alt=media"
 
-        if (newLink !== "?alt=media") {
-            this.setState({
-                movieURL: newLink
-            })
+            if (newLink !== "?alt=media") {
+                this.setState({
+                    movieURL: newLink
+                })
+            }
+            // console.log(`--ggg-------> ${this.state.movieURL}`);
+        } else {
+            // console.log(`--ggg---`);
+            this.getUrlCommerceMovie(); // TODO: A corriger
         }
-        // console.log(`--ggg-------> ${this.state.movieURL}`);
     }
     //#endregion
 
@@ -584,8 +586,10 @@ class AboutCommerce extends Component {
                 elt.destroy()
                     .then((elt) => {
                         // The object was deleted from the Parse Cloud.
+                        // console.log(`--VIDEO-----> ${JSON.stringify(elt, null, 2)}`);
                         this.setState({ alertMsg: 'Suppression de la vidéo : ' })
                         window.location.reload();
+                        //this.getUrlCommerceMovie();
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
