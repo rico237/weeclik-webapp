@@ -427,17 +427,6 @@ class AboutCommerce extends Component {
     }
     //#endregion
 
-    getBase64 = (file) => {
-        return new Promise((resolve,reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                console.log(reader.result.size / 1024 / 1024 + " MB");
-                resolve(reader.result);
-            }
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    }
 
     //#region UPLOAD_VIDEO
     uploadVideoToServer = (movie) => {
@@ -445,12 +434,7 @@ class AboutCommerce extends Component {
         this.handleOpenAddVideo();
         
         var file = new Parse.File("movie.name", movie);
-/*        console.log(movie);
-        this.getBase64(file)
-
-        console.log(movie.size / 1024 / 1024 + " MB");
-        debugger;
-*/        
+      
         var Commerce_video = new Parse.Object("Commerce_Videos");
 
         if (this.state.currentUser) {
@@ -655,7 +639,6 @@ class AboutCommerce extends Component {
     //#region UPDATE_COMMERCE
     updateTheInfo(event) {
         event.preventDefault();
-
         const _state_commerce = this.state.commerce;
         let addr = "";
         if (_state_commerce !== "") {
@@ -677,60 +660,63 @@ class AboutCommerce extends Component {
             instanceCommerce.set("mail", _state_commerce.mail);
             instanceCommerce.set("tel", _state_commerce.tel);
             instanceCommerce.save()
-            .then((newCommerce) => {
-                this.setState({canUpdateInfo: false})
-            }, (error) => {
+                .then((newCommerce) => {
+                    console.log("---===---\n"+JSON.stringify(newCommerce, null, 2));
+                    this.setState({canUpdateInfo: false})
+                    this.setState(prevState => ({
+                        commerce: {
+                            ...prevState.commerce,
+                            newCommerce
+                        }
+                    }))
+                }, (error) => {
                     console.error(`Failed to create new object, with error code: ' + ${error.message}`);
-            })
+                })
         }
     }
 
     updateThePromo(event) {
         event.preventDefault();
         const _state_commerce = this.state.commerce;
-
-        // if (_state_commerce.promotion !== "") {
-            const ParseCommerce = Parse.Object.extend("Commerce");
-            const instanceCommerce = new ParseCommerce();
-            instanceCommerce.id = this.state.commerceId;
-            instanceCommerce.set("promotions", _state_commerce.promotion)
-            instanceCommerce.save()
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = this.state.commerceId;
+        instanceCommerce.set("promotions", _state_commerce.promotion)
+        instanceCommerce.save()
             .then((newCommerce) => {
                 this.setState({canUpdatePromo: false})
+                this.setState(prevState => ({
+                    commerce: {
+                        ...prevState.commerce,
+                        newCommerce
+                    }
+                }))
             }, (error) => {
-                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                console.error(`Failed to create new object, with error code: ' + ${error.message}`);
             })
-        // }
     }
 
     updateTheDescription(event) {
         event.preventDefault();
         const _state_commerce = this.state.commerce;
-        // if (_state_commerce.promotion !== "") {
-            const ParseCommerce = Parse.Object.extend("Commerce");
-            const instanceCommerce = new ParseCommerce();
-            instanceCommerce.id = this.state.commerceId;
-            instanceCommerce.set("description", _state_commerce.description)
-            instanceCommerce.save()
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = this.state.commerceId;
+        instanceCommerce.set("description", _state_commerce.description)
+        instanceCommerce.save()
             .then((newCommerce) => {
                 this.setState({canUpdateDescription: false})
+                this.setState(prevState => ({
+                    commerce: {
+                        ...prevState.commerce,
+                        newCommerce
+                    }
+                }))
             }, (error) => {
-                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                console.error(`Failed to create new object, with error code: ' + ${error.message}`);
             })
-        // }
     }
     //#endregion
-
-    goToBack = () => {
-        this.props.history.goBack();
-    }
-
-    getDetail = (_id) => {
-        this.props.history.push({
-            pathname: '/updatecommerce',
-            state: { id: _id }
-        })
-    }
 
     goToPay = (_id) => {
         this.props.history.push({
@@ -869,7 +855,7 @@ class AboutCommerce extends Component {
                                                         </Grid>
                                                     </Grid>
                                                     <Button variant="contained" color="primary" type="submit">valider</Button>
-                                                    <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateInfo: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                                    <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateInfo: false}); this.getCommerceData();}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
                                                 </form>
                                             </div>
                                         ) : (
@@ -944,7 +930,7 @@ class AboutCommerce extends Component {
                                                     </Grid>
                                                 </Grid>
                                                 <Button variant="contained" color="primary" type="submit">valider</Button>
-                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdatePromo: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdatePromo: false}); this.getCommerceData();}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
                                             </form>
                                         </div>
                                     ) : (
@@ -993,7 +979,7 @@ class AboutCommerce extends Component {
                                                     </Grid>
                                                 </Grid>
                                                 <Button variant="contained" color="primary" type="submit">valider</Button>
-                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateDescription: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateDescription: false}); this.getCommerceData();}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
                                             </form>
                                         </div>
                                     ) : (
