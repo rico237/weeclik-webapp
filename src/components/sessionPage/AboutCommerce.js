@@ -111,6 +111,7 @@ class AboutCommerce extends Component {
                 file: [],
                 imgs: null,
                 listImg: [],
+                nbReelImage: 0,
                 movieURL: '',
                 validate: false,
                 submitted: false,
@@ -149,6 +150,8 @@ class AboutCommerce extends Component {
         this.updateThePromo = this.updateThePromo.bind(this);
         this.updateTheDescription = this.updateTheDescription.bind(this);
     }
+
+    // console.log("---===---\n"+JSON.stringify(newCommerce, null, 2));
 
     handleOpenInfo = () => {
         this.setState({ openInfo: true });
@@ -377,10 +380,8 @@ class AboutCommerce extends Component {
                     })
                     if (this.state.nbImageUpload === n_max) {
                         this.setState({ alertMsg: "Attendre la fin du chargement de l'image vers le serveur" })
-                        this.handleOpenDeleteVideo();
-                        // window.location.reload();
-                        this.getUrlCommercePicture();
-                        this.handleCloseDeleteVideo();
+                        window.location.reload();
+                        // this.getUrlCommercePicture();
                     }    
                     console.log("+++++++++++")
                 });
@@ -397,7 +398,10 @@ class AboutCommerce extends Component {
 
         var taille = 0;
 
-        if (event.target.files.length <= 3) {
+        console.log("----====="+this.state.nbReelImage);
+        
+
+        if (/*event.target.files.length <= 3 && */this.state.nbReelImage < 3) {
             // const obj = event.target.files[0];
             // for (let key in obj) {
             //     console.log(`${key} : ${obj[key]}`)
@@ -492,15 +496,21 @@ class AboutCommerce extends Component {
         queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: this.state.commerceId}));
 
         queryCommercePhoto.find()
-        .then(responseSnapshot => {
-            responseSnapshot.forEach((elt) => {
-                commercePicture.push({ id: elt.id, url: elt.get("photo").url(), default: false });
+            .then(responseSnapshot => {
+                responseSnapshot.forEach((elt) => {
+                    commercePicture.push({ id: elt.id, url: elt.get("photo").url(), default: false });
+                });
+                console.log("[REAL IMG] "+commercePicture.length);
+                this.setState({
+                    nbReelImage: commercePicture.length
+                });
+                for (let i = responseSnapshot.length; i < 3; i++) {
+
+                    var uuid = this.getUUID();
+                    commercePicture.push({ id: uuid, url: NoImage, default: true })
+                }
+                console.log("[IMG] "+commercePicture.length);
             });
-            for (let i = responseSnapshot.length; i < 3; i++) {
-                var uuid = this.getUUID();
-                commercePicture.push({ id: uuid, url: NoImage, default: true })
-            }
-        });
         
         return new Promise(resolve => {
             setTimeout(() => resolve(commercePicture), 300)
@@ -636,7 +646,7 @@ class AboutCommerce extends Component {
     }
     //#endregion
 
-    //#region UPDATE_COMMERCE
+    //#region UPDATE_COMMERCE_DETAILS
     updateTheInfo(event) {
         event.preventDefault();
         const _state_commerce = this.state.commerce;
@@ -661,7 +671,6 @@ class AboutCommerce extends Component {
             instanceCommerce.set("tel", _state_commerce.tel);
             instanceCommerce.save()
                 .then((newCommerce) => {
-                    console.log("---===---\n"+JSON.stringify(newCommerce, null, 2));
                     this.setState({canUpdateInfo: false})
                     this.setState(prevState => ({
                         commerce: {
@@ -768,7 +777,7 @@ class AboutCommerce extends Component {
                                     {
                                         this.state.canUpdateInfo ? (
                                             <div>
-                                                <form onSubmit={this.updateTheInfo} /*style={{width:'500px'}}*/>
+                                                <form onSubmit={this.updateTheInfo}>
                                                     <Grid container spacing={2}>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Nom du commerce</label>
@@ -778,8 +787,6 @@ class AboutCommerce extends Component {
                                                                 value={this.state.commerce.nomCommerce}
                                                                 name="nomCommerce"
                                                                 id="outlined-name"
-                                                                // variant="filled"
-                                                                // InputProps={{disableUnderline: true}}
                                                             />
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
@@ -866,7 +873,6 @@ class AboutCommerce extends Component {
                                                         <Info fontSize="small" />
                                                     </IconButton>
                                                 </h6>
-                                                {/* <h6 style={{color:"#000"}}>{this.state.commerce.currencyCategory}</h6> */}
                                                 <h6 style={{color:"#000"}}>
                                                     <RoomRoundedIcon/>
                                                     {" : " + this.state.commerce.adresse}
@@ -989,6 +995,8 @@ class AboutCommerce extends Component {
                             </Paper>
                         </Container>
                     </div>
+                    
+                    
                     {/* Les images */}
                     <div ref={this.imageRef} style={{margin:'10px'}}></div>
                     <div>
@@ -1048,8 +1056,6 @@ class AboutCommerce extends Component {
                                                 {" "}{this.state.listImg.filter((obj) => obj.default === true).length <= 1 ? ("image") : ("images")} à votre établissement</Typography>
                                             )
                                         }
-                                        {/* <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
-                                        <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter {this.state.listImg.length} images de votre établissement</Typography> */}
                                     </Grid>
                                     
                                     <Grid item xs={12}>
@@ -1202,7 +1208,6 @@ class AboutCommerce extends Component {
                                     <DialogTitle id="alert-dialog-title">A propos du statut</DialogTitle>
                                     <DialogContent>
                                         <DialogContentText id="alert-dialog-description">
-                                            {/* {this.state.commerce.statutCommerce}{' '} */}
                                             {
                                                 this.state.commerce.statutCommerce === 'En ligne' ?
                                                 ("Votre commerce est en ligne et visible de tous, prêt à être partagé") :
