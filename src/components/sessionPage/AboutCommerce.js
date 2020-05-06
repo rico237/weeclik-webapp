@@ -592,22 +592,6 @@ class AboutCommerce extends Component {
                         // The object was deleted from the Parse Cloud.
                         this.setState({ alertMsg: 'Suppression de la vidéo : ' })
                         window.location.reload();
-                        /*this.handleOpenDeleteVideo();
-                        var counter = 3;
-                        this.intervalId = setInterval(() => {
-                            counter--;
-                            if (counter === -1) {
-                                clearInterval(this.intervalId);
-                                this.handleCloseDeleteVideo();
-                                this.setState({
-                                    alertMsg: '',
-                                    sec: 3
-                                });
-                                window.location.reload();
-                            } else {
-                                this.setState({ sec: counter })
-                            }
-                        }, 1000);*/
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
@@ -632,23 +616,7 @@ class AboutCommerce extends Component {
                     .then((elt) => {
                         // The object was deleted from the Parse Cloud.
                         this.setState({ alertMsg: 'Suppression de(s) photo(s) : ' })
-                        this.getUrlCommercePicture()
-                        /*this.handleOpenDeleteVideo();
-                        var counter = 3;
-                        this.intervalId = setInterval(() => {
-                            counter--;
-                            if (counter === -1) {
-                                clearInterval(this.intervalId);
-                                this.handleCloseDeleteVideo();
-                                this.setState({
-                                    alertMsg: '',
-                                    sec: 3
-                                });
-                                window.location.reload();
-                            } else {
-                                this.setState({ sec: counter })
-                            }
-                        }, 1000);*/
+                        this.getUrlCommercePicture();
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
@@ -673,25 +641,7 @@ class AboutCommerce extends Component {
                         // console.log("---->"+JSON.stringify(elt, null, 2))
                         // The object was deleted from the Parse Cloud.
                         this.setState({ alertMsg: 'Suppression de la photo : ' })
-                        this.getUrlCommercePicture()
-                        //window.location.reload();
-                    //    this.handleOpenDeleteVideo();
-                        /*var counter = 3;
-                        this.intervalId = setInterval(() => {
-                            counter--;
-                            if (counter === -1) {
-                                clearInterval(this.intervalId);
-                    //            this.handleCloseDeleteVideo();
-                                this.setState({
-                                    alertMsg: '',
-                                    sec: 3
-                                });
-                                window.location.reload();
-                            } else {
-                                // console.log("--->"+counter);
-                                this.setState({ sec: counter })
-                            }
-                        }, 1000);*/
+                        this.getUrlCommercePicture();
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
