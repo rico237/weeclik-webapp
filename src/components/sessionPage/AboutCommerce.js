@@ -802,25 +802,19 @@ class AboutCommerce extends Component {
                                                                 value={this.state.commerce.currencyCategory}>
                                                                     <option value="">--Aucune--</option>
                                                                     <option value="Alimentaire">Alimentaire</option>
-                                                                    <option value="Artisanat">Artisanat</option>
-                                                                    <option value="Bâtiment">Bâtiment</option>
-                                                                    <option value="Bien-être">Bien-être</option>
-                                                                    <option value="Décoration">Décoration</option>
-                                                                    <option value="Dépannage">Dépannage</option>
-                                                                    <option value="Evènement">Evènement</option>
-                                                                    <option value="E-commerce">E-commerce</option>
-                                                                    <option value="Fabricant">Fabricant</option>
-                                                                    <option value="Garagiste">Garagiste</option>
-                                                                    <option value="Hôtellerie">Hôtellerie</option>
-                                                                    <option value="Humanitaire">Humanitaire</option>
+                                                                    <option value="Automobile">Automobile</option>
+                                                                    <option value="Banque">Banque</option>
+                                                                    <option value="Bar/Pub">Bar/Pub</option>
+                                                                    <option value="Carreleur">Carreleur</option>
+                                                                    <option value="Coiffeur">Coiffeur</option>
+                                                                    <option value="Discothèque">Discothèque</option>
+                                                                    <option value="Habillement">Habillement</option>
+                                                                    <option value="Hôtel">Hôtel</option>
                                                                     <option value="Immobilier">Immobilier</option>
-                                                                    <option value="Informatique">Informatique</option>
-                                                                    <option value="Nautisme">Nautisme</option>
-                                                                    <option value="Restauration">Restauration</option>
-                                                                    <option value="Textile">Textile</option>
-                                                                    <option value="Transport">Transport</option>
-                                                                    <option value="Tourisme">Tourisme</option>
-                                                                    <option value="Santé">Santé</option>
+                                                                    <option value="Maçon">Maçon</option>
+                                                                    <option value="Peintre">Peintre</option>
+                                                                    <option value="Plombier">Plombier</option>
+                                                                    <option value="Restaurant">Restaurant</option>
                                                                     <option value="Autre">Autre</option>
                                                             </select>
                                                         </Grid>
