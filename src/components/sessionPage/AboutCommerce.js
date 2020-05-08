@@ -111,6 +111,7 @@ class AboutCommerce extends Component {
                 file: [],
                 imgs: null,
                 listImg: [],
+                nbReelImage: 0,
                 movieURL: '',
                 validate: false,
                 submitted: false,
@@ -149,6 +150,8 @@ class AboutCommerce extends Component {
         this.updateThePromo = this.updateThePromo.bind(this);
         this.updateTheDescription = this.updateTheDescription.bind(this);
     }
+
+    // console.log("---===---\n"+JSON.stringify(newCommerce, null, 2));
 
     handleOpenInfo = () => {
         this.setState({ openInfo: true });
@@ -360,6 +363,9 @@ class AboutCommerce extends Component {
                 Commerce_Photos.set("commerce", Parse.Object.extend("Commerce").createWithoutData(this.state.commerceId));
                 Commerce_Photos.save().then((snapshot) => {
                     const instanceCommerce = new ParseCommerce();
+
+                    console.log("---------------")
+
                     if (n === 0) {
                         instanceCommerce.id = this.state.commerceId
                         instanceCommerce.set("thumbnailPrincipal", { "__type": "Pointer", "className": "Commerce_Photos", "objectId": snapshot.id });
@@ -373,8 +379,11 @@ class AboutCommerce extends Component {
                         nbImageUpload: this.state.nbImageUpload + 1
                     })
                     if (this.state.nbImageUpload === n_max) {
+                        this.setState({ alertMsg: "Attendre la fin du chargement de l'image vers le serveur" })
                         window.location.reload();
-                    }
+                        // this.getUrlCommercePicture();
+                    }    
+                    console.log("+++++++++++")
                 });
             }, (error) => {
                 console.error(error);
@@ -389,7 +398,10 @@ class AboutCommerce extends Component {
 
         var taille = 0;
 
-        if (event.target.files.length <= 3) {
+        console.log("----====="+this.state.nbReelImage);
+        
+
+        if (/*event.target.files.length <= 3 && */this.state.nbReelImage < 3) {
             // const obj = event.target.files[0];
             // for (let key in obj) {
             //     console.log(`${key} : ${obj[key]}`)
@@ -419,17 +431,6 @@ class AboutCommerce extends Component {
     }
     //#endregion
 
-    getBase64 = (file) => {
-        return new Promise((resolve,reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                console.log(reader.result.size / 1024 / 1024 + " MB");
-                resolve(reader.result);
-            }
-            reader.onerror = error => reject(error);
-            reader.readAsDataURL(file);
-        });
-    }
 
     //#region UPLOAD_VIDEO
     uploadVideoToServer = (movie) => {
@@ -437,12 +438,7 @@ class AboutCommerce extends Component {
         this.handleOpenAddVideo();
         
         var file = new Parse.File("movie.name", movie);
-/*        console.log(movie);
-        this.getBase64(file)
-
-        console.log(movie.size / 1024 / 1024 + " MB");
-        debugger;
-*/        
+      
         var Commerce_video = new Parse.Object("Commerce_Videos");
 
         if (this.state.currentUser) {
@@ -500,15 +496,21 @@ class AboutCommerce extends Component {
         queryCommercePhoto.equalTo("commerce", new ParseCommerce({id: this.state.commerceId}));
 
         queryCommercePhoto.find()
-        .then(responseSnapshot => {
-            responseSnapshot.forEach((elt) => {
-                commercePicture.push({ id: elt.id, url: elt.get("photo").url(), default: false });
+            .then(responseSnapshot => {
+                responseSnapshot.forEach((elt) => {
+                    commercePicture.push({ id: elt.id, url: elt.get("photo").url(), default: false });
+                });
+                console.log("[REAL IMG] "+commercePicture.length);
+                this.setState({
+                    nbReelImage: commercePicture.length
+                });
+                for (let i = responseSnapshot.length; i < 3; i++) {
+
+                    var uuid = this.getUUID();
+                    commercePicture.push({ id: uuid, url: NoImage, default: true })
+                }
+                console.log("[IMG] "+commercePicture.length);
             });
-            for (let i = responseSnapshot.length; i < 3; i++) {
-                var uuid = this.getUUID();
-                commercePicture.push({ id: uuid, url: NoImage, default: true })
-            }
-        });
         
         return new Promise(resolve => {
             setTimeout(() => resolve(commercePicture), 300)
@@ -530,19 +532,16 @@ class AboutCommerce extends Component {
     }
 
     getMovieCommerce = () => {
-        let movie = [];
-
+        let movie = "";
         const ParseCommerce = Parse.Object.extend("Commerce");
-
         const ParseCommerceVideo = Parse.Object.extend("Commerce_Videos");
         const queryCommerceVideo = new Parse.Query(ParseCommerceVideo);
-
         queryCommerceVideo.equalTo("leCommerce", new ParseCommerce({id: this.state.commerceId}));
-
         queryCommerceVideo.find()
         .then(responseSnapshot => {
             responseSnapshot.forEach((elt) => {
-                movie.push(elt.get("video").url());
+                // console.log(`--VIDEO-----> ${JSON.stringify(elt, null, 2)}`);
+                movie = elt.get("video").url();
             });
         });
 
@@ -553,16 +552,21 @@ class AboutCommerce extends Component {
 
     getUrlCommerceMovie = async () => {
         const movie = await this.getMovieCommerce();
-        // Re-ecriture du link pour le faire marcher sur Safari
-        var newLink = movie.toString().replace(process.env.REACT_APP_SERVER_URL+"/files/"+process.env.REACT_APP_APP_ID+"/", 
-        "https://firebasestorage.googleapis.com/v0/b/weeclik-1517332083996.appspot.com/o/baas_files%2F")+"?alt=media"
+        if (movie.length > 3) {
+            // Re-ecriture du link pour le faire marcher sur Safari
+            var newLink = movie.toString().replace(process.env.REACT_APP_SERVER_URL+"/files/"+process.env.REACT_APP_APP_ID+"/", 
+            "https://firebasestorage.googleapis.com/v0/b/weeclik-1517332083996.appspot.com/o/baas_files%2F")+"?alt=media"
 
-        if (newLink !== "?alt=media") {
-            this.setState({
-                movieURL: newLink
-            })
+            if (newLink !== "?alt=media") {
+                this.setState({
+                    movieURL: newLink
+                })
+            }
+            // console.log(`--ggg-------> ${this.state.movieURL}`);
+        } else {
+            // console.log(`--ggg---`);
+            this.getUrlCommerceMovie(); // TODO: A corriger
         }
-        // console.log(`--ggg-------> ${this.state.movieURL}`);
     }
     //#endregion
 
@@ -582,23 +586,10 @@ class AboutCommerce extends Component {
                 elt.destroy()
                     .then((elt) => {
                         // The object was deleted from the Parse Cloud.
+                        // console.log(`--VIDEO-----> ${JSON.stringify(elt, null, 2)}`);
                         this.setState({ alertMsg: 'Suppression de la vidéo : ' })
-                        this.handleOpenDeleteVideo();
-                        var counter = 3;
-                        this.intervalId = setInterval(() => {
-                            counter--;
-                            if (counter === -1) {
-                                clearInterval(this.intervalId);
-                                this.handleCloseDeleteVideo();
-                                this.setState({
-                                    alertMsg: '',
-                                    sec: 3
-                                });
-                                window.location.reload();
-                            } else {
-                                this.setState({ sec: counter })
-                            }
-                        }, 1000);
+                        window.location.reload();
+                        //this.getUrlCommerceMovie();
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
@@ -623,22 +614,7 @@ class AboutCommerce extends Component {
                     .then((elt) => {
                         // The object was deleted from the Parse Cloud.
                         this.setState({ alertMsg: 'Suppression de(s) photo(s) : ' })
-                        this.handleOpenDeleteVideo();
-                        var counter = 3;
-                        this.intervalId = setInterval(() => {
-                            counter--;
-                            if (counter === -1) {
-                                clearInterval(this.intervalId);
-                                this.handleCloseDeleteVideo();
-                                this.setState({
-                                    alertMsg: '',
-                                    sec: 3
-                                });
-                                window.location.reload();
-                            } else {
-                                this.setState({ sec: counter })
-                            }
-                        }, 1000);
+                        this.getUrlCommercePicture();
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
@@ -660,25 +636,10 @@ class AboutCommerce extends Component {
                 // Suppression de la photo
                 elt.destroy()
                     .then((elt) => {
+                        // console.log("---->"+JSON.stringify(elt, null, 2))
                         // The object was deleted from the Parse Cloud.
                         this.setState({ alertMsg: 'Suppression de la photo : ' })
-                        this.handleOpenDeleteVideo();
-                        var counter = 3;
-                        this.intervalId = setInterval(() => {
-                            counter--;
-                            if (counter === -1) {
-                                clearInterval(this.intervalId);
-                                this.handleCloseDeleteVideo();
-                                this.setState({
-                                    alertMsg: '',
-                                    sec: 3
-                                });
-                                window.location.reload();
-                            } else {
-                                // console.log("--->"+counter);
-                                this.setState({ sec: counter })
-                            }
-                        }, 1000);
+                        this.getUrlCommercePicture();
                     }, (error) => {
                         // The delete failed.
                         // error is a Parse.Error with an error code and message.
@@ -689,10 +650,9 @@ class AboutCommerce extends Component {
     }
     //#endregion
 
-    //#region UPDATE_COMMERCE
+    //#region UPDATE_COMMERCE_DETAILS
     updateTheInfo(event) {
         event.preventDefault();
-
         const _state_commerce = this.state.commerce;
         let addr = "";
         if (_state_commerce !== "") {
@@ -714,60 +674,62 @@ class AboutCommerce extends Component {
             instanceCommerce.set("mail", _state_commerce.mail);
             instanceCommerce.set("tel", _state_commerce.tel);
             instanceCommerce.save()
-            .then((newCommerce) => {
-                this.setState({canUpdateInfo: false})
-            }, (error) => {
+                .then((newCommerce) => {
+                    this.setState({canUpdateInfo: false})
+                    this.setState(prevState => ({
+                        commerce: {
+                            ...prevState.commerce,
+                            newCommerce
+                        }
+                    }))
+                }, (error) => {
                     console.error(`Failed to create new object, with error code: ' + ${error.message}`);
-            })
+                })
         }
     }
 
     updateThePromo(event) {
         event.preventDefault();
         const _state_commerce = this.state.commerce;
-
-        // if (_state_commerce.promotion !== "") {
-            const ParseCommerce = Parse.Object.extend("Commerce");
-            const instanceCommerce = new ParseCommerce();
-            instanceCommerce.id = this.state.commerceId;
-            instanceCommerce.set("promotions", _state_commerce.promotion)
-            instanceCommerce.save()
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = this.state.commerceId;
+        instanceCommerce.set("promotions", _state_commerce.promotion)
+        instanceCommerce.save()
             .then((newCommerce) => {
                 this.setState({canUpdatePromo: false})
+                this.setState(prevState => ({
+                    commerce: {
+                        ...prevState.commerce,
+                        newCommerce
+                    }
+                }))
             }, (error) => {
-                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                console.error(`Failed to create new object, with error code: ' + ${error.message}`);
             })
-        // }
     }
 
     updateTheDescription(event) {
         event.preventDefault();
         const _state_commerce = this.state.commerce;
-        // if (_state_commerce.promotion !== "") {
-            const ParseCommerce = Parse.Object.extend("Commerce");
-            const instanceCommerce = new ParseCommerce();
-            instanceCommerce.id = this.state.commerceId;
-            instanceCommerce.set("description", _state_commerce.description)
-            instanceCommerce.save()
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = this.state.commerceId;
+        instanceCommerce.set("description", _state_commerce.description)
+        instanceCommerce.save()
             .then((newCommerce) => {
                 this.setState({canUpdateDescription: false})
+                this.setState(prevState => ({
+                    commerce: {
+                        ...prevState.commerce,
+                        newCommerce
+                    }
+                }))
             }, (error) => {
-                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                console.error(`Failed to create new object, with error code: ' + ${error.message}`);
             })
-        // }
     }
     //#endregion
-
-    goToBack = () => {
-        this.props.history.goBack();
-    }
-
-    getDetail = (_id) => {
-        this.props.history.push({
-            pathname: '/updatecommerce',
-            state: { id: _id }
-        })
-    }
 
     goToPay = (_id) => {
         this.props.history.push({
@@ -819,7 +781,7 @@ class AboutCommerce extends Component {
                                     {
                                         this.state.canUpdateInfo ? (
                                             <div>
-                                                <form onSubmit={this.updateTheInfo} /*style={{width:'500px'}}*/>
+                                                <form onSubmit={this.updateTheInfo}>
                                                     <Grid container spacing={2}>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Nom du commerce</label>
@@ -829,8 +791,6 @@ class AboutCommerce extends Component {
                                                                 value={this.state.commerce.nomCommerce}
                                                                 name="nomCommerce"
                                                                 id="outlined-name"
-                                                                // variant="filled"
-                                                                // InputProps={{disableUnderline: true}}
                                                             />
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
@@ -842,25 +802,19 @@ class AboutCommerce extends Component {
                                                                 value={this.state.commerce.currencyCategory}>
                                                                     <option value="">--Aucune--</option>
                                                                     <option value="Alimentaire">Alimentaire</option>
-                                                                    <option value="Artisanat">Artisanat</option>
-                                                                    <option value="Bâtiment">Bâtiment</option>
-                                                                    <option value="Bien-être">Bien-être</option>
-                                                                    <option value="Décoration">Décoration</option>
-                                                                    <option value="Dépannage">Dépannage</option>
-                                                                    <option value="Evènement">Evènement</option>
-                                                                    <option value="E-commerce">E-commerce</option>
-                                                                    <option value="Fabricant">Fabricant</option>
-                                                                    <option value="Garagiste">Garagiste</option>
-                                                                    <option value="Hôtellerie">Hôtellerie</option>
-                                                                    <option value="Humanitaire">Humanitaire</option>
+                                                                    <option value="Automobile">Automobile</option>
+                                                                    <option value="Banque">Banque</option>
+                                                                    <option value="Bar/Pub">Bar/Pub</option>
+                                                                    <option value="Carreleur">Carreleur</option>
+                                                                    <option value="Coiffeur">Coiffeur</option>
+                                                                    <option value="Discothèque">Discothèque</option>
+                                                                    <option value="Habillement">Habillement</option>
+                                                                    <option value="Hôtel">Hôtel</option>
                                                                     <option value="Immobilier">Immobilier</option>
-                                                                    <option value="Informatique">Informatique</option>
-                                                                    <option value="Nautisme">Nautisme</option>
-                                                                    <option value="Restauration">Restauration</option>
-                                                                    <option value="Textile">Textile</option>
-                                                                    <option value="Transport">Transport</option>
-                                                                    <option value="Tourisme">Tourisme</option>
-                                                                    <option value="Santé">Santé</option>
+                                                                    <option value="Maçon">Maçon</option>
+                                                                    <option value="Peintre">Peintre</option>
+                                                                    <option value="Plombier">Plombier</option>
+                                                                    <option value="Restaurant">Restaurant</option>
                                                                     <option value="Autre">Autre</option>
                                                             </select>
                                                         </Grid>
@@ -906,7 +860,7 @@ class AboutCommerce extends Component {
                                                         </Grid>
                                                     </Grid>
                                                     <Button variant="contained" color="primary" type="submit">valider</Button>
-                                                    <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateInfo: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                                    <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateInfo: false}); this.getCommerceData();}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
                                                 </form>
                                             </div>
                                         ) : (
@@ -917,7 +871,6 @@ class AboutCommerce extends Component {
                                                         <Info fontSize="small" />
                                                     </IconButton>
                                                 </h6>
-                                                {/* <h6 style={{color:"#000"}}>{this.state.commerce.currencyCategory}</h6> */}
                                                 <h6 style={{color:"#000"}}>
                                                     <RoomRoundedIcon/>
                                                     {" : " + this.state.commerce.adresse}
@@ -981,7 +934,7 @@ class AboutCommerce extends Component {
                                                     </Grid>
                                                 </Grid>
                                                 <Button variant="contained" color="primary" type="submit">valider</Button>
-                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdatePromo: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdatePromo: false}); this.getCommerceData();}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
                                             </form>
                                         </div>
                                     ) : (
@@ -1030,7 +983,7 @@ class AboutCommerce extends Component {
                                                     </Grid>
                                                 </Grid>
                                                 <Button variant="contained" color="primary" type="submit">valider</Button>
-                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateDescription: false})}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
+                                                <Button variant="outlined" color="secondary" onClick={() => {this.setState({canUpdateDescription: false}); this.getCommerceData();}} style={{outline: 'none', marginLeft: '20px'}}>Annuler</Button>
                                             </form>
                                         </div>
                                     ) : (
@@ -1040,6 +993,8 @@ class AboutCommerce extends Component {
                             </Paper>
                         </Container>
                     </div>
+                    
+                    
                     {/* Les images */}
                     <div ref={this.imageRef} style={{margin:'10px'}}></div>
                     <div>
@@ -1063,20 +1018,13 @@ class AboutCommerce extends Component {
                                                                     type="file"
                                                                     onChange={this.onUploadImage}
                                                                     style={{ display: 'None' }}
-                                                                    accept="image/*"
-                                                                    multiple/>
+                                                                    accept="image/*"/>
                                                                 <label htmlFor="icon-input-file-img">
                                                                     <LightTooltip title="Ajouter des images">
                                                                         <IconButton aria-label="upload picture" component="span" color="primary" style={{outline: 'none', color: "#2096F3"}}>
                                                                             <AddCircleRoundedIcon />
-                                                                            {/* <AddPhotoAlternateRoundedIcon /> */}
                                                                         </IconButton>
                                                                     </LightTooltip>
-                                                                    {/* <LightTooltip title="Ajouter des images">
-                                                                        <Button variant="outlined" color="primary" size="small" component="span">
-                                                                            Ajouter des images
-                                                                        </Button>
-                                                                    </LightTooltip> */}
                                                                 </label>
                                                             </div>):
                                                             (<div></div>)
@@ -1106,8 +1054,6 @@ class AboutCommerce extends Component {
                                                 {" "}{this.state.listImg.filter((obj) => obj.default === true).length <= 1 ? ("image") : ("images")} à votre établissement</Typography>
                                             )
                                         }
-                                        {/* <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter au maximum 3 images de présentation de votre établissement</Typography>
-                                        <Typography variant="body1" style={{color: grey[400], fontSize: '100'}}>Vous pouvez ajouter {this.state.listImg.length} images de votre établissement</Typography> */}
                                     </Grid>
                                     
                                     <Grid item xs={12}>
@@ -1260,7 +1206,6 @@ class AboutCommerce extends Component {
                                     <DialogTitle id="alert-dialog-title">A propos du statut</DialogTitle>
                                     <DialogContent>
                                         <DialogContentText id="alert-dialog-description">
-                                            {/* {this.state.commerce.statutCommerce}{' '} */}
                                             {
                                                 this.state.commerce.statutCommerce === 'En ligne' ?
                                                 ("Votre commerce est en ligne et visible de tous, prêt à être partagé") :

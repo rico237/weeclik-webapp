@@ -99,13 +99,13 @@ class HomePage extends Component {
                                     <div className="col-lg-6">
                                         <div style={{padding: '10px 0', margin: '20px 0'}}>
                                             <div>
-                                                <h3>Devenir ambassadeur et ambassadrice du seul réseau de confiance humain</h3>
+                                                <h3>Devenez bientôt les futures ambassadeur et ambassadrice du seul réseau de confiance humain</h3>
                                                 
                                                 <p>Partagez la confiance que vous avez avec votre commerçant à vos proches, voisins et collègues de travail.</p>
                                                 <p>Intégrez le réseau de partage Weeclik et profitez de promotions exclusives avec vos commerçants de confiance.</p>
                                             </div>
                                             <br/>
-                                            <a className="btn btn-solid-lg-ambassador" onClick={() => {this.handleOpen()}}>DEVENIR AMBASSADEUR OU AMBASSADRICE</a>
+                                            <a className="btn btn-solid-lg-ambassador" onClick={() => {this.handleOpen()}}>AMBASSADEUR OU AMBASSADRICE</a>
                                         </div>
                                     </div> 
                                     <div className="col-lg-6">

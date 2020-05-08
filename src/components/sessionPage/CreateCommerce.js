@@ -225,7 +225,7 @@ class CreateCommerce extends Component {
                             "owner": Parse.User.createWithoutData(currentUser.id),
                             "endSubscription": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                             "typeCommerce": _state_commerce.currencyCategory,
-                            "mail": JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,//this.props.user.email,
+                            "mail": _state_commerce.mail,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,//this.props.user.email,
                             "tel": _state_commerce.tel,
                             "description": _state_commerce.description,
                             "promotions": _state_commerce.promotions,
@@ -271,7 +271,7 @@ class CreateCommerce extends Component {
                         "owner": Parse.User.createWithoutData(currentUser.id),
                         "endSubscription": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
                         "typeCommerce": _state_commerce.currencyCategory,
-                        "mail": JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,// this.props.user.email,
+                        "mail": _state_commerce.mail,//JSON.parse(localStorage.getItem(`Parse/${process.env.REACT_APP_APP_ID}/currentUser`)).email,// this.props.user.email,
                         "tel": _state_commerce.tel,
                         "description": _state_commerce.description,
                         "promotions": _state_commerce.promotions,
@@ -323,6 +323,10 @@ class CreateCommerce extends Component {
                 console.error("Veuillez remplir la ville");
             }
 
+            if (_state_commerce.mail.length < 1) {
+                console.error("Veuillez remplir l'adresse mail");
+            }
+
             if (_state_commerce.tel.length < 1) {
                 console.error("Veuillez remplir le numero de tel");
             }
@@ -346,8 +350,8 @@ class CreateCommerce extends Component {
                 }} />
             )
         }
-        const { nomCommerce, adresse, bp, ville, tel, description, currencyCategory } = this.state.commerce;
-        const isEnabled = nomCommerce.length > 0 && adresse.length > 0 && bp.length > 0 && ville.length > 0 && tel.length > 0 && description.length > 0 && currencyCategory.length > 0;
+        const { nomCommerce, adresse, bp, ville, mail, tel, description, currencyCategory } = this.state.commerce;
+        const isEnabled = nomCommerce.length > 0 && adresse.length > 0 && bp.length > 0 && ville.length > 0 && mail.length > 0 && tel.length > 0 && description.length > 0 && currencyCategory.length > 0;
 
         let { _images1, _images2, _images3 } = this.state;
 
@@ -509,6 +513,14 @@ class CreateCommerce extends Component {
                                         fullWidth name="tel" id="outlined-name" label="Numéro de téléphone" margin="dense" variant="outlined"
                                         error={tel.length > 0 ? false : true}
                                         helperText="* Veuillez ajouter un numéro de téléphone"
+                                    />
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <TextField
+                                        onChange={this.handleChange.bind(this)}
+                                        fullWidth name="mail" id="outlined-name" label="Adresse mail" margin="dense" variant="outlined"
+                                        error={mail.length > 0 ? false : true}
+                                        helperText="* Veuillez ajouter l'adresse mail du commerce"
                                     />
                                 </Grid>
                                 <Grid item xs={12}>

@@ -105,8 +105,11 @@ class UpdateUser extends Component {
     changeMyInfo(event) {
         var currentUser = Parse.User.current();
         if (currentUser) {
-            // Je mets à jour l'image de profile
-            this._uploadPicture(localStorage.getItem("imageProfile"), currentUser);
+            try {
+                // Je mets à jour l'image de profile
+                this._uploadPicture(localStorage.getItem("imageProfile"), currentUser);
+            } catch (error) {}
+            
             
             currentUser.setEmail(this.state.user.email);
             currentUser.setUsername(this.state.user.email);
