@@ -408,7 +408,7 @@ class ProfilePage extends Component {
                                             <CardContent style={content}>
                                                 <Grid container spacing={1}>
                                                     <Grid item xs>
-                                                        <Typography style={heading} variant="h6" gutterBottom>Devenez bientôt les futures ambassadeur et ambassadrice du seul réseau de confiance humain</Typography>
+                                                        <Typography style={heading} variant="h6" gutterBottom>Devenez bientôt les futures ambassadrices et ambassadeurs du seul réseau de confiance humain</Typography>
                                                     </Grid>
                                                 </Grid>
                                             </CardContent>
