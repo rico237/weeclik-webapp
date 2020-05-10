@@ -106,7 +106,7 @@ class HomePage extends Component {
                                             </div>
                                             <br/>
                                             <a className="btn btn-solid-lg-ambassador" onClick={() => {this.handleOpen()}}>AMBASSADRICE OU AMBASSADEUR</a>
-                                            <p className="pt-3">Fonctionnalité prochainement disponible</p>
+                                            <p className="pt-3"> {'⚠️ Fonctionnalité prochainement disponible'}</p>
                                         </div>
                                     </div> 
                                     <div className="col-lg-6">
