@@ -164,47 +164,47 @@ class HomePage extends Component {
                                     <div className="container w3-grayscale">
                                         <div className="row">
                                             <div className="col-lg col-6" style={{marginTop:'16px'}}>
-                                                <div className="">
+                                                <div className="w3-card">
                                                     <img src={Aziz} alt="Aziz" style={{width:'100%'}}/>
-                                                    <div className="text-center pt-2">
-                                                        <h4 className="pb-0 mb-0"><kbd style={{backgroundColor: "white", color: "black"}}>Aziz</kbd></h4>
-                                                        <p className="pt-1 mt-0"><kbd style={{backgroundColor: "white", color: "black"}}>CEO et Fondateur</kbd></p>
+                                                    <div className="text-center pt-0">
+                                                        <h5 className="pb-0 mb-0" style={{color: "black"}}>Aziz</h5>
+                                                        <p className="w3-opacity pt-1 mt-0">CEO et Fondateur</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-lg col-6" style={{marginTop:'16px'}}>
-                                                <div className="">
+                                                <div className="w3-card">
                                                     <img src={Michel} alt="Michel" style={{width:'100%'}}/>
-                                                    <div className="text-center pt-2">
-                                                        <h4 className="pb-0 mb-0"><kbd style={{backgroundColor: "white", color: "black"}}>Michel</kbd></h4>
-                                                        <p className="pt-1 mt-0"><kbd style={{backgroundColor: "white", color: "black"}}>Directeur des operations</kbd></p>
+                                                    <div className="text-center pt-0">
+                                                        <h5 className="pb-0 mb-0" style={{color: "black"}}>Michel</h5>
+                                                        <p className="w3-opacity pt-0 mt-0">Directeur des operations</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-lg col-6" style={{marginTop:'16px'}}>
-                                                <div className="">
+                                                <div className="w3-card">
                                                     <img src={Herrick} alt="Mike" style={{width:'100%'}}/>
-                                                    <div className="text-center pt-2">
-                                                        <h4 className="pb-0 mb-0"><kbd style={{backgroundColor: "white", color: "black"}}>Herrick</kbd></h4>
-                                                        <p className="pt-1 mt-0"><kbd style={{backgroundColor: "white", color: "black"}}>CTO et Développeur lead iOS</kbd></p>
+                                                    <div className="text-center pt-0">
+                                                        <h5 className="pb-0 mb-0" style={{color: "black"}}>Herrick</h5>
+                                                        <p className="w3-opacity pt-0 mt-0">CTO et Développeur lead iOS</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-lg col-6" style={{marginTop:'16px'}}>
-                                                <div className="">
+                                                <div className="w3-card">
                                                     <img src={Mohamed} alt="Dan" style={{width:'100%'}}/>
-                                                    <div className="text-center pt-2">
-                                                        <h4 className="pb-0 mb-0"><kbd style={{backgroundColor: "white", color: "black"}}>Mohamed</kbd></h4>
-                                                        <p className="pt-1 mt-0"><kbd style={{backgroundColor: "white", color: "black"}}>Expert Android</kbd></p>
+                                                    <div className="text-center pt-0">
+                                                        <h5 className="pb-0 mb-0" style={{color: "black"}}>Mohamed</h5>
+                                                        <p className="w3-opacity pt-0 mt-0">Expert Android</p>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-lg col-6" style={{marginTop:'16px'}}>
-                                                <div className="">
+                                                <div className="w3-card">
                                                     <img src={Grace} alt="Dan" style={{width:'100%', objectFit: 'cover'}}/>
-                                                    <div className="text-center pt-2">
-                                                        <h4 className="pb-0 mb-0"><kbd style={{backgroundColor: "white", color: "black"}}>Grace</kbd></h4>
-                                                        <p className="pt-1 mt-0"><kbd style={{backgroundColor: "white", color: "black"}}>Développeur</kbd></p>
+                                                    <div className="text-center pt-0">
+                                                        <h5 className="pb-0 mb-0" style={{color: "black"}}>Grace</h5>
+                                                        <p className="w3-opacity pt-0 mt-0">Développeur</p>
                                                     </div>
                                                 </div>
                                             </div>
