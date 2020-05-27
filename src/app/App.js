@@ -16,6 +16,7 @@ import PayPage from '../components/private/PayPage';
 import '../css/App.css';
 import Navigation from '../containers/Navigation';
 import ErrorBoundary from '../containers/ErrorBoundary';
+import DocumentReader from '../components/docs/DocumentReader';
 
 class App extends Component {
 
@@ -50,6 +51,8 @@ class App extends Component {
 							<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
 							<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>
 							<PrivateRoute path="/pay" component={PayPage}/>
+							<Route exact path="/doc" component={DocumentReader}/>
+							<Route path="/doc/:index" component={DocumentReader}/>
 							<Route path='/commerce/:commerceId' component={ReceiveCommercePage}/>
 							<Route path="/*" component={Page404} />
 						</Switch>
