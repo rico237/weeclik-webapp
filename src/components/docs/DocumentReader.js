@@ -48,7 +48,7 @@ class DocumentReader extends Component {
                     {
                         Array(numPages).fill().map((_, i) => i+1).map(page => (
                             <div key={page}>
-                                <Page width={600} pageNumber={page}/>
+                                <Page width={600} scale={1.5} pageNumber={page}/>
                             </div>
                         ))
                     }
