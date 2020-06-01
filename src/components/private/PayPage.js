@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { Elements, StripeProvider } from 'react-stripe-elements';
-import { Container, Grid, Typography, Avatar, Button, Link, Box } from '@material-ui/core';
+import { Container, Grid, Typography, Avatar, Button, Box } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import CheckoutForm from './CheckoutForm';
 import logoComptePro from '../../assets/icons/users.svg';
@@ -85,7 +86,7 @@ class PayPage extends Component {
                                     Votre paiement sera débité de votre compte. L'abonnement vous permet d'obtenir un commerce sur le réseau Weeclik pour une durée d'un an, sans renouvellement automatique.
                                     Le rachat de cet abonnement pour un commerce existant rajoute un an à sa période de visibilité sur le réseau Weeclik.
 
-                                    En vous abonnant, vous acceptez nos <Link href={'_blank'}>Conditions générales</Link> et <Link href={'_blank'}>Politique de Confidentialité</Link>.
+                                    En vous abonnant, vous acceptez nos <Link style={{color: "blue", textDecoration: "none"}} to={`/doc/cguv`}>Termes &amp; Conditions</Link>, <Link style={{color: "blue", textDecoration: "none"}} to={`/doc/cgu`}>CGU</Link>, <Link style={{color: "blue", textDecoration: "none"}} to={`/doc/cgv`}>CGV</Link> <Link style={{color: "blue", textDecoration: "none"}} to={`/doc/rgpd`}>Politique de vie privée</Link>.
                                 </div>
                             </center>
                         </Grid>

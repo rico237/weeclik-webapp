@@ -16,6 +16,9 @@ import PayPage from '../components/private/PayPage';
 import '../css/App.css';
 import Navigation from '../containers/Navigation';
 import ErrorBoundary from '../containers/ErrorBoundary';
+import DocumentReader from '../components/docs/DocumentReader';
+import ChooseDoc from '../components/docs/ChooseDoc';
+import DocReader from '../components/docs/DocReader';
 
 class App extends Component {
 
@@ -29,6 +32,8 @@ class App extends Component {
 	}
 
 	render() {
+		console.log(`Link : ${window.location.pathname.substring(0, 16)}`);
+		
 		return (
 			<div
 				style={{
@@ -39,7 +44,7 @@ class App extends Component {
 			>
 				<Router history={history}>
 					<ErrorBoundary>
-						<Navigation/>
+						{ window.location.pathname.substring(0, 15) !== "/doc/phone/link" && <Navigation/> }
 						<Switch>
 							<Route exact path='/' component={HomePage}/>
 							<Route exact path="/forgot" component={ForgotPage}/>
@@ -50,6 +55,10 @@ class App extends Component {
 							<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
 							<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>
 							<PrivateRoute path="/pay" component={PayPage}/>
+							<Route exact path="/doc" component={DocumentReader}/>
+							<Route exact path="/doc/phone/link" component={ChooseDoc}/>
+							<Route exact path="/doc/phone/link/:index" component={DocReader}/>
+							<Route path="/doc/:index" component={DocumentReader}/>
 							<Route path='/commerce/:commerceId' component={ReceiveCommercePage}/>
 							<Route path="/*" component={Page404} />
 						</Switch>

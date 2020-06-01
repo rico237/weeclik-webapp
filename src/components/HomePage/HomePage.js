@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import React, { Component, Fragment } from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { Dialog, DialogTitle } from '@material-ui/core';
@@ -252,9 +253,15 @@ class HomePage extends Component {
                                         <ul className="list-unstyled li-space-lg">
                                             <li className="media">
                                                 <i className="fas fa-square"></i>
-                                                <div className="media-body">Lire nos <a className="turquoise" href="#">Termes &amp; Conditions</a>, <a className="turquoise" href="#">Politique de vie privée</a></div>
+                                                <div className="media-body">Lire nos <Link className="turquoise" to={`/doc/cguv`}>Termes &amp; Conditions</Link>, <Link className="turquoise" to={`/doc/cgu`}>CGU</Link>, <Link className="turquoise" to={`/doc/cgv`}>CGV</Link> <Link className="turquoise" to={`/doc/rgpd`}>Politique de vie privée</Link></div>
                                             </li>
                                         </ul>
+                                        {/* <ul className="list-unstyled li-space-lg">
+                                            <li className="media">
+                                                <i className="fas fa-square"></i>
+                                                <div className="media-body"><Link className="turquoise" to={`/doc/phone/link`}>Documents légaux</Link></div>
+                                            </li>
+                                        </ul> */}
                                     </div>
                                 </div>
                                 <div className="col-md-4">
