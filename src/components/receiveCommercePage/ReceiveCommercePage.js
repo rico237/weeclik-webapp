@@ -276,9 +276,6 @@ class ReceiveCommercePage extends Component {
     }
 
 
-
-
-
     componentDidMount() {
         this.getCommerceData();
     }
@@ -384,4 +381,3 @@ class ReceiveCommercePage extends Component {
 }
 
 export { ReceiveCommercePage };
-
