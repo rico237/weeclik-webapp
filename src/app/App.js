@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Parse from 'parse';
 import { Router, Route, Switch } from 'react-router-dom';
 import { PrivateRoute, ProtectedSigninRoute, ProtectedSignupRoute } from '../components';
 import { ProfilePage, CreateCommerce, AboutCommerce, UpdateCommerce } from '../components/sessionPage';
@@ -29,6 +30,27 @@ class App extends Component {
 			// clear alert on location change
 			this.props.clearAlerts();
 		});
+	}
+
+	componentDidMount() {
+		try {
+			const CurrentUser = Parse.User.current();
+			const query = new Parse.Query(Parse.Object.extend('_Session'));
+			query.equalTo("sessionToken", CurrentUser.getSessionToken())
+			query.find()
+			.then((snapshot) => {
+				snapshot.forEach(res => {
+					console.log(`aaaaa ${res.get('sessionToken')}`);
+				})
+			})
+			.catch(error => {
+				Parse.User.logOut();
+				window.location.reload();
+				// console.error(error);
+			})
+		} catch (error) {
+			
+		}
 	}
 
 	render() {
