@@ -45,7 +45,7 @@ class PayPage extends Component {
      */
     async submit(ev) {
         // User clicked submit
-        let { token } = await this.props.stripe.createToken({name: "Name"});
+        let { token } = await this.props.stripe.createToken({name: "Paiement web Weeclik CommerceId: "+ this.props.location.state.id });
         let response = await fetch("/charge", {
             method: "POST",
             headers: {"Content-Type": "text/plain"},
