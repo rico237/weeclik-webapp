@@ -33,9 +33,8 @@ class PayPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            prix: 300,
             complete: false,
-            stripePublicKey: ""+process.env.STRIPE_PUBLIC_KEY
+            stripePublicKey: ""+process.env.REACT_APP_STRIPE_PUBLIC_KEY
         };
         this.submit = this.submit.bind(this);
     }
