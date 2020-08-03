@@ -8,6 +8,7 @@ import NoProfile from '../../assets/images/no-profile.jpg';
 import EditImg from '../../assets/icons/edit.svg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
+import { isValideEmail } from '../../functions/weeclik.func';
 
 
 const getBase64 = (file) => {
@@ -419,10 +420,17 @@ class UpdateUser extends Component {
                                                     <input
                                                         type="email"
                                                         id="emailInput"
-                                                        className="form-control"
+                                                        className={"form-control " + (isValideEmail(this.state.user.email) ? "" : "is-invalid")}
                                                         value={this.state.user.email}
                                                         onChange={e => this.handleChangeMail(e.target.value)}
                                                         placeholder={this.state.user.email}/>
+                                                        {
+                                                            isValideEmail(this.state.user.email) ?
+                                                            null :
+                                                            (<div className="invalid-feedback">
+                                                                * Ceci n'est pas un mail valide
+                                                            </div>)
+                                                        }
                                                 </div>
                                                 {
                                                     alertMsg ?
@@ -435,7 +443,7 @@ class UpdateUser extends Component {
                                                     </div> :
                                                     <div></div>
                                                 }
-                                                <input type="submit" className="btn btn-solid-lg" value="ENREGISTRER" style={{ outline: 'none', width: '100%' }}/>
+                                                <input disabled={!isValideEmail(this.state.user.email)} type="submit" className="btn btn-solid-lg" value="ENREGISTRER" style={{ outline: 'none', width: '100%' }}/>
                                             </fieldset>
                                         </form>
                                     </Grid>
