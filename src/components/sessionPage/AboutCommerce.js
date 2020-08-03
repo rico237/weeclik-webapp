@@ -47,6 +47,7 @@ import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 // import Picture from './components/commerceComponent/Picture';
 import Footer from '../footer/Footer';
+import { isValideEmail } from '../../functions/weeclik.func';
 // import HUE from '@material-ui/core/colors/HUE';
 // import ShowInfoCommerce from './components/commerceComponent/ShowInfoCommerce';
 //#endregion
@@ -364,7 +365,7 @@ class AboutCommerce extends Component {
                 Commerce_Photos.save().then((snapshot) => {
                     const instanceCommerce = new ParseCommerce();
 
-                    console.log("---------------")
+                    // console.log("---------------")
 
                     if (n === 0) {
                         instanceCommerce.id = this.state.commerceId
@@ -383,7 +384,7 @@ class AboutCommerce extends Component {
                         window.location.reload();
                         // this.getUrlCommercePicture();
                     }    
-                    console.log("+++++++++++")
+                    // console.log("+++++++++++")
                 });
             }, (error) => {
                 console.error(error);
@@ -398,7 +399,7 @@ class AboutCommerce extends Component {
 
         var taille = 0;
 
-        console.log("----====="+this.state.nbReelImage);
+        // console.log("----====="+this.state.nbReelImage);
         
 
         if (/*event.target.files.length <= 3 && */this.state.nbReelImage < 3) {
@@ -500,7 +501,7 @@ class AboutCommerce extends Component {
                 responseSnapshot.forEach((elt) => {
                     commercePicture.push({ id: elt.id, url: elt.get("photo").url(), default: false });
                 });
-                console.log("[REAL IMG] "+commercePicture.length);
+                // console.log("[REAL IMG] "+commercePicture.length);
                 this.setState({
                     nbReelImage: commercePicture.length
                 });
@@ -509,7 +510,7 @@ class AboutCommerce extends Component {
                     var uuid = this.getUUID();
                     commercePicture.push({ id: uuid, url: NoImage, default: true })
                 }
-                console.log("[IMG] "+commercePicture.length);
+                // console.log("[IMG] "+commercePicture.length);
             });
         
         return new Promise(resolve => {
@@ -655,6 +656,7 @@ class AboutCommerce extends Component {
         event.preventDefault();
         const _state_commerce = this.state.commerce;
         let addr = "";
+        // console.log(this.state.commerce.mail+" - "+isValideEmail(this.state.commerce.mail))
         if (_state_commerce !== "") {
             addr = _state_commerce.adresse;
         } else if (_state_commerce.adresse !== "") {
@@ -663,6 +665,7 @@ class AboutCommerce extends Component {
 
         if (_state_commerce.nomCommerce !== "" &&
             _state_commerce.currencyCategory !== "" &&
+            isValideEmail(_state_commerce.mail) &&
             _state_commerce.tel !== "" && addr !== "") {
             const ParseCommerce = Parse.Object.extend("Commerce");
             const instanceCommerce = new ParseCommerce();
@@ -792,6 +795,13 @@ class AboutCommerce extends Component {
                                                                 name="nomCommerce"
                                                                 id="outlined-name"
                                                             />
+                                                            {
+                                                                this.state.commerce.nomCommerce !== "" ?
+                                                                null :
+                                                                (<div style={{ color: "red", fontSize: "14px", marginTop: "12px", marginBottom: "5px" }}>
+                                                                    * Veuillez entrer un nom valide.
+                                                                </div>)
+                                                            }
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Cathégorie</label>
@@ -827,6 +837,13 @@ class AboutCommerce extends Component {
                                                                 name="adresse"
                                                                 id="outlined-name"
                                                             />
+                                                            {
+                                                                this.state.commerce.adresse !== "" ?
+                                                                null :
+                                                                (<div style={{ color: "red", fontSize: "14px", marginTop: "12px", marginBottom: "5px" }}>
+                                                                    * Veuillez entrer une adresse valide.
+                                                                </div>)
+                                                            }
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Numéro de téléphone</label>
@@ -837,6 +854,13 @@ class AboutCommerce extends Component {
                                                                 name="tel"
                                                                 id="outlined-name"
                                                             />
+                                                            {
+                                                                this.state.commerce.tel !== "" ?
+                                                                null :
+                                                                (<div style={{ color: "red", fontSize: "14px", marginTop: "12px", marginBottom: "5px" }}>
+                                                                    * Veuillez entrer un numéro valide.
+                                                                </div>)
+                                                            }
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Adresse mail</label>
@@ -847,6 +871,13 @@ class AboutCommerce extends Component {
                                                                 name="mail"
                                                                 id="outlined-name"
                                                             />
+                                                            {
+                                                                isValideEmail(this.state.commerce.mail) ?
+                                                                null :
+                                                                (<div style={{ color: "red", fontSize: "14px", marginTop: "12px", marginBottom: "12px" }}>
+                                                                    * Veuillez entrer un mail valide.
+                                                                </div>)
+                                                            }
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Site web</label>

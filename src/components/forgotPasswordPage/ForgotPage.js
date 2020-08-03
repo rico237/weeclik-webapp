@@ -6,6 +6,7 @@ import { userActions } from '../../redux/actions';
 import { Avatar, Typography, Grid, TextField, Paper } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import Footer from '../footer/Footer';
+import { isValideEmail } from '../../functions/weeclik.func';
 
 
 const theme = createMuiTheme({
@@ -63,6 +64,7 @@ class ForgotPage extends Component {
 
     handleChange(event) {
         const username = event.target.value;
+        console.log("--- >: "+isValideEmail(username));
         this.setState({username: username});
     }
 
@@ -129,10 +131,18 @@ class ForgotPage extends Component {
                                                 label="Adresse e-mail"
                                                 value={username}
                                                 onChange={this.handleChange}/>
+                                                {
+                                                    isValideEmail(username) ?
+                                                    null :
+                                                    (<div style={{ color: "red", fontSize: "14px" }}>
+                                                        * Veuillez entrer un mail valide.
+                                                    </div>)
+                                                }
                                         </Grid>
                                     </Grid>
 
                                     <input
+                                        disabled={!isValideEmail(username)}
                                         className="btn-solid-lg"
                                         type="submit"
                                         // fullWidth

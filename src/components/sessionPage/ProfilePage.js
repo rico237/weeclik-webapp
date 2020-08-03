@@ -277,10 +277,13 @@ class ProfilePage extends Component {
                 var name = snapshot.get('name');
                 // console.log(snapshot.get("profilPicFile")._url);
                 var PICTURE = null
-                if (snapshot.get("profilPicFile")._url) {
-                    PICTURE = snapshot.get("profilPicFile")._url;
-                } else {
-                    PICTURE = snapshot.get('profilePictureURL');
+                try {
+                    if (snapshot.get("profilPicFile")._url) {
+                        PICTURE = snapshot.get("profilPicFile")._url;
+                    } else {
+                        PICTURE = snapshot.get('profilePictureURL');
+                    }
+                } catch (error) {
                 }
                 var username = snapshot.getUsername();
                 var mail = snapshot.getEmail();

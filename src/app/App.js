@@ -40,7 +40,7 @@ class App extends Component {
 			query.find()
 			.then((snapshot) => {
 				snapshot.forEach(res => {
-					console.log(`aaaaa ${res.get('sessionToken')}`);
+					console.log(``);//aaaaa ${res.get('sessionToken')}
 				})
 			})
 			.catch(error => {

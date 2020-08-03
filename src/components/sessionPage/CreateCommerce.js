@@ -13,6 +13,7 @@ import BGImage from '../../assets/images/download-background.jpg';
 import { connect } from 'react-redux';
 import { userActions } from '../../redux/actions';
 import { PopupMessage } from '../PopupMessage';
+import { isValideEmail } from '../../functions/weeclik.func';
 
 import axios from "axios";
 
@@ -351,7 +352,7 @@ class CreateCommerce extends Component {
             )
         }
         const { nomCommerce, adresse, bp, ville, mail, tel, description, currencyCategory } = this.state.commerce;
-        const isEnabled = nomCommerce.length > 0 && adresse.length > 0 && bp.length > 0 && ville.length > 0 && mail.length > 0 && tel.length > 0 && description.length > 0 && currencyCategory.length > 0;
+        const isEnabled = nomCommerce.length > 0 && adresse.length > 0 && bp.length > 0 && ville.length > 0 && isValideEmail(mail) && tel.length > 0 && description.length > 0 && currencyCategory.length > 0;
 
         let { _images1, _images2, _images3 } = this.state;
 
@@ -519,7 +520,7 @@ class CreateCommerce extends Component {
                                     <TextField
                                         onChange={this.handleChange.bind(this)}
                                         fullWidth name="mail" id="outlined-name" label="Adresse mail" margin="dense" variant="outlined"
-                                        error={mail.length > 0 ? false : true}
+                                        error={isValideEmail(mail) ? false : true}
                                         helperText="* Veuillez ajouter l'adresse mail du commerce"
                                     />
                                 </Grid>
