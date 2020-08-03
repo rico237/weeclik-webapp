@@ -5,6 +5,7 @@ import { userActions } from '../../redux/actions';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Container, Avatar, Typography, Grid, TextField, Paper } from '@material-ui/core';
 import Footer from '../footer/Footer';
+import { isValideEmail, isIdemPassword } from '../../functions/weeclik.func';
 
 
 const theme = createMuiTheme({
@@ -63,6 +64,7 @@ class RegisterPage extends Component {
             submitted: false
         };
 
+        this.valideInputs = this.valideInputs.bind(this);
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -85,7 +87,7 @@ class RegisterPage extends Component {
         const { user } = this.state;
         if (this.state.user.firstName &&
             this.state.user.lastName &&
-            this.state.user.email &&
+            isValideEmail(this.state.user.email) &&
             this.state.user.password &&
             this.state.user.repeatPw) {
                 if (this.state.user.password === this.state.user.repeatPw) {
@@ -100,7 +102,7 @@ class RegisterPage extends Component {
         if (!this.state.user.password || !this.state.user.repeatPw) {
             this.setState({ alertMsg: 'Veuillez entrer un mot de passe' });
         }
-        if (!this.state.user.email) {
+        if (!isValideEmail(this.state.user.email)) {
             this.setState({ alertMsg: 'Veuillez entrer un e-mail' });
         }
         if (!this.state.user.firstName || !this.state.user.lastName) {
@@ -125,6 +127,17 @@ class RegisterPage extends Component {
         if (codeError === 125) {
             return "Cette adresse e-mail est n'est pas valide";
         }
+    }
+
+    valideInputs() {
+        if (this.state.user.firstName.length > 0 &&
+            this.state.user.lastName.length > 0 &&
+            isValideEmail(this.state.user.email) &&
+            this.state.user.password.length > 0 &&
+            this.state.user.password === this.state.user.repeatPw) {
+            return true;
+        }
+        return false;
     }
 
     render() {
@@ -176,6 +189,13 @@ class RegisterPage extends Component {
                                             label="E-mail"
                                             value={user.email}
                                             onChange={this.handleChange}/>
+                                            {
+                                                isValideEmail(user.email) ?
+                                                null :
+                                                (<div style={{ color: "red", fontSize: "14px" }}>
+                                                    * Veuillez entrer un mail valide.
+                                                </div>)
+                                            }
                                     </Grid>
                                     <Grid item xs={12}>
                                         <TextField
@@ -216,6 +236,7 @@ class RegisterPage extends Component {
                                 }
 
                                 <input
+                                    // disabled={!this.valideInputs()}
                                     className="btn-solid-lg"
                                     type="submit"
                                     variant="contained"
