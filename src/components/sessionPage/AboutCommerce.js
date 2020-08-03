@@ -665,6 +665,7 @@ class AboutCommerce extends Component {
 
         if (_state_commerce.nomCommerce !== "" &&
             _state_commerce.currencyCategory !== "" &&
+            isValideEmail(_state_commerce.mail) &&
             _state_commerce.tel !== "" && addr !== "") {
             const ParseCommerce = Parse.Object.extend("Commerce");
             const instanceCommerce = new ParseCommerce();
@@ -794,6 +795,13 @@ class AboutCommerce extends Component {
                                                                 name="nomCommerce"
                                                                 id="outlined-name"
                                                             />
+                                                            {
+                                                                this.state.commerce.nomCommerce !== "" ?
+                                                                null :
+                                                                (<div style={{ color: "red", fontSize: "14px", marginTop: "12px", marginBottom: "5px" }}>
+                                                                    * Veuillez entrer un nom valide.
+                                                                </div>)
+                                                            }
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Cathégorie</label>
@@ -829,6 +837,13 @@ class AboutCommerce extends Component {
                                                                 name="adresse"
                                                                 id="outlined-name"
                                                             />
+                                                            {
+                                                                this.state.commerce.adresse !== "" ?
+                                                                null :
+                                                                (<div style={{ color: "red", fontSize: "14px", marginTop: "12px", marginBottom: "5px" }}>
+                                                                    * Veuillez entrer une adresse valide.
+                                                                </div>)
+                                                            }
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Numéro de téléphone</label>
@@ -839,6 +854,13 @@ class AboutCommerce extends Component {
                                                                 name="tel"
                                                                 id="outlined-name"
                                                             />
+                                                            {
+                                                                this.state.commerce.tel !== "" ?
+                                                                null :
+                                                                (<div style={{ color: "red", fontSize: "14px", marginTop: "12px", marginBottom: "5px" }}>
+                                                                    * Veuillez entrer un numéro valide.
+                                                                </div>)
+                                                            }
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Adresse mail</label>
@@ -849,13 +871,13 @@ class AboutCommerce extends Component {
                                                                 name="mail"
                                                                 id="outlined-name"
                                                             />
-                                                            {/* {
+                                                            {
                                                                 isValideEmail(this.state.commerce.mail) ?
                                                                 null :
-                                                                (<div className="invalid-feedback">
-                                                                    * Ceci n'est pas un mail valide
+                                                                (<div style={{ color: "red", fontSize: "14px", marginTop: "12px", marginBottom: "12px" }}>
+                                                                    * Veuillez entrer un mail valide.
                                                                 </div>)
-                                                            } */}
+                                                            }
                                                         </Grid>
                                                         <Grid item xs={12} sm={6}>
                                                             <label>Site web</label>
