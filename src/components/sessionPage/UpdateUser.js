@@ -282,10 +282,13 @@ class UpdateUser extends Component {
             currentUser.fetch().then((snapshot) => {
                 var name = snapshot.get('name');
                 var PICTURE = null
-                if (snapshot.get("profilPicFile")._url) {
-                    PICTURE = snapshot.get("profilPicFile")._url;
-                } else {
-                    PICTURE = snapshot.get('profilePictureURL');
+                try {
+                    if (snapshot.get("profilPicFile")._url) {
+                        PICTURE = snapshot.get("profilPicFile")._url;
+                    } else {
+                        PICTURE = snapshot.get('profilePictureURL');
+                    }
+                } catch (error) {
                 }
                 var username = snapshot.getUsername();
                 var mail = snapshot.getEmail();

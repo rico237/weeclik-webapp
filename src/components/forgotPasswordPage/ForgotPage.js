@@ -131,10 +131,18 @@ class ForgotPage extends Component {
                                                 label="Adresse e-mail"
                                                 value={username}
                                                 onChange={this.handleChange}/>
+                                                {
+                                                    isValideEmail(username) ?
+                                                    null :
+                                                    (<div style={{ color: "red", fontSize: "14px" }}>
+                                                        * Veuillez entrer un mail valide.
+                                                    </div>)
+                                                }
                                         </Grid>
                                     </Grid>
 
                                     <input
+                                        disabled={!isValideEmail(username)}
                                         className="btn-solid-lg"
                                         type="submit"
                                         // fullWidth
