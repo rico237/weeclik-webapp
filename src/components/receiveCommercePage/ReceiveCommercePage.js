@@ -14,6 +14,7 @@ import CallRoundedIcon from '@material-ui/icons/CallRounded';
 import grey from '@material-ui/core/colors/grey';
 
 import "../../../node_modules/video-react/dist/video-react.css";
+import { getValidUrl } from '../../functions/weeclik.func';
 
 
 //#region THEME
@@ -348,7 +349,7 @@ class ReceiveCommercePage extends Component {
                                         )}
                                     {this.state.commerce.siteWeb ? (
                                             <h6 style={{color:"#000"}}>
-                                                <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} rel="noopener noreferrer" style={{color: '#00F', textDecoration: 'none'}}>{"Site web"}</a>
+                                                <LanguageRoundedIcon/>{" : "}<a href={getValidUrl(this.state.commerce.siteWeb)} target={"_blank"} rel="noopener noreferrer" style={{color: '#00F', textDecoration: 'none'}}>{"Site web"}</a>
                                             </h6>
                                         ) : (
                                             <h6 style={{color: grey[500]}}>
