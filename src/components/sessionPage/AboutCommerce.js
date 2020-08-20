@@ -47,7 +47,7 @@ import blue from '@material-ui/core/colors/blue';
 import red from '@material-ui/core/colors/red';
 // import Picture from './components/commerceComponent/Picture';
 import Footer from '../footer/Footer';
-import { isValideEmail } from '../../functions/weeclik.func';
+import { isValideEmail, getValidUrl } from '../../functions/weeclik.func';
 // import HUE from '@material-ui/core/colors/HUE';
 // import ShowInfoCommerce from './components/commerceComponent/ShowInfoCommerce';
 //#endregion
@@ -917,7 +917,7 @@ class AboutCommerce extends Component {
                                                 {
                                                     this.state.commerce.siteWeb ? (
                                                         <h6 style={{color:"#000"}}>
-                                                            <LanguageRoundedIcon/>{" : "}<a href={"http://"+this.state.commerce.siteWeb} target={"_blank"} rel="noopener noreferrer" style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.siteWeb}</a>
+                                                            <LanguageRoundedIcon/>{" : "}<a href={/*"http://"+*/getValidUrl(this.state.commerce.siteWeb)} target={"_blank"} rel="noopener noreferrer" style={{color: blue[500], textTransform: 'lowercase'}}>{this.state.commerce.siteWeb}</a>
                                                         </h6>
                                                     ) : (
                                                         <h6 style={{color: grey[500]}}>
