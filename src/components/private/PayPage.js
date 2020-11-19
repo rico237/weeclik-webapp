@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Elements, StripeProvider } from 'react-stripe-elements';
+import { loadStripe } from '@stripe/stripe-js';
 import { Container, Grid, Typography, Avatar, Button, Box } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
-import CheckoutForm from './CheckoutForm';
 import logoComptePro from '../../assets/icons/users.svg';
-// import { borderRadius } from '@material-ui/system';
 
 const theme = createMuiTheme({
     spacing: 4,
@@ -28,42 +26,42 @@ const avatar = {
     height: 160
 }
 
+const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
 
 class PayPage extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            complete: false,
-            stripePublicKey: ""+process.env.REACT_APP_STRIPE_PUBLIC_KEY
-        };
-        this.submit = this.submit.bind(this);
+        // this.submit = this.submit.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
-    /**
-     * Create a token to securely transmit card information
-     * @param {*} ev 
-     */
-    async submit(ev) {
-        // User clicked submit
-        let { token } = await this.props.stripe.createToken({name: "Paiement web Weeclik CommerceId: "+ this.props.location.state.id });
-        let response = await fetch("/charge", {
-            method: "POST",
-            headers: {"Content-Type": "text/plain"},
-            body: token.id
+    async handleClick(event) {
+        // Get Stripe.js instance
+        const stripe = await stripePromise;
+    
+        // Call your backend to create the Checkout Session
+        const response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/create-checkout-session`, { 
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ commerceId: this.props.location.state.id })
         });
-
-        if (response.ok) this.setState({complete: true})
-    }
-
-    goToBack = () => {
-        this.props.history.goBack();
+    
+        const session = await response.json();
+    
+        // When the customer clicks on the button, redirect them to Checkout.
+        const result = await stripe.redirectToCheckout({
+          sessionId: session.id,
+        });
+    
+        if (result.error) {
+          // If `redirectToCheckout` fails due to a browser or network
+          // error, display the localized error message to your customer
+          // using `result.error.message`.
+          console.log(`Error trying to display Stripe Checkout: ${result.error.message}`);
+        }
     }
 
     render() {
-        // console.log("id Commerce "+this.props.location.state.id);
-        
-        if (this.state.complete) return <h1>Purchase Complete</h1>
-        
         return (
             <Container component="main" maxWidth={'lg'} style={{ marginTop: '-100px' }}>
                 <Box my={9}/>
@@ -96,15 +94,20 @@ class PayPage extends Component {
                                 borderRadius: '5px',
                                 backgroundColor: '#F6F9FC'
                             }}>
-                                <StripeProvider apiKey={this.state.stripePublicKey}>
-                                    <div className="example">
-                                        <Elements>
-                                            <CheckoutForm _idCommerce={this.props.location.state.id}/>
-                                        </Elements>
-                                    </div>
-                                </StripeProvider>
 
-                                <Button fullWidth onClick={() => this.goToBack()} variant="outlined" size="small" color="secondary" style={{outline: 'none', borderRadius: '2rem'}}>Annuler</Button>
+                                <div className="example">
+                                    <Button fullWidth
+                                        role="link" onClick={this.handleClick}
+                                        variant="contained"
+                                        to="/createcommerce"
+                                        style={{background: '#1EB0F8', marginBottom:'25px', border: 0,boxShadow: '0 3px 5px 2px rgba(30, 176, 248, .3)',color: 'white',textTransform: 'uppercase',fontSize: 15,fontWeight: 700,borderRadius: 100}}>
+                                        Payer 329,99€
+                                    </Button>
+                                </div>
+
+                                <Button fullWidth onClick={() => this.props.history.goBack()} variant="outlined" size="small" color="secondary" style={{outline: 'none', borderRadius: '2rem'}}>
+                                        Annuler
+                                </Button>
                             </div>
                         </Grid>
                     </Grid>
