@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import Parse from 'parse';
 import { loadStripe } from '@stripe/stripe-js';
 import { Container, Grid, Typography, Avatar, Button, Box } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -31,27 +30,6 @@ class PayPage extends Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
-        this.state = {
-            user: {
-                username: ''
-            }
-        };
-    }
-
-    componentDidMount() {
-        var currentUser = Parse.User.current();
-        if (currentUser) {
-            currentUser.fetch().then((snapshot) => {
-                var username = snapshot.getUsername();
-
-                this.setState(prevState => ({
-                    user: {
-                        ...prevState.user,
-                        username: username
-                    }
-                }))
-            })
-        }
     }
 
     async handleClick(event) {
@@ -70,7 +48,6 @@ class PayPage extends Component {
         // When the customer clicks on the button, redirect them to Checkout.
         const result = await stripe.redirectToCheckout({
           sessionId: session.id,
-          customerEmail: this.state.user.username
         });
     
         if (result.error) {
