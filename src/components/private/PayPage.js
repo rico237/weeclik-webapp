@@ -26,18 +26,15 @@ const avatar = {
     height: 160
 }
 
-const stripePromise = loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
-
 class PayPage extends Component {
     constructor(props) {
         super(props);
-        // this.submit = this.submit.bind(this);
         this.handleClick = this.handleClick.bind(this);
     }
 
     async handleClick(event) {
         // Get Stripe.js instance
-        const stripe = await stripePromise;
+        const stripe = await loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
     
         // Call your backend to create the Checkout Session
         const response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/create-checkout-session`, { 
@@ -99,7 +96,6 @@ class PayPage extends Component {
                                     <Button fullWidth
                                         role="link" onClick={this.handleClick}
                                         variant="contained"
-                                        to="/createcommerce"
                                         style={{background: '#1EB0F8', marginBottom:'25px', border: 0,boxShadow: '0 3px 5px 2px rgba(30, 176, 248, .3)',color: 'white',textTransform: 'uppercase',fontSize: 15,fontWeight: 700,borderRadius: 100}}>
                                         Payer 329,99€
                                     </Button>
