@@ -346,8 +346,7 @@ class CreateCommerce extends Component {
         if (this.state.isCreate) {
             return (
                 <Redirect to={{
-                    pathname: '/aboutcommerce',
-                    state: { id: this.state.id }
+                    pathname: `/aboutcommerce/${this.state.id}`
                 }} />
             )
         }

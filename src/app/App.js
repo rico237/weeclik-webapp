@@ -76,7 +76,7 @@ class App extends Component {
 							<PrivateRoute path="/user" component={ProfilePage}/>
 							<PrivateRoute path="/createcommerce" component={CreateCommerce}/>
 							<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
-							<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>
+							<PrivateRoute path="/aboutcommerce/:commerceId" component={AboutCommerce}/>
 							<PrivateRoute path="/pay" component={PayPage}/>
 							<PrivateRoute path="/success-checkout/:session_id/:commerce_id" component={SuccessPaymentPage}/>
 							<Route exact path="/doc" component={DocumentReader}/>

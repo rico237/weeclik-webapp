@@ -99,8 +99,7 @@ class SuccessPaymentPage extends Component {
             console.log(`Session id url params: ${sessionId}`);
 
             return <Redirect to={{
-                pathname: '/aboutcommerce',
-                state: { id: commerceId }
+                pathname: `/aboutcommerce/${commerceId}`
             }} />;
         }
 
