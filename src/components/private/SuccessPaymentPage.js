@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, Redirect } from "react-router-dom";
 import Parse from 'parse';
-import { loadStripe } from '@stripe/stripe-js';
 import { Container, Grid, Typography, Avatar, Button, Box } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import logoComptePro from '../../assets/icons/users.svg';
@@ -27,59 +26,84 @@ const avatar = {
     height: 160
 }
 
-class PayPage extends Component {
+class SuccessPaymentPage extends Component {
     constructor(props) {
         super(props);
-        this.handleClick = this.handleClick.bind(this);
+        
+        this.state = {
+            complete: false
+        };
+        this.updateStatusCommerce = this.updateStatusCommerce.bind(this);
     }
 
-    async handleClick(event) {
-        // Get Stripe.js instance
-        const stripe = await loadStripe(`${process.env.REACT_APP_STRIPE_PUBLIC_KEY}`);
-    
+    updateStatusCommerce(ID) {
+        const ParseCommerce = Parse.Object.extend("Commerce");
+        const instanceCommerce = new ParseCommerce();
+        instanceCommerce.id = ID;
+        instanceCommerce.set("statutCommerce", 1);
+        instanceCommerce.set("brouillon", false);
+        instanceCommerce.save().then((commerceUpdate) => {
+            this.setState({complete: true})
+        }, (error) => {
+            console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+        })
+    }
+
+    async componentDidMount() {
+        // let query = duery();
+
+        let commerceId = this.props.match.params.commerce_id;
+        let sessionId = this.props.match.params.session_id;
+        
+        console.log(`Commerce id url params: ${commerceId}`);
+        console.log(`Session id url params: ${sessionId}`);
+
+        // commerceId = query.get("commerce_id");
+        // sessionId = query.get("session_id");
+
+        // console.log(`Commerce id url params: ${commerceId}`);
+        // console.log(`Session id url params: ${sessionId}`);
+
+        if (!commerceId || !sessionId) { return; }
+
         // Call your backend to create the Checkout Session
-        const response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/create-checkout-session`, { 
+        const response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/retrieve-checkout-session-status`, { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ commerceId: this.props.location.state.id })
+            body: JSON.stringify({ checkoutId: sessionId })
         });
     
-        const session = await response.json();
-    
-        // Get User infos
-        const currentUser = Parse.User.current();
-        console.log(`Current user email: ${currentUser.getUsername()}`);
-        if (currentUser) {
-            // Add user email to stripe checkout
-            // When the customer clicks on the button, redirect them to Checkout.
-            let result = await stripe.redirectToCheckout({
-                sessionId: session.id,
-                customerEmail: currentUser.getUsername()
-            });
+        const checkout = await response.json();
 
-            if (result.error) {
-                // If `redirectToCheckout` fails due to a browser or network
-                // error, display the localized error message to your customer
-                // using `result.error.message`.
-                console.log(`Error trying to display Stripe Checkout: ${result.error.message}`);
-              }
-        } else {
-            // Current User is null
-            // When the customer clicks on the button, redirect them to Checkout.
-            let result = await stripe.redirectToCheckout({
-                sessionId: session.id,
-            });
-
-            if (result.error) {
-                // If `redirectToCheckout` fails due to a browser or network
-                // error, display the localized error message to your customer
-                // using `result.error.message`.
-                console.log(`Error trying to display Stripe Checkout: ${result.error.message}`);
-              }
+        console.log(`Session status: ${checkout.payment_status}`);
+        
+        switch(checkout.payment_status) {
+        case 'paid':
+            // this.updateStatusCommerce(commerceId);
+            break;
+        case 'unpaid':
+            break;
+        case 'no_payment_required':
+            break;
+        default:
+            break;
         }
     }
 
     render() {
+        if (this.state.complete) {
+            let commerceId = this.props.match.params.commerce_id;
+            let sessionId = this.props.match.params.session_id;
+            
+            console.log(`Commerce id url params: ${commerceId}`);
+            console.log(`Session id url params: ${sessionId}`);
+
+            return <Redirect to={{
+                pathname: '/aboutcommerce',
+                state: { id: commerceId }
+            }} />;
+        }
+
         return (
             <Container component="main" maxWidth={'lg'} style={{ marginTop: '-100px' }}>
                 <Box my={9}/>
@@ -134,4 +158,4 @@ class PayPage extends Component {
     }
 }
 
-export default PayPage;
+export default SuccessPaymentPage;
