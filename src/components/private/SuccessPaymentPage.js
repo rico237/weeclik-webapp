@@ -4,6 +4,7 @@ import Parse from 'parse';
 import { Container, Grid, Typography, Avatar, Button, Box } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import logoComptePro from '../../assets/icons/users.svg';
+import ReactLoading from 'react-loading';
 
 const theme = createMuiTheme({
     spacing: 4,
@@ -30,41 +31,26 @@ class SuccessPaymentPage extends Component {
     constructor(props) {
         super(props);
         
+        /// paymentStatus: 0 = loading, 1 = success, 2 = failure
         this.state = {
-            complete: false
+            shdRedirect: false,
+            paymentStatus: 2,
         };
-        this.updateStatusCommerce = this.updateStatusCommerce.bind(this);
+        this.redirectUserToCommerce = this.redirectUserToCommerce.bind(this);
     }
 
-    updateStatusCommerce(ID) {
-        const ParseCommerce = Parse.Object.extend("Commerce");
-        const instanceCommerce = new ParseCommerce();
-        instanceCommerce.id = ID;
-        instanceCommerce.set("statutCommerce", 1);
-        instanceCommerce.set("brouillon", false);
-        instanceCommerce.save().then((commerceUpdate) => {
-            this.setState({complete: true})
-        }, (error) => {
-            console.error(`Failed to create new object, with error code: ' + ${error.message}`);
-        })
+    redirectUserToCommerce() {
+        this.setState({shdRedirect: true});
     }
 
     async componentDidMount() {
-        // let query = duery();
-
         let commerceId = this.props.match.params.commerce_id;
         let sessionId = this.props.match.params.session_id;
         
-        console.log(`Commerce id url params: ${commerceId}`);
-        console.log(`Session id url params: ${sessionId}`);
-
-        // commerceId = query.get("commerce_id");
-        // sessionId = query.get("session_id");
-
-        // console.log(`Commerce id url params: ${commerceId}`);
-        // console.log(`Session id url params: ${sessionId}`);
-
-        if (!commerceId || !sessionId) { return; }
+        if (!commerceId || !sessionId) { 
+            this.setState({shdRedirect: true});
+            return; 
+        }
 
         // Call your backend to create the Checkout Session
         const response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/retrieve-checkout-session-status`, { 
@@ -72,35 +58,47 @@ class SuccessPaymentPage extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ checkoutId: sessionId })
         });
-    
         const checkout = await response.json();
 
-        console.log(`Session status: ${checkout.payment_status}`);
-        
-        switch(checkout.payment_status) {
-        case 'paid':
-            // this.updateStatusCommerce(commerceId);
-            break;
-        case 'unpaid':
-            break;
-        case 'no_payment_required':
-            break;
-        default:
-            break;
+        if (checkout.errorMessage) {
+            // TODO: Handling error from API
+            console.log(`Error while confirming checkout session error: ${checkout.errorMessage}`);
+            this.setState({paymentStatus: 2});
+        } else {
+            // No error returned by API
+            switch(checkout.payment_status) {
+            case 'paid':
+                const ParseCommerce = Parse.Object.extend("Commerce");
+                const instanceCommerce = new ParseCommerce();
+                instanceCommerce.id = commerceId;
+                instanceCommerce.set("statutCommerce", 1);
+                instanceCommerce.set("brouillon", false);
+                instanceCommerce.set("endedSubscription", new Date(new Date().setFullYear(new Date().getFullYear() + 1)));
+                instanceCommerce.save().then((commerceUpdate) => {
+                    this.setState({paymentStatus: 1});
+                }, (error) => {
+                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                    this.setState({paymentStatus: 2});
+                })
+                break;
+            case 'unpaid':
+                this.setState({paymentStatus: 2});
+                break;
+            case 'no_payment_required':
+                this.setState({paymentStatus: 1});
+                break;
+            default:
+                this.setState({paymentStatus: 2});
+                break;
+            }
         }
     }
 
     render() {
-        if (this.state.complete) {
-            let commerceId = this.props.match.params.commerce_id;
-            let sessionId = this.props.match.params.session_id;
-            
-            console.log(`Commerce id url params: ${commerceId}`);
-            console.log(`Session id url params: ${sessionId}`);
-
-            return <Redirect to={{
-                pathname: `/aboutcommerce/${commerceId}`
-            }} />;
+        if (this.state.shdRedirect) {
+            const commerceId = this.props.match.params.commerce_id;
+            if (commerceId) { return <Redirect to={{ pathname: `/aboutcommerce/${commerceId}` }} />; }
+            return <Redirect to={{ pathname: `/user` }} />;
         }
 
         return (
@@ -110,47 +108,60 @@ class SuccessPaymentPage extends Component {
                     <Grid
                         container
                         direction="row"
-                        justify="space-between"
+                        justify="center"
                         alignItems="center"
                         spacing={0}>
-                        <Grid item xs={12} sm={6}>
-                            <center>
+                        <Grid item xs={12} sm={6} lg={4}>
+                        <center>
                                 <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
-                                <Typography variant="h4">Offre de lancement</Typography>
-                                <div style={{ margin: '15px', textAlign: 'justify' }}>
-                                    Pour son lancement l'ajout d'un commerce sur Weeclik est à un tarif préférenciel de 329.99 €
-                                </div>
-                                <div style={{ margin: '15px', textAlign: 'justify' }}>
-                                    Votre paiement sera débité de votre compte. L'abonnement vous permet d'obtenir un commerce sur le réseau Weeclik pour une durée d'un an, sans renouvellement automatique.
-                                    Le rachat de cet abonnement pour un commerce existant rajoute un an à sa période de visibilité sur le réseau Weeclik.
+                                
+                                {(() => {
+                                    switch (this.state.paymentStatus) {
+                                        case 0: // Loading
+                                            return (
+                                                <div>
+                                                    <ReactLoading type={"spinningBubbles"} color={"#1DAFF8"} />
+                                                    <Typography variant="h4">Chargement</Typography>
+                                                    <div style={{ margin: '15px', textAlign: 'justify' }}>
+                                                    Vérification du paiement en cours, veuillez patienter.
+                                                    </div>
+                                                </div>
+                                            );
+                                            
+                                        case 1: // Success
+                                            return (
+                                                <div>
+                                                    <Typography variant="h4">Bravo !</Typography>
+                                                    <div style={{ margin: '15px', textAlign: 'justify' }}>
+                                                    Votre paiement pour la mise en ligne de votre commerce a été effectué avec succès,
+                                                    votre commerce est maintenant visible par l'ensemble du réseau Weeclik®
+                                                    </div>
+                                                </div>
+                                            );
 
-                                    En vous abonnant, vous acceptez nos <Link style={{color: "blue", textDecoration: "none"}} to={`/doc/cguv`}>Termes &amp; Conditions</Link>, <Link style={{color: "blue", textDecoration: "none"}} to={`/doc/cgu`}>CGU</Link>, <Link style={{color: "blue", textDecoration: "none"}} to={`/doc/cgv`}>CGV</Link> <Link style={{color: "blue", textDecoration: "none"}} to={`/doc/rgpd`}>Politique de vie privée</Link>.
-                                </div>
-                            </center>
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <div style={{
-                                padding: '25px',
-                                // marginLeft: '25px',
-                                borderRadius: '5px',
-                                backgroundColor: '#F6F9FC'
-                            }}>
+                                        case 2: // Failure
+                                            return (
+                                                <div>
+                                                    <Typography variant="h4">Erreur lors du paiement</Typography>
+                                                    <div style={{ margin: '15px', textAlign: 'justify' }}>
+                                                    Une erreur est survenue lors du paiement de votre abonnement,
+                                                    veuillez ressayer ou changer de moyen de paiement.
+                                                    </div>
+                                                </div>
+                                            );
 
-                                <div className="example">
-                                    <Button fullWidth
-                                        role="link" onClick={this.handleClick}
-                                        variant="contained"
-                                        style={{background: '#1EB0F8', marginBottom:'25px', border: 0,boxShadow: '0 3px 5px 2px rgba(30, 176, 248, .3)',color: 'white',textTransform: 'uppercase',fontSize: 15,fontWeight: 700,borderRadius: 100}}>
-                                        Payer 329,99€
-                                    </Button>
-                                </div>
+                                        default:
+                                            // Never called, since status can only be 0,1,2.
+                                            return (<Container component="main"></Container>);
+                                    }
+                                })()}
 
-                                <Button fullWidth onClick={() => this.props.history.goBack()} variant="outlined" size="small" color="secondary" style={{outline: 'none', borderRadius: '2rem'}}>
-                                        Annuler
+                                <Button fullWidth onClick={() => this.redirectUserToCommerce()} variant="outlined" size="small" color="secondary" style={{outline: 'none', borderRadius: '2rem'}}>
+                                        Retour à mes commerces
                                 </Button>
-                            </div>
+                            </center>
+                            </Grid>
                         </Grid>
-                    </Grid>
                 </div>
             </Container>
         );

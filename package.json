@@ -19,6 +19,7 @@
     "react-dom": "^16.14.0",
     "react-facebook-login": "^4.1.1",
     "react-html5video": "^2.5.1",
+    "react-loading": "^2.0.3",
     "react-modal-image": "^2.5.0",
     "react-pdf": "^4.1.0",
     "react-redux": "^7.2.2",
