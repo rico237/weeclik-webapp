@@ -88,7 +88,6 @@ class SuccessPaymentPage extends Component {
                 this.setState({paymentStatus: 1});
                 break;
             default:
-                this.setState({paymentStatus: 2});
                 break;
             }
         }
