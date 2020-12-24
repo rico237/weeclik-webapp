@@ -34,7 +34,7 @@ class SuccessPaymentPage extends Component {
         /// paymentStatus: 0 = loading, 1 = success, 2 = failure
         this.state = {
             shdRedirect: false,
-            paymentStatus: 2,
+            paymentStatus: 0,
         };
         this.redirectUserToCommerce = this.redirectUserToCommerce.bind(this);
     }
