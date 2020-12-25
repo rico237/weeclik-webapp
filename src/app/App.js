@@ -13,6 +13,7 @@ import { RegisterPage } from '../components/registerPage';
 import { Page404 } from '../components/notFoundPage';
 import { ReceiveCommercePage } from '../components/receiveCommercePage';
 import PayPage from '../components/private/PayPage';
+import SuccessPaymentPage from '../components/private/SuccessPaymentPage';
 
 import '../css/App.css';
 import Navigation from '../containers/Navigation';
@@ -75,8 +76,9 @@ class App extends Component {
 							<PrivateRoute path="/user" component={ProfilePage}/>
 							<PrivateRoute path="/createcommerce" component={CreateCommerce}/>
 							<PrivateRoute path="/updatecommerce" component={UpdateCommerce}/>
-							<PrivateRoute path="/aboutcommerce" component={AboutCommerce}/>
+							<PrivateRoute path="/aboutcommerce/:commerceId" component={AboutCommerce}/>
 							<PrivateRoute path="/pay" component={PayPage}/>
+							<PrivateRoute path="/success-checkout/:session_id/:commerce_id" component={SuccessPaymentPage}/>
 							<Route exact path="/doc" component={DocumentReader}/>
 							<Route exact path="/doc/phone/link" component={ChooseDoc}/>
 							<Route exact path="/doc/phone/link/:index" component={DocReader}/>

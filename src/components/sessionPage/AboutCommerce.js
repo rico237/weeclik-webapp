@@ -90,7 +90,7 @@ class AboutCommerce extends Component {
         try {
             this.state = {
                 error: null,
-                commerceId: this.props.location.state.id,
+                commerceId: this.props.match.params.commerceId,
                 currentUser: Parse.User.current(),
                 commerce: {
                     nomCommerce: '',

@@ -157,8 +157,7 @@ class CommercesPage extends Component {
 
     goToDetail = (_id) => {
         this.props.history.push({
-            pathname: '/aboutcommerce',
-            state: { id: _id }
+            pathname: `/aboutcommerce/${_id}`
         })
     }
 
