@@ -46,8 +46,9 @@ class SuccessPaymentPage extends Component {
     async componentDidMount() {
         let commerceId = this.props.match.params.commerce_id;
         let sessionId = this.props.match.params.session_id;
-        
-        if (!commerceId || !sessionId) { 
+        let currentUser = Parse.User.current();
+
+        if (!commerceId || !sessionId || !currentUser) { 
             this.setState({shdRedirect: true});
             return; 
         }
@@ -57,7 +58,8 @@ class SuccessPaymentPage extends Component {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 checkoutSessionId: sessionId,
-                commerceId: commerceId
+                commerceId: commerceId,
+                userId: currentUser.id
             })
         });
         const result = await response.json();
