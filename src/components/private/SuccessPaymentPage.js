@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, useLocation, Redirect } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import Parse from 'parse';
 import { Container, Grid, Typography, Avatar, Button, Box } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
@@ -31,7 +31,8 @@ class SuccessPaymentPage extends Component {
     constructor(props) {
         super(props);
         
-        /// paymentStatus: 0 = loading, 1 = success, 2 = failure
+        /// paymentStatus: 0 = loading, 1 = success, 2 = failure, 
+        /// 3 = Stripe Checkout session already used
         this.state = {
             shdRedirect: false,
             paymentStatus: 0,
@@ -69,24 +70,42 @@ class SuccessPaymentPage extends Component {
             switch(checkout.payment_status) {
             case 'paid':
                 const ParseCommerce = Parse.Object.extend("Commerce");
-                const instanceCommerce = new ParseCommerce();
-                instanceCommerce.id = commerceId;
-                instanceCommerce.set("statutCommerce", 1);
-                instanceCommerce.set("brouillon", false);
-                instanceCommerce.set("endedSubscription", new Date(new Date().setFullYear(new Date().getFullYear() + 1)));
-                instanceCommerce.save().then((commerceUpdate) => {
-                    this.setState({paymentStatus: 1});
+                const query = new Parse.Query(ParseCommerce);
+                query.get(`${commerceId}`)
+                .then((instanceCommerce) => {
+                    // The commerce was retrieved successfully.
+                    var sessions = instanceCommerce.get("stripeCheckoutSession");
+                    if (sessions === undefined) {
+                        instanceCommerce.set("stripeCheckoutSession", []);
+                    }
+                    if (sessions === undefined || !sessions.includes(sessionId)) {
+                        instanceCommerce.addUnique("stripeCheckoutSession", sessionId);
+                        instanceCommerce.set("statutCommerce", 1);
+                        instanceCommerce.set("brouillon", false);
+                        instanceCommerce.set("endedSubscription", new Date(new Date().setFullYear(new Date().getFullYear() + 1)));
+                        instanceCommerce.save().then((commerceUpdate) => {
+                            this.setState({paymentStatus: 1});
+                        }, (error) => {
+                            console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                            this.setState({paymentStatus: 2});
+                        })
+                    } else {
+                        this.setState({paymentStatus: 3});
+                    }
                 }, (error) => {
-                    console.error(`Failed to create new object, with error code: ' + ${error.message}`);
+                    console.log(`Error while getting commerce infos error: ${error}`);
                     this.setState({paymentStatus: 2});
-                })
+                });
                 break;
+
             case 'unpaid':
                 this.setState({paymentStatus: 2});
                 break;
+            
             case 'no_payment_required':
                 this.setState({paymentStatus: 1});
                 break;
+            
             default:
                 break;
             }
@@ -110,7 +129,7 @@ class SuccessPaymentPage extends Component {
                         justify="center"
                         alignItems="center"
                         spacing={0}>
-                        <Grid item xs={12} sm={6} lg={4}>
+                        <Grid item xs={12} sm={6} lg={6}>
                         <center>
                                 <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
                                 
@@ -149,14 +168,29 @@ class SuccessPaymentPage extends Component {
                                                 </div>
                                             );
 
+                                        case 3: // Stripe checkout session already used
+                                            let sessionId = this.props.match.params.session_id;
+                                            return (
+                                                <div>
+                                                    <Typography variant="h4">Erreur d'identifiant Stripe</Typography>
+                                                    <div style={{ margin: '15px', textAlign: 'justify' }}>
+                                                    L'identifiant Stripe unique utilisé afin d'authentifier votre paiement est déjà connu de notre système.
+                                                    Veuillez contacter un administrateur du site si votre commerce n'est pas en ligne.
+                                                    <br/><br/>
+                                                    Veuillez indiquer cet identifiant dans votre prise de contact: <br/>
+                                                    { sessionId }
+                                                    </div>
+                                                </div>
+                                            );
+
                                         default:
-                                            // Never called, since status can only be 0,1,2.
+                                            // Should not be called
                                             return (<Container component="main"></Container>);
                                     }
                                 })()}
 
                                 <Button fullWidth onClick={() => this.redirectUserToCommerce()} variant="outlined" size="small" color="secondary" style={{outline: 'none', borderRadius: '2rem'}}>
-                                        Retour à mes commerces
+                                        Retour sur la page de mon commerce
                                 </Button>
                             </center>
                             </Grid>

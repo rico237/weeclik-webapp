@@ -58,13 +58,7 @@ class App extends Component {
 		console.log(`Link : ${window.location.pathname.substring(0, 16)}`);
 		
 		return (
-			<div
-				style={{
-					msUserSelect: 'none',
-					MozUserSelect: 'none',
-					WebkitUserSelect: 'none',
-				}}
-			>
+			<div>
 				<Router history={history}>
 					<ErrorBoundary>
 						{ window.location.pathname.substring(0, 15) !== "/doc/phone/link" && <Navigation/> }
