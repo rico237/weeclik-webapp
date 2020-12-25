@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
-import Parse from 'parse';
 import { Container, Grid, Typography, Avatar, Button, Box } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import logoComptePro from '../../assets/icons/users.svg';
@@ -53,62 +52,23 @@ class SuccessPaymentPage extends Component {
             return; 
         }
 
-        // Call your backend to create the Checkout Session
-        const response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/retrieve-checkout-session-status`, { 
+        const response = await fetch(`${process.env.REACT_APP_ROOT_SERVER_URL}/publish-commerce`, { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ checkoutId: sessionId })
+            body: JSON.stringify({
+                checkoutSessionId: sessionId,
+                commerceId: commerceId
+            })
         });
-        const checkout = await response.json();
+        const result = await response.json();
 
-        if (checkout.errorMessage) {
+        if (result.error) {
             // TODO: Handling error from API
-            console.log(`Error while confirming checkout session error: ${checkout.errorMessage}`);
+            console.log(`Error while publishing commerce = error: ${result.error}`);
             this.setState({paymentStatus: 2});
         } else {
             // No error returned by API
-            switch(checkout.payment_status) {
-            case 'paid':
-                const ParseCommerce = Parse.Object.extend("Commerce");
-                const query = new Parse.Query(ParseCommerce);
-                query.get(`${commerceId}`)
-                .then((instanceCommerce) => {
-                    // The commerce was retrieved successfully.
-                    var sessions = instanceCommerce.get("stripeCheckoutSession");
-                    if (sessions === undefined) {
-                        instanceCommerce.set("stripeCheckoutSession", []);
-                    }
-                    if (sessions === undefined || !sessions.includes(sessionId)) {
-                        instanceCommerce.addUnique("stripeCheckoutSession", sessionId);
-                        instanceCommerce.set("statutCommerce", 1);
-                        instanceCommerce.set("brouillon", false);
-                        instanceCommerce.set("endedSubscription", new Date(new Date().setFullYear(new Date().getFullYear() + 1)));
-                        instanceCommerce.save().then((commerceUpdate) => {
-                            this.setState({paymentStatus: 1});
-                        }, (error) => {
-                            console.error(`Failed to create new object, with error code: ' + ${error.message}`);
-                            this.setState({paymentStatus: 2});
-                        })
-                    } else {
-                        this.setState({paymentStatus: 3});
-                    }
-                }, (error) => {
-                    console.log(`Error while getting commerce infos error: ${error}`);
-                    this.setState({paymentStatus: 2});
-                });
-                break;
-
-            case 'unpaid':
-                this.setState({paymentStatus: 2});
-                break;
-            
-            case 'no_payment_required':
-                this.setState({paymentStatus: 2});
-                break;
-            
-            default:
-                break;
-            }
+            this.setState({paymentStatus: 1});
         }
     }
 
@@ -119,6 +79,7 @@ class SuccessPaymentPage extends Component {
             return <Redirect to={{ pathname: `/user` }} />;
         }
 
+        let sessionId = this.props.match.params.session_id;
         return (
             <Container component="main" maxWidth={'lg'} style={{ marginTop: '-100px' }}>
                 <Box my={9}/>
@@ -129,7 +90,7 @@ class SuccessPaymentPage extends Component {
                         justify="center"
                         alignItems="center"
                         spacing={0}>
-                        <Grid item xs={12} sm={6} lg={6}>
+                        <Grid item xs={12} sm={6} lg={this.state.paymentStatus === 0 ? 4 : 6}>
                         <center>
                                 <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
                                 
@@ -163,13 +124,16 @@ class SuccessPaymentPage extends Component {
                                                     <Typography variant="h4">Erreur lors du paiement</Typography>
                                                     <div style={{ margin: '15px', textAlign: 'justify' }}>
                                                     Une erreur est survenue lors du paiement de votre abonnement,
-                                                    veuillez ressayer ou changer de moyen de paiement.
+                                                    ressayer ou changer de moyen de paiement.
+                                                    <br/><br/>
+                                                    Veuillez contacter un administrateur si vous avez été debité sans la mise en ligne de votre commerce 
+                                                    en indiquant cet identifiant dans votre prise de contact: <br/>
+                                                    { sessionId }
                                                     </div>
                                                 </div>
                                             );
 
                                         case 3: // Stripe checkout session already used
-                                            let sessionId = this.props.match.params.session_id;
                                             return (
                                                 <div>
                                                     <Typography variant="h4">Erreur d'identifiant Stripe</Typography>
