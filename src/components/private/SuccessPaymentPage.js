@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
-import Parse from 'parse';
 import { Container, Grid, Typography, Avatar, Button, Box } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import logoComptePro from '../../assets/icons/users.svg';
@@ -80,6 +79,7 @@ class SuccessPaymentPage extends Component {
             return <Redirect to={{ pathname: `/user` }} />;
         }
 
+        let sessionId = this.props.match.params.session_id;
         return (
             <Container component="main" maxWidth={'lg'} style={{ marginTop: '-100px' }}>
                 <Box my={9}/>
@@ -90,7 +90,7 @@ class SuccessPaymentPage extends Component {
                         justify="center"
                         alignItems="center"
                         spacing={0}>
-                        <Grid item xs={12} sm={6} lg={6}>
+                        <Grid item xs={12} sm={6} lg={this.state.paymentStatus === 0 ? 4 : 6}>
                         <center>
                                 <Avatar alt="Logo" src={logoComptePro} style={avatar}/>
                                 
@@ -134,7 +134,6 @@ class SuccessPaymentPage extends Component {
                                             );
 
                                         case 3: // Stripe checkout session already used
-                                            let sessionId = this.props.match.params.session_id;
                                             return (
                                                 <div>
                                                     <Typography variant="h4">Erreur d'identifiant Stripe</Typography>
