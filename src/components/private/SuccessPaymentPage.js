@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from "react-router-dom";
+import Parse from 'parse';
 import { Container, Grid, Typography, Avatar, Button, Box } from '@material-ui/core';
 import { createMuiTheme } from '@material-ui/core/styles';
 import logoComptePro from '../../assets/icons/users.svg';
