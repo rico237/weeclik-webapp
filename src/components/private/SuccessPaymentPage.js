@@ -103,7 +103,7 @@ class SuccessPaymentPage extends Component {
                 break;
             
             case 'no_payment_required':
-                this.setState({paymentStatus: 1});
+                this.setState({paymentStatus: 2});
                 break;
             
             default:
