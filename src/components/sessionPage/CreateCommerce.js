@@ -464,20 +464,14 @@ class CreateCommerce extends Component {
                                         helperText="* Veuillez sélectionner une catégorie"
                                     >   
                                         <MenuItem value=""><em>Aucune</em></MenuItem>
-                                        <MenuItem value="Alimentaire">Alimentaire</MenuItem>
                                         <MenuItem value="Automobile">Automobile</MenuItem>
-                                        <MenuItem value="Banque">Banque</MenuItem>
-                                        <MenuItem value="Bar/Pub">Bar/Pub</MenuItem>
-                                        <MenuItem value="Carreleur">Carreleur</MenuItem>
-                                        <MenuItem value="Coiffeur">Coiffeur</MenuItem>
-                                        <MenuItem value="Discothèque">Discothèque</MenuItem>
-                                        <MenuItem value="Habillement">Habillement</MenuItem>
-                                        <MenuItem value="Hôtel">Hôtel</MenuItem>
+                                        <MenuItem value="Bâtiment">Bâtiment</MenuItem>
+                                        <MenuItem value="Hôtellerie">Hôtellerie</MenuItem>
                                         <MenuItem value="Immobilier">Immobilier</MenuItem>
-                                        <MenuItem value="Maçon">Maçon</MenuItem>
-                                        <MenuItem value="Peintre">Peintre</MenuItem>
-                                        <MenuItem value="Plombier">Plombier</MenuItem>
-                                        <MenuItem value="Restaurant">Restaurant</MenuItem>
+                                        <MenuItem value="Magasin">Magasin</MenuItem>
+                                        <MenuItem value="Restauration">Restauration</MenuItem>
+                                        <MenuItem value="Soirée">Soirée</MenuItem>
+                                        <MenuItem value="Sport & Loisirs">Sport & Loisirs</MenuItem>
                                         <MenuItem value="Autre">Autre</MenuItem>
                                     </TextField>
                                 </Grid>

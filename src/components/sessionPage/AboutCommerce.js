@@ -811,20 +811,14 @@ class AboutCommerce extends Component {
                                                                 onChange={this.handleChange}
                                                                 value={this.state.commerce.currencyCategory}>
                                                                     <option value="">--Aucune--</option>
-                                                                    <option value="Alimentaire">Alimentaire</option>
                                                                     <option value="Automobile">Automobile</option>
-                                                                    <option value="Banque">Banque</option>
-                                                                    <option value="Bar/Pub">Bar/Pub</option>
-                                                                    <option value="Carreleur">Carreleur</option>
-                                                                    <option value="Coiffeur">Coiffeur</option>
-                                                                    <option value="Discothèque">Discothèque</option>
-                                                                    <option value="Habillement">Habillement</option>
-                                                                    <option value="Hôtel">Hôtel</option>
+                                                                    <option value="Bâtiment">Bâtiment</option>
+                                                                    <option value="Hôtellerie">Hôtellerie</option>
                                                                     <option value="Immobilier">Immobilier</option>
-                                                                    <option value="Maçon">Maçon</option>
-                                                                    <option value="Peintre">Peintre</option>
-                                                                    <option value="Plombier">Plombier</option>
-                                                                    <option value="Restaurant">Restaurant</option>
+                                                                    <option value="Magasin">Magasin</option>
+                                                                    <option value="Restauration">Restauration</option>
+                                                                    <option value="Soirée">Soirée</option>
+                                                                    <option value="Sport & Loisirs">Sport & Loisirs</option>
                                                                     <option value="Autre">Autre</option>
                                                             </select>
                                                         </Grid>
